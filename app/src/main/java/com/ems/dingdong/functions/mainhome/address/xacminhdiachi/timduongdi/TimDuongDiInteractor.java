@@ -9,6 +9,7 @@ import com.ems.dingdong.model.XacMinhDiaChiResult;
 import com.ems.dingdong.model.request.vietmap.RouteRequest;
 import com.ems.dingdong.model.request.vietmap.TravelSales;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.network.NetWorkControllerGateWay;
 
 import java.util.List;
 
@@ -22,21 +23,21 @@ public class TimDuongDiInteractor extends Interactor<TimDuongDiContract.Presente
 
     @Override
     public void getPoint(List<String> request, CommonCallback<XacMinhDiaChiResult> callback) {
-        NetWorkController.vietmapRoute(request, callback);
+        NetWorkControllerGateWay.vietmapRoute(request, callback);
     }
 
     @Override
     public Single<XacMinhDiaChiResult> vietmapTravelSalesmanProblem(TravelSales request) {
-        return NetWorkController.vietmapTravelSalesmanProblem(request);
+        return NetWorkControllerGateWay.vietmapTravelSalesmanProblem(request);
     }
 
     @Override
     public Single<SimpleResult> saveToaDoGom(List<SenderVpostcodeMode> request) {
-        return NetWorkController.saveToaDoGom(request);
+        return NetWorkControllerGateWay.saveToaDoGom(request);
     }
 
     @Override
     public Single<SimpleResult> saveToaDoPhat(List<ReceiverVpostcodeMode> request) {
-        return NetWorkController.saveToaDoPhat(request);
+        return NetWorkControllerGateWay.saveToaDoPhat(request);
     }
 }

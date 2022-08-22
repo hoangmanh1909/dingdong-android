@@ -7,6 +7,7 @@ import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.CommonObject;
+import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.RouteInfoResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.CommonObjectListResult;
@@ -105,15 +106,16 @@ public class XacNhanTinDetailPresenter extends Presenter<XacNhanTinDetailContrac
 
     @Override
     public void getRouteByPoCode(String poCode) {
-        mInteractor.getRouteByPoCode(poCode, new CommonCallback<RouteInfoResult>((Context) mContainerView) {
+        mInteractor.getRouteByPoCode(poCode, new CommonCallback<SimpleResult>((Context) mContainerView) {
             @Override
-            protected void onSuccess(Call<RouteInfoResult> call, Response<RouteInfoResult> response) {
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
-                mView.showRoute(response.body().getRouteInfos());
+                ArrayList<RouteInfo> routeInfos = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken< List<RouteInfo>>(){}.getType());
+                mView.showRoute(routeInfos);
             }
 
             @Override
-            protected void onError(Call<RouteInfoResult> call, String message) {
+            protected void onError(Call<SimpleResult> call, String message) {
                 super.onError(call, message);
             }
         });

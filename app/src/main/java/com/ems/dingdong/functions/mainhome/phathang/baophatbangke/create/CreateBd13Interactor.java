@@ -8,6 +8,7 @@ import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.request.DingDongGetLadingCreateBD13Request;
 import com.ems.dingdong.model.response.DeliveryPostmanResponse;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.network.NetWorkControllerGateWay;
 
 import io.reactivex.Single;
 
@@ -23,23 +24,23 @@ class CreateBd13Interactor extends Interactor<CreateBd13Contract.Presenter>
 
     @Override
     public void bD13AddNew(Bd13Create json, CommonCallback<SimpleResult> commonCallback) {
-        NetWorkController.addNewBD13(json, commonCallback);
+        NetWorkControllerGateWay.addNewBD13(json, commonCallback);
     }
 
     @Override
-    public void searchLadingBd13(DingDongGetLadingCreateBD13Request objRequest, CommonCallback<DeliveryPostmanResponse> commonCallback) {
-        NetWorkController.searchLadingCreatedBd13(objRequest, commonCallback);
+    public void searchLadingBd13(DingDongGetLadingCreateBD13Request objRequest, CommonCallback<SimpleResult> commonCallback) {
+        NetWorkControllerGateWay.searchLadingCreatedBd13(objRequest, commonCallback);
     }
 
     @Override
     public void callForwardCallCenter(String callerNumber, String calleeNumber, String callForwardType, String hotlineNumber, String ladingCode, String PostmanId, String POCode, CommonCallback<SimpleResult> callback) {
-        NetWorkController.callForwardCallCenter(callerNumber, calleeNumber, callForwardType, hotlineNumber,
+        NetWorkControllerGateWay.callForwardCallCenter(callerNumber, calleeNumber, callForwardType, hotlineNumber,
                 ladingCode, PostmanId, POCode, callback);
     }
 
     @Override
     public void updateMobile(String code, String type, String phone, CommonCallback<SimpleResult> simpleResultCommonCallback) {
-        NetWorkController.updateMobile(code, type, phone, simpleResultCommonCallback);
+        NetWorkControllerGateWay.updateMobile(code, type, phone, simpleResultCommonCallback);
     }
 
     @Override

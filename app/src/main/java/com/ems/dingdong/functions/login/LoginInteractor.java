@@ -10,6 +10,7 @@ import com.ems.dingdong.model.PostOfficeResult;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.SolutionResult;
+import com.ems.dingdong.model.request.LoginRequest;
 import com.ems.dingdong.model.response.ResponseObject;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.network.NetWorkControllerGateWay;
@@ -27,28 +28,28 @@ class LoginInteractor extends Interactor<LoginContract.Presenter>
     }
 
     @Override
-    public void login(String mobileNumber, String signCode,String version,String appCode, CommonCallback<LoginResult> commonCallback) {
-        NetWorkController.loginAuthorized(mobileNumber, signCode,version,appCode, commonCallback);
+    public void login(LoginRequest loginRequest, CommonCallback<SimpleResult> commonCallback) {
+        NetWorkControllerGateWay.loginAuthorized(loginRequest, commonCallback);
     }
 
     @Override
-    public void getPostOfficeByCode(String code, String postmanID, CommonCallback<PostOfficeResult> callback) {
-        NetWorkController.getPostOfficeByCode(code, postmanID, callback);
+    public void getPostOfficeByCode(String code, String postmanID, CommonCallback<SimpleResult> callback) {
+        NetWorkControllerGateWay.getPostOfficeByCode(code, postmanID, callback);
     }
 
     @Override
-    public void getSolutions(CommonCallback<SolutionResult> commonCallback) {
-        NetWorkController.getSolutions(commonCallback);
+    public void getSolutions(CommonCallback<SimpleResult> commonCallback) {
+        NetWorkControllerGateWay.getSolutions(commonCallback);
     }
 
     @Override
-    public void getReasons(CommonCallback<ReasonResult> commonCallback) {
-        NetWorkController.getReasons(commonCallback);
+    public void getReasons(CommonCallback<SimpleResult> commonCallback) {
+        NetWorkControllerGateWay.getReasons(commonCallback);
     }
 
     @Override
-    public void getVersion(String code, String data, String signature, CommonCallback<SimpleResult> callback) {
-        NetWorkController.getVersion(code,data,signature,callback);
+    public void getVersion(CommonCallback<SimpleResult> callback) {
+        NetWorkControllerGateWay.getVersion(callback);
     }
 
     @Override
@@ -59,5 +60,10 @@ class LoginInteractor extends Interactor<LoginContract.Presenter>
     @Override
     public Single<SimpleResult> getDanhSachNganHang() {
         return NetWorkControllerGateWay.getDanhSachNganHang();
+    }
+
+    @Override
+    public void getBalance(String mobileNumber, String postmanId, CommonCallback<SimpleResult> commonCallback) {
+        NetWorkControllerGateWay.getBalance(mobileNumber,postmanId ,commonCallback);
     }
 }

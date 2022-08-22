@@ -21,6 +21,7 @@ import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.ThuGomRespone;
 import com.ems.dingdong.model.ThuGomResponeValue;
 import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.model.response.GetMainViewResponse;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
@@ -175,7 +176,9 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
             v.setPostmanId(userInfo.getiD());
             v.setRouteCode(routeInfo.getRouteCode());
             v.setRouteId(Long.parseLong(routeInfo.getRouteId()));
-            mPresenter.getDDThugom(v);
+//            mPresenter.getDDThugom(v);
+            mPresenter.getDeliveryMainView(fromDate,toDate,userInfo.getUserName(), routeInfo.getRouteCode(),Constants.STT_GET_DELIVERY_MAIN_VIEW);
+            mPresenter.getPickUpMainView(fromDate,toDate,userInfo.getUserName(), routeInfo.getRouteCode(),Constants.STT_GET_PICKUP_MAIN_VIEW);
         }
 
     }
@@ -304,6 +307,125 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
         Log.d("thanhasdasd231", new Gson().toJson(mListCollect));
         homeAdapter.notifyDataSetChanged();
 
+
+    }
+
+    @Override
+    public void showGetDeliveryMainView(GetMainViewResponse response) {
+        HomeCollectInfo homeCollectInfo = null;
+        mListDelivery.clear();
+        mListDeliveryCOD.clear();
+        mListDeliveryPA.clear();
+
+        /**
+         * Phát hàng (thường)
+         */
+        for (int i = 0; i < 3; i++) {
+            homeCollectInfo = new HomeCollectInfo();
+            homeCollectInfo.setType(1);
+            if (i == 0) {
+                homeCollectInfo.setTotalQuantityToday(getResources().getString(R.string.new_delivery));
+                homeCollectInfo.setTotalQuantityPast(getResources().getString(R.string.not_deliver_yet));
+            } else if (i == 1) {
+                homeCollectInfo.setLabelCollect(getResources().getString(R.string.amount));
+                homeCollectInfo.setTotalQuantityToday(String.format("%s", NumberUtils.formatPriceNumber((response.getTotalQuantityTodayNormal()))));
+                homeCollectInfo.setTotalQuantityPast(String.format("%s", NumberUtils.formatPriceNumber(response.getTotalQuantityPastNormal())));
+            } else {
+                homeCollectInfo.setLabelCollect(getResources().getString(R.string.fee));
+                homeCollectInfo.setTotalFeeToday(response.getTotalFeeTodayNormal());
+                homeCollectInfo.setTotalFeePast(response.getTotalFeePastNormal());
+            }
+            mListDelivery.add(homeCollectInfo);
+        }
+        homeDeliveryAdapter.clear();
+        homeDeliveryAdapter.addItems(mListDelivery);
+        homeDeliveryAdapter.notifyDataSetChanged();
+
+        /**
+         * Phát hàng (COD)
+         */
+        for (int i = 0; i < 4; i++) {
+            homeCollectInfo = new HomeCollectInfo();
+            homeCollectInfo.setType(2);
+            if (i == 0) {
+                homeCollectInfo.setTotalQuantityToday(getResources().getString(R.string.new_delivery));
+                homeCollectInfo.setTotalQuantityPast(getResources().getString(R.string.not_deliver_yet));
+            } else if (i == 1) {
+                homeCollectInfo.setLabelCollect(getResources().getString(R.string.amount));
+                homeCollectInfo.setTotalQuantityTodayCOD(response.getTotalQuantityTodayCOD());
+                homeCollectInfo.setTotalQuantityPastCOD(response.getTotalQuantityPastCOD());
+            } else if (i == 2) {
+                homeCollectInfo.setLabelCollect(getResources().getString(R.string.amount_of_money));
+                homeCollectInfo.setTotalCODAmountTodayCOD(response.getTotalCODAmountTodayCOD());
+                homeCollectInfo.setTotalCODAmountPastCOD(response.getTotalCODAmountPastCOD());
+            } else if (i == 3) {
+                homeCollectInfo.setLabelCollect(getResources().getString(R.string.fee));
+                homeCollectInfo.setTotalFeeTodayCOD(response.getTotalFeeTodayCOD());
+                homeCollectInfo.setTotalFeePastCOD(response.getTotalFeePastCOD());
+            }
+            mListDeliveryCOD.add(homeCollectInfo);
+        }
+        homeDeliveryCODAdapter.clear();
+        homeDeliveryCODAdapter.addItems(mListDeliveryCOD);
+        homeDeliveryCODAdapter.notifyDataSetChanged();
+
+        /**
+         * Phát hàng (HCC)
+         */
+        for (int i = 0; i < 3; i++) {
+            homeCollectInfo = new HomeCollectInfo();
+            homeCollectInfo.setType(3);
+            if (i == 0) {
+                homeCollectInfo.setTotalQuantityToday(getResources().getString(R.string.new_delivery));
+                homeCollectInfo.setTotalQuantityPast(getResources().getString(R.string.not_deliver_yet));
+            } else if (i == 1) {
+                homeCollectInfo.setLabelCollect(getResources().getString(R.string.amount));
+                homeCollectInfo.setTotalQuantityTodayPA((response.getTotalQuantityTodayPA()));
+                homeCollectInfo.setTotalQuantityPastPA(response.getTotalQuantityPastPA());
+            } else {
+                homeCollectInfo.setLabelCollect(getResources().getString(R.string.fee));
+                homeCollectInfo.setTotalFeeTodayPA(response.getTotalFeeTodayPA());
+                homeCollectInfo.setTotalFeePastPA(response.getTotalFeePast());
+            }
+            mListDeliveryPA.add(homeCollectInfo);
+        }
+        homeDeliveryPAAdapter.clear();
+        homeDeliveryPAAdapter.addItems(mListDeliveryPA);
+        homeDeliveryPAAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void showGetPickupMainView(GetMainViewResponse response) {
+
+        HomeCollectInfo homeCollectInfo = null;
+        mListCollect.clear();
+        /**
+         * Gom hàng
+         */
+        for (int i = 0; i < 4; i++) {
+            homeCollectInfo = new HomeCollectInfo();
+            homeCollectInfo.setType(0);
+            if (i == 0) {
+                homeCollectInfo.setTotalAddressCollect(getResources().getString(R.string.new_collected));
+                homeCollectInfo.setTotalAddressNotCollect(getResources().getString(R.string.not_collect_yet));
+            } else if (i == 1) {
+                homeCollectInfo.setLabelCollect(getResources().getString(R.string.sl_dia_chi));
+                homeCollectInfo.setTotalAddressCollect(String.format("%s", NumberUtils.formatPriceNumber(response.getTotalAddressCollect())));
+                homeCollectInfo.setTotalAddressNotCollect(String.format("%s", NumberUtils.formatPriceNumber(response.getTotalAddressNotCollect())));
+            } else if (i == 2) {
+                homeCollectInfo.setLabelCollect(getResources().getString(R.string.sl_tin));
+                homeCollectInfo.setTotalLadingCollect(response.getTotalLadingCollect());
+                homeCollectInfo.setTotalLadingNotCollect(response.getTotalLadingNotCollect());
+            } else {
+                homeCollectInfo.setLabelCollect(getResources().getString(R.string.weigh));
+                homeCollectInfo.setTotalWeightCollect(response.getTotalWeightCollect());
+                homeCollectInfo.setTotalWeightNotCollect(response.getTotalWeightNotCollect());
+            }
+            mListCollect.add(homeCollectInfo);
+        }
+        homeAdapter.clear();
+        homeAdapter.addItems(mListCollect);
+        homeAdapter.notifyDataSetChanged();
 
     }
 

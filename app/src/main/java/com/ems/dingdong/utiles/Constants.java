@@ -148,6 +148,14 @@ public class Constants {
 
     public static final String DATE_FORMAT = "dd/mm/yyyy HH:mm:ss";
 
+    //Đăng nhập
+    public static final String AUTH_LOGIN = "AUTH_LOGIN";
+    public static final String AUTH_VALIDATION = "AUTH_VALIDATION";
+    public static final String AUTH_ACTIVE = "AUTH_ACTIVE";
+    public static final String AUTH_GET_BANK_LINK = "AUTH_GET_BANK_LINK";
+    public static final String AUTH_GET_POST_OFFICE_BY_CODE  = "AUTH_GET_POST_OFFICE_BY_CODE";
+    public static final String AUTH_GET_VERSION  = "AUTH_GET_VERSION";
+
     // Phát hàng
     public static final String DLV_TRACK_TRACE_LADING = "DLV_TRACK_TRACE_LADING";
     public static final String DLV_DELIVERY_POSTMAN = "DLV_DELIVERY_POSTMAN";
@@ -186,7 +194,8 @@ public class Constants {
 
 
 
-    // thống kê
+    // thống
+    public static final String STT_POSTMAN_GET_BALANCE  = "STT_POSTMAN_GET_BALANCE";
     public static final String STT_GET_DELIVERY_MAIN_VIEW = "STT_GET_DELIVERY_MAIN_VIEW";
     public static final String STT_GET_PICKUP_MAIN_VIEW = "STT_GET_PICKUP_MAIN_VIEW";
     public static final String STT_GET_TICKET_NOTIFY = "STT_GET_TICKET_NOTIFY";
@@ -267,6 +276,11 @@ public class Constants {
     public static final String VM_ENCODE = "VM_ENCODE";
     public static final String VM_DECODE = "VM_DECODE";
     public static final String VM_TRAVEL_SALESMAN_PROBLEM = "VM_TRAVEL_SALESMAN_PROBLEM";
+
+    /*
+     * key_share_pref
+     */
+    public static final String KEY_BALANCE = "KEY_BALANCE";
 
 
 }

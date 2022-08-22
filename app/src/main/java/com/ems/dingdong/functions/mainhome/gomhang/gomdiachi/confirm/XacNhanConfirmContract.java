@@ -26,7 +26,7 @@ interface XacNhanConfirmContract {
     interface Interactor extends IInteractor<Presenter> {
         void confirmAllOrderPostman(ArrayList<ConfirmOrderPostman> request, CommonCallback<SimpleResult> callback);
 
-        void getRouteByPoCode(String poCode, CommonCallback<RouteInfoResult> callback);
+        void getRouteByPoCode(String poCode, CommonCallback<SimpleResult> callback);
 
         void getPostman(String poCode, int routeId, String routeType, CommonCallback<SimpleResult> callback);
 

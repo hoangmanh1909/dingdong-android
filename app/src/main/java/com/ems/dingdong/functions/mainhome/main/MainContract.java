@@ -31,9 +31,9 @@ import retrofit2.Call;
 interface MainContract {
 
     interface Interactor extends IInteractor<Presenter> {
-        void getShift(String code, CommonCallback<ShiftResult> callback);
+        void getShift(String code, CommonCallback<SimpleResult> callback);
 
-        void getBalance(String postmanID, String poCode, String phoneNumber, String fromDate, String toDate, CommonCallback<StatisticPaymentResult> callback);
+        void getBalance(String postmanID, String poCode, String phoneNumber, String fromDate, String toDate, CommonCallback<SimpleResult> callback);
 
         Single<TokenMoveCropResult> getAccessToken(String mobileNumber);
 

@@ -6,6 +6,7 @@ import com.ems.dingdong.model.CommonObjectResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.request.PaymentPaypostRequest;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.network.NetWorkControllerGateWay;
 
 /**
  * The TaoGachNo interactor
@@ -24,7 +25,7 @@ class TaoGachNoInteractor extends Interactor<TaoGachNoContract.Presenter>
 
     @Override
     public void callForwardCallCenter(String callerNumber, String calleeNumber, String callForwardType, String hotlineNumber, String ladingCode,String PostmanId, String POcode, CommonCallback<SimpleResult> callback) {
-        NetWorkController.callForwardCallCenter(callerNumber, calleeNumber, callForwardType, hotlineNumber,
+        NetWorkControllerGateWay.callForwardCallCenter(callerNumber, calleeNumber, callForwardType, hotlineNumber,
                 ladingCode,PostmanId,POcode, callback);
     }
 

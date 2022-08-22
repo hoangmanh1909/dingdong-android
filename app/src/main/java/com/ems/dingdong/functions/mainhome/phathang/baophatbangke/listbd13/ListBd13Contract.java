@@ -6,6 +6,7 @@ import com.core.base.viper.interfaces.PresentView;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.Bd13Code;
 import com.ems.dingdong.model.HistoryCreateBd13Result;
+import com.ems.dingdong.model.SimpleResult;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ import java.util.List;
 interface ListBd13Contract {
 
     interface Interactor extends IInteractor<Presenter> {
-        void searchCreateBd13(String deliveryPOCode, String routePOCode, String bagNumber, String chuyenThu, String createDate, String shift, CommonCallback<HistoryCreateBd13Result> commonCallback);
+        void searchCreateBd13(String deliveryPOCode, String routePOCode, String bagNumber, String chuyenThu, String createDate, String shift, CommonCallback<SimpleResult> commonCallback);
     }
 
     interface View extends PresentView<Presenter> {

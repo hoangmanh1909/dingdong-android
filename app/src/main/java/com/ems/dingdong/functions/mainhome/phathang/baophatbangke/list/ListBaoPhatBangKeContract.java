@@ -54,12 +54,12 @@ interface ListBaoPhatBangKeContract {
          *                   3 - HCC
          * @param callback   Callback retrofit.
          */
-        Call<DeliveryPostmanResponse> searchDeliveryPostman(String postmanID,
+        Call<SimpleResult> searchDeliveryPostman(String postmanID,
                                                             String fromDate,
                                                             String toDate,
                                                             String routeCode,
                                                             Integer searchType,
-                                                            CommonCallback<DeliveryPostmanResponse> callback);
+                                                            CommonCallback<SimpleResult> callback);
 
         /**
          * Call to service center to connect to calleenumber.

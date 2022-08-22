@@ -5,6 +5,7 @@ import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.CommonObjectResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.network.NetWorkControllerGateWay;
 
 /**
  * The BaoPhatThanhCong interactor
@@ -23,7 +24,7 @@ class BaoPhatThanhCongInteractor extends Interactor<BaoPhatThanhCongContract.Pre
 
     @Override
     public void callForwardCallCenter(String callerNumber, String calleeNumber, String callForwardType, String hotlineNumber, String ladingCode, String PostmanId, String POcode, CommonCallback<SimpleResult> callback) {
-        NetWorkController.callForwardCallCenter(callerNumber, calleeNumber, callForwardType, hotlineNumber,
+        NetWorkControllerGateWay.callForwardCallCenter(callerNumber, calleeNumber, callForwardType, hotlineNumber,
                 ladingCode, PostmanId, POcode, callback);
     }
 }

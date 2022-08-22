@@ -18,11 +18,13 @@ import com.ems.dingdong.functions.mainhome.setting.SettingPresenter;
 import com.ems.dingdong.model.BalanceModel;
 import com.ems.dingdong.model.MapMode;
 import com.ems.dingdong.model.PostOffice;
+import com.ems.dingdong.model.ShiftInfo;
 import com.ems.dingdong.model.ShiftResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.StatisticPaymentResult;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.request.TicketNotifyRequest;
+import com.ems.dingdong.model.response.StatisticPaymentResponse;
 import com.ems.dingdong.model.response.TicketNotifyRespone;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
@@ -31,6 +33,7 @@ import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.mapbox.mapboxsdk.Mapbox;
 
 import java.util.ArrayList;
@@ -71,16 +74,17 @@ public class MainPresenter extends Presenter<MainContract.View, MainContract.Int
         String posOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
         if (!posOfficeJson.isEmpty()) {
             PostOffice postOffice = NetWorkController.getGson().fromJson(posOfficeJson, PostOffice.class);
-            mInteractor.getShift(postOffice.getCode(), new CommonCallback<ShiftResult>((Activity) mContainerView) {
+            mInteractor.getShift(postOffice.getCode(), new CommonCallback<SimpleResult>((Activity) mContainerView) {
                 @Override
-                protected void onSuccess(Call<ShiftResult> call, Response<ShiftResult> response) {
+                protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                     super.onSuccess(call, response);
                     mView.hideProgress();
-                    sharedPref.putString(Constants.KEY_POST_SHIFT, NetWorkController.getGson().toJson(response.body().getShiftInfos()));
+                    ArrayList<ShiftInfo> shiftInfos = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<ShiftInfo>>(){}.getType());
+                    sharedPref.putString(Constants.KEY_POST_SHIFT, NetWorkController.getGson().toJson(shiftInfos));
                 }
 
                 @Override
-                protected void onError(Call<ShiftResult> call, String message) {
+                protected void onError(Call<SimpleResult> call, String message) {
                     mView.hideProgress();
                     super.onError(call, message);
                     mView.showErrorToast(message);
@@ -188,18 +192,21 @@ public class MainPresenter extends Presenter<MainContract.View, MainContract.Int
         }
 
         mInteractor.getBalance(userInfo.getiD(), postOffice.getCode(), userInfo.getMobileNumber(), fromDate, toDate,
-                new CommonCallback<StatisticPaymentResult>((Activity) mContainerView) {
-                    @Override
-                    protected void onSuccess(Call<StatisticPaymentResult> call, Response<StatisticPaymentResult> response) {
-                        mView.hideProgress();
-                        if (getViewContext() != null)
-                            mView.updateBalance(response.body().getStatisticPaymentResponses());
-                    }
+                new CommonCallback<SimpleResult>((Activity) mContainerView) {
+            @Override
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+                mView.hideProgress();
+                if (getViewContext() != null){
+                    StatisticPaymentResponse paymentResponse = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<StatisticPaymentResponse>(){}.getType());
+                    mView.updateBalance(paymentResponse);
+                }
 
-                    @Override
-                    protected void onError(Call<StatisticPaymentResult> call, String message) {
-                    }
-                });
+            }
+
+            @Override
+            protected void onError(Call<SimpleResult> call, String message) {
+            }
+        });
     }
 
     @Override

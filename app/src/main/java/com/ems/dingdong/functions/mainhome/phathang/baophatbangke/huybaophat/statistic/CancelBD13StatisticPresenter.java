@@ -7,6 +7,8 @@ import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.huybaophat.Can
 import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
 import com.ems.dingdong.model.request.CancelDeliveryStatisticRequest;
 import com.ems.dingdong.model.response.CancelStatisticItem;
+import com.ems.dingdong.network.NetWorkController;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -61,12 +63,13 @@ public class CancelBD13StatisticPresenter extends Presenter<CancelBD13StatisticC
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
-                        listStatistic -> {
-                            if (listStatistic.getErrorCode().equals("00")) {
-                                map = groupByCancelStatisticMap(listStatistic.getStatisticItemList());
+                        result -> {
+                            if (result.getErrorCode().equals("00")) {
+                                List<CancelStatisticItem> statisticItemList = NetWorkController.getGson().fromJson(result.getData(),new TypeToken<List<CancelStatisticItem>>(){}.getType());
+                                map = groupByCancelStatisticMap(statisticItemList);
                                 mView.showListSuccess(groupByCancelStatisticList(map));
                             } else {
-                                mView.showError(listStatistic.getMessage());
+                                mView.showError(result.getMessage());
                             }
                         }
                         ,

@@ -11,6 +11,7 @@ import com.ems.dingdong.model.StatisticPaymentResult;
 import com.ems.dingdong.model.TokenMoveCropResult;
 import com.ems.dingdong.model.request.TicketNotifyRequest;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.network.NetWorkControllerGateWay;
 
 import java.util.List;
 
@@ -28,13 +29,13 @@ class MainInteractor extends Interactor<MainContract.Presenter>
     }
 
     @Override
-    public void getShift(String code, CommonCallback<ShiftResult> callback) {
-        NetWorkController.getPostmanShift(code, callback);
+    public void getShift(String code, CommonCallback<SimpleResult> callback) {
+        NetWorkControllerGateWay.getPostmanShift(code, callback);
     }
 
     @Override
-    public void getBalance(String postmanID, String poCode, String phoneNumber, String fromDate, String toDate, CommonCallback<StatisticPaymentResult> callback) {
-        NetWorkController.statisticPayment(postmanID, poCode, phoneNumber, fromDate, toDate, callback);
+    public void getBalance(String postmanID, String poCode, String phoneNumber, String fromDate, String toDate, CommonCallback<SimpleResult> callback) {
+        NetWorkControllerGateWay.statisticPayment(postmanID, poCode, phoneNumber, fromDate, toDate, callback);
     }
 
     @Override
@@ -49,12 +50,12 @@ class MainInteractor extends Interactor<MainContract.Presenter>
 
     @Override
     public void ddGetBalance(BalanceModel requset, CommonCallback<SimpleResult> callback) {
-        NetWorkController.ddGetBalance(requset, callback);
+        NetWorkControllerGateWay.ddGetBalance(requset, callback);
     }
 
     @Override
     public Single<SimpleResult> getListTicket(TicketNotifyRequest request) {
-        return NetWorkController.getListTicket(request);
+        return NetWorkControllerGateWay.getListTicket(request);
     }
 
     @Override

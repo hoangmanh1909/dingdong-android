@@ -13,6 +13,7 @@ import com.ems.dingdong.functions.mainhome.phathang.noptien.PaymentContract;
 import com.ems.dingdong.functions.mainhome.phathang.noptien.PaymentPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
 import com.ems.dingdong.model.Bd13Create;
+import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.UserInfo;
@@ -25,6 +26,7 @@ import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -119,20 +121,21 @@ public class CreateBd13Presenter extends Presenter<CreateBd13Contract.View, Crea
     @Override
     public void searchLadingBd13(DingDongGetLadingCreateBD13Request objRequest) {
         mView.showProgress();
-        mInteractor.searchLadingBd13(objRequest, new CommonCallback<DeliveryPostmanResponse>((Context) mContainerView) {
+        mInteractor.searchLadingBd13(objRequest, new CommonCallback<SimpleResult>((Context) mContainerView) {
             @Override
-            protected void onSuccess(Call<DeliveryPostmanResponse> call, Response<DeliveryPostmanResponse> response) {
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
                 mView.hideProgress();
                 if (response.body().getErrorCode().equals("00")) {
-                    mView.showListSuccess(response.body().getDeliveryPostmens());
+                    ArrayList<DeliveryPostman> deliveryPostmens = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<DeliveryPostman>>(){}.getType());
+                    mView.showListSuccess(deliveryPostmens);
                 } else {
                     mView.showErrorToast(response.body().getMessage());
                 }
             }
 
             @Override
-            protected void onError(Call<DeliveryPostmanResponse> call, String message) {
+            protected void onError(Call<SimpleResult> call, String message) {
                 super.onError(call, message);
 
                 mView.hideProgress();

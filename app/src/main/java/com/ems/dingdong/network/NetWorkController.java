@@ -225,52 +225,52 @@ public class NetWorkController {
         return apiHistoryCallBuilder;
     }
 
-    public static void taskOfWork(SimpleResult taskRequest, CommonCallback<SimpleResult> callback) {
+//    public static void taskOfWork(SimpleResult taskRequest, CommonCallback<SimpleResult> callback) {
+//
+//        Call<SimpleResult> call = getAPIBuilder().taskOfWork(taskRequest);
+//        call.enqueue(callback);
+//    }
 
-        Call<SimpleResult> call = getAPIBuilder().taskOfWork(taskRequest);
-        call.enqueue(callback);
-    }
+//    public static void addNewBD13(Bd13Create bd13Create, CommonCallback<SimpleResult> callback) {
+//
+//        Call<SimpleResult> call = getAPIBuilder().addNewBD13(bd13Create);
+//        call.enqueue(callback);
+//    }
 
-    public static void addNewBD13(Bd13Create bd13Create, CommonCallback<SimpleResult> callback) {
+//    public static void loginAuthorized(String mobileNumber, String signCode, String version, String appCode, CommonCallback<LoginResult> callback) {
+//        String signature = Utils.SHA256(mobileNumber + signCode + BuildConfig.PRIVATE_KEY).toUpperCase();
+//        Call<LoginResult> call = getAPIBuilder().loginAuthorized(mobileNumber, signCode, version, appCode, signature);
+//        call.enqueue(callback);
+//    }
 
-        Call<SimpleResult> call = getAPIBuilder().addNewBD13(bd13Create);
-        call.enqueue(callback);
-    }
+//    public static void searchDeliveryStatistic(String fromDate, String toDate, String status,
+//                                               String postmanId, String routeCode, CommonCallback<CommonObjectListResult> callback) {
+//        Call<CommonObjectListResult> call = getAPIBuilder().searchDeliveryStatistic(fromDate, toDate, status, postmanId, routeCode);
+//        call.enqueue(callback);
+//    }
+//
+//    public static void getHistoryDelivery(String parcelCode, CommonCallback<CommonObjectListResult> callback) {
+//        Call<CommonObjectListResult> call = getAPIBuilder().getHistoryDelivery(parcelCode);
+//        call.enqueue(callback);
+//    }
 
-    public static void loginAuthorized(String mobileNumber, String signCode, String version, String appCode, CommonCallback<LoginResult> callback) {
-        String signature = Utils.SHA256(mobileNumber + signCode + BuildConfig.PRIVATE_KEY).toUpperCase();
-        Call<LoginResult> call = getAPIBuilder().loginAuthorized(mobileNumber, signCode, version, appCode, signature);
-        call.enqueue(callback);
-    }
+//    public static void activeAuthorized(String mobileNumber, String activeCode, String codeDeviceActive, CommonCallback<ActiveResult> callback) {
+//        String signature = Utils.SHA256(mobileNumber + activeCode + BuildConfig.PRIVATE_KEY).toUpperCase();
+//        Call<ActiveResult> call = getAPIBuilder().activeAuthorized(mobileNumber, activeCode, codeDeviceActive, signature);
+//        call.enqueue(callback);
+//    }
 
-    public static void searchDeliveryStatistic(String fromDate, String toDate, String status,
-                                               String postmanId, String routeCode, CommonCallback<CommonObjectListResult> callback) {
-        Call<CommonObjectListResult> call = getAPIBuilder().searchDeliveryStatistic(fromDate, toDate, status, postmanId, routeCode);
-        call.enqueue(callback);
-    }
-
-    public static void getHistoryDelivery(String parcelCode, CommonCallback<CommonObjectListResult> callback) {
-        Call<CommonObjectListResult> call = getAPIBuilder().getHistoryDelivery(parcelCode);
-        call.enqueue(callback);
-    }
-
-    public static void activeAuthorized(String mobileNumber, String activeCode, String codeDeviceActive, CommonCallback<ActiveResult> callback) {
-        String signature = Utils.SHA256(mobileNumber + activeCode + BuildConfig.PRIVATE_KEY).toUpperCase();
-        Call<ActiveResult> call = getAPIBuilder().activeAuthorized(mobileNumber, activeCode, codeDeviceActive, signature);
-        call.enqueue(callback);
-    }
-
-    public static Call<SimpleResult> callForwardCallCenter(String callerNumber, String calleeNumber,
-                                                           String callForwardType, String hotlineNumber,
-                                                           String ladingCode, String PostmanId, String POCode, CommonCallback<SimpleResult> callback) {
-        String type = "1";
-
-        String signature = Utils.SHA256(callerNumber + calleeNumber + BuildConfig.PRIVATE_KEY).toUpperCase();
-        Call<SimpleResult> call = getAPIBuilder().callForwardCallCenter(callerNumber, calleeNumber, callForwardType,
-                hotlineNumber, ladingCode, "2", PostmanId, POCode, signature);
-        call.enqueue(callback);
-        return call;
-    }
+//    public static Call<SimpleResult> callForwardCallCenter(String callerNumber, String calleeNumber,
+//                                                           String callForwardType, String hotlineNumber,
+//                                                           String ladingCode, String PostmanId, String POCode, CommonCallback<SimpleResult> callback) {
+//        String type = "1";
+//
+//        String signature = Utils.SHA256(callerNumber + calleeNumber + BuildConfig.PRIVATE_KEY).toUpperCase();
+//        Call<SimpleResult> call = getAPIBuilder().callForwardCallCenter(callerNumber, calleeNumber, callForwardType,
+//                hotlineNumber, ladingCode, "2", PostmanId, POCode, signature);
+//        call.enqueue(callback);
+//        return call;
+//    }
 
     public static Call<SimpleResult> CallForwardEditCOD(String callerNumber, String calleeNumber,
                                                         String callForwardType, String hotlineNumber,
@@ -285,26 +285,26 @@ public class NetWorkController {
     }
 
 
-    public static void searchAllOrderPostmanCollect(String orderPostmanID,
-                                                    String orderID,
-                                                    String postmanID,
-                                                    String status,
-                                                    String fromAssignDate,
-                                                    String toAssignDate, CommonCallback<CommonObjectListResult> callback) {
-        Call<CommonObjectListResult> call = getAPIBuilder().searchAllOrderPostmanCollect(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate);
-        call.enqueue(callback);
-    }
+//    public static void searchAllOrderPostmanCollect(String orderPostmanID,
+//                                                    String orderID,
+//                                                    String postmanID,
+//                                                    String status,
+//                                                    String fromAssignDate,
+//                                                    String toAssignDate, CommonCallback<CommonObjectListResult> callback) {
+//        Call<CommonObjectListResult> call = getAPIBuilder().searchAllOrderPostmanCollect(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate);
+//        call.enqueue(callback);
+//    }
 
-    public static Call<DeliveryPostmanResponse> searchDeliveryPostman(String postmanID,
-                                                                      String fromDate,
-                                                                      String toDate,
-                                                                      String routeCode,
-                                                                      Integer searchTpe,
-                                                                      CommonCallback<DeliveryPostmanResponse> callback) {
-        Call<DeliveryPostmanResponse> call = getAPIBuilder().searchDeliveryPostman(postmanID, fromDate, toDate, routeCode, searchTpe);
-        call.enqueue(callback);
-        return call;
-    }
+//    public static Call<DeliveryPostmanResponse> searchDeliveryPostman(String postmanID,
+//                                                                      String fromDate,
+//                                                                      String toDate,
+//                                                                      String routeCode,
+//                                                                      Integer searchTpe,
+//                                                                      CommonCallback<DeliveryPostmanResponse> callback) {
+//        Call<DeliveryPostmanResponse> call = getAPIBuilder().searchDeliveryPostman(postmanID, fromDate, toDate, routeCode, searchTpe);
+//        call.enqueue(callback);
+//        return call;
+//    }
 
     public static void searchParcelCodeDelivery(String parcelCode, CommonCallback<CommonObjectResult> callback) {
         String signature = Utils.SHA256(parcelCode.toUpperCase() + BuildConfig.PRIVATE_KEY).toUpperCase();
@@ -323,11 +323,11 @@ public class NetWorkController {
         return getAPIRxBuilder().findLocation(ladingCode.toUpperCase(), poCode, signature);
     }
 
-    public static void validationAuthorized(String mobileNumber, CommonCallback<SimpleResult> callback) {
-        String signature = Utils.SHA256(mobileNumber + BuildConfig.PRIVATE_KEY).toUpperCase();
-        Call<SimpleResult> call = getAPIBuilder().validationAuthorized(mobileNumber, signature);
-        call.enqueue(callback);
-    }
+//    public static void validationAuthorized(String mobileNumber, CommonCallback<SimpleResult> callback) {
+//        String signature = Utils.SHA256(mobileNumber + BuildConfig.PRIVATE_KEY).toUpperCase();
+//        Call<SimpleResult> call = getAPIBuilder().validationAuthorized(mobileNumber, signature);
+//        call.enqueue(callback);
+//    }
 
     public static void checkLadingCode(String parcelCode, CommonCallback<SimpleResult> callback) {
         String signature = Utils.SHA256(parcelCode + BuildConfig.PRIVATE_KEY).toUpperCase();
@@ -368,71 +368,71 @@ public class NetWorkController {
         call.enqueue(callback);
     }
 
-    public static void getPostOfficeByCode(String code, String postmanID, CommonCallback<PostOfficeResult> callback) {
-        Call<PostOfficeResult> call = getAPIBuilder().getPostOfficeByCode(code, postmanID);
-        call.enqueue(callback);
-    }
+//    public static void getPostOfficeByCode(String code, String postmanID, CommonCallback<PostOfficeResult> callback) {
+//        Call<PostOfficeResult> call = getAPIBuilder().getPostOfficeByCode(code, postmanID);
+//        call.enqueue(callback);
+//    }
 
     public static void deliveryGetPaypostError(String fromDate, String toDate, CommonCallback<GachNoResult> callback) {
         Call<GachNoResult> call = getAPIBuilder().deliveryGetPaypostError(fromDate, toDate);
         call.enqueue(callback);
     }
 
-    public static void getPostmanShift(String poCode, CommonCallback<ShiftResult> callback) {
-        Call<ShiftResult> call = getAPIBuilder().getPostmanShift(poCode);
-        call.enqueue(callback);
-    }
+//    public static void getPostmanShift(String poCode, CommonCallback<ShiftResult> callback) {
+//        Call<ShiftResult> call = getAPIBuilder().getPostmanShift(poCode);
+//        call.enqueue(callback);
+//    }
+//
+//    public static void getSolutionByReasonCode(String reasonCode, CommonCallback<SolutionResult> callback) {
+//        Call<SolutionResult> call = getAPIBuilder().getSolutionByReasonCode(reasonCode);
+//        call.enqueue(callback);
+//    }
 
-    public static void getSolutionByReasonCode(String reasonCode, CommonCallback<SolutionResult> callback) {
-        Call<SolutionResult> call = getAPIBuilder().getSolutionByReasonCode(reasonCode);
-        call.enqueue(callback);
-    }
+//    public static void getSolutions(CommonCallback<SolutionResult> callback) {
+//        Call<SolutionResult> call = getAPIBuilder().getSolutions();
+//        call.enqueue(callback);
+//    }
+//
+//    public static void getReasons(CommonCallback<ReasonResult> callback) {
+//        Call<ReasonResult> call = getAPIBuilder().getReasons();
+//        call.enqueue(callback);
+//    }
 
-    public static void getSolutions(CommonCallback<SolutionResult> callback) {
-        Call<SolutionResult> call = getAPIBuilder().getSolutions();
-        call.enqueue(callback);
-    }
+//    public static void getVersion(String code, String data, String signature, CommonCallback<SimpleResult> callback) {
+//        Call<SimpleResult> call = getAPIBuilder().Bussiness(code, data, signature);
+//        call.enqueue(callback);
+//    }
 
-    public static void getReasons(CommonCallback<ReasonResult> callback) {
-        Call<ReasonResult> call = getAPIBuilder().getReasons();
-        call.enqueue(callback);
-    }
-
-    public static void getVersion(String code, String data, String signature, CommonCallback<SimpleResult> callback) {
-        Call<SimpleResult> call = getAPIBuilder().Bussiness(code, data, signature);
-        call.enqueue(callback);
-    }
-
-    public static void createCallHistoryVHT(String code, String data, String signature, CommonCallback<SimpleResult> callback) {
-        Call<SimpleResult> call = getAPIBuilder().Bussiness(code, data, signature);
-        call.enqueue(callback);
-    }
-
-    public static void confirmOrderPostmanCollect(String orderPostmanID, String employeeID,
-                                                  String statusCode, String confirmReason, CommonCallback<SimpleResult> callback) {
-        Call<SimpleResult> call = getAPIBuilder().confirmOrderPostmanCollect(orderPostmanID, employeeID, statusCode, confirmReason, "DD_ANDROID");
-        call.enqueue(callback);
-    }
-
-
-    public static void locationAddNew(String postmanID, String latitude, String longitude, CommonCallback<SimpleResult> callback) {
-        String signature = Utils.SHA256(postmanID + BuildConfig.PRIVATE_KEY).toUpperCase();
-        Call<SimpleResult> call = getAPIBuilder().locationAddNew(postmanID, latitude, longitude,
-                signature);
-        call.enqueue(callback);
-    }
+//    public static void createCallHistoryVHT(String code, String data, String signature, CommonCallback<SimpleResult> callback) {
+//        Call<SimpleResult> call = getAPIBuilder().Bussiness(code, data, signature);
+//        call.enqueue(callback);
+//    }
+//
+//    public static void confirmOrderPostmanCollect(String orderPostmanID, String employeeID,
+//                                                  String statusCode, String confirmReason, CommonCallback<SimpleResult> callback) {
+//        Call<SimpleResult> call = getAPIBuilder().confirmOrderPostmanCollect(orderPostmanID, employeeID, statusCode, confirmReason, "DD_ANDROID");
+//        call.enqueue(callback);
+//    }
 
 
-    public static void searchCreateBd13(String deliveryPOCode, String routePOCode, String bagNumber, String chuyenThu, String createDate, String shift, CommonCallback<HistoryCreateBd13Result> commonCallback) {
-        Call<HistoryCreateBd13Result> call = getAPIBuilder().searchCreateBd13(deliveryPOCode, routePOCode, bagNumber, chuyenThu, createDate, shift);
-        call.enqueue(commonCallback);
-    }
+//    public static void locationAddNew(String postmanID, String latitude, String longitude, CommonCallback<SimpleResult> callback) {
+//        String signature = Utils.SHA256(postmanID + BuildConfig.PRIVATE_KEY).toUpperCase();
+//        Call<SimpleResult> call = getAPIBuilder().locationAddNew(postmanID, latitude, longitude,
+//                signature);
+//        call.enqueue(callback);
+//    }
 
-    public static Call<SimpleResult> updateMobile(String code, String type, String mobileNumber, CommonCallback<SimpleResult> commonCallback) {
-        Call<SimpleResult> call = getAPIBuilder().updateMobile(code, type, mobileNumber);
-        call.enqueue(commonCallback);
-        return call;
-    }
+
+//    public static void searchCreateBd13(String deliveryPOCode, String routePOCode, String bagNumber, String chuyenThu, String createDate, String shift, CommonCallback<HistoryCreateBd13Result> commonCallback) {
+//        Call<HistoryCreateBd13Result> call = getAPIBuilder().searchCreateBd13(deliveryPOCode, routePOCode, bagNumber, chuyenThu, createDate, shift);
+//        call.enqueue(commonCallback);
+//    }
+
+//    public static Call<SimpleResult> updateMobile(String code, String type, String mobileNumber, CommonCallback<SimpleResult> commonCallback) {
+//        Call<SimpleResult> call = getAPIBuilder().updateMobile(code, type, mobileNumber);
+//        call.enqueue(commonCallback);
+//        return call;
+//    }
 
     public static void postImage(String filePath, CommonCallback<UploadResult> callback) {
         File file = new File(filePath);
@@ -501,74 +501,74 @@ public class NetWorkController {
         call.enqueue(callback);
     }
 
-    public static void getReasonsHoanTat(CommonCallback<ReasonResult> callback) {
-        Call<ReasonResult> call = getAPIBuilder().getReasonsHoanTat();
-        call.enqueue(callback);
-    }
+//    public static void getReasonsHoanTat(CommonCallback<ReasonResult> callback) {
+//        Call<ReasonResult> call = getAPIBuilder().getReasonsHoanTat();
+//        call.enqueue(callback);
+//    }
 
-    public static void getReasonsHoanTatMiss(CommonCallback<ReasonResult> callback) {
-        Call<ReasonResult> call = getAPIBuilder().getReasonsHoanTatMiss();
-        call.enqueue(callback);
-    }
+//    public static void getReasonsHoanTatMiss(CommonCallback<ReasonResult> callback) {
+//        Call<ReasonResult> call = getAPIBuilder().getReasonsHoanTatMiss();
+//        call.enqueue(callback);
+//    }
 
-    public static void confirmAllOrderPostman(ArrayList<ConfirmOrderPostman> request, CommonCallback<ConfirmAllOrderPostmanResult> callback) {
-        Call<ConfirmAllOrderPostmanResult> call = getAPIBuilder().confirmAllOrderPostman(request);
-        call.enqueue(callback);
-    }
+//    public static void confirmAllOrderPostman(ArrayList<ConfirmOrderPostman> request, CommonCallback<ConfirmAllOrderPostmanResult> callback) {
+//        Call<ConfirmAllOrderPostmanResult> call = getAPIBuilder().confirmAllOrderPostman(request);
+//        call.enqueue(callback);
+//    }
 
-    public static void confirmOrderPostman(ArrayList<ConfirmOrderPostman> request, CommonCallback<ConfirmOrderPostmanResult> callback) {
-        Call<ConfirmOrderPostmanResult> call = getAPIBuilder().confirmOrderPostman(request);
-        call.enqueue(callback);
-    }
+//    public static void confirmOrderPostman(ArrayList<ConfirmOrderPostman> request, CommonCallback<ConfirmOrderPostmanResult> callback) {
+//        Call<ConfirmOrderPostmanResult> call = getAPIBuilder().confirmOrderPostman(request);
+//        call.enqueue(callback);
+//    }
 
-    public static void collectOrderPostmanCollect(HoanTatTinRequest hoanTatTinRequest, CommonCallback<SimpleResult> callback) {
-        Call<SimpleResult> call = getAPIBuilder().collectOrderPostmanCollect(hoanTatTinRequest);
-        call.enqueue(callback);
-    }
+//    public static void collectOrderPostmanCollect(HoanTatTinRequest hoanTatTinRequest, CommonCallback<SimpleResult> callback) {
+//        Call<SimpleResult> call = getAPIBuilder().collectOrderPostmanCollect(hoanTatTinRequest);
+//        call.enqueue(callback);
+//    }
 
-    public static void pushToPNSDelivery(PushToPnsRequest request, CommonCallback<SimpleResult> callback) {
-        Call<SimpleResult> call = getAPIBuilder().pushToPNSDelivery(request);
-        call.enqueue(callback);
-    }
+//    public static void pushToPNSDelivery(PushToPnsRequest request, CommonCallback<SimpleResult> callback) {
+//        Call<SimpleResult> call = getAPIBuilder().pushToPNSDelivery(request);
+//        call.enqueue(callback);
+//    }
 
-    public static void pushToPNSDeliveryUnSuccess(DeliveryUnSuccessRequest request, CommonCallback<SimpleResult> callback) {
-        Call<SimpleResult> call = getAPIBuilder().pushToPNSDeliveryUnSuccess(request);
-        call.enqueue(callback);
-    }
+//    public static void pushToPNSDeliveryUnSuccess(DeliveryUnSuccessRequest request, CommonCallback<SimpleResult> callback) {
+//        Call<SimpleResult> call = getAPIBuilder().pushToPNSDeliveryUnSuccess(request);
+//        call.enqueue(callback);
+//    }
 
-    public static Single<SimpleResult> pushToPNSDelivery(PushToPnsRequest request) {
-        return getAPIRxBuilder().pushToPNSDeliveryObservable(request);
-    }
+//    public static Single<SimpleResult> pushToPNSDelivery(PushToPnsRequest request) {
+//        return getAPIRxBuilder().pushToPNSDeliveryObservable(request);
+//    }
 
-    public static void searchStatisticCollect(String postmanID, String fromDate, String toDate, CommonCallback<StatisticCollectResult> callback) {
-        Call<StatisticCollectResult> call = getAPIBuilder().searchStatisticCollect(postmanID, fromDate, toDate);
-        call.enqueue(callback);
-    }
+//    public static void searchStatisticCollect(String postmanID, String fromDate, String toDate, CommonCallback<StatisticCollectResult> callback) {
+//        Call<StatisticCollectResult> call = getAPIBuilder().searchStatisticCollect(postmanID, fromDate, toDate);
+//        call.enqueue(callback);
+//    }
 
-    public static void collectAllOrderPostman(List<HoanTatTinRequest> list, CommonCallback<SimpleResult> callback) {
-        Call<SimpleResult> call = getAPIBuilder().collectAllOrderPostman(list);
-        call.enqueue(callback);
-    }
+//    public static void collectAllOrderPostman(List<HoanTatTinRequest> list, CommonCallback<SimpleResult> callback) {
+//        Call<SimpleResult> call = getAPIBuilder().collectAllOrderPostman(list);
+//        call.enqueue(callback);
+//    }
 
-    public static void statisticDeliveryGeneral(String postmanID, String fromDate, String toDate, boolean isSuccess, String routeCode, CommonCallback<StatisticDeliveryGeneralResult> callback) {
-        Call<StatisticDeliveryGeneralResult> call = getAPIBuilder().statisticDeliveryGeneral(postmanID, fromDate, toDate, isSuccess, routeCode);
-        call.enqueue(callback);
-    }
-
-    public static void statisticDeliveryDetail(String serviceCode, int typeDelivery, String postmanID, String fromDate, String toDate, boolean isSuccess, String routeCode, CommonCallback<StatisticDeliveryDetailResult> callback) {
-        Call<StatisticDeliveryDetailResult> call = getAPIBuilder().statisticDeliveryDetail(serviceCode, typeDelivery, postmanID, fromDate, toDate, isSuccess, routeCode);
-        call.enqueue(callback);
-    }
-
-    public static void statisticDebitGeneral(String postmanID, String fromDate, String toDate, String routeCode, CommonCallback<StatisticDebitGeneralResult> callback) {
-        Call<StatisticDebitGeneralResult> call = getAPIBuilder().statisticDebitGeneral(postmanID, fromDate, toDate, routeCode);
-        call.enqueue(callback);
-    }
-
-    public static void statisticDebitDetail(String postmanID, String fromDate, String toDate, String statusCode, String routeCode, CommonCallback<StatisticDebitDetailResult> callback) {
-        Call<StatisticDebitDetailResult> call = getAPIBuilder().statisticDebitDetail(postmanID, fromDate, toDate, statusCode, routeCode);
-        call.enqueue(callback);
-    }
+//    public static void statisticDeliveryGeneral(String postmanID, String fromDate, String toDate, boolean isSuccess, String routeCode, CommonCallback<StatisticDeliveryGeneralResult> callback) {
+//        Call<StatisticDeliveryGeneralResult> call = getAPIBuilder().statisticDeliveryGeneral(postmanID, fromDate, toDate, isSuccess, routeCode);
+//        call.enqueue(callback);
+//    }
+//
+//    public static void statisticDeliveryDetail(String serviceCode, int typeDelivery, String postmanID, String fromDate, String toDate, boolean isSuccess, String routeCode, CommonCallback<StatisticDeliveryDetailResult> callback) {
+//        Call<StatisticDeliveryDetailResult> call = getAPIBuilder().statisticDeliveryDetail(serviceCode, typeDelivery, postmanID, fromDate, toDate, isSuccess, routeCode);
+//        call.enqueue(callback);
+//    }
+//
+//    public static void statisticDebitGeneral(String postmanID, String fromDate, String toDate, String routeCode, CommonCallback<StatisticDebitGeneralResult> callback) {
+//        Call<StatisticDebitGeneralResult> call = getAPIBuilder().statisticDebitGeneral(postmanID, fromDate, toDate, routeCode);
+//        call.enqueue(callback);
+//    }
+//
+//    public static void statisticDebitDetail(String postmanID, String fromDate, String toDate, String statusCode, String routeCode, CommonCallback<StatisticDebitDetailResult> callback) {
+//        Call<StatisticDebitDetailResult> call = getAPIBuilder().statisticDebitDetail(postmanID, fromDate, toDate, statusCode, routeCode);
+//        call.enqueue(callback);
+//    }
 
     public static void getHomeData(String fromDate, String toDate, String postmanCode, String routeCode, CommonCallback<HomeCollectInfoResult> callback) {
         Call<HomeCollectInfoResult> call = getAPIBuilder().getHomeData(fromDate, toDate, postmanCode, routeCode);
@@ -576,84 +576,84 @@ public class NetWorkController {
     }
 
 
-    public static void searchLadingCreatedBd13(DingDongGetLadingCreateBD13Request objRequest, CommonCallback<DeliveryPostmanResponse> callback) {
-        Call<DeliveryPostmanResponse> call = getAPIBuilder().searchLadingCreatedBd13(objRequest);
-        call.enqueue(callback);
-    }
-
-    public static void getCancelDelivery(String postmanCode, String routeCode, String fromDate, String toDate, String ladingCode, CommonCallback<DingDongGetCancelDeliveryResponse> callback) {
-        Call<DingDongGetCancelDeliveryResponse> call = getAPIBuilder().getCancelDelivery(postmanCode, routeCode, fromDate, toDate);
-        call.enqueue(callback);
-    }
-
-    public static void cancelDelivery(DingDongCancelDeliveryRequest request, CommonCallback<SimpleResult> callback) {
-        Call<SimpleResult> call = getAPIBuilder().cancelDelivery(request);
-        call.enqueue(callback);
-    }
-
-    public static void getDeliveryRoute(String poCode, CommonCallback<RouteInfoResult> callback) {
-        Call<RouteInfoResult> call = getAPIBuilder().getDeliveryRoute(poCode);
-        call.enqueue(callback);
-    }
-
-    public static void getRoute(String poCode, CommonCallback<RouteInfoResult> callback) {
-        Call<RouteInfoResult> call = getAPIBuilder().getRoute(poCode, "P");
-        call.enqueue(callback);
-    }
-
-    public static void getPostmanByRoute(String poCode, int routeId, String routeType, CommonCallback<UserInfoResult> callback) {
-        Call<UserInfoResult> call = getAPIBuilder().getPostmanByRoute(poCode, routeId, routeType);
-        call.enqueue(callback);
-    }
-
-    public static void cancelDivided(List<DingDongCancelDividedRequest> request, CommonCallback<SimpleResult> callback) {
-        Call<SimpleResult> call = getAPIBuilder().cancelDivided(request);
-        call.enqueue(callback);
-    }
-
-
-    public static void deliveryPartial(DeliveryProductRequest request, CommonCallback<SimpleResult> callback) {
-        Call<SimpleResult> call = getAPIBuilder().deliveryPartial(request);
-        call.enqueue(callback);
-    }
-
-    public static void getAddressByLocation(double longitude, double latitude, CommonCallback<XacMinhDiaChiResult> callback) {
-        Call<XacMinhDiaChiResult> call = getAPIBuilder().getAddressByLocation(longitude, latitude);
-        call.enqueue(callback);
-    }
-
-    public static void vietmapVerify(String id, String userId, String layer, CommonCallback<SimpleResult> callback) {
-        Call<SimpleResult> call = getAPIBuilder().vietmapVerify(id, userId, true, layer);
-        call.enqueue(callback);
-    }
-
-    public static void vietmapUpdate(UpdateRequest request, CommonCallback<SimpleResult> callback) {
-        Call<SimpleResult> call = getAPIBuilder().vietmapUpdate(request);
-        call.enqueue(callback);
-    }
-
-    public static Single<XacMinhDiaChiResult> vietmapSearch(String text, Double longitude, Double latitude) {
-//        Call<XacMinhDiaChiResult> call = getAPIBuilder().vietmapSearch(text, longitude, latitude);
+//    public static void searchLadingCreatedBd13(DingDongGetLadingCreateBD13Request objRequest, CommonCallback<DeliveryPostmanResponse> callback) {
+//        Call<DeliveryPostmanResponse> call = getAPIBuilder().searchLadingCreatedBd13(objRequest);
 //        call.enqueue(callback);
-        return getAPIRxBuilder().vietmapSearch(text, longitude, latitude);
-    }
+//    }
+//
+//    public static void getCancelDelivery(String postmanCode, String routeCode, String fromDate, String toDate, String ladingCode, CommonCallback<DingDongGetCancelDeliveryResponse> callback) {
+//        Call<DingDongGetCancelDeliveryResponse> call = getAPIBuilder().getCancelDelivery(postmanCode, routeCode, fromDate, toDate);
+//        call.enqueue(callback);
+//    }
 
-    public static Single<XacMinhDiaChiResult> vietmapVitri(String text) {
-        return getAPIRxBuilderMap().vietmapVitri(text);
-    }
+//    public static void cancelDelivery(DingDongCancelDeliveryRequest request, CommonCallback<SimpleResult> callback) {
+//        Call<SimpleResult> call = getAPIBuilder().cancelDelivery(request);
+//        call.enqueue(callback);
+//    }
 
-    public static Single<XacMinhDiaChiResult> vietmapVitriEndCode(Double longitude, Double latitude) {
-        return getAPIRxBuilder().vietmapSearchEncode(longitude, latitude);
-    }
+//    public static void getDeliveryRoute(String poCode, CommonCallback<RouteInfoResult> callback) {
+//        Call<RouteInfoResult> call = getAPIBuilder().getDeliveryRoute(poCode);
+//        call.enqueue(callback);
+//    }
 
-    public static Single<DecodeDiaChiResult> vietmapSearchDecode(String decode) {
-        return getAPIRxBuilder().vietmapSearchDecode(decode);
-    }
+//    public static void getRoute(String poCode, CommonCallback<RouteInfoResult> callback) {
+//        Call<RouteInfoResult> call = getAPIBuilder().getRoute(poCode, "P");
+//        call.enqueue(callback);
+//    }
 
-    public static void vietmapRoute(List<String> request, CommonCallback<XacMinhDiaChiResult> callback) {
-        Call<XacMinhDiaChiResult> call = getAPIBuilder().vietmapRouteV2(request);
-        call.enqueue(callback);
-    }
+//    public static void getPostmanByRoute(String poCode, int routeId, String routeType, CommonCallback<UserInfoResult> callback) {
+//        Call<UserInfoResult> call = getAPIBuilder().getPostmanByRoute(poCode, routeId, routeType);
+//        call.enqueue(callback);
+//    }
+//
+//    public static void cancelDivided(List<DingDongCancelDividedRequest> request, CommonCallback<SimpleResult> callback) {
+//        Call<SimpleResult> call = getAPIBuilder().cancelDivided(request);
+//        call.enqueue(callback);
+//    }
+
+
+//    public static void deliveryPartial(DeliveryProductRequest request, CommonCallback<SimpleResult> callback) {
+//        Call<SimpleResult> call = getAPIBuilder().deliveryPartial(request);
+//        call.enqueue(callback);
+//    }
+
+//    public static void getAddressByLocation(double longitude, double latitude, CommonCallback<XacMinhDiaChiResult> callback) {
+//        Call<XacMinhDiaChiResult> call = getAPIBuilder().getAddressByLocation(longitude, latitude);
+//        call.enqueue(callback);
+//    }
+
+//    public static void vietmapVerify(String id, String userId, String layer, CommonCallback<SimpleResult> callback) {
+//        Call<SimpleResult> call = getAPIBuilder().vietmapVerify(id, userId, true, layer);
+//        call.enqueue(callback);
+//    }
+//
+//    public static void vietmapUpdate(UpdateRequest request, CommonCallback<SimpleResult> callback) {
+//        Call<SimpleResult> call = getAPIBuilder().vietmapUpdate(request);
+//        call.enqueue(callback);
+//    }
+
+//    public static Single<XacMinhDiaChiResult> vietmapSearch(String text, Double longitude, Double latitude) {
+////        Call<XacMinhDiaChiResult> call = getAPIBuilder().vietmapSearch(text, longitude, latitude);
+////        call.enqueue(callback);
+//        return getAPIRxBuilder().vietmapSearch(text, longitude, latitude);
+//    }
+
+//    public static Single<XacMinhDiaChiResult> vietmapVitri(String text) {
+//        return getAPIRxBuilderMap().vietmapVitri(text);
+//    }
+
+//    public static Single<XacMinhDiaChiResult> vietmapVitriEndCode(Double longitude, Double latitude) {
+//        return getAPIRxBuilder().vietmapSearchEncode(longitude, latitude);
+//    }
+
+//    public static Single<DecodeDiaChiResult> vietmapSearchDecode(String decode) {
+//        return getAPIRxBuilder().vietmapSearchDecode(decode);
+//    }
+
+//    public static void vietmapRoute(List<String> request, CommonCallback<XacMinhDiaChiResult> callback) {
+//        Call<XacMinhDiaChiResult> call = getAPIBuilder().vietmapRouteV2(request);
+//        call.enqueue(callback);
+//    }
 
 //    public static void vietmapTravelSalesmanProblem( List<RouteRequest> request, CommonCallback<XacMinhDiaChiResult> callback) {
 //        Call<XacMinhDiaChiResult> call = getAPIBuilder().vietmapTravelSalesmanProblem(request);
@@ -661,78 +661,78 @@ public class NetWorkController {
 //    }
 
 
-    public static void getLadingStatusGeneral(String postmanID, String fromDate, String toDate,
-                                              int ladingType, String routeCode,
-                                              CommonCallback<StatisticDeliveryGeneralResult> callback) {
-        Call<StatisticDeliveryGeneralResult> call = getAPIBuilder().getLadingStatusGeneral(postmanID,
-                fromDate, toDate, ladingType, routeCode);
-        call.enqueue(callback);
-    }
+//    public static void getLadingStatusGeneral(String postmanID, String fromDate, String toDate,
+//                                              int ladingType, String routeCode,
+//                                              CommonCallback<StatisticDeliveryGeneralResult> callback) {
+//        Call<StatisticDeliveryGeneralResult> call = getAPIBuilder().getLadingStatusGeneral(postmanID,
+//                fromDate, toDate, ladingType, routeCode);
+//        call.enqueue(callback);
+//    }
+//
+//    public static void getLadingStatusDetail(int type, String serviceCode, String postmanID,
+//                                             String fromDate, String toDate, int ladingType,
+//                                             String routeCode, CommonCallback<StatisticDeliveryDetailResult> callback) {
+//        Call<StatisticDeliveryDetailResult> call = getAPIBuilder().getLadingStatusDetail(type,
+//                serviceCode, postmanID, fromDate, toDate, ladingType, routeCode);
+//        call.enqueue(callback);
+//    }
+//
+//    public static void statisticPayment(String postmanId, String poCode, String phoneNumber,
+//                                        String fromDate, String toDate,
+//                                        CommonCallback<StatisticPaymentResult> callback) {
+//        Call<StatisticPaymentResult> call = getAPIBuilder().statisticPayment(postmanId, poCode, phoneNumber, fromDate, toDate);
+//        call.enqueue(callback);
+//    }
+//
+//    public static void searchForApproved(String ladingCode,
+//                                         String fromDate,
+//                                         String toDate,
+//                                         String postmanId,
+//                                         String routeId,
+//                                         String poCode,
+//                                         String statusCode,
+//                                         Integer fromRouteId,
+//                                         CommonCallback<RouteResult> callback) {
+//        Call<RouteResult> call = getAPIBuilder().searchForApproved(ladingCode, fromDate, toDate, postmanId, routeId, poCode, statusCode, fromRouteId);
+//        call.enqueue(callback);
+//    }
+//
+//    public static void searchForCancel(String ladingCode,
+//                                       String fromDate,
+//                                       String toDate,
+//                                       String postmanId,
+//                                       String routeId,
+//                                       String poCode,
+//                                       String statusCode,
+//                                       Integer fromRouteId,
+//                                       CommonCallback<RouteResult> callback) {
+//        Call<RouteResult> call = getAPIBuilder().searchForCancel(ladingCode, fromDate, toDate, postmanId, routeId, poCode, statusCode, fromRouteId);
+//        call.enqueue(callback);
+//    }
 
-    public static void getLadingStatusDetail(int type, String serviceCode, String postmanID,
-                                             String fromDate, String toDate, int ladingType,
-                                             String routeCode, CommonCallback<StatisticDeliveryDetailResult> callback) {
-        Call<StatisticDeliveryDetailResult> call = getAPIBuilder().getLadingStatusDetail(type,
-                serviceCode, postmanID, fromDate, toDate, ladingType, routeCode);
-        call.enqueue(callback);
-    }
-
-    public static void statisticPayment(String postmanId, String poCode, String phoneNumber,
-                                        String fromDate, String toDate,
-                                        CommonCallback<StatisticPaymentResult> callback) {
-        Call<StatisticPaymentResult> call = getAPIBuilder().statisticPayment(postmanId, poCode, phoneNumber, fromDate, toDate);
-        call.enqueue(callback);
-    }
-
-    public static void searchForApproved(String ladingCode,
-                                         String fromDate,
-                                         String toDate,
-                                         String postmanId,
-                                         String routeId,
-                                         String poCode,
-                                         String statusCode,
-                                         Integer fromRouteId,
-                                         CommonCallback<RouteResult> callback) {
-        Call<RouteResult> call = getAPIBuilder().searchForApproved(ladingCode, fromDate, toDate, postmanId, routeId, poCode, statusCode, fromRouteId);
-        call.enqueue(callback);
-    }
-
-    public static void searchForCancel(String ladingCode,
-                                       String fromDate,
-                                       String toDate,
-                                       String postmanId,
-                                       String routeId,
-                                       String poCode,
-                                       String statusCode,
-                                       Integer fromRouteId,
-                                       CommonCallback<RouteResult> callback) {
-        Call<RouteResult> call = getAPIBuilder().searchForCancel(ladingCode, fromDate, toDate, postmanId, routeId, poCode, statusCode, fromRouteId);
-        call.enqueue(callback);
-    }
-
-    public static void approvedAgree(String id,
-                                     String ladingCode,
-                                     String postmanId,
-                                     String postmanCode,
-                                     String poCode,
-                                     String routeId,
-                                     String routeCode,
-                                     CommonCallback<SimpleResult> callback) {
-        Call<SimpleResult> call = getAPIBuilder().approvedAgree(id, ladingCode, postmanId, postmanCode, poCode, routeId, routeCode);
-        call.enqueue(callback);
-    }
-
-    public static void approvedDisagree(String id,
-                                        String ladingCode,
-                                        String postmanId,
-                                        String postmanCode,
-                                        String poCode,
-                                        String routeId,
-                                        String routeCode,
-                                        CommonCallback<SimpleResult> callback) {
-        Call<SimpleResult> call = getAPIBuilder().approvedDisagree(id, ladingCode, postmanId, postmanCode, poCode, routeId, routeCode);
-        call.enqueue(callback);
-    }
+//    public static void approvedAgree(String id,
+//                                     String ladingCode,
+//                                     String postmanId,
+//                                     String postmanCode,
+//                                     String poCode,
+//                                     String routeId,
+//                                     String routeCode,
+//                                     CommonCallback<SimpleResult> callback) {
+//        Call<SimpleResult> call = getAPIBuilder().approvedAgree(id, ladingCode, postmanId, postmanCode, poCode, routeId, routeCode);
+//        call.enqueue(callback);
+//    }
+//
+//    public static void approvedDisagree(String id,
+//                                        String ladingCode,
+//                                        String postmanId,
+//                                        String postmanCode,
+//                                        String poCode,
+//                                        String routeId,
+//                                        String routeCode,
+//                                        CommonCallback<SimpleResult> callback) {
+//        Call<SimpleResult> call = getAPIBuilder().approvedDisagree(id, ladingCode, postmanId, postmanCode, poCode, routeId, routeCode);
+//        call.enqueue(callback);
+//    }
 
     public static void cancelRoute(Integer id,
                                    Integer postmanId,
@@ -741,11 +741,11 @@ public class NetWorkController {
         call.enqueue(callback);
     }
 
-    public static void ddGetBalance(BalanceModel request, CommonCallback<SimpleResult> callback) {
-        Call<SimpleResult> call = getAPIBuilder().getBalance(request);
-        call.enqueue(callback);
-
-    }
+//    public static void ddGetBalance(BalanceModel request, CommonCallback<SimpleResult> callback) {
+//        Call<SimpleResult> call = getAPIBuilder().getBalance(request);
+//        call.enqueue(callback);
+//
+//    }
 
     public static void changeRouteInsert(ChangeRouteRequest request,
                                          CommonCallback<SimpleResult> callback) {
@@ -753,265 +753,265 @@ public class NetWorkController {
         call.enqueue(callback);
     }
 
-    public static void getRouteLadingDetail(String ladingCode,
-                                            CommonCallback<ChangeRouteResult> callback) {
-        Call<ChangeRouteResult> call = getAPIBuilder().getDetailByLadingCode(ladingCode);
-        call.enqueue(callback);
-    }
-
-    public static Observable<CancelDeliveryResult> cancelDeliveryStatistic(@Body CancelDeliveryStatisticRequest request) {
-        return getAPIRxBuilder().cancelDeliveryStatistic(request);
-    }
+//    public static void getRouteLadingDetail(String ladingCode,
+//                                            CommonCallback<ChangeRouteResult> callback) {
+//        Call<ChangeRouteResult> call = getAPIBuilder().getDetailByLadingCode(ladingCode);
+//        call.enqueue(callback);
+//    }
+//
+//    public static Observable<CancelDeliveryResult> cancelDeliveryStatistic(@Body CancelDeliveryStatisticRequest request) {
+//        return getAPIRxBuilder().cancelDeliveryStatistic(request);
+//    }
 
     public static Single<TokenMoveCropResult> getAccessTokenAndroid(String mobileNumber) {
         return getAPIRxBuilder().getAccessTokenAndroid(mobileNumber);
     }
 
-    public static Single<LinkEWalletResult> linkEWallet(PayLinkRequest payLinkRequest) {
-        String signature = Utils.SHA256(payLinkRequest.getPostmanTel()
-                + payLinkRequest.getPostmanCode() + payLinkRequest.getpOCode()
-                + BuildConfig.E_WALLET_SIGNATURE_KEY).toUpperCase();
-        payLinkRequest.setSignature(signature);
-        return getAPIRxBuilder().linkEWallet(payLinkRequest);
-    }
+//    public static Single<LinkEWalletResult> linkEWallet(PayLinkRequest payLinkRequest) {
+//        String signature = Utils.SHA256(payLinkRequest.getPostmanTel()
+//                + payLinkRequest.getPostmanCode() + payLinkRequest.getpOCode()
+//                + BuildConfig.E_WALLET_SIGNATURE_KEY).toUpperCase();
+//        payLinkRequest.setSignature(signature);
+//        return getAPIRxBuilder().linkEWallet(payLinkRequest);
+//    }
+//
+//    public static Single<VerifyLinkOtpResult> verifyLinkWithOtp(PayLinkConfirm payLinkConfirm) {
+//        String signature = Utils.SHA256(payLinkConfirm.getRequestId()
+//                + payLinkConfirm.getOTPCode() + payLinkConfirm.getPostmanTel()
+//                + payLinkConfirm.getPostmanCode() + payLinkConfirm.getpOCode()
+//                + BuildConfig.E_WALLET_SIGNATURE_KEY).toUpperCase();
+//        payLinkConfirm.setSignature(signature);
+//        return getAPIRxBuilder().verifyLinkWithOtp(payLinkConfirm);
+//    }
 
-    public static Single<VerifyLinkOtpResult> verifyLinkWithOtp(PayLinkConfirm payLinkConfirm) {
-        String signature = Utils.SHA256(payLinkConfirm.getRequestId()
-                + payLinkConfirm.getOTPCode() + payLinkConfirm.getPostmanTel()
-                + payLinkConfirm.getPostmanCode() + payLinkConfirm.getpOCode()
-                + BuildConfig.E_WALLET_SIGNATURE_KEY).toUpperCase();
-        payLinkConfirm.setSignature(signature);
-        return getAPIRxBuilder().verifyLinkWithOtp(payLinkConfirm);
-    }
+//    public static Single<XacMinhDiaChiResult> vietmapTravelSalesmanProblem(TravelSales request) {
+//        return getAPIRxBuilder().vietmapTravelSalesmanProblemV1(request);
+//    }
 
-    public static Single<XacMinhDiaChiResult> vietmapTravelSalesmanProblem(TravelSales request) {
-        return getAPIRxBuilder().vietmapTravelSalesmanProblemV1(request);
-    }
+//    public static Single<DeliveryCheckAmountPaymentResult> checkAmountPayment(List<PaypostPaymentRequest> request) {
+//        return getAPIRxBuilder().checkAmountPayment(request);
+//    }
+//
+//    public static Single<DeliveryCheckAmountPaymentResult> checkDeliverySuccess(DeliverySuccessRequest request) {
+//        return getAPIRxBuilder().checkDeliverySuccess(request);
+//    }
+//
+//    public static Single<SimpleResult> paymentV2(DeliveryPaymentV2 request) {
+//        return getAPIRxBuilder().paymentV2(request);
+//    }
 
-    public static Single<DeliveryCheckAmountPaymentResult> checkAmountPayment(List<PaypostPaymentRequest> request) {
-        return getAPIRxBuilder().checkAmountPayment(request);
-    }
+//    public static Single<SimpleResult> getHistoryCall(CallHistoryRequest request) {
+//        return getAPIHistoryCallBuilder().getHistoryCall(
+//                request.getTenantID(),
+//                request.getCaller(),
+//                request.getCallee());
+//    }
 
-    public static Single<DeliveryCheckAmountPaymentResult> checkDeliverySuccess(DeliverySuccessRequest request) {
-        return getAPIRxBuilder().checkDeliverySuccess(request);
-    }
+//    public static Single<EWalletDataResult> getDataPayment(String serviceCode, String fromDate, String toDate,
+//                                                           String poCode, String routeCode,
+//                                                           String postmanCode) {
+//        return getAPIRxBuilder().getDataPayment(serviceCode, fromDate, toDate, poCode, routeCode, postmanCode);
+//    }
 
-    public static Single<SimpleResult> paymentV2(DeliveryPaymentV2 request) {
-        return getAPIRxBuilder().paymentV2(request);
-    }
-
-    public static Single<SimpleResult> getHistoryCall(CallHistoryRequest request) {
-        return getAPIHistoryCallBuilder().getHistoryCall(
-                request.getTenantID(),
-                request.getCaller(),
-                request.getCallee());
-    }
-
-    public static Single<EWalletDataResult> getDataPayment(String serviceCode, String fromDate, String toDate,
-                                                           String poCode, String routeCode,
-                                                           String postmanCode) {
-        return getAPIRxBuilder().getDataPayment(serviceCode, fromDate, toDate, poCode, routeCode, postmanCode);
-    }
-
-    public static Single<SimpleResult> getHistoryPayment(DataRequestPayment dataRequestPayment) {
-        return getAPIRxBuilder().getHistoryPayment(dataRequestPayment);
-    }
+//    public static Single<SimpleResult> getHistoryPayment(DataRequestPayment dataRequestPayment) {
+//        return getAPIRxBuilder().getHistoryPayment(dataRequestPayment);
+//    }
 
 
-    public static Single<SimpleResult> saveToaDoGom(List<SenderVpostcodeMode> request) {
-        return getAPIRxBuilder().saveToaDoGom(request);
-    }
+//    public static Single<SimpleResult> saveToaDoGom(List<SenderVpostcodeMode> request) {
+//        return getAPIRxBuilder().saveToaDoGom(request);
+//    }
+//
+//    public static Single<SimpleResult> saveToaDoPhat(List<ReceiverVpostcodeMode> request) {
+//        return getAPIRxBuilder().saveToaDoPhat(request);
+//    }
 
-    public static Single<SimpleResult> saveToaDoPhat(List<ReceiverVpostcodeMode> request) {
-        return getAPIRxBuilder().saveToaDoPhat(request);
-    }
+//    public static Single<EWalletRequestResult> requestPayment(PaymentRequestModel paymentRequestModel) {
+//        String signature = Utils.SHA256(paymentRequestModel.getPostmanCode()
+//                + paymentRequestModel.getPoCode()
+//                + paymentRequestModel.getRouteCode()
+//                + paymentRequestModel.getPaymentToken()
+//                + BuildConfig.E_WALLET_SIGNATURE_KEY).toUpperCase();
+//        paymentRequestModel.setSignature(signature);
+//        return getAPIRxBuilder().requestPayment(paymentRequestModel);
+//    }
 
-    public static Single<EWalletRequestResult> requestPayment(PaymentRequestModel paymentRequestModel) {
-        String signature = Utils.SHA256(paymentRequestModel.getPostmanCode()
-                + paymentRequestModel.getPoCode()
-                + paymentRequestModel.getRouteCode()
-                + paymentRequestModel.getPaymentToken()
-                + BuildConfig.E_WALLET_SIGNATURE_KEY).toUpperCase();
-        paymentRequestModel.setSignature(signature);
-        return getAPIRxBuilder().requestPayment(paymentRequestModel);
-    }
+//    public static Single<SimpleResult> deletePayment(DataRequestPayment dataRequestPayment) {
+//        String signature = Utils.SHA256(dataRequestPayment.getData()
+//                + BuildConfig.E_WALLET_SIGNATURE_KEY).toUpperCase();
+//        dataRequestPayment.setSignature(signature);
+//        return getAPIRxBuilder().deletePayment(dataRequestPayment);
+//    }
 
-    public static Single<SimpleResult> deletePayment(DataRequestPayment dataRequestPayment) {
-        String signature = Utils.SHA256(dataRequestPayment.getData()
-                + BuildConfig.E_WALLET_SIGNATURE_KEY).toUpperCase();
-        dataRequestPayment.setSignature(signature);
-        return getAPIRxBuilder().deletePayment(dataRequestPayment);
-    }
+//    public static Single<SimpleResult> confirmPayment(PaymentConfirmModel paymentConfirmModel) {
+//        String signature = Utils.SHA256(paymentConfirmModel.getPostmanCode()
+//                + paymentConfirmModel.getPoCode()
+//                + paymentConfirmModel.getRouteCode()
+//                + paymentConfirmModel.getTransId()
+//                + paymentConfirmModel.getOtpCode()
+//                + paymentConfirmModel.getRetRefNumber()
+//                + paymentConfirmModel.getPaymentToken()
+//                + BuildConfig.E_WALLET_SIGNATURE_KEY).toUpperCase();
+//        paymentConfirmModel.setSignature(signature);
+//        return getAPIRxBuilder().confirmPayment(paymentConfirmModel);
+//    }
 
-    public static Single<SimpleResult> confirmPayment(PaymentConfirmModel paymentConfirmModel) {
-        String signature = Utils.SHA256(paymentConfirmModel.getPostmanCode()
-                + paymentConfirmModel.getPoCode()
-                + paymentConfirmModel.getRouteCode()
-                + paymentConfirmModel.getTransId()
-                + paymentConfirmModel.getOtpCode()
-                + paymentConfirmModel.getRetRefNumber()
-                + paymentConfirmModel.getPaymentToken()
-                + BuildConfig.E_WALLET_SIGNATURE_KEY).toUpperCase();
-        paymentConfirmModel.setSignature(signature);
-        return getAPIRxBuilder().confirmPayment(paymentConfirmModel);
-    }
-
-    public static void searchOrderPostmanCollect(String orderPostmanID,
-                                                 String orderID,
-                                                 String postmanID,
-                                                 String status,
-                                                 String fromAssignDate,
-                                                 String toAssignDate, CommonCallback<CommonObjectListResult> callback) {
-        Call<CommonObjectListResult> call = getAPIBuilder().searchOrderPostmanCollect(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate);
-        call.enqueue(callback);
-    }
-
-    public static Single<CommonObjectListResult> searchOrderPostmanCollect(String orderPostmanID,
-                                                                           String orderID,
-                                                                           String postmanID,
-                                                                           String status,
-                                                                           String fromAssignDate,
-                                                                           String toAssignDate) {
-        return getAPIRxBuilder().searchOrderPostmanCollect1(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate);
+//    public static void searchOrderPostmanCollect(String orderPostmanID,
+//                                                 String orderID,
+//                                                 String postmanID,
+//                                                 String status,
+//                                                 String fromAssignDate,
+//                                                 String toAssignDate, CommonCallback<CommonObjectListResult> callback) {
 //        Call<CommonObjectListResult> call = getAPIBuilder().searchOrderPostmanCollect(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate);
 //        call.enqueue(callback);
-    }
+//    }
 
-    public static Single<SimpleResult> statisticSMLDeliveryFail(StatisticSMLDeliveryFailRequest request) {
-        DataRequestPayment dataRequestPayment = new DataRequestPayment();
-        dataRequestPayment.setCode("STT001");
-        dataRequestPayment.setData(getGson().toJson(request));
-        return getAPIRxBuilder().commonService(dataRequestPayment);
-    }
+//    public static Single<CommonObjectListResult> searchOrderPostmanCollect(String orderPostmanID,
+//                                                                           String orderID,
+//                                                                           String postmanID,
+//                                                                           String status,
+//                                                                           String fromAssignDate,
+//                                                                           String toAssignDate) {
+//        return getAPIRxBuilder().searchOrderPostmanCollect1(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate);
+////        Call<CommonObjectListResult> call = getAPIBuilder().searchOrderPostmanCollect(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate);
+////        call.enqueue(callback);
+//    }
 
-    public static Single<SimpleResult> orderChangeRoute(OrderChangeRouteInsertRequest request) {
-        DataRequestPayment dataRequestPayment = new DataRequestPayment();
-        dataRequestPayment.setCode("ORC001");
-        dataRequestPayment.setData(getGson().toJson(request));
-        return getAPIRxBuilder().commonService(dataRequestPayment);
-    }
-
-    public static Single<SimpleResult> getChangeRouteOrder(OrderChangeRouteDingDongManagementRequest request) {
-        DataRequestPayment dataRequestPayment = new DataRequestPayment();
-        dataRequestPayment.setCode("ORC002");
-        dataRequestPayment.setData(getGson().toJson(request));
-        return getAPIRxBuilder().commonService(dataRequestPayment);
-    }
-
-
-    public static Single<SimpleResult> cancelOrder(OrderChangeRouteRequest request) {
-        DataRequestPayment dataRequestPayment = new DataRequestPayment();
-        dataRequestPayment.setCode("ORC003");
-        dataRequestPayment.setData(getGson().toJson(request));
-        return getAPIRxBuilder().commonService(dataRequestPayment);
-    }
-
-
-    public static Single<SimpleResult> rejectOrder(OrderChangeRouteRequest request) {
-        DataRequestPayment dataRequestPayment = new DataRequestPayment();
-        dataRequestPayment.setCode("ORC004");
-        dataRequestPayment.setData(getGson().toJson(request));
-        return getAPIRxBuilder().commonService(dataRequestPayment);
-    }
-
-    public static Single<SimpleResult> approveOrder(OrderChangeRouteRequest request) {
-        DataRequestPayment dataRequestPayment = new DataRequestPayment();
-        dataRequestPayment.setCode("ORC005");
-        dataRequestPayment.setData(getGson().toJson(request));
-        return getAPIRxBuilder().commonService(dataRequestPayment);
-    }
+//    public static Single<SimpleResult> statisticSMLDeliveryFail(StatisticSMLDeliveryFailRequest request) {
+//        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+//        dataRequestPayment.setCode("STT001");
+//        dataRequestPayment.setData(getGson().toJson(request));
+//        return getAPIRxBuilder().commonService(dataRequestPayment);
+//    }
+//
+//    public static Single<SimpleResult> orderChangeRoute(OrderChangeRouteInsertRequest request) {
+//        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+//        dataRequestPayment.setCode("ORC001");
+//        dataRequestPayment.setData(getGson().toJson(request));
+//        return getAPIRxBuilder().commonService(dataRequestPayment);
+//    }
+//
+//    public static Single<SimpleResult> getChangeRouteOrder(OrderChangeRouteDingDongManagementRequest request) {
+//        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+//        dataRequestPayment.setCode("ORC002");
+//        dataRequestPayment.setData(getGson().toJson(request));
+//        return getAPIRxBuilder().commonService(dataRequestPayment);
+//    }
 
 
-    public static Single<SimpleResult> getListTicket(TicketNotifyRequest request) {
-        DataRequestPayment dataRequestPayment = new DataRequestPayment();
-        dataRequestPayment.setCode("TCK001");
-        dataRequestPayment.setData(getGson().toJson(request));
-        return getAPIRxBuilder().commonService(dataRequestPayment);
-    }
-
-    public static Single<SimpleResult> isSeen(List<String> request) {
-        DataRequestPayment dataRequestPayment = new DataRequestPayment();
-        dataRequestPayment.setCode("TCK002");
-        dataRequestPayment.setData(getGson().toJson(request));
-        return getAPIRxBuilder().commonService(dataRequestPayment);
-    }
-
-    public static Single<SimpleResult> getDetailTicket(String request) {
-        DataRequestPayment dataRequestPayment = new DataRequestPayment();
-        dataRequestPayment.setCode("TCK003");
-        dataRequestPayment.setData(request);
-        return getAPIRxBuilder().commonService(dataRequestPayment);
-    }
-
-    public static Single<SimpleResult> getTinhThanhPho() {
-        DataRequestPayment dataRequestPayment = new DataRequestPayment();
-        dataRequestPayment.setCode("DIC001");
-        return getAPIRxBuilder().commonService(dataRequestPayment);
-    }
-
-    public static Single<SimpleResult> getQuanHuyen(int id) {
-        DataRequestPayment dataRequestPayment = new DataRequestPayment();
-        dataRequestPayment.setCode("DIC002");
-        dataRequestPayment.setData(String.valueOf(id));
-        return getAPIRxBuilder().commonService(dataRequestPayment);
-    }
-
-    public static Single<SimpleResult> getXaPhuong(int id) {
-        DataRequestPayment dataRequestPayment = new DataRequestPayment();
-        dataRequestPayment.setCode("DIC003");
-        dataRequestPayment.setData(String.valueOf(id));
-        return getAPIRxBuilder().commonService(dataRequestPayment);
-    }
-
-    public static Single<SimpleResult> getListBuuCucHuyen(String data) {
-        DataRequestPayment dataRequestPayment = new DataRequestPayment();
-        dataRequestPayment.setCode("DIC004");
-        dataRequestPayment.setData(data);
-        return getAPIRxBuilder().commonService(dataRequestPayment);
-    }
-
-    public static Single<SimpleResult> search(String request) {
-        DataRequestPayment dataRequestPayment = new DataRequestPayment();
-        dataRequestPayment.setCode("BSP007");
-        dataRequestPayment.setData(request);
-        return getAPIRxBuilder().commonService(dataRequestPayment);
-    }
-
-    public static Single<SimpleResult> searchdaichi(String request) {
-        DataRequestPayment dataRequestPayment = new DataRequestPayment();
-        dataRequestPayment.setCode("BSP006");
-        dataRequestPayment.setData(request);
-        return getAPIRxBuilder().commonService(dataRequestPayment);
-    }
-
-    public static Single<SimpleResult> themTin(CreateOrderRequest request) {
-        DataRequestPayment dataRequestPayment = new DataRequestPayment();
-        dataRequestPayment.setCode("ORD001");
-        dataRequestPayment.setData(getGson().toJson(request));
-        return getAPIRxBuilder().commonService(dataRequestPayment);
-    }
+//    public static Single<SimpleResult> cancelOrder(OrderChangeRouteRequest request) {
+//        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+//        dataRequestPayment.setCode("ORC003");
+//        dataRequestPayment.setData(getGson().toJson(request));
+//        return getAPIRxBuilder().commonService(dataRequestPayment);
+//    }
 
 
-    public static Single<SimpleResult> searchTu(String request) {
-        DataRequestPayment dataRequestPayment = new DataRequestPayment();
-        dataRequestPayment.setCode("SML001");
-        dataRequestPayment.setData(request);
-        return getAPIRxBuilder().commonService(dataRequestPayment);
-    }
+//    public static Single<SimpleResult> rejectOrder(OrderChangeRouteRequest request) {
+//        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+//        dataRequestPayment.setCode("ORC004");
+//        dataRequestPayment.setData(getGson().toJson(request));
+//        return getAPIRxBuilder().commonService(dataRequestPayment);
+//    }
+//
+//    public static Single<SimpleResult> approveOrder(OrderChangeRouteRequest request) {
+//        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+//        dataRequestPayment.setCode("ORC005");
+//        dataRequestPayment.setData(getGson().toJson(request));
+//        return getAPIRxBuilder().commonService(dataRequestPayment);
+//    }
 
-    public static Single<SimpleResult> phatSml(SMLRequest request) {
-        DataRequestPayment dataRequestPayment = new DataRequestPayment();
-        dataRequestPayment.setCode("SML002");
-        dataRequestPayment.setData(getGson().toJson(request));
-        return getAPIRxBuilder().commonService(dataRequestPayment);
-    }
 
-    public static Single<SimpleResult> huySml(SMLRequest request) {
-        DataRequestPayment dataRequestPayment = new DataRequestPayment();
-        dataRequestPayment.setCode("SML003");
-        dataRequestPayment.setData(getGson().toJson(request));
-        return getAPIRxBuilder().commonService(dataRequestPayment);
-    }
+//    public static Single<SimpleResult> getListTicket(TicketNotifyRequest request) {
+//        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+//        dataRequestPayment.setCode("TCK001");
+//        dataRequestPayment.setData(getGson().toJson(request));
+//        return getAPIRxBuilder().commonService(dataRequestPayment);
+//    }
+
+//    public static Single<SimpleResult> isSeen(List<String> request) {
+//        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+//        dataRequestPayment.setCode("TCK002");
+//        dataRequestPayment.setData(getGson().toJson(request));
+//        return getAPIRxBuilder().commonService(dataRequestPayment);
+//    }
+//
+//    public static Single<SimpleResult> getDetailTicket(String request) {
+//        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+//        dataRequestPayment.setCode("TCK003");
+//        dataRequestPayment.setData(request);
+//        return getAPIRxBuilder().commonService(dataRequestPayment);
+//    }
+
+//    public static Single<SimpleResult> getTinhThanhPho() {
+//        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+//        dataRequestPayment.setCode("DIC001");
+//        return getAPIRxBuilder().commonService(dataRequestPayment);
+//    }
+//
+//    public static Single<SimpleResult> getQuanHuyen(int id) {
+//        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+//        dataRequestPayment.setCode("DIC002");
+//        dataRequestPayment.setData(String.valueOf(id));
+//        return getAPIRxBuilder().commonService(dataRequestPayment);
+//    }
+//
+//    public static Single<SimpleResult> getXaPhuong(int id) {
+//        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+//        dataRequestPayment.setCode("DIC003");
+//        dataRequestPayment.setData(String.valueOf(id));
+//        return getAPIRxBuilder().commonService(dataRequestPayment);
+//    }
+//
+//    public static Single<SimpleResult> getListBuuCucHuyen(String data) {
+//        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+//        dataRequestPayment.setCode("DIC004");
+//        dataRequestPayment.setData(data);
+//        return getAPIRxBuilder().commonService(dataRequestPayment);
+//    }
+
+//    public static Single<SimpleResult> search(String request) {
+//        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+//        dataRequestPayment.setCode("BSP007");
+//        dataRequestPayment.setData(request);
+//        return getAPIRxBuilder().commonService(dataRequestPayment);
+//    }
+
+//    public static Single<SimpleResult> searchdaichi(String request) {
+//        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+//        dataRequestPayment.setCode("BSP006");
+//        dataRequestPayment.setData(request);
+//        return getAPIRxBuilder().commonService(dataRequestPayment);
+//    }
+
+//    public static Single<SimpleResult> themTin(CreateOrderRequest request) {
+//        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+//        dataRequestPayment.setCode("ORD001");
+//        dataRequestPayment.setData(getGson().toJson(request));
+//        return getAPIRxBuilder().commonService(dataRequestPayment);
+//    }
+
+
+//    public static Single<SimpleResult> searchTu(String request) {
+//        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+//        dataRequestPayment.setCode("SML001");
+//        dataRequestPayment.setData(request);
+//        return getAPIRxBuilder().commonService(dataRequestPayment);
+//    }
+
+//    public static Single<SimpleResult> phatSml(SMLRequest request) {
+//        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+//        dataRequestPayment.setCode("SML002");
+//        dataRequestPayment.setData(getGson().toJson(request));
+//        return getAPIRxBuilder().commonService(dataRequestPayment);
+//    }
+//
+//    public static Single<SimpleResult> huySml(SMLRequest request) {
+//        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+//        dataRequestPayment.setCode("SML003");
+//        dataRequestPayment.setData(getGson().toJson(request));
+//        return getAPIRxBuilder().commonService(dataRequestPayment);
+//    }
 
 
     public static Single<SimpleResult> searchCreate(SearchMode request) {
@@ -1028,84 +1028,84 @@ public class NetWorkController {
         return getAPIRxBuilder().commonService(dataRequestPayment);
     }
 
-    public static Single<SimpleResult> getDanhSachNganHang() {
-        DataRequestPayment dataRequestPayment = new DataRequestPayment();
-        dataRequestPayment.setCode("SMB001");
-        dataRequestPayment.setData(getGson().toJson(""));
-        return getAPIRxBuilder().commonService(dataRequestPayment);
-    }
+//    public static Single<SimpleResult> getDanhSachNganHang() {
+//        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+//        dataRequestPayment.setCode("SMB001");
+//        dataRequestPayment.setData(getGson().toJson(""));
+//        return getAPIRxBuilder().commonService(dataRequestPayment);
+//    }
 
-    public static Single<SimpleResult> getDanhSachTaiKhoan(DanhSachTaiKhoanRequest danhSachTaiKhoanRequest) {
-        DataRequestPayment dataRequestPayment = new DataRequestPayment();
-        dataRequestPayment.setCode("SMB007");
-        dataRequestPayment.setData(getGson().toJson(danhSachTaiKhoanRequest));
-        return getAPIRxBuilder().commonService(dataRequestPayment);
-    }
+//    public static Single<SimpleResult> getDanhSachTaiKhoan(DanhSachTaiKhoanRequest danhSachTaiKhoanRequest) {
+//        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+//        dataRequestPayment.setCode("SMB007");
+//        dataRequestPayment.setData(getGson().toJson(danhSachTaiKhoanRequest));
+//        return getAPIRxBuilder().commonService(dataRequestPayment);
+//    }
 
-    public static Single<SimpleResult> yeuCauLienKet(YeuCauLienKetRequest request) {
-        DataRequestPayment dataRequestPayment = new DataRequestPayment();
-        dataRequestPayment.setCode("SMB002");
-        dataRequestPayment.setData(getGson().toJson(request));
-        return getAPIRxBuilder().commonService(dataRequestPayment);
-    }
+//    public static Single<SimpleResult> yeuCauLienKet(YeuCauLienKetRequest request) {
+//        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+//        dataRequestPayment.setCode("SMB002");
+//        dataRequestPayment.setData(getGson().toJson(request));
+//        return getAPIRxBuilder().commonService(dataRequestPayment);
+//    }
 
-    public static Single<SimpleResult> smartBankConfirmLinkRequest(SmartBankConfirmLinkRequest request) {
-        DataRequestPayment dataRequestPayment = new DataRequestPayment();
-        dataRequestPayment.setCode("SMB003");
-        dataRequestPayment.setData(getGson().toJson(request));
-        return getAPIRxBuilder().commonService(dataRequestPayment);
-    }
+//    public static Single<SimpleResult> smartBankConfirmLinkRequest(SmartBankConfirmLinkRequest request) {
+//        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+//        dataRequestPayment.setCode("SMB003");
+//        dataRequestPayment.setData(getGson().toJson(request));
+//        return getAPIRxBuilder().commonService(dataRequestPayment);
+//    }
 
 
-    public static Single<SimpleResult> smartBankRequestCancelLinkRequest(SmartBankRequestCancelLinkRequest request) {
-        DataRequestPayment dataRequestPayment = new DataRequestPayment();
-        dataRequestPayment.setCode("SMB004");
-        dataRequestPayment.setData(getGson().toJson(request));
-        return getAPIRxBuilder().commonService(dataRequestPayment);
-    }
+//    public static Single<SimpleResult> smartBankRequestCancelLinkRequest(SmartBankRequestCancelLinkRequest request) {
+//        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+//        dataRequestPayment.setCode("SMB004");
+//        dataRequestPayment.setData(getGson().toJson(request));
+//        return getAPIRxBuilder().commonService(dataRequestPayment);
+//    }
 
-    public static Single<SimpleResult> huyLienKetVi(SmartBankRequestCancelLinkRequest request) {
-        return getAPIRxBuilder().huyLienKetVi(request);
-    }
+//    public static Single<SimpleResult> huyLienKetVi(SmartBankRequestCancelLinkRequest request) {
+//        return getAPIRxBuilder().huyLienKetVi(request);
+//    }
 
     public static Single<SimpleResult> ddCall(CallLiveMode request) {
         return getAPIRxBuilder().ddCall(request);
     }
 
-    public static Single<SimpleResult> SmartBankConfirmCancelLinkRequest(SmartBankConfirmCancelLinkRequest request) {
-        DataRequestPayment dataRequestPayment = new DataRequestPayment();
-        dataRequestPayment.setCode("SMB005");
-        dataRequestPayment.setData(getGson().toJson(request));
-        return getAPIRxBuilder().commonService(dataRequestPayment);
-    }
+//    public static Single<SimpleResult> SmartBankConfirmCancelLinkRequest(SmartBankConfirmCancelLinkRequest request) {
+//        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+//        dataRequestPayment.setCode("SMB005");
+//        dataRequestPayment.setData(getGson().toJson(request));
+//        return getAPIRxBuilder().commonService(dataRequestPayment);
+//    }
 
-    public static Single<SimpleResult> ddTruyVanSodu(SmartBankInquiryBalanceRequest request) {
-        DataRequestPayment dataRequestPayment = new DataRequestPayment();
-        dataRequestPayment.setCode("SMB006");
-        dataRequestPayment.setData(getGson().toJson(request));
-        return getAPIRxBuilder().commonService(dataRequestPayment);
-    }
+//    public static Single<SimpleResult> ddTruyVanSodu(SmartBankInquiryBalanceRequest request) {
+//        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+//        dataRequestPayment.setCode("SMB006");
+//        dataRequestPayment.setData(getGson().toJson(request));
+//        return getAPIRxBuilder().commonService(dataRequestPayment);
+//    }
 
-    public static Single<SimpleResult> ddCallOTP(CallOTP request) {
-        DataRequestPayment dataRequestPayment = new DataRequestPayment();
-        dataRequestPayment.setCode("SMB008");
-        dataRequestPayment.setData(getGson().toJson(request));
-        return getAPIRxBuilder().commonService(dataRequestPayment);
-    }
+//    public static Single<SimpleResult> ddCallOTP(CallOTP request) {
+//        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+//        dataRequestPayment.setCode("SMB008");
+//        dataRequestPayment.setData(getGson().toJson(request));
+//        return getAPIRxBuilder().commonService(dataRequestPayment);
+//    }
 
-    public static Single<SimpleResult> ddTaiKhoanMacDinh(TaiKhoanMatDinh request) {
-        DataRequestPayment dataRequestPayment = new DataRequestPayment();
-        dataRequestPayment.setCode("SMB009");
-        dataRequestPayment.setData(getGson().toJson(request));
-        return getAPIRxBuilder().commonService(dataRequestPayment);
-    }
+//    public static Single<SimpleResult> ddTaiKhoanMacDinh(TaiKhoanMatDinh request) {
+//        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+//        dataRequestPayment.setCode("SMB009");
+//        dataRequestPayment.setData(getGson().toJson(request));
+//        return getAPIRxBuilder().commonService(dataRequestPayment);
+//    }
 
-    public static Single<SimpleResult> getDDsmartBankConfirmLinkRequest(BaseRequestModel request) {
-        DataRequestPayment dataRequestPayment = new DataRequestPayment();
-        dataRequestPayment.setCode("SMB010");
-        dataRequestPayment.setData(getGson().toJson(request));
-        return getAPIRxBuilder().commonService(dataRequestPayment);
-    }
+//    public static Single<SimpleResult> getDDsmartBankConfirmLinkRequest(BaseRequestModel request) {
+//        DataRequestPayment dataRequestPayment = new DataRequestPayment();
+//        dataRequestPayment.setCode("SMB010");
+//        dataRequestPayment.setData(getGson().toJson(request));
+//        return getAPIRxBuilder().commonService(dataRequestPayment);
+//    }
 
     public static Single<SimpleResult> getVaoCa(MainMode request) {
         DataRequestPayment dataRequestPayment = new DataRequestPayment();
@@ -1130,9 +1130,9 @@ public class NetWorkController {
         return getAPIRxBuilder().getCallLog(requestData);
     }
 
-    public static Single<SimpleResult> getHistory(LinkHistory r) {
-        return getAPIRxBuilder().getHistory(r);
-    }
+//    public static Single<SimpleResult> getHistory(LinkHistory r) {
+//        return getAPIRxBuilder().getHistory(r);
+//    }
 
     public static Single<SimpleResult> getCallHistory(HistoryRequest r) {
         return getAPIRxBuilder().getCallHistory(r);

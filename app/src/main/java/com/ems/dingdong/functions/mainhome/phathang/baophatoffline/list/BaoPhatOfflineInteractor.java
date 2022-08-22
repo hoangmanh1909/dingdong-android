@@ -8,6 +8,7 @@ import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.request.PaymentDeviveryRequest;
 import com.ems.dingdong.model.request.PushToPnsRequest;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.network.NetWorkControllerGateWay;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
@@ -29,18 +30,18 @@ class BaoPhatOfflineInteractor extends Interactor<BaoPhatOfflineContract.Present
 
     @Override
     public void callForwardCallCenter(String callerNumber, String calleeNumber, String callForwardType, String hotlineNumber, String ladingCode, String PostmanId, String POCode, CommonCallback<SimpleResult> callback) {
-        NetWorkController.callForwardCallCenter(callerNumber, calleeNumber, callForwardType, hotlineNumber,
+        NetWorkControllerGateWay.callForwardCallCenter(callerNumber, calleeNumber, callForwardType, hotlineNumber,
                 ladingCode, PostmanId, POCode, callback);
     }
 
     @Override
     public Single<SimpleResult> pushToPNSDelivery(PushToPnsRequest request) {
-        return NetWorkController.pushToPNSDelivery(request);
+        return NetWorkControllerGateWay.pushToPNSDelivery(request);
     }
 
     @Override
     public Single<SimpleResult> paymentDelivery(PaymentDeviveryRequest request) {
-        return NetWorkController.paymentDelivery(request);
+        return NetWorkControllerGateWay.paymentDelivery(request);
     }
 
     @Override

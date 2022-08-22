@@ -14,6 +14,7 @@ import com.ems.dingdong.model.HomeCollectInfoResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.ThuGomRespone;
 import com.ems.dingdong.model.ThuGomResponeValue;
+import com.ems.dingdong.model.response.GetMainViewResponse;
 
 import java.util.ArrayList;
 
@@ -28,6 +29,10 @@ interface HomeContract {
         void getHomeView(String fromDate, String toDate, String postmanCode, String routeCode, CommonCallback<HomeCollectInfoResult> callback);
 
         Single<ThuGomRespone> getDDThugom(BalanceModel v);
+
+        void getDeliveryMainView(String fromDate, String toDate, String postmanCode, String routeCode,String funcRequest, CommonCallback<SimpleResult> callback);
+
+        void getPickUpMainView(String fromDate, String toDate, String postmanCode, String routeCode,String funcRequest, CommonCallback<SimpleResult> callback);
     }
 
     interface View extends PresentView<Presenter> {
@@ -36,6 +41,10 @@ interface HomeContract {
         void showObjectEmpty();
 
         void showThuGom(ThuGomResponeValue v);
+
+        void showGetDeliveryMainView(GetMainViewResponse response);
+
+        void showGetPickupMainView(GetMainViewResponse response);
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
@@ -55,6 +64,10 @@ interface HomeContract {
         void showListBd13(int typeListDelivery);
 
         void getDDThugom(BalanceModel v);
+
+        void getDeliveryMainView(String fromDate, String toDate, String postmanCode, String routeCode,String funcRequest);
+
+        void getPickUpMainView(String fromDate, String toDate, String postmanCode, String routeCode,String funcRequest);
     }
 }
 

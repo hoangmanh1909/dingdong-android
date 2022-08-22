@@ -24,7 +24,7 @@ class HoanThanhTinDetailInteractor extends Interactor<HoanThanhTinDetailContract
 
     @Override
     public Single<DecodeDiaChiResult> vietmapSearchDecode(String Decode) {
-        return NetWorkController.vietmapSearchDecode(Decode);
+        return NetWorkControllerGateWay.vietmapSearchDecode(Decode);
     }
 
 

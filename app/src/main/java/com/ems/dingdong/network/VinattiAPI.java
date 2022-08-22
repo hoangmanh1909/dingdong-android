@@ -436,9 +436,12 @@ public interface VinattiAPI {
     @POST("api/Delivery/DeliveryPartial")
     Call<SimpleResult> deliveryPartial(@Body DeliveryProductRequest request);
 
-    @GET("api/VietMap/Reverse")
-    Call<XacMinhDiaChiResult> getAddressByLocation(@Query("longitude") double longitude,
-                                                   @Query("latitude") double latitude);
+//    @GET("api/VietMap/Reverse")
+//    Call<XacMinhDiaChiResult> getAddressByLocation(@Query("longitude") double longitude,
+//                                                   @Query("latitude") double latitude);
+
+    @POST("Gateway/Execute")
+    Call<XacMinhDiaChiResult> getAddressByLocation(@Body RequestObject request);
 
     @FormUrlEncoded
     @POST("api/VietMap/Verify")
@@ -468,24 +471,36 @@ public interface VinattiAPI {
                                                               @Field("LadingType") int ladingType,
                                                               @Field("RouteCode") String routeCode);
 
-    @GET("api/VietMap/Search")
-    Single<XacMinhDiaChiResult> vietmapSearch(@Query("text") String text,
-                                              @Query("longitude") Double longitude,
-                                              @Query("latitude") Double latitude);
+//    @GET("api/VietMap/Search")
+//    Single<XacMinhDiaChiResult> vietmapSearch(@Query("text") String text,
+//                                              @Query("longitude") Double longitude,
+//                                              @Query("latitude") Double latitude);
 
-    @GET("api/VietMap/Encode")
-    Single<XacMinhDiaChiResult> vietmapSearchEncode(
-            @Query("longitude") Double longitude,
-            @Query("latitude") Double latitude);
+    @POST("Gateway/Execute")
+    Single<XacMinhDiaChiResult> vietmapSearch(@Body RequestObject request);
 
-    @GET("api/VietMap/Decode")
-    Single<DecodeDiaChiResult> vietmapSearchDecode(@Query("vpostcode") String vpostcode);
+//    @GET("api/VietMap/Encode")
+//    Single<XacMinhDiaChiResult> vietmapSearchEncode(
+//            @Query("longitude") Double longitude,
+//            @Query("latitude") Double latitude);
+
+    @POST("Gateway/Execute")
+    Single<XacMinhDiaChiResult> vietmapSearchEncode(@Body RequestObject request);
+
+//    @GET("api/VietMap/Decode")
+//    Single<DecodeDiaChiResult> vietmapSearchDecode(@Query("vpostcode") String vpostcode);
+
+    @POST("Gateway/Execute")
+    Single<DecodeDiaChiResult> vietmapSearchDecode(@Body RequestObject request);
 
     @GET("https://maps.vnpost.vn/vpostcode/api/encode")
     Single<XacMinhDiaChiResult> vietmapVitri(@Query("location") String location);
 
-    @POST("api/VietMap/Route")
-    Call<XacMinhDiaChiResult> vietmapRoute(@Body List<RouteRequest> taskRequest);
+//    @POST("api/VietMap/Route")
+//    Call<XacMinhDiaChiResult> vietmapRoute(@Body List<RouteRequest> taskRequest);
+
+    @POST("Gateway/Execute")
+    Call<XacMinhDiaChiResult> vietmapRoute(@Body RequestObject request);
 
     @POST("api/VietMap/Route_V2")
     Call<XacMinhDiaChiResult> vietmapRouteV2(@Body List<String> taskRequest);
@@ -494,8 +509,11 @@ public interface VinattiAPI {
 //    Call<XacMinhDiaChiResult> vietmapTravelSalesmanProblem(@Body List<RouteRequest> taskRequest);
 
 
-    @POST("api/VietMap/TravelSalesmanProblem")
-    Single<XacMinhDiaChiResult> vietmapTravelSalesmanProblemV1(@Body TravelSales taskRequest);
+//    @POST("api/VietMap/TravelSalesmanProblem")
+//    Single<XacMinhDiaChiResult> vietmapTravelSalesmanProblemV1(@Body TravelSales taskRequest);
+
+    @POST("Gateway/Execute")
+    Single<XacMinhDiaChiResult> vietmapTravelSalesmanProblemV1(@Body RequestObject request);
 
     @FormUrlEncoded
     @POST("api/Statistic/Payment")
@@ -566,6 +584,9 @@ public interface VinattiAPI {
     @POST("api/LadingCancelDelivery/Statistic")
     Observable<CancelDeliveryResult> cancelDeliveryStatistic(@Body CancelDeliveryStatisticRequest request);
 
+    @POST("Gateway/Execute")
+    Observable<SimpleResult> cancelDeliveryStatistic(@Body RequestObject request);
+
     @GET("api/MoveCrop/GetAccessTokenAndroid")
     Single<TokenMoveCropResult> getAccessTokenAndroid(@Query("mobileNUmber") String mobileNUmber);
 
@@ -587,13 +608,16 @@ public interface VinattiAPI {
     @POST("api/EWallet/PaymentConfirm")
     Single<SimpleResult> confirmPayment(@Body PaymentConfirmModel paymentConfirmModel);
 
-    @GET("api/EWallet/GetDataPayment")
-    Single<EWalletDataResult> getDataPayment(@Query("ServiceCode") String serviceCode,
-                                             @Query("fromDate") String fromDate,
-                                             @Query("toDate") String toDate,
-                                             @Query("poCode") String poCode,
-                                             @Query("routeCode") String routeCode,
-                                             @Query("postmanCode") String postmanCode);
+//    @GET("api/EWallet/GetDataPayment")
+//    Single<EWalletDataResult> getDataPayment(@Query("ServiceCode") String serviceCode,
+//                                             @Query("fromDate") String fromDate,
+//                                             @Query("toDate") String toDate,
+//                                             @Query("poCode") String poCode,
+//                                             @Query("routeCode") String routeCode,
+//                                             @Query("postmanCode") String postmanCode);
+
+    @POST("Gateway/Execute")
+    Single<EWalletDataResult> getDataPayment(@Body RequestObject requestObject);
 
     @POST("api/Delivery/CheckAmountPayment")
     Single<DeliveryCheckAmountPaymentResult> checkAmountPayment(@Body List<PaypostPaymentRequest> request);

@@ -47,17 +47,17 @@ public class ChiTietHoanThanhTinTheoDiaChiInteractor extends Interactor<ChiTietH
 
     @Override
     public void callForwardCallCenter(String callerNumber, String calleeNumber, String callForwardType, String hotlineNumber, String ladingCode, String PostmanId, String POcode, CommonCallback<SimpleResult> callback) {
-        NetWorkController.callForwardCallCenter(callerNumber, calleeNumber, callForwardType, hotlineNumber,
+        NetWorkControllerGateWay.callForwardCallCenter(callerNumber, calleeNumber, callForwardType, hotlineNumber,
                 ladingCode, PostmanId, POcode, callback);
     }
 
     @Override
     public void updateMobile(String code, String type, String mobileNumber, CommonCallback<SimpleResult> commonCallback) {
-        NetWorkController.updateMobile(code, type, mobileNumber, commonCallback);
+        NetWorkControllerGateWay.updateMobile(code, type, mobileNumber, commonCallback);
     }
 
     @Override
     public Single<DecodeDiaChiResult> vietmapSearchDecode(String Decode) {
-        return NetWorkController.vietmapSearchDecode(Decode);
+        return NetWorkControllerGateWay.vietmapSearchDecode(Decode);
     }
 }

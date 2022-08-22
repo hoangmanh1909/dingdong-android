@@ -38,6 +38,7 @@ import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 //import com.sip.cmc.SipCmc;
 
 import java.util.ArrayList;
@@ -162,15 +163,16 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
             }
 
             addCallback(mInteractor.searchDeliveryPostman(postmanID, fromDate, toDate, routeCode,
-                    deliveryType, new CommonCallback<DeliveryPostmanResponse>((Context) mContainerView) {
+                    deliveryType, new CommonCallback<SimpleResult>((Context) mContainerView) {
                         @Override
-                        protected void onSuccess(Call<DeliveryPostmanResponse> call, Response<DeliveryPostmanResponse> response) {
+                        protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                             super.onSuccess(call, response);
                             mView.hideProgress();
                             if (response.body() != null) {
                                 if (response.body().getErrorCode().equals("00")) {
-                                    mView.showListSuccess(response.body().getDeliveryPostmens());
-                                    deliveryNotSuccessfulChange.onChanged(response.body().getDeliveryPostmens());
+                                    ArrayList<DeliveryPostman> deliveryPostmen = NetWorkController.getGson().fromJson(response.body().getData(), new TypeToken<List<DeliveryPostman>>(){}.getType());
+                                    mView.showListSuccess(deliveryPostmen);
+                                    deliveryNotSuccessfulChange.onChanged(deliveryPostmen);
                                 } else {
                                     mView.showError(response.body().getMessage());
                                     deliveryNotSuccessfulChange.onError(response.body().getMessage());
@@ -179,7 +181,7 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                         }
 
                         @Override
-                        protected void onError(Call<DeliveryPostmanResponse> call, String message) {
+                        protected void onError(Call<SimpleResult> call, String message) {
                             super.onError(call, message);
                             mView.hideProgress();
                             mView.showError(message);

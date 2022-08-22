@@ -6,6 +6,7 @@ import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
 import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.model.CancelDeliveryResult;
+import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.request.CancelDeliveryStatisticRequest;
 import com.ems.dingdong.model.response.CancelStatisticItem;
 
@@ -15,7 +16,7 @@ import io.reactivex.Observable;
 
 public interface CancelBD13StatisticContract {
     interface Interactor extends IInteractor<Presenter> {
-        Observable<CancelDeliveryResult> getCancelDeliveryStatic(CancelDeliveryStatisticRequest request);
+        Observable<SimpleResult> getCancelDeliveryStatic(CancelDeliveryStatisticRequest request);
     }
 
     interface View extends PresentView<Presenter> {

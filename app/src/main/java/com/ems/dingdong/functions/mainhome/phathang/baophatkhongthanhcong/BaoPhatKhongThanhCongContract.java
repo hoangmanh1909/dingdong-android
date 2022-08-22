@@ -20,10 +20,10 @@ import java.util.ArrayList;
 interface BaoPhatKhongThanhCongContract {
 
     interface Interactor extends IInteractor<Presenter> {
-        void getReasons(CommonCallback<ReasonResult> commonCallback);
+        void getReasons(CommonCallback<SimpleResult> commonCallback);
 
 
-        void getSolutionByReasonCode(String code, CommonCallback<SolutionResult> commonCallback);
+        void getSolutionByReasonCode(String code, CommonCallback<SimpleResult> commonCallback);
         void checkLadingCode(String parcelCode, CommonCallback<SimpleResult> callback);
 
         void pushToPNS(PushToPnsRequest request, CommonCallback<SimpleResult> callback);

@@ -49,12 +49,12 @@ public class RouteInteractor extends Interactor<RouteConstract.Presenter> implem
 
     @Override
     public void approvedAgree(String id, String ladingCode, String postmanId, String postmanCode, String poCode, String routeId, String routeCode, CommonCallback<SimpleResult> callback) {
-        NetWorkController.approvedAgree(id, ladingCode, postmanId, postmanCode, poCode, routeId, routeCode, callback);
+        NetWorkControllerGateWay.approvedAgree(id, ladingCode, postmanId, postmanCode, poCode, routeId, routeCode, callback);
     }
 
     @Override
     public void approvedDisagree(String id, String ladingCode, String postmanId, String postmanCode, String poCode, String routeId, String routeCode, CommonCallback<SimpleResult> callback) {
-        NetWorkController.approvedDisagree(id, ladingCode, postmanId, postmanCode, poCode, routeId, routeCode, callback);
+        NetWorkControllerGateWay.approvedDisagree(id, ladingCode, postmanId, postmanCode, poCode, routeId, routeCode, callback);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class RouteInteractor extends Interactor<RouteConstract.Presenter> implem
     }
 
     @Override
-    public void getRouteByPoCode(String poCode, CommonCallback<RouteInfoResult> callback) {
-        NetWorkController.getDeliveryRoute(poCode, callback);
+    public void getRouteByPoCode(String poCode, CommonCallback<SimpleResult> callback) {
+        NetWorkControllerGateWay.getDeliveryRoute(poCode, callback);
     }
 }

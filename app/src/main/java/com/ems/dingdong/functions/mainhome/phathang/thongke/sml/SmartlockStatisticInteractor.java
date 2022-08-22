@@ -8,6 +8,7 @@ import com.ems.dingdong.model.EWalletDataHistoryResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.request.StatisticSMLDeliveryFailRequest;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.network.NetWorkControllerGateWay;
 
 import io.reactivex.Single;
 
@@ -20,7 +21,7 @@ public class SmartlockStatisticInteractor extends Interactor<SmartlockStatisticC
 
     @Override
     public Single<SimpleResult> statisticSMLDeliveryFail(StatisticSMLDeliveryFailRequest request) {
-        return NetWorkController.statisticSMLDeliveryFail(request);
+        return NetWorkControllerGateWay.statisticSMLDeliveryFail(request);
     }
 }
 

@@ -7,6 +7,7 @@ import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.SolutionResult;
 import com.ems.dingdong.model.request.PaymentPaypostRequest;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.network.NetWorkControllerGateWay;
 
 /**
  * The BaoPhatBangKeDetail interactor
@@ -19,19 +20,19 @@ class TaoGachNoDetailInteractor extends Interactor<TaoGachNoDetailContract.Prese
     }
 
     @Override
-    public void getReasons(CommonCallback<ReasonResult> commonCallback) {
-        NetWorkController.getReasons(commonCallback);
+    public void getReasons(CommonCallback<SimpleResult> commonCallback) {
+        NetWorkControllerGateWay.getReasons(commonCallback);
     }
 
     @Override
     public void callForwardCallCenter(String callerNumber, String calleeNumber, String callForwardType, String hotlineNumber, String ladingCode, String PostmanId, String POCode, CommonCallback<SimpleResult> callback) {
-        NetWorkController.callForwardCallCenter(callerNumber, calleeNumber, callForwardType, hotlineNumber, PostmanId, POCode,
+        NetWorkControllerGateWay.callForwardCallCenter(callerNumber, calleeNumber, callForwardType, hotlineNumber, PostmanId, POCode,
                 ladingCode, callback);
     }
 
     @Override
-    public void getSolutionByReasonCode(String code, CommonCallback<SolutionResult> commonCallback) {
-        NetWorkController.getSolutionByReasonCode(code, commonCallback);
+    public void getSolutionByReasonCode(String code, CommonCallback<SimpleResult> commonCallback) {
+        NetWorkControllerGateWay.getSolutionByReasonCode(code, commonCallback);
     }
 
     @Override
