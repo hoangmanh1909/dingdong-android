@@ -75,7 +75,7 @@ public class TabLogCallFragment extends ViewFragment<TabLogCallContract.Presente
     }
 
 
-    @OnClick({R.id.img_back, R.id.tv_search, R.id.tv_goidi_success, R.id.tv_goiden_success, R.id.tv_goidi_error, R.id.tv_goiden_error})
+    @OnClick({R.id.img_back, R .id.tv_search, R.id.tv_goidi_success, R.id.tv_goiden_success, R.id.tv_goidi_error, R.id.tv_goiden_error})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_goidi_success:

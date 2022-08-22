@@ -147,7 +147,7 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
     String routeInfoJson;
     String listBankJson;
 
-    ArrayList<DanhSachNganHangRepsone> listBank =  new ArrayList<DanhSachNganHangRepsone>();
+    ArrayList<DanhSachNganHangRepsone> listBank = new ArrayList<DanhSachNganHangRepsone>();
 
     @Override
     public void initLayout() {
@@ -172,7 +172,7 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
         routeInfoJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
-        listBankJson = sharedPref.getString(Constants.KEY_LIST_BANK,"");
+        listBankJson = sharedPref.getString(Constants.KEY_LIST_BANK, "");
         Log.d("asdasdas12341", userJson);
         if (!TextUtils.isEmpty(userJson)) {
             postmanCode = NetWorkController.getGson().fromJson(userJson, UserInfo.class).getUserName();
@@ -184,11 +184,12 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
         if (!TextUtils.isEmpty(routeInfoJson)) {
             routeCode = NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class).getRouteCode();
         }
-        if (!listBankJson.isEmpty()){
+        if (!listBankJson.isEmpty()) {
             listBank.clear();
             try {
-                listBank.addAll(NetWorkController.getGson().fromJson(listBankJson,new TypeToken<ArrayList<DanhSachNganHangRepsone>>(){}.getType()));
-            }catch (Exception e){
+                listBank.addAll(NetWorkController.getGson().fromJson(listBankJson, new TypeToken<ArrayList<DanhSachNganHangRepsone>>() {
+                }.getType()));
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -231,7 +232,7 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
 
     }
 
-    private void getDDsmartBankConfirmLinkRequest(){
+    private void getDDsmartBankConfirmLinkRequest() {
         BalanceModel v = new BalanceModel();
         v.setPOProvinceCode(NetWorkController.getGson().fromJson(userJson, UserInfo.class).getPOProvinceCode());
         v.setPODistrictCode(NetWorkController.getGson().fromJson(userJson, UserInfo.class).getPODistrictCode());
@@ -437,9 +438,9 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
                 showErrorToast("Bạn chưa chọn bưu gửi nào");
                 return;
             }
-            if (listBank.size()==0){
+            if (listBank.size() == 0) {
                 mPresenter.getDanhSachNganHang();
-            }else {
+            } else {
                 showDialogTabNopPhi1();
             }
 
@@ -449,25 +450,25 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
     @Override
     public void display(Object data) {
         try {
-            if (data instanceof EWalletData){
+            if (data instanceof EWalletData) {
                 EWalletData eWalletData = (EWalletData) data;
-                switch (eWalletData.getStateEWallet()){
-                    case UPDATE:{
+                switch (eWalletData.getStateEWallet()) {
+                    case UPDATE: {
                         updateItemSmartBank(eWalletData.getSmartBankLink());
                         break;
                     }
-                    case DELETE:{
+                    case DELETE: {
                         removeItemSmartBank(eWalletData.getSmartBankLink());
                         break;
                     }
-                    case NOTIFY:{
+                    case NOTIFY: {
                         getDDsmartBankConfirmLinkRequest();
                         break;
                     }
                 }
 
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -506,11 +507,11 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
                 showErrorToast("Bạn chưa chọn bưu gửi nào");
                 return;
             }
-           if (listBank.size()==0){
-               mPresenter.getDanhSachNganHang();
-           }else {
-               showDialogTabNopPhi2();
-           }
+            if (listBank.size() == 0) {
+                mPresenter.getDanhSachNganHang();
+            } else {
+                showDialogTabNopPhi2();
+            }
         }
     }
 
@@ -556,7 +557,7 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
                     .setCancelClickListener(Dialog::dismiss)
                     .setImage(NotificationDialog.DialogType.NOTIFICATION_WARNING)
                     .setConfirmClickListener(sweetAlertDialog -> {
-                        mPresenter.deletePayment(mAdapter.getItemsSelected(),mobileNumber);
+                        mPresenter.deletePayment(mAdapter.getItemsSelected(), mobileNumber);
                         sweetAlertDialog.dismiss();
                     })
                     .show();
@@ -584,38 +585,40 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
     @Override
     public void showDanhSach(ArrayList<DanhSachNganHangRepsone> list) {
         listBank.clear();
-        if (list !=null ) listBank.addAll(list);
-        if (mPresenter.getCurrentTab()==0){
+        if (list != null) listBank.addAll(list);
+        if (mPresenter.getCurrentTab() == 0) {
             showDialogTabNopPhi1();
-        }else {
+        } else {
             showDialogTabNopPhi2();
         }
     }
 
-    private void updateItemSmartBank(SmartBankLink smartBankLink){
+    private void updateItemSmartBank(SmartBankLink smartBankLink) {
         try {
-            for (int i=0;i<k.size();i++){
-                if (k.get(i).getBankCode().equals(smartBankLink.getBankCode())){
+            for (int i = 0; i < k.size(); i++) {
+                if (k.get(i).getBankCode().equals(smartBankLink.getBankCode())) {
                     k.get(i).setIsDefaultPayment(smartBankLink.getIsDefaultPayment());
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    private void removeItemSmartBank(SmartBankLink smartBankLink){
+
+    private void removeItemSmartBank(SmartBankLink smartBankLink) {
         try {
-            for (int i=0;i<k.size();i++){
-                if (k.get(i).getBankCode().equals(smartBankLink.getBankCode())){
+            for (int i = 0; i < k.size(); i++) {
+                if (k.get(i).getBankCode().equals(smartBankLink.getBankCode())) {
                     k.remove(i);
                     return;
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    private void showDialogTabNopPhi1(){
+
+    private void showDialogTabNopPhi1() {
         long cod = 0;
         long fee = 0;
         for (EWalletDataResponse item : mAdapter.getItemsSelected()) {
@@ -641,7 +644,7 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
 
 
         int finalCountFee = countFee;
-        new DiaLogOptionNew(getViewContext(), k,listBank, (ContainerView) getViewContext(), new ViNewCallback() {
+        new DiaLogOptionNew(getViewContext(), k, listBank, (ContainerView) getViewContext(), new ViNewCallback() {
             @Override
             public void onResponse(SmartBankLink item) {
                 String content = "Bạn chắc chắn nộp " + "<font color=\"red\", size=\"20dp\">" +
@@ -675,7 +678,8 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
             }
         }).show();
     }
-    private void showDialogTabNopPhi2(){
+
+    private void showDialogTabNopPhi2() {
         long cod = 0;
         long fee = 0;
         for (EWalletDataResponse item : mAdapter.getItemsSelected()) {
@@ -695,7 +699,7 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
         String feeAmount = NumberUtils.formatPriceNumber(fee);
 
         Collections.sort(k, new PaymentFragment.NameComparator());
-        new DiaLogOptionNew(getViewContext(), k,listBank, (ContainerView) getViewContext(), new ViNewCallback() {
+        new DiaLogOptionNew(getViewContext(), k, listBank, (ContainerView) getViewContext(), new ViNewCallback() {
             @Override
             public void onResponse(SmartBankLink item) {
                 String content = "Bạn chắc chắn nộp " + "<font color=\"red\", size=\"20dp\">" +

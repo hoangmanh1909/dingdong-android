@@ -417,19 +417,24 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 //                            mPresenter.callForward(phone, mAdapter.getListFilter().get(position).getMaE());
                             try {
                                 if (!NetworkUtils.isNoNetworkAvailable(getViewContext())) {
-                                    if (mAdapter.getListFilter().get(position).getSenderBookingPhone() != null && !TextUtils.isEmpty(mAdapter.getListFilter().get(position).getSenderBookingPhone())) {
-                                        Intent intent = new Intent(Intent.ACTION_CALL);
-                                        intent.setData(Uri.parse("tel:" + mAdapter.getListFilter().get(position).getSenderBookingPhone()));
-                                        if (ContextCompat.checkSelfPermission(getActivity(),
-                                                Manifest.permission.CALL_PHONE)
-                                                != PackageManager.PERMISSION_GRANTED) {
-                                            ActivityCompat.requestPermissions(getActivity(), new String[]{CALL_PHONE}, REQUEST_CODE_ASK_PERMISSIONS);
-                                        } else {
-                                            startActivity(intent);
-                                        }
-                                    } else
-                                        mPresenter.callForward(phone, mAdapter.getListFilter().get(position).getMaE());
+//                                    if (mAdapter.getListFilter().get(position).getSenderBookingPhone() != null && !TextUtils.isEmpty(mAdapter.getListFilter().get(position).getSenderBookingPhone())) {
+//                                        Intent intent = new Intent(Intent.ACTION_CALL);
+//                                        intent.setData(Uri.parse("tel:" + mAdapter.getListFilter().get(position).getSenderBookingPhone()));
+//                                        if (ContextCompat.checkSelfPermission(getActivity(),
+//                                                Manifest.permission.CALL_PHONE)
+//                                                != PackageManager.PERMISSION_GRANTED) {
+//                                            ActivityCompat.requestPermissions(getActivity(), new String[]{CALL_PHONE}, REQUEST_CODE_ASK_PERMISSIONS);
+//                                        } else {
+//                                            startActivity(intent);
+//                                        }
+//                                    } else
+                                    mPresenter.callForward(phone, mAdapter.getListFilter().get(position).getMaE());
                                 } else {
+                                    if (mAdapter.getListFilter().get(position).getSenderBookingPhone() == null ||
+                                            !TextUtils.isEmpty(mAdapter.getListFilter().get(position).getSenderBookingPhone())) {
+                                        Toast.showToast(getViewContext(), "Bưu gửi chưa được booking thành công. Vui lòng gọi điện thoại qua sim của bưu tá");
+                                        return;
+                                    }
                                     Intent intent = new Intent(Intent.ACTION_CALL);
                                     intent.setData(Uri.parse("tel:" + mAdapter.getListFilter().get(position).getSenderBookingPhone()));
                                     if (ContextCompat.checkSelfPermission(getActivity(),
@@ -518,19 +523,25 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                                 if (!NetworkUtils.isNoNetworkAvailable(getViewContext())) {
 
 //                                    check co truognf  ReceiverBookingPhone
-                                    if (mAdapter.getListFilter().get(position).getReceiverBookingPhone() != null && !TextUtils.isEmpty(mAdapter.getListFilter().get(position).getReceiverBookingPhone())) {
-                                        Intent intent = new Intent(Intent.ACTION_CALL);
-                                        intent.setData(Uri.parse("tel:" + mAdapter.getListFilter().get(position).getReceiverBookingPhone()));
-                                        if (ContextCompat.checkSelfPermission(getActivity(),
-                                                Manifest.permission.CALL_PHONE)
-                                                != PackageManager.PERMISSION_GRANTED) {
-                                            ActivityCompat.requestPermissions(getActivity(), new String[]{CALL_PHONE}, REQUEST_CODE_ASK_PERMISSIONS);
-                                        } else {
-                                            startActivity(intent);
-                                        }
-                                    } else
-                                        mPresenter.callForward(phone, mAdapter.getListFilter().get(position).getMaE());
+//                                    if (mAdapter.getListFilter().get(position).getReceiverBookingPhone() != null &&
+//                                    !TextUtils.isEmpty(mAdapter.getListFilter().get(position).getReceiverBookingPhone())) {
+//                                        Intent intent = new Intent(Intent.ACTION_CALL);
+//                                        intent.setData(Uri.parse("tel:" + mAdapter.getListFilter().get(position).getReceiverBookingPhone()));
+//                                        if (ContextCompat.checkSelfPermission(getActivity(),
+//                                                Manifest.permission.CALL_PHONE)
+//                                                != PackageManager.PERMISSION_GRANTED) {
+//                                            ActivityCompat.requestPermissions(getActivity(), new String[]{CALL_PHONE}, REQUEST_CODE_ASK_PERMISSIONS);
+//                                        } else {
+//                                            startActivity(intent);
+//                                        }
+//                                    } else
+                                    mPresenter.callForward(phone, mAdapter.getListFilter().get(position).getMaE());
                                 } else {
+                                    if (mAdapter.getListFilter().get(position).getSenderBookingPhone() == null ||
+                                            !TextUtils.isEmpty(mAdapter.getListFilter().get(position).getReceiverBookingPhone())) {
+                                        Toast.showToast(getViewContext(), "Bưu gửi chưa được booking thành công. Vui lòng gọi điện thoại qua sim của bưu tá");
+                                        return;
+                                    }
                                     Intent intent = new Intent(Intent.ACTION_CALL);
                                     intent.setData(Uri.parse("tel:" + mAdapter.getListFilter().get(position).getSenderBookingPhone()));
                                     if (ContextCompat.checkSelfPermission(getActivity(),
@@ -869,14 +880,17 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     @Override
     public void onDisplay() {
         super.onDisplay();
-        if (cbPickAll != null)
-            cbPickAll.setChecked(false);
-        if (isReturnedFromXacNhanBaoPhat) {
-            isReturnedFromXacNhanBaoPhat = false;
-            edtSearch.removeTextChangedListener(textWatcher);
-            edtSearch.setText("");
-            edtSearch.addTextChangedListener(textWatcher);
-        }
+        if (!NetworkUtils.isNoNetworkAvailable(getViewContext())) {
+            if (cbPickAll != null)
+                cbPickAll.setChecked(false);
+            if (isReturnedFromXacNhanBaoPhat) {
+                isReturnedFromXacNhanBaoPhat = false;
+                edtSearch.removeTextChangedListener(textWatcher);
+                edtSearch.setText("");
+                edtSearch.addTextChangedListener(textWatcher);
+            }
+        } else
+            Toast.showToast(getViewContext(), "Thiết bị chưa kết nối internet");
 //        showListSuccessFromTab(mList);
     }
 
