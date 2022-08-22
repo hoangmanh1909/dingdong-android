@@ -10,6 +10,7 @@ import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.request.PaymentDeviveryRequest;
 import com.ems.dingdong.model.request.PushToPnsRequest;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.network.NetWorkControllerGateWay;
 
 /**
  * The BaoPhatBangKeDetail interactor
@@ -22,20 +23,20 @@ class BaoPhatBangKeDetailInteractor extends Interactor<BaoPhatBangKeDetailContra
     }
 
     @Override
-    public void getReasons(CommonCallback<ReasonResult> commonCallback) {
-        NetWorkController.getReasons(commonCallback);
+    public void getReasons(CommonCallback<SimpleResult> commonCallback) {
+        NetWorkControllerGateWay.getReasons(commonCallback);
     }
 
 
     @Override
     public void callForwardCallCenter(String callerNumber, String calleeNumber, String callForwardType, String hotlineNumber, String ladingCode, String PostmanId, String POCode, CommonCallback<SimpleResult> callback) {
-        NetWorkController.callForwardCallCenter(callerNumber, calleeNumber, callForwardType, hotlineNumber,
+        NetWorkControllerGateWay.callForwardCallCenter(callerNumber, calleeNumber, callForwardType, hotlineNumber,
                 ladingCode, PostmanId, POCode, callback);
     }
 
     @Override
-    public void getSolutionByReasonCode(String code, CommonCallback<SolutionResult> commonCallback) {
-        NetWorkController.getSolutionByReasonCode(code, commonCallback);
+    public void getSolutionByReasonCode(String code, CommonCallback<SimpleResult> commonCallback) {
+        NetWorkControllerGateWay.getSolutionByReasonCode(code, commonCallback);
     }
 
 
@@ -46,17 +47,17 @@ class BaoPhatBangKeDetailInteractor extends Interactor<BaoPhatBangKeDetailContra
 
     @Override
     public void updateMobile(String code, String type, String mobileNumber, CommonCallback<SimpleResult> commonCallback) {
-        NetWorkController.updateMobile(code, type, mobileNumber, commonCallback);
+        NetWorkControllerGateWay.updateMobile(code, type, mobileNumber, commonCallback);
     }
 
     @Override
     public void paymentDelivery(PaymentDeviveryRequest request, CommonCallback<SimpleResult> callback) {
-        NetWorkController.paymentDelivery(request, callback);
+        NetWorkControllerGateWay.paymentDelivery(request, callback);
     }
 
     @Override
     public void pushToPNSDelivery(PushToPnsRequest request, CommonCallback<SimpleResult> callback) {
-        NetWorkController.pushToPNSDelivery(request, callback);
+        NetWorkControllerGateWay.pushToPNSDelivery(request, callback);
     }
 
     @Override

@@ -5,6 +5,7 @@ import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.TicketMode;
 import com.ems.dingdong.model.request.TicketNotifyRequest;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.network.NetWorkControllerGateWay;
 
 import io.reactivex.Single;
 
@@ -18,6 +19,6 @@ public class DetailNotifyInteractor extends Interactor<DetailNotifyContract.Pres
 
     @Override
     public Single<SimpleResult> getListTicket(String ticketMode) {
-        return NetWorkController.getDetailTicket(ticketMode);
+        return NetWorkControllerGateWay.getDetailTicket(ticketMode);
     }
 }

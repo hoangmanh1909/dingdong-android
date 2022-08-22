@@ -24,7 +24,7 @@ public class PaymentInteractor extends Interactor<PaymentContract.Presenter> imp
 
     @Override
     public Single<EWalletDataResult> getDataPayment(String serviceCode,String fromDate, String toDate, String poCode, String routeCode, String postmanCode) {
-        return NetWorkController.getDataPayment(serviceCode,fromDate, toDate, poCode, routeCode, postmanCode);
+        return NetWorkControllerGateWay.getDataPayment(serviceCode,fromDate, toDate, poCode, routeCode, postmanCode);
     }
 
     @Override

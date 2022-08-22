@@ -9,6 +9,7 @@ import com.ems.dingdong.model.XacMinhDiaChiResult;
 import com.ems.dingdong.model.request.vietmap.RouteRequest;
 import com.ems.dingdong.model.request.vietmap.TravelSales;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.network.NetWorkControllerGateWay;
 
 import java.util.List;
 
@@ -22,26 +23,26 @@ public class AddressListInteractor extends Interactor<AddressListContract.Presen
 
     @Override
     public Single<XacMinhDiaChiResult> vietmapSearchByAddress(String address, Double longitude, Double latitude) {
-        return NetWorkController.vietmapSearch(address, longitude, latitude);
+        return NetWorkControllerGateWay.vietmapSearch(address, longitude, latitude);
     }
 
     @Override
     public Single<XacMinhDiaChiResult> vietmapSearchViTri(Double longitude, Double latitude) {
-        return NetWorkController.vietmapVitriEndCode(longitude,latitude);
+        return NetWorkControllerGateWay.vietmapVitriEndCode(longitude,latitude);
     }
 
     @Override
     public Single<DecodeDiaChiResult> vietmapSearchDecode(String Decode) {
-        return NetWorkController.vietmapSearchDecode(Decode);
+        return NetWorkControllerGateWay.vietmapSearchDecode(Decode);
     }
 
     @Override
     public void vietmapSearchByPoint(double longitude, double latitude, CommonCallback<XacMinhDiaChiResult> callback) {
-        NetWorkController.getAddressByLocation(longitude, latitude, callback);
+        NetWorkControllerGateWay.getAddressByLocation(longitude, latitude, callback);
     }
 
     @Override
     public Single<XacMinhDiaChiResult> vietmapTravelSalesmanProblem(TravelSales request) {
-        return NetWorkController.vietmapTravelSalesmanProblem(request);
+        return NetWorkControllerGateWay.vietmapTravelSalesmanProblem(request);
     }
 }

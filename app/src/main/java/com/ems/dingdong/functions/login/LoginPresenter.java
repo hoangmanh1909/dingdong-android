@@ -10,25 +10,32 @@ import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.functions.login.validation.ValidationPresenter;
 import com.ems.dingdong.model.LoginResult;
+import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.PostOfficeResult;
 import com.ems.dingdong.model.ReasonInfo;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.SolutionInfo;
 import com.ems.dingdong.model.SolutionResult;
+import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.model.request.LoginRequest;
+import com.ems.dingdong.model.response.BalanceResponse;
+import com.ems.dingdong.model.response.GetVersionResponse;
 import com.ems.dingdong.model.thauchi.DanhSachNganHangRepsone;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
-import com.google.common.reflect.TypeToken;
+import com.ems.dingdong.utiles.Utils;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -64,22 +71,27 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
 
     @Override
     public void login(String mobileNumber, String signCode) {
-        mInteractor.login(mobileNumber, signCode, BuildConfig.VERSION_NAME, "DD_ANDROID", new CommonCallback<LoginResult>((Activity) mContainerView) {
+        String signature = Utils.SHA256(mobileNumber + signCode + BuildConfig.PRIVATE_KEY).toUpperCase();
+        LoginRequest loginRequest = new LoginRequest(mobileNumber, signCode, BuildConfig.VERSION_NAME, "", signature);
+        mInteractor.login(loginRequest, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
-            protected void onSuccess(Call<LoginResult> call, Response<LoginResult> response) {
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
                 if (response.body().getErrorCode().equals("00")) {
                     getSolutions();
                     getReasons();
-                    getList(response.body().getUserInfo().getUnitCode());
                     getDanhSachNganHang();
 //                    response.body().getUserInfo().setPIDNumber("154554454444");
 //                    response.body().getUserInfo().setPIDType("CMND");
 
+                    UserInfo userInfo = NetWorkController.getGson().fromJson(response.body().getData(), UserInfo.class);
+                    getBalance(userInfo.getMobileNumber(), userInfo.getiD());
+                    getList(userInfo.getUnitCode());
+
                     SharedPref sharedPref = new SharedPref((Context) mContainerView);
-                    sharedPref.putString(Constants.KEY_USER_INFO, NetWorkController.getGson().toJson(response.body().getUserInfo()));
-                    sharedPref.putString(Constants.KEY_PAYMENT_TOKEN, response.body().getUserInfo().geteWalletPaymentToken());
-                    if ("Y".equals(response.body().getUserInfo().getIsEms())) {
+                    sharedPref.putString(Constants.KEY_USER_INFO, NetWorkController.getGson().toJson(userInfo));
+                    sharedPref.putString(Constants.KEY_PAYMENT_TOKEN, userInfo.geteWalletPaymentToken());
+                    if ("Y".equals(userInfo.getIsEms())) {
                         Constants.HEADER_NUMBER = "tel:159";
                     } else {
                         Constants.HEADER_NUMBER = "tel:18002009";
@@ -87,8 +99,8 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
 
                     boolean isDebit = sharedPref.getBoolean(Constants.KEY_GACH_NO_PAYPOS, true);
                     sharedPref.putBoolean(Constants.KEY_GACH_NO_PAYPOS, isDebit);
-                    if (!"6".equals(response.body().getUserInfo().getEmpGroupID())) {
-                        getPostOfficeByCode(response.body().getUserInfo().getUnitCode(), response.body().getUserInfo().getiD());
+                    if (!"6".equals(userInfo.getEmpGroupID())) {
+                        getPostOfficeByCode(userInfo.getUnitCode(),userInfo.getiD());
                     } else {
                         mView.gotoHome();
                     }
@@ -103,7 +115,7 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
             }
 
             @Override
-            protected void onError(Call<LoginResult> call, String message) {
+            protected void onError(Call<SimpleResult> call, String message) {
                 mView.hideProgress();
                 super.onError(call, message);
                 mView.showError(message);
@@ -119,7 +131,7 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
     @Override
     public void getVersion() {
         mView.showProgress();
-        mInteractor.getVersion("DINGDONG_ANDROID_GET_VERSION", "", "", new CommonCallback<SimpleResult>((Activity) mContainerView) {
+        mInteractor.getVersion( new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
@@ -128,15 +140,18 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
                     // go to home
                     Gson g = new Gson();
                     try {
-                        JSONObject jsonObject = new JSONObject(response.body().getData());
-                        String version = jsonObject.getString("Version");
-                        String urlDowload = jsonObject.getString("UrlDownload");
+                        ArrayList<GetVersionResponse> responses = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<GetVersionResponse>>(){}.getType());
+//                        ArrayList jsonObject = new JSONObject(response.body().getData());
+//                        String version = jsonObject.getString("Version");
+//                        String urlDowload = jsonObject.getString("UrlDownload");
                         String versionApp = BuildConfig.VERSION_NAME;
-                        if (!version.equals(versionApp)) {
-                            mView.showVersion(version, urlDowload);
+                        android.util.Log.e("TAG", "onSuccess: "+versionApp );
+
+                        if (!responses.get(0).getVersion().equals(versionApp)) {
+                            mView.showVersion(responses.get(0).getVersion(), responses.get(0).getUrlDownload());
                         } else
                             mView.showThanhCong();
-                    } catch (JSONException err) {
+                    } catch (Exception err) {
                         Log.d("Error", err.toString());
                         mView.showError("Lỗi xử lý dữ liệu");
                     }
@@ -191,16 +206,17 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
     }
 
     private void getPostOfficeByCode(String unitCode, String postmanID) {
-        mInteractor.getPostOfficeByCode(unitCode, postmanID, new CommonCallback<PostOfficeResult>((Activity) mContainerView) {
+        mInteractor.getPostOfficeByCode(unitCode, postmanID, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
-            protected void onSuccess(Call<PostOfficeResult> call, Response<PostOfficeResult> response) {
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
                 mView.hideProgress();
                 if (response.body().getErrorCode().equals("00")) {
                     // go to home
+                    PostOffice postOffice = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<PostOffice>(){}.getType());
                     SharedPref sharedPref = new SharedPref((Context) mContainerView);
-                    sharedPref.putString(Constants.KEY_HOTLINE_NUMBER, response.body().getPostOffice().getHolineNumber());
-                    sharedPref.putString(Constants.KEY_POST_OFFICE, NetWorkController.getGson().toJson(response.body().getPostOffice()));
+                    sharedPref.putString(Constants.KEY_HOTLINE_NUMBER, postOffice.getHolineNumber());
+                    sharedPref.putString(Constants.KEY_POST_OFFICE, NetWorkController.getGson().toJson(postOffice));
                     mView.gotoHome();
                 } else {
                     mView.showError(response.body().getMessage());
@@ -208,7 +224,7 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
             }
 
             @Override
-            protected void onError(Call<PostOfficeResult> call, String message) {
+            protected void onError(Call<SimpleResult> call, String message) {
                 mView.hideProgress();
                 super.onError(call, message);
                 mView.showError(message);
@@ -217,15 +233,16 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
     }
 
     private void getSolutions() {
-        mInteractor.getSolutions(new CommonCallback<SolutionResult>((Activity) mContainerView) {
+        mInteractor.getSolutions(new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
-            protected void onSuccess(Call<SolutionResult> call, Response<SolutionResult> response) {
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
                 mView.hideProgress();
                 if (response.body().getErrorCode().equals("00")) {
 
                     Realm realm = Realm.getDefaultInstance();
-                    for (SolutionInfo info : response.body().getSolutionInfos()) {
+                    ArrayList<SolutionInfo> solutionInfos = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<SolutionInfo>>(){}.getType());
+                    for (SolutionInfo info : solutionInfos) {
                         try {
                             SolutionInfo result = realm.where(SolutionInfo.class).equalTo(Constants.SOLUTIONINFO_PRIMARY_KEY, info.getID()).findFirst();
                             if (result != null) {
@@ -247,7 +264,7 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
             }
 
             @Override
-            protected void onError(Call<SolutionResult> call, String message) {
+            protected void onError(Call<SimpleResult> call, String message) {
                 mView.hideProgress();
                 super.onError(call, message);
                 mView.showError(message);
@@ -256,15 +273,15 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
     }
 
     private void getReasons() {
-        mInteractor.getReasons(new CommonCallback<ReasonResult>((Activity) mContainerView) {
+        mInteractor.getReasons(new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
-            protected void onSuccess(Call<ReasonResult> call, Response<ReasonResult> response) {
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
                 mView.hideProgress();
                 if (response.body().getErrorCode().equals("00")) {
-
                     Realm realm = Realm.getDefaultInstance();
-                    for (ReasonInfo info : response.body().getReasonInfos()) {
+                    ArrayList<ReasonInfo>  reasonInfos = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<ReasonInfo>>(){}.getType());
+                    for (ReasonInfo info : reasonInfos) {
                         ReasonInfo result = realm.where(ReasonInfo.class).equalTo(Constants.REASONINFO_PRIMARY_KEY, info.getID()).findFirst();
                         if (result != null) {
                             realm.beginTransaction();
@@ -282,7 +299,31 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
             }
 
             @Override
-            protected void onError(Call<ReasonResult> call, String message) {
+            protected void onError(Call<SimpleResult> call, String message) {
+                mView.hideProgress();
+                super.onError(call, message);
+                mView.showError(message);
+            }
+        });
+    }
+
+    private void getBalance(String mobileNumber, String postmanId) {
+        mInteractor.getBalance(mobileNumber, postmanId, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+            @Override
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+                mView.hideProgress();
+                if (response.body().getErrorCode().equals("00")) {
+                    BalanceResponse balanceResponse = NetWorkController.getGson().fromJson(response.body().getData(), BalanceResponse.class);
+                    SharedPref sharedPref = new SharedPref((Context) mContainerView);
+                    sharedPref.putString(Constants.KEY_BALANCE, NetWorkController.getGson().toJson(balanceResponse));
+                } else {
+                    mView.showError(response.body().getMessage());
+                }
+                super.onSuccess(call, response);
+            }
+
+            @Override
+            protected void onError(Call<SimpleResult> call, String message) {
                 mView.hideProgress();
                 super.onError(call, message);
                 mView.showError(message);

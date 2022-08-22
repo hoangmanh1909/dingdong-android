@@ -6,6 +6,7 @@ import com.core.base.viper.interfaces.PresentView;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.HistoryCallInfo;
 import com.ems.dingdong.model.HistoryCallResult;
+import com.ems.dingdong.model.SimpleResult;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ interface HistoryCallContract {
     interface Interactor extends IInteractor<Presenter> {
         void searchCallCenter(String postmanID,
                               String fromDate,
-                              String toDate, CommonCallback<HistoryCallResult> callback);
+                              String toDate, CommonCallback<SimpleResult> callback);
     }
 
     interface View extends PresentView<Presenter> {

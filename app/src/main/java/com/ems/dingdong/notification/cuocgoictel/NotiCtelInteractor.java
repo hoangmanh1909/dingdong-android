@@ -4,6 +4,7 @@ import com.core.base.viper.Interactor;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.network.NetWorkControllerGateWay;
 import com.ems.dingdong.notification.cuocgoictel.data.HistoryRequest;
 
 import io.reactivex.Single;
@@ -21,7 +22,7 @@ class NotiCtelInteractor extends Interactor<NotiCtelContract.Presenter>
 
     @Override
     public Single<SimpleResult> getListTicket(String ticketMode) {
-        return NetWorkController.getDetailTicket(ticketMode);
+        return NetWorkControllerGateWay.getDetailTicket(ticketMode);
     }
 
     @Override
@@ -31,7 +32,7 @@ class NotiCtelInteractor extends Interactor<NotiCtelContract.Presenter>
 
     @Override
     public Call<SimpleResult> callForwardCallCenter(String callerNumber, String calleeNumber, String callForwardType, String hotlineNumber, String ladingCode, String PostmanId, String POCode, CommonCallback<SimpleResult> callback) {
-        return NetWorkController.callForwardCallCenter(callerNumber, calleeNumber, callForwardType, hotlineNumber,
+        return NetWorkControllerGateWay.callForwardCallCenter(callerNumber, calleeNumber, callForwardType, hotlineNumber,
                 ladingCode, PostmanId, POCode, callback);
     }
 

@@ -5,6 +5,7 @@ import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.ActiveResult;
+import com.ems.dingdong.model.SimpleResult;
 
 /**
  * The Active Contract
@@ -12,7 +13,7 @@ import com.ems.dingdong.model.ActiveResult;
 interface ActiveContract {
 
     interface Interactor extends IInteractor<Presenter> {
-        void activeAuthorized(String mobileNumber, String activeCode, String codeDeviceActive, CommonCallback<ActiveResult> callback);
+        void activeAuthorized(String mobileNumber, String activeCode, String codeDeviceActive, CommonCallback<SimpleResult> callback);
     }
 
     interface View extends PresentView<Presenter> {

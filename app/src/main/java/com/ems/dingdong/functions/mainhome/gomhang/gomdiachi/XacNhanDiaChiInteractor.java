@@ -54,6 +54,6 @@ class XacNhanDiaChiInteractor extends Interactor<XacNhanDiaChiContract.Presenter
 
     @Override
     public Single<XacMinhDiaChiResult> vietmapSearchViTri(Double longitude, Double latitude) {
-        return NetWorkController.vietmapVitriEndCode(longitude,latitude);
+        return NetWorkControllerGateWay.vietmapVitriEndCode(longitude,latitude);
     }
 }

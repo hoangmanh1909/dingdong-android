@@ -5,6 +5,7 @@ import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.request.PaymentDeviveryRequest;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.network.NetWorkControllerGateWay;
 
 /**
  * The ReceverPerson interactor
@@ -18,6 +19,6 @@ class ReceverPersonInteractor extends Interactor<ReceverPersonContract.Presenter
 
     @Override
     public void paymentDelivery(PaymentDeviveryRequest request, CommonCallback<SimpleResult> callback) {
-        NetWorkController.paymentDelivery(request, callback);
+        NetWorkControllerGateWay.paymentDelivery(request, callback);
     }
 }

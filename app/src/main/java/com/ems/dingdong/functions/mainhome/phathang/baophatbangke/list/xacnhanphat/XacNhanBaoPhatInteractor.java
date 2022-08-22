@@ -40,7 +40,7 @@ public class XacNhanBaoPhatInteractor extends Interactor<XacNhanBaoPhatContract.
 
     @Override
     public Call<SimpleResult> callForwardCallCenter(String callerNumber, String calleeNumber, String callForwardType, String hotlineNumber, String ladingCode, String PostmanId, String POCode, CommonCallback<SimpleResult> callback) {
-        return NetWorkController.callForwardCallCenter(callerNumber, calleeNumber, callForwardType, hotlineNumber,
+        return NetWorkControllerGateWay.callForwardCallCenter(callerNumber, calleeNumber, callForwardType, hotlineNumber,
                 ladingCode, PostmanId, POCode, callback);
     }
 
@@ -51,13 +51,13 @@ public class XacNhanBaoPhatInteractor extends Interactor<XacNhanBaoPhatContract.
     }
 
     @Override
-    public void getReasons(CommonCallback<ReasonResult> commonCallback) {
-        NetWorkController.getReasons(commonCallback);
+    public void getReasons(CommonCallback<SimpleResult> commonCallback) {
+        NetWorkControllerGateWay.getReasons(commonCallback);
     }
 
     @Override
-    public void getSolutionByReasonCode(String code, CommonCallback<SolutionResult> commonCallback) {
-        NetWorkController.getSolutionByReasonCode(code, commonCallback);
+    public void getSolutionByReasonCode(String code, CommonCallback<SimpleResult> commonCallback) {
+        NetWorkControllerGateWay.getSolutionByReasonCode(code, commonCallback);
     }
 
     @Override
@@ -72,7 +72,7 @@ public class XacNhanBaoPhatInteractor extends Interactor<XacNhanBaoPhatContract.
 
     @Override
     public void paymentDelivery(PaymentDeviveryRequest request, CommonCallback<SimpleResult> simpleResultCommonCallback) {
-        NetWorkController.paymentDelivery(request, simpleResultCommonCallback);
+        NetWorkControllerGateWay.paymentDelivery(request, simpleResultCommonCallback);
     }
 
     /**
@@ -81,8 +81,8 @@ public class XacNhanBaoPhatInteractor extends Interactor<XacNhanBaoPhatContract.
      * @param request
      */
     @Override
-    public Single<DeliveryCheckAmountPaymentResult> checkDeliverySuccess(DeliverySuccessRequest request) {
-        return NetWorkController.checkDeliverySuccess(request);
+    public Single<SimpleResult> checkDeliverySuccess(DeliverySuccessRequest request) {
+        return NetWorkControllerGateWay.checkDeliverySuccess(request);
     }
 
 //    @Override
@@ -92,7 +92,7 @@ public class XacNhanBaoPhatInteractor extends Interactor<XacNhanBaoPhatContract.
 
     @Override
     public Single<SimpleResult> paymentV2(DeliveryPaymentV2 request) {
-        return NetWorkController.paymentV2(request);
+        return NetWorkControllerGateWay.paymentV2(request);
     }
 
     /**
@@ -103,7 +103,7 @@ public class XacNhanBaoPhatInteractor extends Interactor<XacNhanBaoPhatContract.
      */
     @Override
     public void pushToDeliveryUnSuccess(DeliveryUnSuccessRequest request, CommonCallback<SimpleResult> callback) {
-        NetWorkController.pushToPNSDeliveryUnSuccess(request, callback);
+        NetWorkControllerGateWay.pushToPNSDeliveryUnSuccess(request, callback);
     }
 
 //    @Override
@@ -112,8 +112,8 @@ public class XacNhanBaoPhatInteractor extends Interactor<XacNhanBaoPhatContract.
 //    }
 
     @Override
-    public void getRouteByPoCode(String poCode, CommonCallback<RouteInfoResult> callback) {
-        NetWorkController.getDeliveryRoute(poCode, callback);
+    public void getRouteByPoCode(String poCode, CommonCallback<SimpleResult> callback) {
+        NetWorkControllerGateWay.getDeliveryRoute(poCode, callback);
     }
 
     @Override
@@ -123,7 +123,7 @@ public class XacNhanBaoPhatInteractor extends Interactor<XacNhanBaoPhatContract.
 
     @Override
     public void cancelDivided(List<DingDongCancelDividedRequest> request, CommonCallback<SimpleResult> callback) {
-        NetWorkController.cancelDivided(request, callback);
+        NetWorkControllerGateWay.cancelDivided(request, callback);
     }
 
     @Override
@@ -133,11 +133,11 @@ public class XacNhanBaoPhatInteractor extends Interactor<XacNhanBaoPhatContract.
 
     @Override
     public void deliveryPartial(DeliveryProductRequest request, CommonCallback<SimpleResult> callback) {
-        NetWorkController.deliveryPartial(request, callback);
+        NetWorkControllerGateWay.deliveryPartial(request, callback);
     }
 
     @Override
     public Single<DecodeDiaChiResult> vietmapSearchDecode(String Decode) {
-        return NetWorkController.vietmapSearchDecode(Decode);
+        return NetWorkControllerGateWay.vietmapSearchDecode(Decode);
     }
 }

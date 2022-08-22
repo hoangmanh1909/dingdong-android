@@ -3,6 +3,7 @@ package com.ems.dingdong.functions.mainhome.phathang;
 import com.core.base.viper.Interactor;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.network.NetWorkControllerGateWay;
 
 import io.reactivex.Single;
 
@@ -18,6 +19,6 @@ class PhatHangInteractor extends Interactor<PhatHangContract.Presenter>
 
     @Override
     public Single<SimpleResult> searchTu(String request) {
-        return NetWorkController.searchTu(request);
+        return NetWorkControllerGateWay.searchTu(request);
     }
 }

@@ -12,6 +12,7 @@ import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.network.NetWorkControllerGateWay;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.SharedPref;
@@ -32,7 +33,7 @@ public class CheckLocationService extends Service {
         if (!userJson.isEmpty()) {
             UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
             final String postmanID = userInfo.getiD();
-            NetWorkController.locationAddNew(postmanID, latitude, longitude, new CommonCallback<SimpleResult>(getApplicationContext()) {
+            NetWorkControllerGateWay.locationAddNew(postmanID, latitude, longitude, new CommonCallback<SimpleResult>(getApplicationContext()) {
                 @Override
                 protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                     super.onSuccess(call, response);

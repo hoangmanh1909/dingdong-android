@@ -7,6 +7,8 @@ import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.ActiveResult;
+import com.ems.dingdong.model.SimpleResult;
+import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.SharedPref;
 
@@ -43,13 +45,14 @@ public class ActivePresenter extends Presenter<ActiveContract.View, ActiveContra
     @Override
     public void activeAuthorized(final String mobileNumber, String activeCode, String codeDeviceActive) {
         mView.showProgress();
-        mInteractor.activeAuthorized(mobileNumber, activeCode, codeDeviceActive, new CommonCallback<ActiveResult>((Activity) mContainerView) {
+        mInteractor.activeAuthorized(mobileNumber, activeCode, codeDeviceActive, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
-            protected void onSuccess(Call<ActiveResult> call, Response<ActiveResult> response) {
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
                 mView.hideProgress();
                 if (response.body().getErrorCode().equals("00")) {
-                    String value = mobileNumber + ";" + response.body().getSignCode();
+                    ActiveResult activeResult = NetWorkController.getGson().fromJson(response.body().getData(), ActiveResult.class);
+                    String value = mobileNumber + ";" + activeResult.getSignCode();
                     SharedPref sharedPref = new SharedPref((Context) mContainerView);
                     sharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, value);
                     back();
@@ -61,7 +64,7 @@ public class ActivePresenter extends Presenter<ActiveContract.View, ActiveContra
             }
 
             @Override
-            protected void onError(Call<ActiveResult> call, String message) {
+            protected void onError(Call<SimpleResult> call, String message) {
                 mView.hideProgress();
                 super.onError(call, message);
                 mView.showError(message);

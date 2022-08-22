@@ -5,6 +5,7 @@ import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.TicketMode;
 import com.ems.dingdong.model.request.TicketNotifyRequest;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.network.NetWorkControllerGateWay;
 
 import java.util.List;
 
@@ -18,11 +19,11 @@ public class ListNotifyInteractor extends Interactor<ListNotifyContract.Presente
 
     @Override
     public Single<SimpleResult> getListTicket(TicketNotifyRequest request) {
-        return NetWorkController.getListTicket(request);
+        return NetWorkControllerGateWay.getListTicket(request);
     }
 
     @Override
     public Single<SimpleResult> isSeen(List<String> list) {
-        return NetWorkController.isSeen(list);
+        return NetWorkControllerGateWay.isSeen(list);
     }
 }

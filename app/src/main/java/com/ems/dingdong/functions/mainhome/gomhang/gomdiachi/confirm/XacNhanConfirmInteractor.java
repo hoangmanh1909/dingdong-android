@@ -30,8 +30,8 @@ class XacNhanConfirmInteractor extends Interactor<XacNhanConfirmContract.Present
     }
 
     @Override
-    public void getRouteByPoCode(String poCode, CommonCallback<RouteInfoResult> callback) {
-        NetWorkController.getRoute(poCode, callback);
+    public void getRouteByPoCode(String poCode, CommonCallback<SimpleResult> callback) {
+        NetWorkControllerGateWay.getRoute(poCode, callback);
     }
 
     @Override

@@ -41,7 +41,7 @@ class ListHoanTatNhieuTinInteractor extends Interactor<ListHoanTatNhieuTinContra
 
     @Override
     public Single<DecodeDiaChiResult> vietmapSearchDecode(String Decode) {
-        return NetWorkController.vietmapSearchDecode(Decode);
+        return NetWorkControllerGateWay.vietmapSearchDecode(Decode);
     }
 
 }

@@ -6,11 +6,17 @@ import android.content.Context;
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.model.HistoryCallInfo;
 import com.ems.dingdong.model.HistoryCallResult;
+import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Constants;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -64,13 +70,14 @@ public class HistoryCallPresenter extends Presenter<HistoryCallContract.View, Hi
             callerNumber = userInfo.getMobileNumber();
             useiid = userInfo.getiD();
         }
-        mInteractor.searchCallCenter(useiid, fromDate, toDate, new CommonCallback<HistoryCallResult>((Activity) mContainerView) {
+        mInteractor.searchCallCenter(useiid, fromDate, toDate, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
-            protected void onSuccess(Call<HistoryCallResult> call, Response<HistoryCallResult> response) {
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
                 mView.hideProgress();
                 if (response.body().getErrorCode().equals("00")) {
-                    mView.showListSuccess(response.body().getHistoryCallInfos());
+                    ArrayList<HistoryCallInfo> historyCallInfos = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<HistoryCallInfo>>(){}.getType());
+                    mView.showListSuccess(historyCallInfos);
                 } else {
                     mView.showErrorToast(response.body().getMessage());
                     mView.showListEmpty();
@@ -78,7 +85,7 @@ public class HistoryCallPresenter extends Presenter<HistoryCallContract.View, Hi
             }
 
             @Override
-            protected void onError(Call<HistoryCallResult> call, String message) {
+            protected void onError(Call<SimpleResult> call, String message) {
                 super.onError(call, message);
                 mView.hideProgress();
                 mView.showErrorToast(message);

@@ -10,6 +10,7 @@ import com.ems.dingdong.model.PostOfficeResult;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.SolutionResult;
+import com.ems.dingdong.model.request.LoginRequest;
 import com.ems.dingdong.model.response.ResponseObject;
 
 import io.reactivex.Single;
@@ -20,19 +21,21 @@ import io.reactivex.Single;
 interface LoginContract {
 
     interface Interactor extends IInteractor<Presenter> {
-        void login(String mobileNumber, String signCode, String version, String appCode, CommonCallback<LoginResult> commonCallback);
+        void login(LoginRequest loginRequest, CommonCallback<SimpleResult> commonCallback);
 
-        void getPostOfficeByCode(String code, String postmanID, CommonCallback<PostOfficeResult> callback);
+        void getPostOfficeByCode(String code, String postmanID, CommonCallback<SimpleResult> callback);
 
-        void getSolutions(CommonCallback<SolutionResult> commonCallback);
+        void getSolutions(CommonCallback<SimpleResult> commonCallback);
 
-        void getReasons(CommonCallback<ReasonResult> commonCallback);
+        void getReasons(CommonCallback<SimpleResult> commonCallback);
 
-        void getVersion(String code, String data, String signature, CommonCallback<SimpleResult> callback);
+        void getVersion(CommonCallback<SimpleResult> callback);
 
         Single<SimpleResult> getList(String data);
 
         Single<SimpleResult> getDanhSachNganHang();
+
+        void getBalance(String mobileNumber,String postmanId,CommonCallback<SimpleResult> commonCallback);
     }
 
     interface View extends PresentView<Presenter> {

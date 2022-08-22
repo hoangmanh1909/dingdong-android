@@ -6,6 +6,7 @@ import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
 import com.ems.dingdong.model.response.DingDongGetCancelDeliveryResponse;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.network.NetWorkControllerGateWay;
 
 import java.util.List;
 
@@ -15,12 +16,12 @@ public class CancelBD13Interactor extends Interactor<CancelBD13Contract.Presente
     }
 
     @Override
-    public void getCancelDelivery(String postmanCode, String routeCode, String fromDate, String toDate, String ladingCode, CommonCallback<DingDongGetCancelDeliveryResponse> commonCallback) {
-        NetWorkController.getCancelDelivery(postmanCode,routeCode,fromDate,toDate,ladingCode,commonCallback);
+    public void getCancelDelivery(String postmanCode, String routeCode, String fromDate, String toDate, String ladingCode, CommonCallback<SimpleResult> commonCallback) {
+        NetWorkControllerGateWay.getCancelDelivery(postmanCode,routeCode,fromDate,toDate,ladingCode,commonCallback);
     }
 
     @Override
     public void cancelDelivery(DingDongCancelDeliveryRequest dingDongGetCancelDeliveryRequestList, CommonCallback<SimpleResult> callback) {
-        NetWorkController.cancelDelivery(dingDongGetCancelDeliveryRequestList,callback);
+        NetWorkControllerGateWay.cancelDelivery(dingDongGetCancelDeliveryRequestList,callback);
     }
 }

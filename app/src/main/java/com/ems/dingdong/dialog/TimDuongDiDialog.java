@@ -24,6 +24,7 @@ import com.ems.dingdong.model.AddressListModel;
 import com.ems.dingdong.model.Item;
 import com.ems.dingdong.model.VpostcodeModel;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.network.NetWorkControllerGateWay;
 import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.CustomBoldTextView;
@@ -99,7 +100,7 @@ public class TimDuongDiDialog extends Dialog {
         mLocation = getLastKnownLocation();
         listModels = new ArrayList<>();
         if (!edtSearch.getText().toString().isEmpty())
-            NetWorkController.vietmapSearch(edtSearch.getText().toString(), mLocation.getLongitude(), mLocation.getLatitude())
+            NetWorkControllerGateWay.vietmapSearch(edtSearch.getText().toString(), mLocation.getLongitude(), mLocation.getLatitude())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(simpleResult -> {
@@ -171,7 +172,7 @@ public class TimDuongDiDialog extends Dialog {
         mLocation = getLastKnownLocation();
         listModels = new ArrayList<>();
         if (!edtSearch.getText().toString().isEmpty())
-            NetWorkController.vietmapSearch(edtSearch.getText().toString(), mLocation.getLongitude(), mLocation.getLatitude())
+            NetWorkControllerGateWay.vietmapSearch(edtSearch.getText().toString(), mLocation.getLongitude(), mLocation.getLatitude())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(simpleResult -> {
@@ -244,7 +245,7 @@ public class TimDuongDiDialog extends Dialog {
             case R.id.ll_scan_qr:
                 mLocation = getLastKnownLocation();
                 listModels = new ArrayList<>();
-                NetWorkController.vietmapSearch(edtSearch.getText().toString(), mLocation.getLongitude(), mLocation.getLatitude())
+                NetWorkControllerGateWay.vietmapSearch(edtSearch.getText().toString(), mLocation.getLongitude(), mLocation.getLatitude())
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(simpleResult -> {
