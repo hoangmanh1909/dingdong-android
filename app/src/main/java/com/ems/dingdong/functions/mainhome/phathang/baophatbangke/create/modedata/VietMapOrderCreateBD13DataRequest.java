@@ -13,9 +13,9 @@ public class VietMapOrderCreateBD13DataRequest {
     @SerializedName("OrderNumber")
     private String OrderNumber;
     @SerializedName("ReceiverLat")
-    private String ReceiverLat;
+    private double ReceiverLat;
     @SerializedName("ReceiverLon")
-    private String ReceiverLon;
+    private double ReceiverLon;
 
     public long getId() {
         return Id;
@@ -49,19 +49,19 @@ public class VietMapOrderCreateBD13DataRequest {
         OrderNumber = orderNumber;
     }
 
-    public String getReceiverLat() {
+    public double getReceiverLat() {
         return ReceiverLat;
     }
 
-    public void setReceiverLat(String receiverLat) {
+    public void setReceiverLat(double receiverLat) {
         ReceiverLat = receiverLat;
     }
 
-    public String getReceiverLon() {
+    public double getReceiverLon() {
         return ReceiverLon;
     }
 
-    public void setReceiverLon(String receiverLon) {
+    public void setReceiverLon(double receiverLon) {
         ReceiverLon = receiverLon;
     }
 }

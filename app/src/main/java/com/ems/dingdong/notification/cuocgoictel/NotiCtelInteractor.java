@@ -27,7 +27,7 @@ class NotiCtelInteractor extends Interactor<NotiCtelContract.Presenter>
 
     @Override
     public Single<SimpleResult> getHistoryCall(HistoryRequest historyRequest) {
-        return NetWorkController.getCallHistory(historyRequest);
+        return NetWorkControllerGateWay.getCallHistory(historyRequest);
     }
 
     @Override

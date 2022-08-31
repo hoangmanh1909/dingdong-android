@@ -16,7 +16,7 @@ import io.reactivex.Observable;
 
 public interface CancelBD13StatisticContract {
     interface Interactor extends IInteractor<Presenter> {
-        Observable<SimpleResult> getCancelDeliveryStatic(CancelDeliveryStatisticRequest request);
+        Observable<CancelDeliveryResult> getCancelDeliveryStatic(CancelDeliveryStatisticRequest request);
     }
 
     interface View extends PresentView<Presenter> {

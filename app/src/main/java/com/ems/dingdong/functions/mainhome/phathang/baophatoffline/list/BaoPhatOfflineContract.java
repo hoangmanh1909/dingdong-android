@@ -24,11 +24,11 @@ interface BaoPhatOfflineContract {
 
     interface Interactor extends IInteractor<Presenter> {
 
-        void searchParcelCodeDelivery(String parcelCode, CommonCallback<CommonObjectResult> callback);
+        void searchParcelCodeDelivery(String parcelCode, String signature, CommonCallback<CommonObjectResult> callback);
 
         void callForwardCallCenter(String callerNumber, String calleeNumber,
                                    String callForwardType, String hotlineNumber,
-                                   String ladingCode,  String PostmanId, String POCode, CommonCallback<SimpleResult> callback);
+                                   String ladingCode, String PostmanId, String POCode, CommonCallback<SimpleResult> callback);
 
         /**
          * Deliver success.
@@ -77,7 +77,7 @@ interface BaoPhatOfflineContract {
          *
          * @param commonObjects list chosen.
          */
-        void offlineDeliver(List<CommonObject> commonObjects);
+        void offlineDeliver(List<CommonObject> commonObjects, double deliveryLat, double deliveryLon, double receiverLat, double receiverLon);
 
         List<CommonObject> getOfflineRecord(Date from, Date to);
 

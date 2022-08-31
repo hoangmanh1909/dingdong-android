@@ -63,13 +63,13 @@ public class PushToPnsRequest {
     @SerializedName("FeeCancelOrder")
     private long feeCancelOrder;
     @SerializedName("DeliveryLat")
-    private String DeliveryLat;
+    private Double DeliveryLat;
     @SerializedName("DeliveryLon")
-    private String DeliveryLon;
+    private Double DeliveryLon;
     @SerializedName("ReceiverLat")
-    private String ReceiverLat;
+    private Double ReceiverLat;
     @SerializedName("ReceiverLon")
-    private String ReceiverLon;
+    private Double ReceiverLon;
     @SerializedName("PODeliveryLat")
     private String PODeliveryLat;
     @SerializedName("PODeliveryLon")
@@ -126,14 +126,14 @@ public class PushToPnsRequest {
                             String note, String collectAmount, String ladingPostmanID,
                             String shiftID, String routeCode, String signature, String imageDelivery, String isItemReturn, String batchCode,
                             Integer itemsInBatch, String amountForBatch, boolean isCancelOrder, long feeCancelOrder, String postmanTel, String postmanCode,
-                            String DeliveryLat,
-                            String DeliveryLon,
-                            String ReceiverLat,
-                            String ReceiverLon,
+                            Double DeliveryLat,
+                            Double DeliveryLon,
+                            Double ReceiverLat,
+                            Double ReceiverLon,
                             String PODeliveryLat,
                             String PODeliveryLon,
                             String EstimateProcessTime,
-                            String SourceChanel,String ReasonCancelOrder) {
+                            String SourceChanel, String ReasonCancelOrder) {
         this.EstimateProcessTime = EstimateProcessTime;
         this.SourceChanel = SourceChanel;
         this.postmanID = postmanID;

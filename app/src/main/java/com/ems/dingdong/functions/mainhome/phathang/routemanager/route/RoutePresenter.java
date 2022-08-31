@@ -348,17 +348,17 @@ public class RoutePresenter extends Presenter<RouteConstract.View, RouteConstrac
 
     @Override
     public void getRouteByPoCode(String poCode) {
-        mInteractor.getRouteByPoCode(poCode, new CommonCallback<SimpleResult>((Context) mContainerView) {
+        mInteractor.getRouteByPoCode(poCode, new CommonCallback<RouteInfoResult>((Context) mContainerView) {
             @Override
-            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+            protected void onSuccess(Call<RouteInfoResult> call, Response<RouteInfoResult> response) {
                 super.onSuccess(call, response);
                 assert response.body() != null;
-                ArrayList<RouteInfo> arrayList = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<RouteInfo>>(){}.getType());
-                mView.showRoute(arrayList);
+//                ArrayList<RouteInfo> arrayList = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<RouteInfo>>(){}.getType());
+                mView.showRoute(response.body().getRouteInfos());
             }
 
             @Override
-            protected void onError(Call<SimpleResult> call, String message) {
+            protected void onError(Call<RouteInfoResult> call, String message) {
                 super.onError(call, message);
             }
         });

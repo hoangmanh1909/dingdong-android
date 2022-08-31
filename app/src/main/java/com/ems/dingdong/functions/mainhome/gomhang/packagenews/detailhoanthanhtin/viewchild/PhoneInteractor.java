@@ -32,7 +32,7 @@ class PhoneInteractor extends Interactor<PhoneContract.Presenter>
 
     @Override
     public Single<SimpleResult> ddCall(CallLiveMode callLiveMode) {
-        return NetWorkController.ddCall(callLiveMode);
+        return NetWorkControllerGateWay.ddCall(callLiveMode);
     }
 
 }

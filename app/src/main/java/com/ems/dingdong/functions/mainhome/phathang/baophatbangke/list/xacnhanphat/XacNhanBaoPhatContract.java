@@ -50,7 +50,7 @@ public interface XacNhanBaoPhatContract {
          *
          * @param code reason code.
          */
-        void getSolutionByReasonCode(String code, CommonCallback<SimpleResult> commonCallback);
+        void getSolutionByReasonCode(String code, CommonCallback<SolutionResult> commonCallback);
 
         /**
          * Save image to server.
@@ -72,7 +72,7 @@ public interface XacNhanBaoPhatContract {
          */
 //        Single<DeliveryCheckAmountPaymentResult> paymentDelivery(List<PaypostPaymentRequest> request);
 
-        Single<SimpleResult> checkDeliverySuccess(DeliverySuccessRequest request);
+        Single<DeliveryCheckAmountPaymentResult> checkDeliverySuccess(DeliverySuccessRequest request);
 
         Single<SimpleResult> paymentV2(DeliveryPaymentV2 request);
 
@@ -87,7 +87,7 @@ public interface XacNhanBaoPhatContract {
          *
          * @param poCode post code. This can be get in UserInfo that has been saved in share pref.
          */
-        void getRouteByPoCode(String poCode, CommonCallback<SimpleResult> callback);
+        void getRouteByPoCode(String poCode, CommonCallback<RouteInfoResult> callback);
 
         /**
          * Get all post man in a route.

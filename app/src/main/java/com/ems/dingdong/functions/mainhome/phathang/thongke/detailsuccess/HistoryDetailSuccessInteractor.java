@@ -20,8 +20,7 @@ class HistoryDetailSuccessInteractor extends Interactor<HistoryDetailSuccessCont
 
 
     @Override
-    public void statisticDeliveryGeneral(String postmanID, String fromDate, String toDate, StatisticType statisticType, String routeCode, CommonCallback<SimpleResult> callback) {
-
+    public void statisticDeliveryGeneral(String postmanID, String fromDate, String toDate, StatisticType statisticType, String routeCode, CommonCallback<StatisticDeliveryGeneralResult> callback) {
         switch (statisticType) {
             case CONTINUOUS_DELIVERY:
                 NetWorkControllerGateWay.getLadingStatusGeneral(postmanID, fromDate, toDate, Constants.CONTINUOUS_DELIVERY_CODE, routeCode, callback);

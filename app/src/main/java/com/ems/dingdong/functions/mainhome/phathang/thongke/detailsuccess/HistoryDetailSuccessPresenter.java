@@ -58,14 +58,14 @@ public class HistoryDetailSuccessPresenter extends Presenter<HistoryDetailSucces
         mFromDate = fromDate;
         mToDate = toDate;
         mView.showProgress();
-        mInteractor.statisticDeliveryGeneral(postmanID, fromDate, toDate, mStatisticType, routeCode, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+        mInteractor.statisticDeliveryGeneral(postmanID, fromDate, toDate, mStatisticType, routeCode, new CommonCallback<StatisticDeliveryGeneralResult>((Activity) mContainerView) {
             @Override
-            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+            protected void onSuccess(Call<StatisticDeliveryGeneralResult> call, Response<StatisticDeliveryGeneralResult> response) {
                 super.onSuccess(call, response);
                 mView.hideProgress();
                 if (response.body().getErrorCode().equals("00")) {
-                    ArrayList<StatisticDeliveryGeneralResponse> deliveryGeneralResponses = NetWorkControllerGateWay.getGson().fromJson(response.body().getData(),new TypeToken<ArrayList<StatisticDeliveryGeneralResponse>>(){}.getType());
-                    mView.showListSuccess(Utils.getGeneralList(deliveryGeneralResponses));
+//                    ArrayList<StatisticDeliveryGeneralResponse> deliveryGeneralResponses = NetWorkControllerGateWay.getGson().fromJson(response.body().getData(),new TypeToken<ArrayList<StatisticDeliveryGeneralResponse>>(){}.getType());
+                    mView.showListSuccess(Utils.getGeneralList(response.body().getStatisticDeliveryGeneralResponses()));
 
                 } else {
                     mView.showErrorToast(response.body().getMessage());
@@ -73,7 +73,7 @@ public class HistoryDetailSuccessPresenter extends Presenter<HistoryDetailSucces
             }
 
             @Override
-            protected void onError(Call<SimpleResult> call, String message) {
+            protected void onError(Call<StatisticDeliveryGeneralResult> call, String message) {
                 super.onError(call, message);
                 mView.hideProgress();
                 mView.showErrorToast(message);

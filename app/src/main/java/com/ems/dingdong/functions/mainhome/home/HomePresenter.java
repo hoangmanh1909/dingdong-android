@@ -19,6 +19,8 @@ import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.response.GetMainViewResponse;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.Log;
+import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.concurrent.TimeUnit;
@@ -92,7 +94,8 @@ public class HomePresenter extends Presenter<HomeContract.View, HomeContract.Int
                 super.onSuccess(call, response);
                 mView.hideProgress();
                 if (response.body().getErrorCode().equals("00")) {
-                    mView.showObjectSuccess(response.body());
+                    Log.d("AAAASDASD",new Gson().toJson(response.body()) );
+//                    mView.showObjectSuccess(response.body());
                 } else {
                     mView.showErrorToast(response.body().getMessage());
                     mView.showObjectEmpty();
@@ -139,13 +142,14 @@ public class HomePresenter extends Presenter<HomeContract.View, HomeContract.Int
     @Override
     public void getDeliveryMainView(String fromDate, String toDate, String postmanCode, String routeCode, String funcRequest) {
         mView.showProgress();
-        mInteractor.getDeliveryMainView(fromDate,toDate,postmanCode, routeCode,funcRequest,new CommonCallback<SimpleResult>((Activity) mContainerView) {
+        mInteractor.getDeliveryMainView(fromDate, toDate, postmanCode, routeCode, funcRequest, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
                 mView.hideProgress();
                 if (response.body().getErrorCode().equals("00")) {
-                    GetMainViewResponse mainViewResponse = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<GetMainViewResponse>(){}.getType());
+                    GetMainViewResponse mainViewResponse = NetWorkController.getGson().fromJson(response.body().getData(), new TypeToken<GetMainViewResponse>() {
+                    }.getType());
                     mView.showGetDeliveryMainView(mainViewResponse);
                 } else {
                     mView.showErrorToast(response.body().getMessage());
@@ -165,14 +169,15 @@ public class HomePresenter extends Presenter<HomeContract.View, HomeContract.Int
     @Override
     public void getPickUpMainView(String fromDate, String toDate, String postmanCode, String routeCode, String funcRequest) {
         mView.showProgress();
-        mInteractor.getPickUpMainView(fromDate,toDate,postmanCode, routeCode,funcRequest,new CommonCallback<SimpleResult>((Activity) mContainerView) {
+        mInteractor.getPickUpMainView(fromDate, toDate, postmanCode, routeCode, funcRequest, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
                 mView.hideProgress();
                 if (response.body().getErrorCode().equals("00")) {
 //                    mView.showObjectSuccess(response.body());
-                    GetMainViewResponse mainViewResponse = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<GetMainViewResponse>(){}.getType());
+                    GetMainViewResponse mainViewResponse = NetWorkController.getGson().fromJson(response.body().getData(), new TypeToken<GetMainViewResponse>() {}.getType());
+                    Log.d("ASDASDASd", new Gson().toJson(mainViewResponse));
                     mView.showGetPickupMainView(mainViewResponse);
                 } else {
                     mView.showErrorToast(response.body().getMessage());

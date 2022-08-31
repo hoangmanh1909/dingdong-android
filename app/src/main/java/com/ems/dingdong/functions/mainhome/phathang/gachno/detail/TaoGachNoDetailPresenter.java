@@ -103,7 +103,8 @@ public class TaoGachNoDetailPresenter extends Presenter<TaoGachNoDetailContract.
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
                 if (response.body().getErrorCode().equals("00")) {
-                    ArrayList<ReasonInfo> reasonInfos = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<ReasonInfo>>(){}.getType());
+                    ArrayList<ReasonInfo> reasonInfos = NetWorkController.getGson().fromJson(response.body().getData(), new TypeToken<List<ReasonInfo>>() {
+                    }.getType());
                     mView.getReasonsSuccess(reasonInfos);
                 }
             }
@@ -205,19 +206,19 @@ public class TaoGachNoDetailPresenter extends Presenter<TaoGachNoDetailContract.
 
     @Override
     public void loadSolution(String code) {
-        mInteractor.getSolutionByReasonCode(code, new CommonCallback<SimpleResult>((Context) mContainerView) {
+        mInteractor.getSolutionByReasonCode(code, new CommonCallback<SolutionResult>((Context) mContainerView) {
             @Override
-            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+            protected void onSuccess(Call<SolutionResult> call, Response<SolutionResult> response) {
                 super.onSuccess(call, response);
                 if (response.body().getErrorCode().equals("00")) {
                     //  mListSolution = response.body().getSolutionInfos();
-                    ArrayList<SolutionInfo> solutionInfos = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<SolutionInfo>>(){}.getType());
-                    mView.showUISolution(solutionInfos);
+//                    ArrayList<SolutionInfo> solutionInfos = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<SolutionInfo>>(){}.getType());
+                    mView.showUISolution(response.body().getSolutionInfos());
                 }
             }
 
             @Override
-            protected void onError(Call<SimpleResult> call, String message) {
+            protected void onError(Call<SolutionResult> call, String message) {
                 super.onError(call, message);
             }
         });

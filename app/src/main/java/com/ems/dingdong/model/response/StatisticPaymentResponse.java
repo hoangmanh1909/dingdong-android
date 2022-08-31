@@ -4,33 +4,33 @@ import com.google.gson.annotations.SerializedName;
 
 public class StatisticPaymentResponse {
     @SerializedName("CollectAmount")
-    private String collectAmount;
+    private long collectAmount;
     @SerializedName("PaymentAmount")
-    private String paymentAmount;
+    private long paymentAmount;
     @SerializedName("DebitAmount")
-    private String debitAmount;
+    private long debitAmount;
 
-    public String getCollectAmount() {
+    public long getCollectAmount() {
         return collectAmount;
     }
 
-    public void setCollectAmount(String collectAmount) {
+    public void setCollectAmount(long collectAmount) {
         this.collectAmount = collectAmount;
     }
 
-    public String getPaymentAmount() {
+    public long getPaymentAmount() {
         return paymentAmount;
     }
 
-    public void setPaymentAmount(String paymentAmount) {
+    public void setPaymentAmount(long paymentAmount) {
         this.paymentAmount = paymentAmount;
     }
 
-    public String getDebitAmount() {
+    public long getDebitAmount() {
         return debitAmount;
     }
 
-    public void setDebitAmount(String debitAmount) {
+    public void setDebitAmount(long debitAmount) {
         this.debitAmount = debitAmount;
     }
 }

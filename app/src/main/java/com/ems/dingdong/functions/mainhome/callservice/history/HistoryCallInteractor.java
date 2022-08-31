@@ -19,7 +19,7 @@ class HistoryCallInteractor extends Interactor<HistoryCallContract.Presenter>
 
 
     @Override
-    public void searchCallCenter(String postmanID, String fromDate, String toDate, CommonCallback<SimpleResult> callback) {
+    public void searchCallCenter(String postmanID, String fromDate, String toDate, CommonCallback<HistoryCallResult> callback) {
         NetWorkControllerGateWay.searchCallCenter(postmanID, fromDate, toDate, callback);
     }
 }

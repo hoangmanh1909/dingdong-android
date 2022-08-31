@@ -13,8 +13,8 @@
             android:id="@+id/tv_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toStartOf="@+id/ll_right"
             android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_toStartOf="@+id/ll_right"
             android:padding="@dimen/_5sdp"
             android:textColor="@color/black" />
 

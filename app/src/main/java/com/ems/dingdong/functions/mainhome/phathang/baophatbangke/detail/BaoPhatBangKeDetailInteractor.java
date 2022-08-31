@@ -35,14 +35,14 @@ class BaoPhatBangKeDetailInteractor extends Interactor<BaoPhatBangKeDetailContra
     }
 
     @Override
-    public void getSolutionByReasonCode(String code, CommonCallback<SimpleResult> commonCallback) {
+    public void getSolutionByReasonCode(String code, CommonCallback<SolutionResult> commonCallback) {
         NetWorkControllerGateWay.getSolutionByReasonCode(code, commonCallback);
     }
 
 
     @Override
     public void getInquiryAmount(String parcelCode, CommonCallback<InquiryAmountResult> callback) {
-        NetWorkController.getInquiryAmount(parcelCode, callback);
+        NetWorkControllerGateWay.getInquiryAmount(parcelCode, callback);
     }
 
     @Override

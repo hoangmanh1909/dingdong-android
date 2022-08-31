@@ -28,7 +28,7 @@ class LocationInteractor extends Interactor<LocationContract.Presenter>
     }    @Override
 
     public Single<SimpleResult> ddCall(CallLiveMode callLiveMode) {
-        return NetWorkController.ddCall(callLiveMode);
+        return NetWorkControllerGateWay.ddCall(callLiveMode);
     }
 
 
@@ -40,6 +40,6 @@ class LocationInteractor extends Interactor<LocationContract.Presenter>
 
     @Override
     public Single<SimpleResult> getHistoryCall(HistoryRequest historyRequest) {
-        return NetWorkController.getCallHistory(historyRequest);
+        return NetWorkControllerGateWay.getCallHistory(historyRequest);
     }
 }

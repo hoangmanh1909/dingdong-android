@@ -18,7 +18,7 @@ class StatisticInteractor extends Interactor<StatisticContract.Presenter>
     }
 
     @Override
-    public void searchDeliveryStatistic(String fromDate, String toDate, String status, String postmanId, String routeCode, CommonCallback<SimpleResult> callback) {
+    public void searchDeliveryStatistic(String fromDate, String toDate, String status, String postmanId, String routeCode, CommonCallback<CommonObjectListResult> callback) {
         NetWorkControllerGateWay.searchDeliveryStatistic(fromDate, toDate, status, postmanId, routeCode, callback);
     }
 }

@@ -26,13 +26,13 @@ class BaoPhatKhongThanhCongInteractor extends Interactor<BaoPhatKhongThanhCongCo
 
 
     @Override
-    public void getSolutionByReasonCode(String code, CommonCallback<SimpleResult> commonCallback) {
+    public void getSolutionByReasonCode(String code, CommonCallback<SolutionResult> commonCallback) {
         NetWorkControllerGateWay.getSolutionByReasonCode(code, commonCallback);
     }
 
     @Override
     public void checkLadingCode(String parcelCode, CommonCallback<SimpleResult> callback) {
-        NetWorkController.checkLadingCode(parcelCode, callback);
+        NetWorkControllerGateWay.checkLadingCode(parcelCode, callback);
     }
 
     @Override

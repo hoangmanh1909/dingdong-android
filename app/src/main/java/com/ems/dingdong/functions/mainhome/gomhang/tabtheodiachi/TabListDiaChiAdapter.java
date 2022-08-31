@@ -23,7 +23,7 @@ public class TabListDiaChiAdapter extends FragmentStatePagerAdapter {
 
     TabListDiaChiAdapter(FragmentManager fm, int type, Context context, List<ViewFragment> tabs) {
         super(fm);
-        mContext = context;
+          mContext = context;
         this.tabs = tabs;
         this.type = type;
         if (type == 1) {

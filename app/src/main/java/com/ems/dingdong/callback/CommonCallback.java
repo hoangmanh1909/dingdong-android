@@ -96,7 +96,8 @@ public class CommonCallback<T extends SimpleResult> implements Callback<T> {
         } else {
             try {
                 this.onError(call, "Lỗi kết nối hệ thống");
-            }catch (Exception exception){}
+            } catch (Exception exception) {
+            }
 
         }
     }

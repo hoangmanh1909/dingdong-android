@@ -399,7 +399,6 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                 });
 
                 //Button ...
-
                 // goi cho nguoi gui
                 holder.img_ContactPhone_extend.setOnClickListener(v -> {
                     try {
@@ -431,7 +430,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                                     mPresenter.callForward(phone, mAdapter.getListFilter().get(position).getMaE());
                                 } else {
                                     if (mAdapter.getListFilter().get(position).getSenderBookingPhone() == null ||
-                                            !TextUtils.isEmpty(mAdapter.getListFilter().get(position).getSenderBookingPhone())) {
+                                            TextUtils.isEmpty(mAdapter.getListFilter().get(position).getSenderBookingPhone())) {
                                         Toast.showToast(getViewContext(), "Bưu gửi chưa được booking thành công. Vui lòng gọi điện thoại qua sim của bưu tá");
                                         return;
                                     }
@@ -446,7 +445,6 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                                     }
                                     Toast.showToast(getViewContext(), "Thiết bị chưa kết nối internet");
                                 }
-
 
                             } catch (Exception e) {
                                 e.getMessage();
@@ -538,7 +536,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                                     mPresenter.callForward(phone, mAdapter.getListFilter().get(position).getMaE());
                                 } else {
                                     if (mAdapter.getListFilter().get(position).getSenderBookingPhone() == null ||
-                                            !TextUtils.isEmpty(mAdapter.getListFilter().get(position).getReceiverBookingPhone())) {
+                                            TextUtils.isEmpty(mAdapter.getListFilter().get(position).getReceiverBookingPhone())) {
                                         Toast.showToast(getViewContext(), "Bưu gửi chưa được booking thành công. Vui lòng gọi điện thoại qua sim của bưu tá");
                                         return;
                                     }
@@ -606,7 +604,6 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                     }).show();
                 });
 
-
                 holder.imgAddress.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -669,6 +666,10 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         }
         try {
             mPresenter.getMapVitri(new GetLocation().getLastKnownLocation(getViewContext()).getLongitude(), new GetLocation().getLastKnownLocation(getViewContext()).getLatitude());
+            Log.d("ASDSADSADASDSAD",
+                    new GetLocation().getLastKnownLocation(getViewContext()).getLongitude() +
+                            "," +
+                            new GetLocation().getLastKnownLocation(getViewContext()).getLatitude());
         } catch (Exception e) {
         }
     }
@@ -1299,7 +1300,11 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
     @Override
     public void showList(VpostcodeModel getListVpostV1) {
-        vpostcodeModels = getListVpostV1;
+        if (getListVpostV1 == null) {
+            vpostcodeModels.setLatitude(new GetLocation().getLastKnownLocation(getViewContext()).getLongitude());
+            vpostcodeModels.setLongitude(new GetLocation().getLastKnownLocation(getViewContext()).getLatitude());
+        } else
+            vpostcodeModels = getListVpostV1;
     }
 
     @Override

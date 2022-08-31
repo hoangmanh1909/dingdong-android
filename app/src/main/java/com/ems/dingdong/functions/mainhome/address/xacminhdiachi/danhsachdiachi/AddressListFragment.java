@@ -151,7 +151,10 @@ public class AddressListFragment extends ViewFragment<AddressListContract.Presen
                     });
                     holder.delete.setOnClickListener(v -> {
                         mListObjectV12.remove(position);
-                        mListObjectVNext.remove(position + 1);
+                        if (mListObjectVNext.size() == 0)
+                            mListObjectVNext.remove(position);
+                        else
+                            mListObjectVNext.remove(position + 1);
                         addressListAdapterV12.notifyDataSetChanged();
                     });
                 }
@@ -234,7 +237,7 @@ public class AddressListFragment extends ViewFragment<AddressListContract.Presen
                             return;
                         }
                     }
-                    Log.d("thasndasdasd",new Gson().toJson(mListObjectVNext));
+                    Log.d("thasndasdasd", new Gson().toJson(mListObjectVNext));
                     new DigLogChiDanDuong(getContext(), new SapXepCallback() {
                         @Override
                         public void onResponse(int type) {

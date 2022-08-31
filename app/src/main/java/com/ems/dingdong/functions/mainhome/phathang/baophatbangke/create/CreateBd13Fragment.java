@@ -434,8 +434,9 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
                         request.setId(i.getId());
                         request.setLadingCode(i.getMaE());
                         request.setReceiverAddress(i.getReciverAddress());
-                        request.setReceiverLat(i.getReceiverLat());
-                        request.setReceiverLon(i.getReceiverLon());
+                        Log.d("ASDSDSDASDSDASDSD",new Gson().toJson(i));
+                        request.setReceiverLat((i.getReceiverLat() == null || i.getReceiverLat().isEmpty()) ?  0.0 :Double.parseDouble(i.getReceiverLat()));
+                        request.setReceiverLon((i.getReceiverLat() == null || i.getReceiverLat().isEmpty()) ? 0.0:  Double.parseDouble(i.getReceiverLon()));
 //            request.setOrderNumber(String.valueOf(i.getReferenceCode()));
                         dataRequests.add(request);
                     }
@@ -456,7 +457,9 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
 //                            });
                             Bd13Create bd13Create = new Bd13Create();
                             List<Integer> ids = new ArrayList<>();
-
+                            for (DeliveryPostman i : deliveryPostmans) {
+                                ids.add(i.getId());
+                            }
                             bd13Create.setIds(ids);
                             bd13Create.setPostmanId(Integer.parseInt(userInfo.getiD()));
                             bd13Create.setPoDeliveryCode(userInfo.getUnitCode());

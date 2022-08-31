@@ -79,7 +79,8 @@ public class MainPresenter extends Presenter<MainContract.View, MainContract.Int
                 protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                     super.onSuccess(call, response);
                     mView.hideProgress();
-                    ArrayList<ShiftInfo> shiftInfos = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<ShiftInfo>>(){}.getType());
+                    ArrayList<ShiftInfo> shiftInfos = NetWorkController.getGson().fromJson(response.body().getData(), new TypeToken<List<ShiftInfo>>() {
+                    }.getType());
                     sharedPref.putString(Constants.KEY_POST_SHIFT, NetWorkController.getGson().toJson(shiftInfos));
                 }
 
@@ -177,6 +178,7 @@ public class MainPresenter extends Presenter<MainContract.View, MainContract.Int
 
     @Override
     public void getBalance() {
+
         SharedPref sharedPref = new SharedPref((Context) mContainerView);
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         UserInfo userInfo = null;
@@ -190,23 +192,42 @@ public class MainPresenter extends Presenter<MainContract.View, MainContract.Int
         if (!userJson.isEmpty()) {
             userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
         }
+        mInteractor.getBalance(userInfo.getiD(), postOffice.getCode(), userInfo.getMobileNumber(), fromDate, toDate)
+                .subscribeOn(Schedulers.io())
+                .delay(1000, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    try{
+                        if (simpleResult.getErrorCode().equals("00")) {
+//                            StatisticPaymentResponse paymentResponse = NetWorkController.getGson().fromJson(simpleResult.getValue(), new TypeToken<StatisticPaymentResponse>() {
+//                            }.getType());
+                            mView.updateBalance(simpleResult.getStatisticPaymentResponses());
+                        } else {
+                            Toast.showToast(getViewContext(), simpleResult.getMessage());
+                            mView.hideProgress();
+                        }
+                    }catch (Exception e){
+                        Log.d("ASDASDASDw1e123", "ASDAsdq2");
 
-        mInteractor.getBalance(userInfo.getiD(), postOffice.getCode(), userInfo.getMobileNumber(), fromDate, toDate,
-                new CommonCallback<SimpleResult>((Activity) mContainerView) {
-            @Override
-            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
-                mView.hideProgress();
-                if (getViewContext() != null){
-                    StatisticPaymentResponse paymentResponse = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<StatisticPaymentResponse>(){}.getType());
-                    mView.updateBalance(paymentResponse);
-                }
+                    }
 
-            }
-
-            @Override
-            protected void onError(Call<SimpleResult> call, String message) {
-            }
-        });
+                });
+//        mInteractor.getBalance(userInfo.getiD(), postOffice.getCode(), userInfo.getMobileNumber(), fromDate, toDate,
+//                new CommonCallback<StatisticPaymentResult>((Activity) mContainerView) {
+//            @Override
+//            protected void onSuccess(Call<StatisticPaymentResult> call, Response<StatisticPaymentResult> response) {
+//                if (response.body().getErrorCode().equals("00")){
+//                    Log.d("ASDASDASDw1e123","ASDAsdq2");
+//                    StatisticPaymentResponse paymentResponse = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<StatisticPaymentResponse>(){}.getType());
+//                    mView.updateBalance(paymentResponse);
+//                }
+//                mView.hideProgress();
+//            }
+//
+//            @Override
+//            protected void onError(Call<StatisticPaymentResult> call, String message) {
+//            }
+//        });
     }
 
     @Override
@@ -217,11 +238,12 @@ public class MainPresenter extends Presenter<MainContract.View, MainContract.Int
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
                 try {
+                    Log.d("ddGetBalance", new Gson().toJson(response.body()));
                     if (response.body().getErrorCode().equals("00")) {
                         mView.setBalance(response.body().getData());
                         mView.hideProgress();
                     } else {
-
+                        mView.setBalance(null);
                         mView.hideProgress();
                     }
                 } catch (Exception e) {
@@ -275,7 +297,6 @@ public class MainPresenter extends Presenter<MainContract.View, MainContract.Int
 
     @Override
     public void getMap() {
-
         mInteractor.getMap()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

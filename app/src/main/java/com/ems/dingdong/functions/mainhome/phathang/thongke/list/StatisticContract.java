@@ -26,7 +26,7 @@ interface StatisticContract {
          * @param routeCode from route id, it can be got from share preference on RouteInfo
          */
         void searchDeliveryStatistic(String fromDate, String toDate, String status,
-                                     String postmanId, String routeCode, CommonCallback<SimpleResult> callback);
+                                     String postmanId, String routeCode, CommonCallback<CommonObjectListResult> callback);
     }
 
     interface View extends PresentView<Presenter> {

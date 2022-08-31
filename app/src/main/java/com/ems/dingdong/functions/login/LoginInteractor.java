@@ -4,6 +4,7 @@ package com.ems.dingdong.functions.login;
 import android.net.Network;
 
 import com.core.base.viper.Interactor;
+import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.LoginResult;
 import com.ems.dingdong.model.PostOfficeResult;
@@ -28,8 +29,14 @@ class LoginInteractor extends Interactor<LoginContract.Presenter>
     }
 
     @Override
-    public void login(LoginRequest loginRequest, CommonCallback<SimpleResult> commonCallback) {
+    public void login(LoginRequest loginRequest, CommonCallback<LoginResult> commonCallback) {
         NetWorkControllerGateWay.loginAuthorized(loginRequest, commonCallback);
+//        NetWorkController.loginAuthorized(loginRequest.getMobileNumber(), loginRequest., BuildConfig.VERSION_NAME, "", signature);
+    }
+
+    @Override
+    public void login1(LoginRequest loginRequest, CommonCallback<LoginResult> commonCallback) {
+//        NetWorkController.loginAuthorized(loginRequest.getMobileNumber(), loginRequest.getSignCode(), BuildConfig.VERSION_NAME, "", signature);
     }
 
     @Override

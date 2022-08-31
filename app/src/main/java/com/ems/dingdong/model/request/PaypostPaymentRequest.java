@@ -115,13 +115,13 @@ public class PaypostPaymentRequest {
     private long cODAmountEdit;
 
     @SerializedName("DeliveryLat")
-    private String DeliveryLat;
+    private double DeliveryLat;
     @SerializedName("DeliveryLon")
-    private String DeliveryLon;
+    private double DeliveryLon;
     @SerializedName("ReceiverLat")
-    private String ReceiverLat;
+    private double ReceiverLat;
     @SerializedName("ReceiverLon")
-    private String ReceiverLon;
+    private double ReceiverLon;
     @SerializedName("PODeliveryLat")
     private String PODeliveryLat;
     @SerializedName("PODeliveryLon")
@@ -246,35 +246,35 @@ public class PaypostPaymentRequest {
         FeeCOD = feeCOD;
     }
 
-    public String getDeliveryLat() {
+    public double getDeliveryLat() {
         return DeliveryLat;
     }
 
-    public void setDeliveryLat(String deliveryLat) {
+    public void setDeliveryLat(double deliveryLat) {
         DeliveryLat = deliveryLat;
     }
 
-    public String getDeliveryLon() {
+    public double getDeliveryLon() {
         return DeliveryLon;
     }
 
-    public void setDeliveryLon(String deliveryLon) {
+    public void setDeliveryLon(double deliveryLon) {
         DeliveryLon = deliveryLon;
     }
 
-    public String getReceiverLat() {
+    public double getReceiverLat() {
         return ReceiverLat;
     }
 
-    public void setReceiverLat(String receiverLat) {
+    public void setReceiverLat(double receiverLat) {
         ReceiverLat = receiverLat;
     }
 
-    public String getReceiverLon() {
+    public double getReceiverLon() {
         return ReceiverLon;
     }
 
-    public void setReceiverLon(String receiverLon) {
+    public void setReceiverLon(double receiverLon) {
         ReceiverLon = receiverLon;
     }
 

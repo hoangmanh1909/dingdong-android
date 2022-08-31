@@ -17,7 +17,7 @@ interface HistoryDetailSuccessContract {
 
     interface Interactor extends IInteractor<Presenter> {
 
-        void statisticDeliveryGeneral(String postmanID, String fromDate, String toDate, StatisticType statisticType, String routeCode, CommonCallback<SimpleResult> statisticDeliveryGeneralResultCommonCallback);
+        void statisticDeliveryGeneral(String postmanID, String fromDate, String toDate, StatisticType statisticType, String routeCode, CommonCallback<StatisticDeliveryGeneralResult> statisticDeliveryGeneralResultCommonCallback);
     }
 
     interface View extends PresentView<Presenter> {

@@ -33,7 +33,7 @@ interface MainContract {
     interface Interactor extends IInteractor<Presenter> {
         void getShift(String code, CommonCallback<SimpleResult> callback);
 
-        void getBalance(String postmanID, String poCode, String phoneNumber, String fromDate, String toDate, CommonCallback<SimpleResult> callback);
+        Single<StatisticPaymentResult> getBalance(String postmanID, String poCode, String phoneNumber, String fromDate, String toDate);
 
         Single<TokenMoveCropResult> getAccessToken(String mobileNumber);
 
@@ -61,6 +61,7 @@ interface MainContract {
         void showVaoCa(String data);
 
         void showRaCa(String data);
+
         void showCallLog(String data);
 
         void showError();

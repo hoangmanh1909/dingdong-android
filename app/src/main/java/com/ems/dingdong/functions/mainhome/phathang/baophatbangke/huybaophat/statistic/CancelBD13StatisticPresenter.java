@@ -65,8 +65,8 @@ public class CancelBD13StatisticPresenter extends Presenter<CancelBD13StatisticC
                 .subscribe(
                         result -> {
                             if (result.getErrorCode().equals("00")) {
-                                List<CancelStatisticItem> statisticItemList = NetWorkController.getGson().fromJson(result.getData(),new TypeToken<List<CancelStatisticItem>>(){}.getType());
-                                map = groupByCancelStatisticMap(statisticItemList);
+//                                List<CancelStatisticItem> statisticItemList = NetWorkController.getGson().fromJson(result.getData(),new TypeToken<List<CancelStatisticItem>>(){}.getType());
+                                map = groupByCancelStatisticMap(result.getStatisticItemList());
                                 mView.showListSuccess(groupByCancelStatisticList(map));
                             } else {
                                 mView.showError(result.getMessage());

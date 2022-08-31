@@ -77,7 +77,8 @@ public class XacNhanConfirmPresenter extends Presenter<XacNhanConfirmContract.Vi
                 super.onSuccess(call, response);
                 mView.hideProgress();
                 if (response.body().getErrorCode().equals("00")) {
-                    ConfirmAllOrderPostman confirmAllOrderPostman = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<ConfirmAllOrderPostman>(){}.getType());
+                    ConfirmAllOrderPostman confirmAllOrderPostman = NetWorkController.getGson().fromJson(response.body().getData(), new TypeToken<ConfirmAllOrderPostman>() {
+                    }.getType());
                     mView.showResult(confirmAllOrderPostman);
                 } else {
                     mView.showError(response.body().getMessage());
@@ -106,16 +107,20 @@ public class XacNhanConfirmPresenter extends Presenter<XacNhanConfirmContract.Vi
 
     @Override
     public void getRouteByPoCode(String poCode) {
-        mInteractor.getRouteByPoCode(poCode, new CommonCallback<SimpleResult>((Context) mContainerView) {
+        mInteractor.getRouteByPoCode(poCode, new CommonCallback<RouteInfoResult>((Context) mContainerView) {
             @Override
-            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+            protected void onSuccess(Call<RouteInfoResult> call, Response<RouteInfoResult> response) {
                 super.onSuccess(call, response);
-                ArrayList<RouteInfo> routeInfos = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<RouteInfo>>(){}.getType());
-                mView.showRoute(routeInfos);
+//                ArrayList<RouteInfo> routeInfos = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<RouteInfo>>(){}.getType());
+                try {
+                    mView.showRoute(response.body().getRouteInfos());
+                } catch (Exception e) {
+                    e.getMessage();
+                }
             }
 
             @Override
-            protected void onError(Call<SimpleResult> call, String message) {
+            protected void onError(Call<RouteInfoResult> call, String message) {
                 super.onError(call, message);
             }
         });
@@ -127,7 +132,8 @@ public class XacNhanConfirmPresenter extends Presenter<XacNhanConfirmContract.Vi
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
-                ArrayList<UserInfo> userInfos = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<UserInfo>>(){}.getType());
+                ArrayList<UserInfo> userInfos = NetWorkController.getGson().fromJson(response.body().getData(), new TypeToken<List<UserInfo>>() {
+                }.getType());
                 mView.showPostman(userInfos);
             }
 

@@ -495,11 +495,11 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         }
 
         for (int i = 0; i < mBaoPhatBangke.size(); i++) {
-            String setDeliveryLat = "";
-            String setDeliveryLon = "";
+            double setDeliveryLat = 0.0;
+            double setDeliveryLon = 0.0;
             if (mLocation != null) {
-                setDeliveryLat = String.valueOf(mLocation.getLatitude());
-                setDeliveryLon = String.valueOf(mLocation.getLongitude());
+                setDeliveryLat = mLocation.getLatitude();
+                setDeliveryLon = mLocation.getLongitude();
             }
             mBaoPhatBangke.get(i).setDeliveryLat(setDeliveryLat);
             mBaoPhatBangke.get(i).setDeliveryLon(setDeliveryLon);
@@ -593,6 +593,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                     @Override
                     public void onResponse(String id) {
                         if (id.equals("GOI")) {
+                            llTongTienTamThu.setVisibility(View.GONE);
+                            ll_tong_tien_tam_thu1.setVisibility(View.GONE);
                             mPresenter.callForwardEditCOD(mBaoPhatBangke.get(0).getSenderMobile(), mBaoPhatBangke.get(0).getMaE());
 //                        }
 //                            if (!NetworkUtils.isNoNetworkAvailable(getViewContext())) {
@@ -935,7 +937,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         ;
         listImageDelivery = new ArrayList<>();
         imageDeliveryAdapter = new
-
                 ImageAdapter(getViewContext(), listImageDelivery) {
                     @Override
                     public void onBindViewHolder(@NonNull HolderView holder, int position) {
@@ -1016,6 +1017,39 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         checkVerify();
 
         EditTextUtils.editTextListener(et_pt_amount);
+
+        et_pt_amount.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                et_pt_amount.removeTextChangedListener(this);
+                if (!TextUtils.isEmpty(s.toString())) {
+                    try {
+                        if ((totalFee + totalAmount) > 0) {
+                            et_pt_amount.setText(NumberUtils.formatVinatti(Long.parseLong(s.toString().replace(".", ""))));
+                            tv_pt_amount_r.setText(NumberUtils.formatVinatti((totalFee + totalAmount) - Long.parseLong(s.toString().replace(".", ""))));
+                        } else
+                            et_pt_amount.setText(NumberUtils.formatVinatti(Long.parseLong(s.toString().replace(".", ""))));
+                    } catch (Exception ex) {
+                        com.ems.dingdong.utiles.Logger.w(ex);
+                    }
+                } else {
+                    et_pt_amount.setText("0");
+                    tv_pt_amount_r.setText("0");
+                }
+                et_pt_amount.addTextChangedListener(this);
+                et_pt_amount.setSelection(et_pt_amount.getText().length());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         recyclerds.setVisibility(View.GONE);
         for (
                 int i = 0; i < mBaoPhatBangke.size(); i++) {
@@ -1490,14 +1524,18 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 }
                 break;
             case R.id.rl_image_partial_d:
-                new DiallogChonAnh(getViewContext(), new ChonAnhCallback() {
-                    @Override
-                    public void onResponse(int type) {
-                        if (type == 2) {
-                            setIsCapture("PARTIAL_D");
-                        } else pickImage("PARTIAL_D", 10);
-                    }
-                }).show();
+                if (listImageDelivery.size() < 3)
+                    new DiallogChonAnh(getViewContext(), new ChonAnhCallback() {
+                        @Override
+                        public void onResponse(int type) {
+                            if (type == 2) {
+                                setIsCapture("PARTIAL_D");
+                            } else pickImage("PARTIAL_D", 10);
+                        }
+                    }).show();
+                else {
+                    showErrorToast(getString(R.string.do_not_allow_take_over_three_photos));
+                }
                 break;
             case R.id.rl_image_partial_r:
                 if (listImageRefund.size() < 3) {
@@ -1509,6 +1547,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                             } else pickImage("PARTIAL_R", 3);
                         }
                     }).show();
+                } else {
+                    showErrorToast(getString(R.string.do_not_allow_take_over_three_photos));
                 }
                 break;
             case R.id.edt_date_of_birth:
@@ -2023,7 +2063,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                                         tiem_tam, edtNote.getText().toString()
                                         , IsExchange, mBuuCuc, mTuyen,
                                         mExchangeLadingCode, mExchangeDeliveryDate,
-                                        mExchangeDeliveryTime, mExchangeDetails, imgAnhHoanTra, idXaphuong,phoneCodeEdit.getId());
+                                        mExchangeDeliveryTime, mExchangeDetails, imgAnhHoanTra, idXaphuong, phoneCodeEdit.getId());
                             } else {
                                 mPresenter.paymentDelivery(mFile, mFileAvatar + ";" + mFileVerify + ";" + mFileOther
                                         , mSign, edtReceiverName.getText().toString(),
@@ -2031,7 +2071,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                                         checkBoxedtCod.isChecked(), tiem_tam, edtNote.getText().toString()
                                         , IsExchange, mBuuCuc, mTuyen,
                                         mExchangeLadingCode, mExchangeDeliveryDate,
-                                        mExchangeDeliveryTime, mExchangeDetails, imgAnhHoanTra, idXaphuong,phoneCodeEdit.getId());
+                                        mExchangeDeliveryTime, mExchangeDetails, imgAnhHoanTra, idXaphuong, phoneCodeEdit.getId());
                             }
                         } else {
                             if (totalAmount > 0) {
@@ -2269,8 +2309,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
         request.setDeliveryLat(item.getDeliveryLat());
         request.setDeliveryLon(item.getDeliveryLon());
-        request.setReceiverLat(item.getReceiverLat());
-        request.setReceiverLon(item.getReceiverLon());
+        request.setReceiverLat(Double.parseDouble(item.getReceiverLat()));
+        request.setReceiverLon(Double.parseDouble(item.getReceiverLon()));
         request.setSourceChanel("DD_ANDROID");
 
         request.setPODeliveryLat(NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLat());
@@ -2405,7 +2445,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             return BitmapUtils.processingBitmap(uri, getViewContext());
         }).subscribeOn(Schedulers.computation())
                 .observeOn(Schedulers.io())
-                .map(bitmap -> BitmapUtils.saveImage(bitmap, file.getParent(), "Process_" + file.getName(), Bitmap.CompressFormat.JPEG, 50))
+                .map(bitmap -> BitmapUtils.saveImage(bitmap, file.getParent(), "Process_" + file.getName(), Bitmap.CompressFormat.JPEG, 40))
                 .observeOn(AndroidSchedulers.mainThread()).subscribe(
                 isSavedImage -> {
                     if (true) {
@@ -2461,7 +2501,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             return BitmapUtils.processingBitmap(uri, getViewContext());
         }).subscribeOn(Schedulers.computation())
                 .observeOn(Schedulers.io())
-                .map(bitmap -> BitmapUtils.saveImage(bitmap, file.getParent(), "Process_" + file.getName(), Bitmap.CompressFormat.JPEG, 60))
+                .map(bitmap -> BitmapUtils.saveImage(bitmap, file.getParent(), "Process_" + file.getName(), Bitmap.CompressFormat.JPEG, 40))
                 .observeOn(AndroidSchedulers.mainThread()).subscribe(
                 isSavedImage -> {
                     if (isSavedImage) {

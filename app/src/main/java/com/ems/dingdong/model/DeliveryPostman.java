@@ -183,13 +183,13 @@ public class DeliveryPostman implements Comparable {
     String SenderVpostcode;
 
     @SerializedName("DeliveryLat")
-    private String DeliveryLat;
+    private double DeliveryLat;
     @SerializedName("DeliveryLon")
-    private String DeliveryLon;
+    private double DeliveryLon;
     @SerializedName("ReceiverLat")
     private String ReceiverLat;
     @SerializedName("ReceiverLon")
-    private String ReceiverLon;
+    private String ReceiverLon ;
     @SerializedName("PODeliveryLat")
     private String PODeliveryLat;
     @SerializedName("PODeliveryLon")
@@ -347,19 +347,19 @@ public class DeliveryPostman implements Comparable {
         isCheck = check;
     }
 
-    public String getDeliveryLat() {
+    public double getDeliveryLat() {
         return DeliveryLat;
     }
 
-    public void setDeliveryLat(String deliveryLat) {
+    public void setDeliveryLat(double deliveryLat) {
         DeliveryLat = deliveryLat;
     }
 
-    public String getDeliveryLon() {
+    public double getDeliveryLon() {
         return DeliveryLon;
     }
 
-    public void setDeliveryLon(String deliveryLon) {
+    public void setDeliveryLon(double deliveryLon) {
         DeliveryLon = deliveryLon;
     }
 

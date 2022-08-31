@@ -171,7 +171,8 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
                 if (response.body().getErrorCode().equals("00")) {
-                    ArrayList<ReasonInfo> reasonInfos = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<ReasonInfo>>(){}.getType());
+                    ArrayList<ReasonInfo> reasonInfos = NetWorkController.getGson().fromJson(response.body().getData(), new TypeToken<List<ReasonInfo>>() {
+                    }.getType());
                     mView.getReasonsSuccess(reasonInfos);
                 }
             }
@@ -221,7 +222,13 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
                 amount, mBaoPhatBangke.getiD(), shiftId, mBaoPhatBangke.getRouteCode(), signature,
                 mBaoPhatBangke.getImageDelivery(), "N", mBaoPhatBangke.getBatchCode(), 0,
                 "", false, 0, "", "",
-                "", "", "", "", "", "", "", "DD_ANDROID", "");
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                "", "",
+                "", "DD_ANDROID",
+                "");
         mInteractor.pushToPNSDelivery(request, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
@@ -283,18 +290,18 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
 
     @Override
     public void loadSolution(String code) {
-        mInteractor.getSolutionByReasonCode(code, new CommonCallback<SimpleResult>((Context) mContainerView) {
+        mInteractor.getSolutionByReasonCode(code, new CommonCallback<SolutionResult>((Context) mContainerView) {
             @Override
-            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+            protected void onSuccess(Call<SolutionResult> call, Response<SolutionResult> response) {
                 super.onSuccess(call, response);
                 if (response.body().getErrorCode().equals("00")) {
-                    ArrayList<SolutionInfo> solutionInfos = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<SolutionInfo>>(){}.getType());
-                    mView.showSolution(solutionInfos);
+//                    ArrayList<SolutionInfo> solutionInfos = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<SolutionInfo>>(){}.getType());
+                    mView.showSolution(response.body().getSolutionInfos());
                 }
             }
 
             @Override
-            protected void onError(Call<SimpleResult> call, String message) {
+            protected void onError(Call<SolutionResult> call, String message) {
                 super.onError(call, message);
             }
         });
@@ -346,7 +353,7 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
                         "", amount, mBaoPhatBangke.getiD(), shiftId, mBaoPhatBangke.getRouteCode(),
                         signature, mBaoPhatBangke.getImageDelivery(), "N", "",
                         0, "", false, 0, "", "",
-                        "", "", "", "", "", "", "", "DD_ANDROID", "");
+                        0.0, 0.0, 0.0, 0.0, "", "", "", "DD_ANDROID", "");
                 mInteractor.pushToPNSDelivery(request,
                         new CommonCallback<SimpleResult>((Activity) mContainerView) {
                             @Override

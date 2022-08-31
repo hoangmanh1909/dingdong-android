@@ -39,17 +39,17 @@ class XacNhanDiaChiInteractor extends Interactor<XacNhanDiaChiContract.Presenter
 //    }
     @Override
     public Single<VerifyAddressRespone> ddVerifyAddress(VerifyAddress verifyAddress) {
-        return NetWorkController.ddVerifyAddress(verifyAddress);
+        return NetWorkControllerGateWay.vietmapddVerifyAddress(verifyAddress);
     }
 
     @Override
     public Single<XacMinhRespone> ddCreateVietMapRequest(CreateVietMapRequest createVietMapRequest) {
-        return NetWorkController.ddCreateVietMapRequest(createVietMapRequest);
+        return NetWorkControllerGateWay.vietmapddCreateVietMapRequest(createVietMapRequest);
     }
 
     @Override
     public Single<SimpleResult> ddSreachPhone(PhoneNumber dataRequestPayment) {
-        return NetWorkController.ddSreachPhone(dataRequestPayment);
+        return NetWorkControllerGateWay.ddSreachPhone(dataRequestPayment);
     }
 
     @Override

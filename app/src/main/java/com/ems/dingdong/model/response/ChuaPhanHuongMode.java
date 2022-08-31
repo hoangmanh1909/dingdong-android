@@ -17,9 +17,9 @@ public class ChuaPhanHuongMode {
     @SerializedName("ReceiverAddress")
     private String ReceiverAddress;
     @SerializedName("ReceiverLat")
-    private String ReceiverLat;
+    private double ReceiverLat;
     @SerializedName("ReceiverLon")
-    private String ReceiverLon;
+    private double ReceiverLon;
     @SerializedName("SenderName")
     private String SenderName;
     @SerializedName("SenderTel")
@@ -54,19 +54,19 @@ public class ChuaPhanHuongMode {
     @SerializedName("VATCode")
     private String VATCode;
 
-    public String getReceiverLat() {
+    public double getReceiverLat() {
         return ReceiverLat;
     }
 
-    public void setReceiverLat(String receiverLat) {
+    public void setReceiverLat(double receiverLat) {
         ReceiverLat = receiverLat;
     }
 
-    public String getReceiverLon() {
+    public double getReceiverLon() {
         return ReceiverLon;
     }
 
-    public void setReceiverLon(String receiverLon) {
+    public void setReceiverLon(double receiverLon) {
         ReceiverLon = receiverLon;
     }
 

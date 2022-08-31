@@ -28,8 +28,8 @@ class CreateBd13Interactor extends Interactor<CreateBd13Contract.Presenter>
     }
 
     @Override
-    public void searchLadingBd13(DingDongGetLadingCreateBD13Request objRequest, CommonCallback<SimpleResult> commonCallback) {
-        NetWorkControllerGateWay.searchLadingCreatedBd13(objRequest, commonCallback);
+    public Single<DeliveryPostmanResponse> searchLadingBd13(DingDongGetLadingCreateBD13Request objRequest) {
+        return NetWorkControllerGateWay.searchLadingCreatedBd13(objRequest);
     }
 
     @Override
@@ -45,6 +45,6 @@ class CreateBd13Interactor extends Interactor<CreateBd13Contract.Presenter>
 
     @Override
     public Single<SimpleResult> ddLapBD13Vmap(OrderCreateBD13Mode createBD13Mode) {
-        return NetWorkController.getLapBangKeBD13(createBD13Mode);
+        return NetWorkControllerGateWay.getLapBangKeBD13(createBD13Mode);
     }
 }

@@ -59,11 +59,11 @@ public class RouteInteractor extends Interactor<RouteConstract.Presenter> implem
 
     @Override
     public void cancel(Integer id, Integer postmanId, CommonCallback<SimpleResult> callback) {
-        NetWorkController.cancelRoute(id, postmanId, callback);
+        NetWorkControllerGateWay.cancelRoute(id, postmanId, callback);
     }
 
     @Override
-    public void getRouteByPoCode(String poCode, CommonCallback<SimpleResult> callback) {
+    public void getRouteByPoCode(String poCode, CommonCallback<RouteInfoResult> callback) {
         NetWorkControllerGateWay.getDeliveryRoute(poCode, callback);
     }
 }

@@ -19,7 +19,7 @@ class ActiveInteractor extends Interactor<ActiveContract.Presenter>
     }
 
     @Override
-    public void activeAuthorized(String mobileNumber, String activeCode, String codeDeviceActive, CommonCallback<SimpleResult> callback) {
+    public void activeAuthorized(String mobileNumber, String activeCode, String codeDeviceActive, CommonCallback<ActiveResult> callback) {
         NetWorkControllerGateWay.activeAuthorized(mobileNumber, activeCode, codeDeviceActive, callback);
     }
 }

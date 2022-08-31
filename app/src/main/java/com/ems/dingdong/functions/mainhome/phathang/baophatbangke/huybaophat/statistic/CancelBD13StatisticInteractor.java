@@ -17,7 +17,7 @@ public class CancelBD13StatisticInteractor extends Interactor<CancelBD13Statisti
 
 
     @Override
-    public Observable<SimpleResult> getCancelDeliveryStatic(CancelDeliveryStatisticRequest request) {
+    public Observable<CancelDeliveryResult> getCancelDeliveryStatic(CancelDeliveryStatisticRequest request) {
         return NetWorkControllerGateWay.cancelDeliveryStatistic(request);
     }
 }

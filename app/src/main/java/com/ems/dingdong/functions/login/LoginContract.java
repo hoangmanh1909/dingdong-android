@@ -21,7 +21,9 @@ import io.reactivex.Single;
 interface LoginContract {
 
     interface Interactor extends IInteractor<Presenter> {
-        void login(LoginRequest loginRequest, CommonCallback<SimpleResult> commonCallback);
+        void login(LoginRequest loginRequest, CommonCallback<LoginResult> commonCallback);
+
+        void login1(LoginRequest loginRequest, CommonCallback<LoginResult> commonCallback);
 
         void getPostOfficeByCode(String code, String postmanID, CommonCallback<SimpleResult> callback);
 
@@ -35,7 +37,7 @@ interface LoginContract {
 
         Single<SimpleResult> getDanhSachNganHang();
 
-        void getBalance(String mobileNumber,String postmanId,CommonCallback<SimpleResult> commonCallback);
+        void getBalance(String mobileNumber, String postmanId, CommonCallback<SimpleResult> commonCallback);
     }
 
     interface View extends PresentView<Presenter> {

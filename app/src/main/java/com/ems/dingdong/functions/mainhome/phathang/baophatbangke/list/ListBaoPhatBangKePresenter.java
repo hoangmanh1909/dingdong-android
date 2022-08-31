@@ -13,6 +13,7 @@ import com.core.utils.NetworkUtils;
 import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.calls.IncomingCallActivity;
+import com.ems.dingdong.functions.mainhome.address.laydiachi.GetLocation;
 import com.ems.dingdong.functions.mainhome.address.xacminhdiachi.danhsachdiachi.AddressListPresenter;
 import com.ems.dingdong.functions.mainhome.address.xacminhdiachi.timduongdi.TimDuongDiPresenter;
 import com.ems.dingdong.functions.mainhome.location.LocationPresenter;
@@ -163,14 +164,15 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
             }
 
             addCallback(mInteractor.searchDeliveryPostman(postmanID, fromDate, toDate, routeCode,
-                    deliveryType, new CommonCallback<SimpleResult>((Context) mContainerView) {
+                    deliveryType, new CommonCallback<DeliveryPostmanResponse>((Context) mContainerView) {
                         @Override
-                        protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+                        protected void onSuccess(Call<DeliveryPostmanResponse> call, Response<DeliveryPostmanResponse> response) {
                             super.onSuccess(call, response);
                             mView.hideProgress();
                             if (response.body() != null) {
                                 if (response.body().getErrorCode().equals("00")) {
-                                    ArrayList<DeliveryPostman> deliveryPostmen = NetWorkController.getGson().fromJson(response.body().getData(), new TypeToken<List<DeliveryPostman>>(){}.getType());
+                                    ArrayList<DeliveryPostman> deliveryPostmen = NetWorkController.getGson().fromJson(response.body().getData(), new TypeToken<List<DeliveryPostman>>() {
+                                    }.getType());
                                     mView.showListSuccess(deliveryPostmen);
                                     deliveryNotSuccessfulChange.onChanged(deliveryPostmen);
                                 } else {
@@ -181,7 +183,7 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                         }
 
                         @Override
-                        protected void onError(Call<SimpleResult> call, String message) {
+                        protected void onError(Call<DeliveryPostmanResponse> call, String message) {
                             super.onError(call, message);
                             mView.hideProgress();
                             mView.showError(message);
@@ -293,42 +295,42 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
         mView.showProgress();
         String tPhone = phone;
 
-            addCallback(mInteractor.updateMobile(parcelCode, "1", phone, new CommonCallback<SimpleResult>((Activity) mContainerView) {
-                @Override
-                protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
-                    super.onSuccess(call, response);
-                    mView.hideProgress();
-                    mView.showSuccessUpdateMobile(tPhone, response.body().getMessage(), type);
-                }
+        addCallback(mInteractor.updateMobile(parcelCode, "1", phone, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+            @Override
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+                super.onSuccess(call, response);
+                mView.hideProgress();
+                mView.showSuccessUpdateMobile(tPhone, response.body().getMessage(), type);
+            }
 
-                @Override
-                protected void onError(Call<SimpleResult> call, String message) {
-                    super.onError(call, message);
-                    mView.hideProgress();
-                    mView.showErrorToast(message);
-                }
-            }));
+            @Override
+            protected void onError(Call<SimpleResult> call, String message) {
+                super.onError(call, message);
+                mView.hideProgress();
+                mView.showErrorToast(message);
+            }
+        }));
     }
 
     @Override
     public void updateMobileSender(String phoneSender, String parcelCode) {
         mView.showProgress();
         String tPhoneSender = phoneSender;
-            addCallback(mInteractor.updateMobileSender(parcelCode, "3", phoneSender, new CommonCallback<SimpleResult>((Activity) mContainerView) {
-                @Override
-                protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
-                    super.onSuccess(call, response);
-                    mView.hideProgress();
-                    mView.showSuccessUpdateMobileSender(tPhoneSender, response.body().getMessage());
-                }
+        addCallback(mInteractor.updateMobileSender(parcelCode, "3", phoneSender, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+            @Override
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+                super.onSuccess(call, response);
+                mView.hideProgress();
+                mView.showSuccessUpdateMobileSender(tPhoneSender, response.body().getMessage());
+            }
 
-                @Override
-                protected void onError(Call<SimpleResult> call, String message) {
-                    super.onError(call, message);
-                    mView.hideProgress();
-                    mView.showErrorToast(message);
-                }
-            }));
+            @Override
+            protected void onError(Call<SimpleResult> call, String message) {
+                super.onError(call, message);
+                mView.hideProgress();
+                mView.showErrorToast(message);
+            }
+        }));
     }
 
     @Override
@@ -461,6 +463,8 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(simpleResult -> {
+                    Log.d("ASDSADSADASDSAD",
+                            new Gson().toJson(simpleResult));
                     if (simpleResult.getErrorCode().equals("00")) {
                         if (simpleResult.getResponseLocation() != null) {
                             Object data = simpleResult.getResponseLocation();
@@ -479,7 +483,10 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                             vpostcodeModel.setLatitude(resultModel.getResult().getLocation().getLatitude());
                             getListVpost.add(vpostcodeModel);
                             mView.showList(vpostcodeModel);
-                        } else Toast.showToast(getViewContext(), "Lỗi dữ liệu từ đối tác");
+                        } else {
+                            mView.showList(null);
+                            Toast.showToast(getViewContext(), "Lỗi dữ liệu từ đối tác");
+                        }
                     } else {
                     }
                     mView.hideProgress();

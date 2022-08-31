@@ -18,7 +18,7 @@ class HistoryInteractor extends Interactor<HistoryContract.Presenter>
     }
 
     @Override
-    public void getHistoryDelivery(String parcelCode, CommonCallback<SimpleResult> callback) {
+    public void getHistoryDelivery(String parcelCode, CommonCallback<CommonObjectListResult> callback) {
         NetWorkControllerGateWay.getHistoryDelivery(parcelCode, callback);
     }
 }

@@ -24,8 +24,8 @@ class BaoPhatOfflineInteractor extends Interactor<BaoPhatOfflineContract.Present
     }
 
     @Override
-    public void searchParcelCodeDelivery(String parcelCode, CommonCallback<CommonObjectResult> callback) {
-        NetWorkController.searchParcelCodeDelivery(parcelCode, callback);
+    public void searchParcelCodeDelivery(String parcelCode, String signature, CommonCallback<CommonObjectResult> callback) {
+        NetWorkControllerGateWay.searchParcelCodeDelivery(parcelCode, signature, callback);
     }
 
     @Override

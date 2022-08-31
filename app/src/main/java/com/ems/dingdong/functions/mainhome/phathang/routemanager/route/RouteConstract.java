@@ -191,7 +191,7 @@ public interface RouteConstract {
         /**
          * @see Presenter
          */
-        void getRouteByPoCode(String poCode, CommonCallback<SimpleResult> callback);
+        void getRouteByPoCode(String poCode, CommonCallback<RouteInfoResult> callback);
 
     }
 

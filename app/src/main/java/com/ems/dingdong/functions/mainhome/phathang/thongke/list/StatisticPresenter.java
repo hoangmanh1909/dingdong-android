@@ -64,23 +64,23 @@ public class StatisticPresenter extends Presenter<StatisticContract.View, Statis
             postmanID = userInfo.getiD();
         }
         mView.showProgress();
-        mInteractor.searchDeliveryStatistic(fromDate, toDate, status, postmanID, routeCode, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+        mInteractor.searchDeliveryStatistic(fromDate, toDate, status, postmanID, routeCode, new CommonCallback<CommonObjectListResult>((Activity) mContainerView) {
             @Override
-            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+            protected void onSuccess(Call<CommonObjectListResult> call, Response<CommonObjectListResult> response) {
                 super.onSuccess(call, response);
                 mView.hideProgress();
                 assert response.body() != null;
                 if (response.body().getErrorCode().equals("00")) {
-                    ArrayList<CommonObject> commonObjects = NetWorkControllerGateWay.getGson().fromJson(response.body().getData(),new TypeToken<List<CommonObject>>(){}.getType());
-                    mView.showListSuccess(commonObjects);
-
+//                    ArrayList<CommonObject> commonObjects = NetWorkControllerGateWay.getGson().fromJson(response.body().getData(),new TypeToken<List<CommonObject>>(){}.getType());
+//                    mView.showListSuccess(commonObjects);
+                    mView.showListSuccess(response.body().getList());
                 } else {
                     mView.showListEmpty();
                 }
             }
 
             @Override
-            protected void onError(Call<SimpleResult> call, String message) {
+            protected void onError(Call<CommonObjectListResult> call, String message) {
                 super.onError(call, message);
                 mView.hideProgress();
                 mView.showErrorToast(message);

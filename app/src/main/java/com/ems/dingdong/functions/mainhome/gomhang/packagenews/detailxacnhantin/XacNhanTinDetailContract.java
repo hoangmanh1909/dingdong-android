@@ -29,7 +29,7 @@ interface XacNhanTinDetailContract {
         void confirmOrderPostmanCollect(String orderPostmanID, String employeeID,
                                         String statusCode, String confirmReason, CommonCallback<SimpleResult> callback);
 
-        void getRouteByPoCode(String poCode, CommonCallback<SimpleResult> callback);
+        void getRouteByPoCode(String poCode, CommonCallback<RouteInfoResult> callback);
 
         void getPostman(String poCode, int routeId, String routeType, CommonCallback<SimpleResult> callback);
 

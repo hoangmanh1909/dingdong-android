@@ -33,6 +33,8 @@ public class CreateDeliveryParialDialog extends Dialog {
     EditText edtWeightProductAdd;
     @BindView(R.id.edt_price_product_add)
     EditText edtPriceProductAdd;
+    @BindView(R.id.edt_donvi)
+    EditText edtDonvi;
 
     public CreateDeliveryParialDialog(@NonNull Context context, ProductAddCallback productAddCallback) {
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
@@ -94,6 +96,8 @@ public class CreateDeliveryParialDialog extends Dialog {
         productModel.setProductName(edtNameProductAdd.getText().toString());
         productModel.setWeight(weight);
         productModel.setQuantity(quantity);
+        productModel.setUnitName(edtDonvi.getText().toString());
+        productModel.setAmounts(amount * quantity);
         productAddCallback.OnResponse(productModel);
         dismiss();
     }

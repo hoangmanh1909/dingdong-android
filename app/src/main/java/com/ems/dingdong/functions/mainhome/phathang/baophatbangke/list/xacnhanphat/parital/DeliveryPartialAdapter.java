@@ -64,17 +64,29 @@ public class DeliveryPartialAdapter extends RecyclerBaseAdapter {
         public void bindView(final Object model, int position) {
             ProductModel item = (ProductModel) model;
             int _pos = position + 1;
+            tv_quantity.setVisibility(View.GONE);
             tv_quantity.setText(item.getQuantity() + "");
             if (mode.equals("ADD")) {
                 iv_delete.setVisibility(View.GONE);
-                tv_content.setText(_pos + "." + item.getProductName() + " - " + NumberUtils.formatVinatti(item.getWeight()) + " (g) - Đơn giá: " + NumberUtils.formatVinatti(item.getPrice()));
+                tv_content.setText(_pos + ". " + item.getProductName() + " - " +
+                        NumberUtils.formatVinatti(item.getQuantity()) + "("+item.getUnitName()+") - " +
+                        NumberUtils.formatVinatti(item.getWeight()) + " (g) - Đơn giá: " +
+                        NumberUtils.formatVinatti(item.getPrice()) + " đ  - Thành tiền: " + NumberUtils.formatVinatti(item.getAmounts()));
+
             } else if (mode.equals("REFUND")) {
-                tv_content.setText(_pos + "." + item.getProductName() + " - " + NumberUtils.formatVinatti(item.getWeight()) + " (g) - Đơn giá: " + NumberUtils.formatVinatti(item.getPrice()));
+
+                tv_content.setText(_pos + ". " + item.getProductName() + " - " +
+                        NumberUtils.formatVinatti(item.getQuantity())  + "("+item.getUnitName()+") - " +
+                        NumberUtils.formatVinatti(item.getWeight()) + " (g) - Đơn giá: " +
+                        NumberUtils.formatVinatti(item.getPrice()) + " đ  - Thành tiền: " + NumberUtils.formatVinatti(item.getAmounts()));
                 iv_decrease.setVisibility(View.GONE);
                 iv_increase.setVisibility(View.GONE);
                 iv_delete.setVisibility(View.GONE);
             } else {
-                tv_content.setText(_pos + "." + item.getProductName() + " - " + NumberUtils.formatVinatti(item.getWeight()) + " (g) - Đơn giá: " + NumberUtils.formatVinatti(item.getPrice()));
+                tv_content.setText(_pos + ". " + item.getProductName() + " - " +
+                        NumberUtils.formatVinatti(item.getQuantity())  + "("+item.getUnitName()+") - " +
+                        NumberUtils.formatVinatti(item.getWeight()) + " (g) - Đơn giá: " +
+                        NumberUtils.formatVinatti(item.getPrice()) + " đ  - Thành tiền: " + NumberUtils.formatVinatti(item.getAmounts()));
                 iv_decrease.setVisibility(View.GONE);
                 iv_increase.setVisibility(View.GONE);
                 iv_delete.setVisibility(View.VISIBLE);

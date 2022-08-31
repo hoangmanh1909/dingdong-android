@@ -34,9 +34,14 @@ class MainInteractor extends Interactor<MainContract.Presenter>
     }
 
     @Override
-    public void getBalance(String postmanID, String poCode, String phoneNumber, String fromDate, String toDate, CommonCallback<SimpleResult> callback) {
-        NetWorkControllerGateWay.statisticPayment(postmanID, poCode, phoneNumber, fromDate, toDate, callback);
+    public Single<StatisticPaymentResult> getBalance(String postmanID, String poCode, String phoneNumber, String fromDate, String toDate) {
+        return NetWorkControllerGateWay.statisticPayment(postmanID, poCode, phoneNumber, fromDate, toDate);
     }
+
+//    @Override
+//    public void getBalance(String postmanID, String poCode, String phoneNumber, String fromDate, String toDate, CommonCallback<StatisticPaymentResult> callback) {
+//        NetWorkControllerGateWay.statisticPayment(postmanID, poCode, phoneNumber, fromDate, toDate, callback);
+//    }
 
     @Override
     public Single<TokenMoveCropResult> getAccessToken(String mobileNumber) {
@@ -45,7 +50,7 @@ class MainInteractor extends Interactor<MainContract.Presenter>
 
     @Override
     public Single<SimpleResult> getMap() {
-        return NetWorkController.getMap();
+        return NetWorkControllerGateWay.getMap();
     }
 
     @Override
@@ -60,17 +65,17 @@ class MainInteractor extends Interactor<MainContract.Presenter>
 
     @Override
     public Single<SimpleResult> getVaoCa(MainMode request) {
-        return NetWorkController.getVaoCa(request);
+        return NetWorkControllerGateWay.getVaoCa(request);
     }
 
     @Override
     public Single<SimpleResult> getRaCa(String request) {
-        return NetWorkController.getRaCa(request);
+        return NetWorkControllerGateWay.getRaCa(request);
     }
 
     @Override
     public Single<SimpleResult> getCallLog(List<CallLogMode> request) {
-        return NetWorkController.getCallLog(request);
+        return NetWorkControllerGateWay.getCallLog(request);
     }
 //    @Override
 //    public void ddGetBalance(BalanceModel request) {

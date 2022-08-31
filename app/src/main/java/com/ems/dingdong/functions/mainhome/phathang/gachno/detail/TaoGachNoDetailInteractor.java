@@ -31,13 +31,13 @@ class TaoGachNoDetailInteractor extends Interactor<TaoGachNoDetailContract.Prese
     }
 
     @Override
-    public void getSolutionByReasonCode(String code, CommonCallback<SimpleResult> commonCallback) {
+    public void getSolutionByReasonCode(String code, CommonCallback<SolutionResult> commonCallback) {
         NetWorkControllerGateWay.getSolutionByReasonCode(code, commonCallback);
     }
 
     @Override
     public void paymentPaypost(PaymentPaypostRequest request, CommonCallback<SimpleResult> callback) {
-        NetWorkController.paymentPaypost(request, callback);
+        NetWorkControllerGateWay.paymentPaypost(request, callback);
     }
 
 }

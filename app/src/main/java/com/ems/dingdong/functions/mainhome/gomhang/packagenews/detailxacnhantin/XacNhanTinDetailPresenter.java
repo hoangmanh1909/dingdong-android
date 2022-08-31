@@ -40,10 +40,12 @@ public class XacNhanTinDetailPresenter extends Presenter<XacNhanTinDetailContrac
     public XacNhanTinDetailPresenter(ContainerView containerView) {
         super(containerView);
     }
-    public XacNhanTinDetailPresenter setMode(String mode){
+
+    public XacNhanTinDetailPresenter setMode(String mode) {
         this.mode = mode;
         return this;
     }
+
     @Override
     public XacNhanTinDetailContract.View onCreateView() {
         return XacNhanTinDetailFragment.getInstance();
@@ -52,7 +54,7 @@ public class XacNhanTinDetailPresenter extends Presenter<XacNhanTinDetailContrac
     @Override
     public void start() {
         // Start getting data here
-     //   searchOrderPostman();
+        //   searchOrderPostman();
     }
 
     @Override
@@ -106,16 +108,20 @@ public class XacNhanTinDetailPresenter extends Presenter<XacNhanTinDetailContrac
 
     @Override
     public void getRouteByPoCode(String poCode) {
-        mInteractor.getRouteByPoCode(poCode, new CommonCallback<SimpleResult>((Context) mContainerView) {
+        mInteractor.getRouteByPoCode(poCode, new CommonCallback<RouteInfoResult>((Context) mContainerView) {
             @Override
-            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+            protected void onSuccess(Call<RouteInfoResult> call, Response<RouteInfoResult> response) {
                 super.onSuccess(call, response);
-                ArrayList<RouteInfo> routeInfos = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken< List<RouteInfo>>(){}.getType());
-                mView.showRoute(routeInfos);
+//                ArrayList<RouteInfo> routeInfos = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken< List<RouteInfo>>(){}.getType());
+                try {
+                    mView.showRoute(response.body().getRouteInfos());
+                } catch (Exception e) {
+                    e.getMessage();
+                }
             }
 
             @Override
-            protected void onError(Call<SimpleResult> call, String message) {
+            protected void onError(Call<RouteInfoResult> call, String message) {
                 super.onError(call, message);
             }
         });
@@ -127,7 +133,8 @@ public class XacNhanTinDetailPresenter extends Presenter<XacNhanTinDetailContrac
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
-                ArrayList<UserInfo> userInfos = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<UserInfo>>(){}.getType());
+                ArrayList<UserInfo> userInfos = NetWorkController.getGson().fromJson(response.body().getData(), new TypeToken<List<UserInfo>>() {
+                }.getType());
                 mView.showPostman(userInfos);
             }
 
@@ -145,7 +152,7 @@ public class XacNhanTinDetailPresenter extends Presenter<XacNhanTinDetailContrac
                 .subscribe(simpleResult -> {
                     if (simpleResult != null && simpleResult.getErrorCode().equals("00")) {
                         mView.showMessage(simpleResult.getMessage());
-                    }else{
+                    } else {
                         mView.showErrorToast(simpleResult.getMessage());
                     }
                 }, throwable -> {

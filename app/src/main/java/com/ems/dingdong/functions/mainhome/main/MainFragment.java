@@ -187,11 +187,12 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
             routeInfo = NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class);
         }
         setupAdapter();
-
         try {
             mPresenter.getMap();
         } catch (Exception e) {
+
         }
+        mPresenter.getBalance();
         bottomBar.setOnTabSelectListener(tabId -> {
             UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
             TicketNotifyRequest ticketNotifyRequest = new TicketNotifyRequest();
@@ -207,19 +208,14 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
             }
             if (tabId == R.id.action_home) {
                 viewPager.setCurrentItem(0);
-                getBalance();
-//                if (homeFragment != null) {
-//                    HomeV1Fragment v1Fragment = (HomeV1Fragment) homeFragment;
-//                    v1Fragment.updateHomeView();
-//                }
+                if (mPresenter != null)
+                    mPresenter.getBalance();
             } else if (tabId == R.id.action_cart) {
                 viewPager.setCurrentItem(1);
                 removeHeader();
             } else if (tabId == R.id.action_airplane) {
                 viewPager.setCurrentItem(2);
-                removeHeader();
-                if (mPresenter != null)
-                    mPresenter.getBalance();
+                getBalance();
             } else if (tabId == R.id.action_location) {
                 viewPager.setCurrentItem(3);
                 removeHeader();
@@ -261,6 +257,7 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
             ticketNotifyRequest.setToDate(Integer.parseInt(mToDate));
             mobilenumber = userInfo.getMobileNumber();
             mPresenter.getListTicket(ticketNotifyRequest);
+
         }
 
         if (!"6".equals(userInfo.getEmpGroupID())) {
@@ -337,8 +334,7 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
         v.setPostmanId(userInfo.getiD());
         v.setRouteCode(routeInfo.getRouteCode());
         v.setRouteId(Long.parseLong(routeInfo.getRouteId()));
-        if (v != null)
-            mPresenter.ddGetBalance(v);
+        mPresenter.ddGetBalance(v);
     }
 
     private void eventLoginAndCallCtel() {
@@ -511,35 +507,36 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
         ticketNotifyRequest.setToDate(Integer.parseInt(mToDate));
         mobilenumber = userInfo.getMobileNumber();
         mPresenter.getListTicket(ticketNotifyRequest);
-        switch (viewPager.getCurrentItem()) {
-            case 0:
-                getBalance();
-
-                break;
-            case 2:
-                try {
-                    mPresenter.getBalance();
-                } catch (NullPointerException nullPointerException) {
-
-                }
-                break;
-            default:
-                removeHeader();
-        }
+//        switch (viewPager.getCurrentItem()) {
+//            case 0:
+//                try {
+//                    mPresenter.getBalance();
+//                } catch (NullPointerException nullPointerException) {
+//
+//                }
+//                break;
+//            case 2:
+//                getBalance();
+//
+//                break;
+//            default:
+//                removeHeader();
+//        }
     }
 
     @SuppressLint("SetTextI18n")
     @Override
     public void updateBalance(StatisticPaymentResponse value) {
         viewTop.setVisibility(View.VISIBLE);
+
         SharedPref sharedPref = new SharedPref(getViewContext());
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
         if (value != null) {
-            userInfo.setBalance(String.valueOf(Long.parseLong(value.getCollectAmount())));
-            firstHeader.setText(getResources().getString(R.string.employee_balance) + String.format(" %s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(value.getCollectAmount()))));
-            secondHeader.setText(getResources().getString(R.string.employee_balance_success) + String.format(" %s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(value.getPaymentAmount()))));
-            thirstHeader.setText(getResources().getString(R.string.employee_balance_missing) + String.format(" %s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(value.getDebitAmount()))));
+            userInfo.setBalance(String.valueOf(value.getCollectAmount()));
+            firstHeader.setText(getResources().getString(R.string.employee_balance) + String.format(" %s VNĐ", NumberUtils.formatPriceNumber(value.getCollectAmount())));
+            secondHeader.setText(getResources().getString(R.string.employee_balance_success) + String.format(" %s VNĐ", NumberUtils.formatPriceNumber(value.getPaymentAmount())));
+            thirstHeader.setText(getResources().getString(R.string.employee_balance_missing) + String.format(" %s VNĐ", NumberUtils.formatPriceNumber(value.getDebitAmount())));
         } else {
             firstHeader.setText(getResources().getString(R.string.employee_balance));
             secondHeader.setText(getResources().getString(R.string.employee_balance_success));
@@ -550,32 +547,52 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
 
     @Override
     public void setBalance(String x) {
-        BalanceRespone balance = NetWorkController.getGson().fromJson(x, BalanceRespone.class);
-        viewTop.setVisibility(View.VISIBLE);
+        if (x != null) {
+            BalanceRespone balance = NetWorkController.getGson().fromJson(x, BalanceRespone.class);
+            viewTop.setVisibility(View.VISIBLE);
 
-        String accInfo = "";
-        if (userInfo != null) {
-            if (!TextUtils.isEmpty(userInfo.getAmountMax())) {
-                secondHeader.setText(getResources().getString(R.string.amount_max) + String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(userInfo.getAmountMax()))));
+            String accInfo = "";
+            if (userInfo != null) {
+                if (!TextUtils.isEmpty(userInfo.getAmountMax())) {
+                    secondHeader.setText(getResources().getString(R.string.amount_max) + String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(userInfo.getAmountMax()))));
+                }
+                if (!TextUtils.isEmpty(x)) {
+                    thirstHeader.setText(getResources().getString(R.string.so_tien_da_thu) + String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(balance.getBalance()))));
+                }
+                if (!TextUtils.isEmpty(userInfo.getFullName())) {
+                    accInfo = userInfo.getFullName();
+                }
             }
-            if (!TextUtils.isEmpty(x)) {
-                thirstHeader.setText(getResources().getString(R.string.so_tien_da_thu) + String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(balance.getBalance()))));
+            if (routeInfo != null) {
+                if (!TextUtils.isEmpty(routeInfo.getRouteName())) {
+                    accInfo += " - " + routeInfo.getRouteName();
+                }
             }
+            if (postOffice != null) {
+                if (!TextUtils.isEmpty(postOffice.getName())) {
+                    accInfo += " - " + postOffice.getName();
+                }
+            }
+            firstHeader.setText(accInfo);
+        } else {
+            String accInfo = "";
+            secondHeader.setText(getResources().getString(R.string.amount_max) + String.format("%s VNĐ", NumberUtils.formatPriceNumber(Long.parseLong(userInfo.getAmountMax()))));
+            thirstHeader.setText(getResources().getString(R.string.so_tien_da_thu) + "0 VNĐ");
             if (!TextUtils.isEmpty(userInfo.getFullName())) {
                 accInfo = userInfo.getFullName();
             }
-        }
-        if (routeInfo != null) {
-            if (!TextUtils.isEmpty(routeInfo.getRouteName())) {
-                accInfo += " - " + routeInfo.getRouteName();
+            if (routeInfo != null) {
+                if (!TextUtils.isEmpty(routeInfo.getRouteName())) {
+                    accInfo += " - " + routeInfo.getRouteName();
+                }
             }
-        }
-        if (postOffice != null) {
-            if (!TextUtils.isEmpty(postOffice.getName())) {
-                accInfo += " - " + postOffice.getName();
+            if (postOffice != null) {
+                if (!TextUtils.isEmpty(postOffice.getName())) {
+                    accInfo += " - " + postOffice.getName();
+                }
             }
+            firstHeader.setText(accInfo);
         }
-        firstHeader.setText(accInfo);
     }
 
     @SuppressLint("SetTextI18n")

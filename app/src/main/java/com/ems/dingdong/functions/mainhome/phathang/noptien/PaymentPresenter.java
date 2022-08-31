@@ -95,7 +95,7 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
                 .delay(1500, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(eWalletDataResult -> {
-                    if (eWalletDataResult != null && eWalletDataResult.getErrorCode().equals("00")) {
+                    if (eWalletDataResult.getListEWalletData() != null && eWalletDataResult.getErrorCode().equals("00")) {
                         mView.showListSuccess(eWalletDataResult.getListEWalletData());
                         mView.hideProgress();
                         if (eWalletDataResult.getListEWalletData().size() == 0) {

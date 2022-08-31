@@ -46,7 +46,7 @@ public class XacNhanBaoPhatInteractor extends Interactor<XacNhanBaoPhatContract.
 
     @Override
     public Call<SimpleResult> CallForwardEditCOD(String callerNumber, String calleeNumber, String callForwardType, String hotlineNumber, String ladingCode, String PostmanId, String POCode, CommonCallback<SimpleResult> callback) {
-        return NetWorkController.CallForwardEditCOD(callerNumber, calleeNumber, callForwardType, hotlineNumber,
+        return NetWorkControllerGateWay.callForwardCallCenterEdit(callerNumber, calleeNumber, callForwardType, hotlineNumber,
                 ladingCode, PostmanId, POCode, callback);
     }
 
@@ -56,7 +56,7 @@ public class XacNhanBaoPhatInteractor extends Interactor<XacNhanBaoPhatContract.
     }
 
     @Override
-    public void getSolutionByReasonCode(String code, CommonCallback<SimpleResult> commonCallback) {
+    public void getSolutionByReasonCode(String code, CommonCallback<SolutionResult> commonCallback) {
         NetWorkControllerGateWay.getSolutionByReasonCode(code, commonCallback);
     }
 
@@ -81,7 +81,7 @@ public class XacNhanBaoPhatInteractor extends Interactor<XacNhanBaoPhatContract.
      * @param request
      */
     @Override
-    public Single<SimpleResult> checkDeliverySuccess(DeliverySuccessRequest request) {
+    public Single<DeliveryCheckAmountPaymentResult> checkDeliverySuccess(DeliverySuccessRequest request) {
         return NetWorkControllerGateWay.checkDeliverySuccess(request);
     }
 
@@ -112,7 +112,7 @@ public class XacNhanBaoPhatInteractor extends Interactor<XacNhanBaoPhatContract.
 //    }
 
     @Override
-    public void getRouteByPoCode(String poCode, CommonCallback<SimpleResult> callback) {
+    public void getRouteByPoCode(String poCode, CommonCallback<RouteInfoResult> callback) {
         NetWorkControllerGateWay.getDeliveryRoute(poCode, callback);
     }
 

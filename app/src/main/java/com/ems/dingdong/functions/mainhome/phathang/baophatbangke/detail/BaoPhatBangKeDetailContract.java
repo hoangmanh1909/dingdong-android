@@ -30,7 +30,7 @@ interface BaoPhatBangKeDetailContract {
                                    String callForwardType, String hotlineNumber,
                                    String ladingCode, String PostmanId, String POCode, CommonCallback<SimpleResult> callback);
 
-        void getSolutionByReasonCode(String code, CommonCallback<SimpleResult> commonCallback);
+        void getSolutionByReasonCode(String code, CommonCallback<SolutionResult> commonCallback);
 
 
         void getInquiryAmount(String parcelCode, CommonCallback<InquiryAmountResult> callback);

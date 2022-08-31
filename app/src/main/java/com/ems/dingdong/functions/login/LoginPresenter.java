@@ -73,9 +73,9 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
     public void login(String mobileNumber, String signCode) {
         String signature = Utils.SHA256(mobileNumber + signCode + BuildConfig.PRIVATE_KEY).toUpperCase();
         LoginRequest loginRequest = new LoginRequest(mobileNumber, signCode, BuildConfig.VERSION_NAME, "", signature);
-        mInteractor.login(loginRequest, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+        mInteractor.login(loginRequest, new CommonCallback<LoginResult>((Activity) mContainerView) {
             @Override
-            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+            protected void onSuccess(Call<LoginResult> call, Response<LoginResult> response) {
                 super.onSuccess(call, response);
                 if (response.body().getErrorCode().equals("00")) {
                     getSolutions();
@@ -83,8 +83,8 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
                     getDanhSachNganHang();
 //                    response.body().getUserInfo().setPIDNumber("154554454444");
 //                    response.body().getUserInfo().setPIDType("CMND");
+                    UserInfo userInfo = response.body().getUserInfo();
 
-                    UserInfo userInfo = NetWorkController.getGson().fromJson(response.body().getData(), UserInfo.class);
                     getBalance(userInfo.getMobileNumber(), userInfo.getiD());
                     getList(userInfo.getUnitCode());
 
@@ -100,7 +100,7 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
                     boolean isDebit = sharedPref.getBoolean(Constants.KEY_GACH_NO_PAYPOS, true);
                     sharedPref.putBoolean(Constants.KEY_GACH_NO_PAYPOS, isDebit);
                     if (!"6".equals(userInfo.getEmpGroupID())) {
-                        getPostOfficeByCode(userInfo.getUnitCode(),userInfo.getiD());
+                        getPostOfficeByCode(userInfo.getUnitCode(), userInfo.getiD());
                     } else {
                         mView.gotoHome();
                     }
@@ -115,12 +115,63 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
             }
 
             @Override
-            protected void onError(Call<SimpleResult> call, String message) {
+            protected void onError(Call<LoginResult> call, String message) {
                 mView.hideProgress();
                 super.onError(call, message);
                 mView.showError(message);
             }
         });
+
+//        String signature = Utils.SHA256(mobileNumber + signCode + BuildConfig.PRIVATE_KEY).toUpperCase();
+//        LoginRequest loginRequest = new LoginRequest(mobileNumber, signCode, BuildConfig.VERSION_NAME, "", signature);
+//        mInteractor.login1(loginRequest, new CommonCallback<LoginResult>((Activity) mContainerView) {
+//            @Override
+//            protected void onSuccess(Call<LoginResult> call, Response<LoginResult> response) {
+//                super.onSuccess(call, response);
+//                if (response.body().getErrorCode().equals("00")) {
+//                    getSolutions();
+//                    getReasons();
+//                    getDanhSachNganHang();
+////                    response.body().getUserInfo().setPIDNumber("154554454444");
+////                    response.body().getUserInfo().setPIDType("CMND");
+//
+//                    UserInfo userInfo = NetWorkController.getGson().fromJson(response.body().getData(), UserInfo.class);
+//                    getBalance(userInfo.getMobileNumber(), userInfo.getiD());
+//                    getList(userInfo.getUnitCode());
+//
+//                    SharedPref sharedPref = new SharedPref((Context) mContainerView);
+//                    sharedPref.putString(Constants.KEY_USER_INFO, NetWorkController.getGson().toJson(userInfo));
+//                    sharedPref.putString(Constants.KEY_PAYMENT_TOKEN, userInfo.geteWalletPaymentToken());
+//                    if ("Y".equals(userInfo.getIsEms())) {
+//                        Constants.HEADER_NUMBER = "tel:159";
+//                    } else {
+//                        Constants.HEADER_NUMBER = "tel:18002009";
+//                    }
+//
+//                    boolean isDebit = sharedPref.getBoolean(Constants.KEY_GACH_NO_PAYPOS, true);
+//                    sharedPref.putBoolean(Constants.KEY_GACH_NO_PAYPOS, isDebit);
+//                    if (!"6".equals(userInfo.getEmpGroupID())) {
+//                        getPostOfficeByCode(userInfo.getUnitCode(),userInfo.getiD());
+//                    } else {
+//                        mView.gotoHome();
+//                    }
+//                } else if (response.body().getErrorCode().equals("05")) {
+//                    mView.hideProgress();
+//                    mView.showMessage("Số điện thoại đã được kích hoạt ở thiết bị khác, xin vui lòng thực hiện kích hoạt lại trên thiết bị này.");
+//                } else {
+//                    mView.hideProgress();
+//                    mView.showError(response.body().getMessage());
+//                    gotoValidation();
+//                }
+//            }
+//
+//            @Override
+//            protected void onError(Call<LoginResult> call, String message) {
+//                mView.hideProgress();
+//                super.onError(call, message);
+//                mView.showError(message);
+//            }
+//        });
     }
 
     @Override
@@ -131,7 +182,7 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
     @Override
     public void getVersion() {
         mView.showProgress();
-        mInteractor.getVersion( new CommonCallback<SimpleResult>((Activity) mContainerView) {
+        mInteractor.getVersion(new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
@@ -140,12 +191,13 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
                     // go to home
                     Gson g = new Gson();
                     try {
-                        ArrayList<GetVersionResponse> responses = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<GetVersionResponse>>(){}.getType());
+                        ArrayList<GetVersionResponse> responses = NetWorkController.getGson().fromJson(response.body().getData(), new TypeToken<List<GetVersionResponse>>() {
+                        }.getType());
 //                        ArrayList jsonObject = new JSONObject(response.body().getData());
 //                        String version = jsonObject.getString("Version");
 //                        String urlDowload = jsonObject.getString("UrlDownload");
                         String versionApp = BuildConfig.VERSION_NAME;
-                        android.util.Log.e("TAG", "onSuccess: "+versionApp );
+                        android.util.Log.e("TAG", "onSuccess: " + versionApp);
 
                         if (!responses.get(0).getVersion().equals(versionApp)) {
                             mView.showVersion(responses.get(0).getVersion(), responses.get(0).getUrlDownload());
@@ -200,7 +252,7 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
 
                         }
                     });
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -213,7 +265,8 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
                 mView.hideProgress();
                 if (response.body().getErrorCode().equals("00")) {
                     // go to home
-                    PostOffice postOffice = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<PostOffice>(){}.getType());
+                    PostOffice postOffice = NetWorkController.getGson().fromJson(response.body().getData(), new TypeToken<PostOffice>() {
+                    }.getType());
                     SharedPref sharedPref = new SharedPref((Context) mContainerView);
                     sharedPref.putString(Constants.KEY_HOTLINE_NUMBER, postOffice.getHolineNumber());
                     sharedPref.putString(Constants.KEY_POST_OFFICE, NetWorkController.getGson().toJson(postOffice));
@@ -241,7 +294,8 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
                 if (response.body().getErrorCode().equals("00")) {
 
                     Realm realm = Realm.getDefaultInstance();
-                    ArrayList<SolutionInfo> solutionInfos = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<SolutionInfo>>(){}.getType());
+                    ArrayList<SolutionInfo> solutionInfos = NetWorkController.getGson().fromJson(response.body().getData(), new TypeToken<List<SolutionInfo>>() {
+                    }.getType());
                     for (SolutionInfo info : solutionInfos) {
                         try {
                             SolutionInfo result = realm.where(SolutionInfo.class).equalTo(Constants.SOLUTIONINFO_PRIMARY_KEY, info.getID()).findFirst();
@@ -280,7 +334,9 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
                 mView.hideProgress();
                 if (response.body().getErrorCode().equals("00")) {
                     Realm realm = Realm.getDefaultInstance();
-                    ArrayList<ReasonInfo>  reasonInfos = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<ReasonInfo>>(){}.getType());
+                    ArrayList<ReasonInfo> reasonInfos = NetWorkController.getGson().fromJson(response.body().getData(), new TypeToken<List<ReasonInfo>>() {
+                    }.getType());
+                    Log.d("AAAAAAA", new Gson().toJson(reasonInfos));
                     for (ReasonInfo info : reasonInfos) {
                         ReasonInfo result = realm.where(ReasonInfo.class).equalTo(Constants.REASONINFO_PRIMARY_KEY, info.getID()).findFirst();
                         if (result != null) {
@@ -317,7 +373,7 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
                     SharedPref sharedPref = new SharedPref((Context) mContainerView);
                     sharedPref.putString(Constants.KEY_BALANCE, NetWorkController.getGson().toJson(balanceResponse));
                 } else {
-                    mView.showError(response.body().getMessage());
+//                    Toast.showToast(getViewContext(), response.body().getMessage());
                 }
                 super.onSuccess(call, response);
             }
@@ -326,7 +382,8 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
             protected void onError(Call<SimpleResult> call, String message) {
                 mView.hideProgress();
                 super.onError(call, message);
-                mView.showError(message);
+                Toast.showToast(getViewContext(), message);
+//                mView.showError(message);
             }
         });
     }

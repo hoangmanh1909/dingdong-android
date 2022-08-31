@@ -31,7 +31,7 @@ class TaoGachNoInteractor extends Interactor<TaoGachNoContract.Presenter>
 
     @Override
     public void paymentPaypost(PaymentPaypostRequest request, CommonCallback<SimpleResult> callback) {
-        NetWorkController.paymentPaypost(request, callback);
+        NetWorkControllerGateWay.paymentPaypost(request, callback);
     }
 
 }

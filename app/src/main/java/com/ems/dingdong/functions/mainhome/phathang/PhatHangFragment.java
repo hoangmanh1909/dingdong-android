@@ -114,10 +114,12 @@ public class PhatHangFragment extends ViewFragment<PhatHangContract.Presenter> i
                         } else if (homeInfo.getId() == 2) {
                             Intent intent = new Intent(getActivity(), BaoPhatThanhCongActivity.class);
                             startActivity(intent);
-                        } else if (homeInfo.getId() == 3) {
-                            Intent intent = new Intent(getActivity(), BaoPhatBangKhongThanhCongActivity.class);
-                            startActivity(intent);
-                        } else if (homeInfo.getId() == 4) {
+                        }
+//                        else if (homeInfo.getId() == 3) {
+//                            Intent intent = new Intent(getActivity(), BaoPhatBangKhongThanhCongActivity.class);
+//                            startActivity(intent);
+//                        }
+                        else if (homeInfo.getId() == 4) {
                             Intent intent = new Intent(getActivity(), StatictisActivity.class);
                             startActivity(intent);
                         } else if (homeInfo.getId() == 5) {

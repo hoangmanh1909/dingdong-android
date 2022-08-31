@@ -16,7 +16,7 @@ import java.util.ArrayList;
 interface HistoryContract {
 
     interface Interactor extends IInteractor<Presenter> {
-        void getHistoryDelivery(String parcelCode, CommonCallback<SimpleResult> callback);
+        void getHistoryDelivery(String parcelCode, CommonCallback<CommonObjectListResult> callback);
     }
 
     interface View extends PresentView<Presenter> {

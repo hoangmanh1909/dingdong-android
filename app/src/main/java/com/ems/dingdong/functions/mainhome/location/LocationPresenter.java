@@ -3,6 +3,7 @@ package com.ems.dingdong.functions.mainhome.location;
 import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
@@ -23,6 +24,7 @@ import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
 import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
 
 import java.util.Arrays;
 import java.util.List;
@@ -117,7 +119,6 @@ public class LocationPresenter extends Presenter<LocationContract.View, Location
                         HistoryRespone[] j = NetWorkController.getGson().fromJson(simpleResult.getData(), HistoryRespone[].class);
                         List<HistoryRespone> l = Arrays.asList(j);
                         mView.showLog(l);
-
                     } else {
                         mView.showError();
                     }

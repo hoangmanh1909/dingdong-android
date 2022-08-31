@@ -36,6 +36,7 @@ import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.StringUtils;
+import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.CustomMediumTextView;
 import com.ems.dingdong.views.CustomTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -142,6 +143,7 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_chat:
+                Toast.showToast(getViewContext(),"Bạn đã chọn chức năng chat với chung tôi ngay");
                 ZohoLiveChat.Chat.show();
                 break;
             case R.id.sw_switch:

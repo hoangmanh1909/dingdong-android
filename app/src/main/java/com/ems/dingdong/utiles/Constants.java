@@ -191,10 +191,25 @@ public class Constants {
     public static final String DLV_CALL_CENTER_FORWARD  = "DLV_CALL_CENTER_FORWARD";
     public static final String DLV_CALL_CENTER_SEARCH  = "DLV_CALL_CENTER_SEARCH";
     public static final String DLV_LOCATION_ADD_NEW  = "DLV_LOCATION_ADD_NEW";
+    public static final String DLV_CALL_FORWARD_EDIT_COD  = "DLV_CALL_FORWARD_EDIT_COD";
+    public static final String DLV_INQUIRY  = "DLV_INQUIRY";
+    public static final String DLV_CHECK_LADING_CODE  = "DLV_CHECK_LADING_CODE";
+    public static final String DLV_INQUIRY_AMOUNT  = "DLV_INQUIRY_AMOUNT";
+    public static final String DLV_PAYMENT_PAYPOST  = "DLV_PAYMENT_PAYPOST";
+    public static final String DLV_GET_PAYPOST_ERROR  = "DLV_GET_PAYPOST_ERROR";
+    public static final String DLV_CHANGE_ROUTE_CANCEL  = "DLV_CHANGE_ROUTE_CANCEL";
+    public static final String DLV_CALL_DIRECT  = "DLV_CALL_DIRECT";
+    public static final String DLV_POSTMAN_SHIFT_INPUT  = "DLV_POSTMAN_SHIFT_INPUT";
+    public static final String DLV_POSTMAN_SHIFT_OUTPUT  = "DLV_POSTMAN_SHIFT_OUTPUT";
+    public static final String DLV_CALL_LOG  = "DLV_CALL_LOG";
+    public static final String DLV_CALL_HISTORY  = "DLV_CALL_HISTORY";
+    public static final String DLV_CALL_HISTORY_TOTAL  = "DLV_CALL_HISTORY_TOTAL";
+    public static final String DLV_ROUTE_ADDRESS_SEARCH_ADDRESS  = "DLV_ROUTE_ADDRESS_SEARCH_ADDRESS";
 
 
 
     // thống
+
     public static final String STT_POSTMAN_GET_BALANCE  = "STT_POSTMAN_GET_BALANCE";
     public static final String STT_GET_DELIVERY_MAIN_VIEW = "STT_GET_DELIVERY_MAIN_VIEW";
     public static final String STT_GET_PICKUP_MAIN_VIEW = "STT_GET_PICKUP_MAIN_VIEW";
@@ -276,6 +291,10 @@ public class Constants {
     public static final String VM_ENCODE = "VM_ENCODE";
     public static final String VM_DECODE = "VM_DECODE";
     public static final String VM_TRAVEL_SALESMAN_PROBLEM = "VM_TRAVEL_SALESMAN_PROBLEM";
+    public static final String VM_VERIFY_ADDRESS = "VM_VERIFY_ADDRESS";
+    public static final String VM_CREATE = "VM_CREATE";
+    public static final String VM_ORDER_BD13 = "VM_ORDER_BD13";
+    public static final String AUTH_GET_PARAMS = "AUTH_GET_PARAMS";
 
     /*
      * key_share_pref

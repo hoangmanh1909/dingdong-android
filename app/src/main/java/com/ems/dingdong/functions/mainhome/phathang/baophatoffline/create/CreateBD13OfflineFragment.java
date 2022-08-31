@@ -379,7 +379,7 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
                 commonObject.setCancelOrder(false);
                 commonObject.setCollectAmount("");
             }
-            commonObject.setFeeCancelOrder(Long.parseLong(tv_phi_huy_don_hang.getText().toString().replace(",", "")));
+//            commonObject.setFeeCancelOrder(Long.parseLong(tv_phi_huy_don_hang.getText().toString().replace(",", "")));
             commonObject.setCancelOrder(true);
             commonObject.setReasonCode(mReasonCode);
             commonObject.setReasonName(mReasonInfo.getName());

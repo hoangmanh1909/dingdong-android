@@ -23,7 +23,7 @@ public interface CancelBD13Contract {
          * @param toDate      to date
          * @param ladingCode  lading code.
          */
-        void getCancelDelivery(String postmanCode, String routeCode, String fromDate, String toDate, String ladingCode, CommonCallback<SimpleResult> commonCallback);
+        void getCancelDelivery(String postmanCode, String routeCode, String fromDate, String toDate, String ladingCode, CommonCallback<DingDongGetCancelDeliveryResponse> commonCallback);
 
         /**
          * cancel deliver.

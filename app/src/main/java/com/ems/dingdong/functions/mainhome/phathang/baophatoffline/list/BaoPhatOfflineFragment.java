@@ -1,8 +1,13 @@
 package com.ems.dingdong.functions.mainhome.phathang.baophatoffline.list;
 
+import static android.content.Context.LOCATION_SERVICE;
+
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Build;
 import android.view.View;
 import android.widget.CheckBox;
@@ -17,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
 import com.ems.dingdong.dialog.ConfirmDialog;
+import com.ems.dingdong.dialog.DialogText;
 import com.ems.dingdong.dialog.EditDayDialog;
 import com.ems.dingdong.eventbus.BaoPhatCallback;
 import com.ems.dingdong.model.CommonObject;
@@ -71,6 +77,8 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
     private int mDeliverySuccess = 0;
     private int mDeliveryError = 0;
     private List<CommonObject> itemsSelected;
+    private LocationManager mLocationManager;
+    private Location mLocation;
 
     public static BaoPhatOfflineFragment getInstance() {
         return new BaoPhatOfflineFragment();
@@ -138,9 +146,34 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
         }
     }
 
+    @SuppressLint("MissingPermission")
+    private Location getLastKnownLocation() {
+        Location l = null;
+        mLocationManager = (LocationManager) getViewContext().getSystemService(LOCATION_SERVICE);
+        List<String> providers = mLocationManager.getProviders(true);
+        Location bestLocation = null;
+        for (String provider : providers) {
+            l = mLocationManager.getLastKnownLocation(provider);
+            if (l == null) {
+                continue;
+            }
+            if (bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy()) {
+                // Found best last known location: %s", l);
+                bestLocation = l;
+            }
+        }
+        return bestLocation;
+    }
+
     @Override
     public void onDisplay() {
         super.onDisplay();
+        mLocation = getLastKnownLocation();
+        if (mLocation == null) {
+            new DialogText(getContext(), "(Không thể hiển thị vị trí. Bạn đã đã bật định vị trên thiết bị chưa?)").show();
+            mPresenter.back();
+            return;
+        }
         mList.clear();
         mAmount = 0;
         Date from = DateTimeUtils.convertStringToDate(DateTimeUtils.calculateDay(0), DateTimeUtils.SIMPLE_DATE_FORMAT5);
@@ -149,7 +182,7 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
         if (mList.size() > 0) {
             for (CommonObject item : mList) {
                 if (org.apache.commons.lang3.math.NumberUtils.isDigits(item.getCollectAmount()))
-                    mAmount += Long.parseLong(item.getCollectAmount()) + item.getFeeCancelOrder() + item.getFeeShip() + item.getFeePPA()+ item.getFeeCollectLater();
+                    mAmount += Long.parseLong(item.getCollectAmount()) + item.getFeeCancelOrder() + item.getFeeShip() + item.getFeePPA() + item.getFeeCollectLater();
             }
             mAdapter.setItems(mList);
         }
@@ -296,12 +329,20 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
 
     public void submit() {
         itemsSelected = mAdapter.getItemsSelected();
+        double setDeliveryLat = 0;
+        double setDeliveryLon = 0;
+        if (mLocation != null) {
+            setDeliveryLat = mLocation.getLatitude();
+            setDeliveryLon = mLocation.getLongitude();
+        }
         if (itemsSelected.size() > 0) {
+            double finalSetDeliveryLat = setDeliveryLat;
+            double finalSetDeliveryLon = setDeliveryLon;
             new ConfirmDialog(getViewContext(), itemsSelected.size(), getTotalAmount(itemsSelected), 0)
                     .setOnCancelListener(Dialog::dismiss)
                     .setOnOkListener(confirmDialog -> {
                         showProgress();
-                        mPresenter.offlineDeliver(itemsSelected);
+                        mPresenter.offlineDeliver(itemsSelected, finalSetDeliveryLat, finalSetDeliveryLon,0,0);
                         confirmDialog.dismiss();
                     })
                     .setWarning("Bạn có muốn thực hiện báo phát với:")

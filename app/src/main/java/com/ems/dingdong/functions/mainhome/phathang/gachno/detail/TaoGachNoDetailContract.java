@@ -26,7 +26,7 @@ interface TaoGachNoDetailContract {
                                    String callForwardType, String hotlineNumber,
                                    String parcelCode, String PostmanId, String POCode, CommonCallback<SimpleResult> callback);
 
-        void getSolutionByReasonCode(String code, CommonCallback<SimpleResult> commonCallback);
+        void getSolutionByReasonCode(String code, CommonCallback<SolutionResult> commonCallback);
 
 
         void paymentPaypost(PaymentPaypostRequest request, CommonCallback<SimpleResult> callback);

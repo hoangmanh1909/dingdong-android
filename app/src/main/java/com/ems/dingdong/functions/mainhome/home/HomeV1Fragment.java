@@ -165,7 +165,7 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
             postOffice = NetWorkController.getGson().fromJson(posOfficeJson, PostOffice.class);
         }
         if (mPresenter != null && userInfo != null && routeInfo != null) {
-            mPresenter.getHomeView(fromDate, toDate, userInfo.getUserName(), routeInfo.getRouteCode());
+//            mPresenter.getHomeView(fromDate, toDate, userInfo.getUserName(), routeInfo.getRouteCode());
             BalanceModel v = new BalanceModel();
             v.setToDate(Integer.parseInt(toDate));
             v.setFromDate(Integer.parseInt(fromDate));

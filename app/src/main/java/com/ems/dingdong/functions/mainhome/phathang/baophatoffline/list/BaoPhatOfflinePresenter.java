@@ -36,13 +36,14 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
     private RouteInfo routeInfo;
     private UserInfo userInfo;
     private PostOffice postOffice;
+    String postOfficeJson;
 
     public BaoPhatOfflinePresenter(ContainerView containerView) {
         super(containerView);
 
         SharedPref sharedPref = new SharedPref((Context) mContainerView);
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
-        String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
+        postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
         String routeJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
 
         if (!userJson.isEmpty()) {
@@ -103,15 +104,13 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
     }
 
     @Override
-    public void offlineDeliver(List<CommonObject> commonObjects) {
+    public void offlineDeliver(List<CommonObject> commonObjects, double deliveryLat, double deliveryLon, double receiverLat, double receiverLon) {
         String postmanID = userInfo.getiD();
         String deliveryPOSCode = postOffice.getCode();
         String routeCode = routeInfo.getRouteCode();
         String mobileNumber = userInfo.getMobileNumber();
-
         String postManCode1 = userInfo.getUserName();
         String postManTel1 = userInfo.getMobileNumber();
-
         SharedPref sharedPref = new SharedPref((Context) mContainerView);
         boolean isPaymentPP = sharedPref.getBoolean(Constants.KEY_GACH_NO_PAYPOS, false);
         for (CommonObject item : commonObjects) {
@@ -153,8 +152,15 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
                         "",
                         0,
                         "", item.isCancelOrder(), item.getFeeCancelOrder(), postManTel1, postManCode1,
-
-                        "", "", "", "", "", "", "","DD_ANDROID","");
+                        deliveryLat,
+                        deliveryLon,
+                        receiverLat,
+                        receiverLon,
+                        NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLat(),
+                        NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLon(),
+                        "",
+                        "DD_ANDROID",
+                        "");
                 List<String> images = Arrays.asList(item.getImageDelivery().split(";"));
                 if (!images.isEmpty() && images.size() > 0 && !TextUtils.isEmpty(images.get(0))) {
                     mView.showProgress();
@@ -238,7 +244,12 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
                         item.getFeePPAPNS(),
                         item.getFeeShipPNS(),
                         item.getFeeCollectLaterPNS(),
-                        0, 0, 0, 0, "", ""
+                        0,
+                        0,
+                        0,
+                        0,
+                        NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLat(),
+                        NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLon()
                 );
 
                 //  this.feePPA = feePPA;

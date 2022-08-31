@@ -6,6 +6,7 @@ import com.ems.dingdong.model.GachNoResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.request.PaymentPaypostRequest;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.network.NetWorkControllerGateWay;
 
 /**
  * The ListGachNo interactor
@@ -19,7 +20,7 @@ class ListGachNoInteractor extends Interactor<ListGachNoContract.Presenter>
 
     @Override
     public void deliveryGetPaypostError(String fromDate, String toDate, CommonCallback<GachNoResult> callback) {
-        NetWorkController.deliveryGetPaypostError(fromDate, toDate,callback);
+        NetWorkControllerGateWay.deliveryGetPaypostError(fromDate, toDate,callback);
     }
 
     @Override

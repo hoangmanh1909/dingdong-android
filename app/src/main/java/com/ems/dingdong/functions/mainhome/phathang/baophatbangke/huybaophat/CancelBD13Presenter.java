@@ -60,15 +60,15 @@ public class CancelBD13Presenter extends Presenter<CancelBD13Contract.View, Canc
     @Override
     public void getCancelDelivery(String postmanCode, String routeCode, String fromDate, String toDate, String ladingCode) {
         mView.showProgress();
-        mInteractor.getCancelDelivery(postmanCode, routeCode, fromDate, toDate, ladingCode, new CommonCallback<SimpleResult>((Context) mContainerView) {
+        mInteractor.getCancelDelivery(postmanCode, routeCode, fromDate, toDate, ladingCode, new CommonCallback<DingDongGetCancelDeliveryResponse>((Context) mContainerView) {
             @Override
-            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+            protected void onSuccess(Call<DingDongGetCancelDeliveryResponse> call, Response<DingDongGetCancelDeliveryResponse> response) {
                 super.onSuccess(call, response);
                 mView.hideProgress();
                 assert response.body() != null;
                 if (response.body().getErrorCode().equals("00")) {
-                    ArrayList<DingDongGetCancelDelivery> deliveryPostmens = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<DingDongGetCancelDelivery>>(){}.getType());
-                    mView.showListSuccess(deliveryPostmens);
+//                    ArrayList<DingDongGetCancelDelivery> deliveryPostmens = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<DingDongGetCancelDelivery>>(){}.getType());
+                    mView.showListSuccess(response.body().getDeliveryPostmens());
                 } else {
                     mView.showErrorToast(response.body().getMessage());
                     mView.showListSuccess(new ArrayList<>());
@@ -77,7 +77,7 @@ public class CancelBD13Presenter extends Presenter<CancelBD13Contract.View, Canc
             }
 
             @Override
-            protected void onError(Call<SimpleResult> call, String message) {
+            protected void onError(Call<DingDongGetCancelDeliveryResponse> call, String message) {
                 super.onError(call, message);
                 mView.hideProgress();
                 mView.showErrorToast(message);

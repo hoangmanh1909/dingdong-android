@@ -144,14 +144,14 @@ public interface VinattiAPI {
     @FormUrlEncoded
     @POST("api/CallCenter/CallForwardEditCOD")
     Call<SimpleResult> CallForwardEditCOD(@Field("CallerNumber") String callerNumber,
-                                             @Field("CalleeNumber") String calleeNumber,
-                                             @Field("CallForwardType") String callForwardType,
-                                             @Field("HotlineNumber") String hotlineNumber,
-                                             @Field("LadingCode") String ladingCode,
-                                             @Field("Type") String type,
-                                             @Field("PostmanId") String PostmanId,
-                                             @Field("POcode") String POcode,
-                                             @Field("Signature") String signature
+                                          @Field("CalleeNumber") String calleeNumber,
+                                          @Field("CallForwardType") String callForwardType,
+                                          @Field("HotlineNumber") String hotlineNumber,
+                                          @Field("LadingCode") String ladingCode,
+                                          @Field("Type") String type,
+                                          @Field("PostmanId") String PostmanId,
+                                          @Field("POcode") String POcode,
+                                          @Field("Signature") String signature
     );
 
     @FormUrlEncoded
@@ -487,6 +487,12 @@ public interface VinattiAPI {
     @POST("Gateway/Execute")
     Single<XacMinhDiaChiResult> vietmapSearchEncode(@Body RequestObject request);
 
+    @POST("Gateway/Execute")
+    Single<VerifyAddressRespone> ddVerifyAddress(@Body RequestObject request);
+
+    @POST("Gateway/Execute")
+    Single<XacMinhRespone> ddCreateVietMapRequest(@Body RequestObject request);
+
 //    @GET("api/VietMap/Decode")
 //    Single<DecodeDiaChiResult> vietmapSearchDecode(@Query("vpostcode") String vpostcode);
 
@@ -584,8 +590,11 @@ public interface VinattiAPI {
     @POST("api/LadingCancelDelivery/Statistic")
     Observable<CancelDeliveryResult> cancelDeliveryStatistic(@Body CancelDeliveryStatisticRequest request);
 
+//    @POST("Gateway/Execute")
+//    Observable<SimpleResult> cancelDeliveryStatistic(@Body RequestObject request);
+
     @POST("Gateway/Execute")
-    Observable<SimpleResult> cancelDeliveryStatistic(@Body RequestObject request);
+    Observable<CancelDeliveryResult> cancelDeliveryStatistic(@Body RequestObject request);
 
     @GET("api/MoveCrop/GetAccessTokenAndroid")
     Single<TokenMoveCropResult> getAccessTokenAndroid(@Query("mobileNUmber") String mobileNUmber);
@@ -680,6 +689,48 @@ public interface VinattiAPI {
     Call<SimpleResult> commonService(@Body RequestObject requestObject);
 
     @POST("Gateway/Execute")
+    Call<InquiryAmountResult> commonServicegetInquiryAmount(@Body RequestObject requestObject);
+
+    @POST("Gateway/Execute")
+    Call<GachNoResult> commonServicedeliveryGetPaypostError(@Body RequestObject requestObject);
+
+    @POST("Gateway/Execute")
+    Call<CommonObjectResult> commonServicesearchParcelCodeDelivery(@Body RequestObject requestObject);
+
+    @POST("Gateway/Execute")
+    Call<StatisticDeliveryGeneralResult> commonServiceStatisticDeliveryGeneralResult(@Body RequestObject requestObject);
+
+    @POST("Gateway/Execute")
+    Call<ActiveResult> commonServiceActiveResult(@Body RequestObject requestObject);
+
+    @POST("Gateway/Execute")
+    Call<LoginResult> commonServiceLoginResult(@Body RequestObject requestObject);
+
+    @POST("Gateway/Execute")
+    Call<HistoryCallResult> commonServiceHistoryCallResult(@Body RequestObject requestObject);
+
+    @POST("Gateway/Execute")
+    Call<CommonObjectListResult> commonServiceCommonObjectListResult(@Body RequestObject requestObject);
+
+    @POST("Gateway/Execute")
+    Call<DingDongGetCancelDeliveryResponse> commonServiceDingDongGetCancelDeliveryResponse(@Body RequestObject requestObject);
+
+    @POST("Gateway/Execute")
+    Single<DeliveryPostmanResponse> commonServiceDeliveryPostmanResponse(@Body RequestObject requestObject);
+
+    @POST("Gateway/Execute")
+    Call<SolutionResult> commonServiceSolutionResult(@Body RequestObject requestObject);
+
+    @POST("Gateway/Execute")
+    Call<RouteInfoResult> commonServiceRouteInfoResult(@Body RequestObject requestObject);
+
+    @POST("Gateway/Execute")
+    Call<DeliveryPostmanResponse> commonServiceDeliveryPostman(@Body RequestObject requestObject);
+
+    @POST("Gateway/Execute")
+    Single<StatisticPaymentResult> getBalance(@Body RequestObject requestObject);
+
+    @POST("Gateway/Execute")
     Observable<SimpleResult> findLocation(@Body RequestObject requestObject);
 
     @POST("Gateway/Execute")
@@ -687,6 +738,9 @@ public interface VinattiAPI {
 
     @POST("Gateway/Execute")
     Single<SimpleResult> commonServiceRx(@Body RequestObject requestObject);
+
+    @POST("Gateway/Execute")
+    Single<DeliveryCheckAmountPaymentResult> commonServiceRxDeliverySuccess(@Body RequestObject requestObject);
 
     @POST("Gateway/Execute")
     Single<PaymentRequestResponse> paymentRequest(@Body RequestObject requestObject);

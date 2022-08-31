@@ -43,8 +43,8 @@ public class BaoPhatBangKeFailDialog extends Dialog {
     FormItemEditText edtReason;
     @BindView(R.id.tv_solution)
     FormItemTextView tvSolution;
-  /*  @BindView(R.id.ll_sign)
-    View llSign;*/
+    /*  @BindView(R.id.ll_sign)
+      View llSign;*/
     private ItemBottomSheetPickerUIFragment pickerUIReason;
     private ReasonInfo mReasonInfo;
     private ArrayList<SolutionInfo> mListSolution;
@@ -137,7 +137,7 @@ public class BaoPhatBangKeFailDialog extends Dialog {
                             mListSolution = null;
                             tvSolution.setText("");
                             loadSolution();
-                            if (mReasonInfo.getCode().equals("99")|| mReasonInfo.getCode().equals("13")) {
+                            if (mReasonInfo.getCode().equals("99") || mReasonInfo.getCode().equals("13")) {
                                 edtReason.setVisibility(View.VISIBLE);
                             } else {
                                 edtReason.setVisibility(View.GONE);
@@ -163,18 +163,18 @@ public class BaoPhatBangKeFailDialog extends Dialog {
     }
 
     private void loadSolution() {
-        NetWorkControllerGateWay.getSolutionByReasonCode(mReasonInfo.getCode(), new CommonCallback<SimpleResult>(mActivity) {
+        NetWorkControllerGateWay.getSolutionByReasonCode(mReasonInfo.getCode(), new CommonCallback<SolutionResult>(mActivity) {
             @Override
-            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+            protected void onSuccess(Call<SolutionResult> call, Response<SolutionResult> response) {
                 super.onSuccess(call, response);
                 if (response.body().getErrorCode().equals("00")) {
-                    mListSolution = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<SolutionInfo>>(){}.getType());
+                    mListSolution = response.body().getSolutionInfos();
                     showUISolution();
                 }
             }
 
             @Override
-            protected void onError(Call<SimpleResult> call, String message) {
+            protected void onError(Call<SolutionResult> call, String message) {
                 super.onError(call, message);
             }
         });

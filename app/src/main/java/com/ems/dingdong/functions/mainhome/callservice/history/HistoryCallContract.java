@@ -18,7 +18,7 @@ interface HistoryCallContract {
     interface Interactor extends IInteractor<Presenter> {
         void searchCallCenter(String postmanID,
                               String fromDate,
-                              String toDate, CommonCallback<SimpleResult> callback);
+                              String toDate, CommonCallback<HistoryCallResult> callback);
     }
 
     interface View extends PresentView<Presenter> {

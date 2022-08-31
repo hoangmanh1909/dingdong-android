@@ -3,6 +3,7 @@ package com.ems.dingdong.functions.mainhome.phathang.logcuocgoi;
 import com.core.base.viper.Interactor;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.network.NetWorkControllerGateWay;
 import com.ems.dingdong.notification.cuocgoictel.data.HistoryRequest;
 
 import io.reactivex.Single;
@@ -16,6 +17,6 @@ public class LogCallInteractor extends Interactor<LogCallContract.Presenter>
 
     @Override
     public Single<SimpleResult> getHistoryCall(HistoryRequest historyRequest) {
-        return NetWorkController.getCallHistory(historyRequest);
+        return NetWorkControllerGateWay.getCallHistory(historyRequest);
     }
 }

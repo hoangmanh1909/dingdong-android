@@ -121,27 +121,37 @@ public class CreateBd13Presenter extends Presenter<CreateBd13Contract.View, Crea
     @Override
     public void searchLadingBd13(DingDongGetLadingCreateBD13Request objRequest) {
         mView.showProgress();
-        mInteractor.searchLadingBd13(objRequest, new CommonCallback<SimpleResult>((Context) mContainerView) {
-            @Override
-            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
-                super.onSuccess(call, response);
-                mView.hideProgress();
-                if (response.body().getErrorCode().equals("00")) {
-                    ArrayList<DeliveryPostman> deliveryPostmens = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<DeliveryPostman>>(){}.getType());
-                    mView.showListSuccess(deliveryPostmens);
-                } else {
-                    mView.showErrorToast(response.body().getMessage());
-                }
-            }
-
-            @Override
-            protected void onError(Call<SimpleResult> call, String message) {
-                super.onError(call, message);
-
-                mView.hideProgress();
-                mView.showErrorToast(message);
-            }
-        });
+        mInteractor.searchLadingBd13(objRequest)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+//                    new CommonCallback<DeliveryPostmanResponse>((Context) mContainerView) {
+//                        @Override
+//                        protected void onSuccess(Call<DeliveryPostmanResponse> call, Response<DeliveryPostmanResponse> response) {
+//                            super.onSuccess(call, response);
+//                            mView.hideProgress();
+                    if (simpleResult.getErrorCode().equals("00")) {
+//                                ArrayList<DeliveryPostman> deliveryPostmens = NetWorkController.getGson().fromJson(simpleResult.getData(), new TypeToken<List<DeliveryPostman>>() {
+//                                }.getType());
+                        mView.showListSuccess(simpleResult.getDeliveryPostmens());
+                        mView.hideProgress();
+                    } else {
+                        mView.hideProgress();
+                        mView.showErrorToast(simpleResult.getMessage());
+                    }
+//                        }
+//
+//                        @Override
+//                        protected void onError(Call<DeliveryPostmanResponse> call, String message) {
+//                            super.onError(call, message);
+//                            mView.hideProgress();
+//                            mView.showErrorToast(message);
+//                        }
+//                    });
+                }, throwable -> {
+                    mView.showErrorToast(throwable.getMessage());
+                    mView.hideProgress();
+                });
     }
 
     @Override

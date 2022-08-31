@@ -13,7 +13,7 @@ import com.ems.dingdong.model.SimpleResult;
 interface ActiveContract {
 
     interface Interactor extends IInteractor<Presenter> {
-        void activeAuthorized(String mobileNumber, String activeCode, String codeDeviceActive, CommonCallback<SimpleResult> callback);
+        void activeAuthorized(String mobileNumber, String activeCode, String codeDeviceActive, CommonCallback<ActiveResult> callback);
     }
 
     interface View extends PresentView<Presenter> {

@@ -35,7 +35,7 @@ class ListBaoPhatBangKeInteractor extends Interactor<ListBaoPhatBangKeContract.P
     }
 
     @Override
-    public Call<SimpleResult> searchDeliveryPostman(String postmanID, String fromDate, String toDate, String routeCode, Integer searchType, CommonCallback<SimpleResult> callback) {
+    public Call<DeliveryPostmanResponse> searchDeliveryPostman(String postmanID, String fromDate, String toDate, String routeCode, Integer searchType, CommonCallback<DeliveryPostmanResponse> callback) {
         return NetWorkControllerGateWay.searchDeliveryPostman(postmanID, fromDate, toDate, routeCode, searchType, callback);
     }
 
@@ -67,17 +67,17 @@ class ListBaoPhatBangKeInteractor extends Interactor<ListBaoPhatBangKeContract.P
 
     @Override
     public Single<VerifyAddressRespone> ddVerifyAddress(VerifyAddress verifyAddress) {
-        return NetWorkController.ddVerifyAddress(verifyAddress);
+        return NetWorkControllerGateWay.vietmapddVerifyAddress(verifyAddress);
     }
 
     @Override
     public Single<XacMinhRespone> ddCreateVietMapRequest(CreateVietMapRequest createVietMapRequest) {
-        return NetWorkController.ddCreateVietMapRequest(createVietMapRequest);
+        return NetWorkControllerGateWay.vietmapddCreateVietMapRequest(createVietMapRequest);
     }
 
     @Override
     public Single<SimpleResult> ddSreachPhone(PhoneNumber dataRequestPayment) {
-        return NetWorkController.ddSreachPhone(dataRequestPayment);
+        return NetWorkControllerGateWay.ddSreachPhone(dataRequestPayment);
     }
 
     @Override
@@ -87,6 +87,6 @@ class ListBaoPhatBangKeInteractor extends Interactor<ListBaoPhatBangKeContract.P
 
     @Override
     public Single<SimpleResult> ddCall(CallLiveMode callLiveMode) {
-        return NetWorkController.ddCall(callLiveMode);
+        return NetWorkControllerGateWay.ddCall(callLiveMode);
     }
 }

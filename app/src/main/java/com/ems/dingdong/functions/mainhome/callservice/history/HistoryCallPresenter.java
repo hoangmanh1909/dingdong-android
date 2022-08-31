@@ -70,14 +70,14 @@ public class HistoryCallPresenter extends Presenter<HistoryCallContract.View, Hi
             callerNumber = userInfo.getMobileNumber();
             useiid = userInfo.getiD();
         }
-        mInteractor.searchCallCenter(useiid, fromDate, toDate, new CommonCallback<SimpleResult>((Activity) mContainerView) {
+        mInteractor.searchCallCenter(useiid, fromDate, toDate, new CommonCallback<HistoryCallResult>((Activity) mContainerView) {
             @Override
-            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+            protected void onSuccess(Call<HistoryCallResult> call, Response<HistoryCallResult> response) {
                 super.onSuccess(call, response);
                 mView.hideProgress();
                 if (response.body().getErrorCode().equals("00")) {
-                    ArrayList<HistoryCallInfo> historyCallInfos = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<HistoryCallInfo>>(){}.getType());
-                    mView.showListSuccess(historyCallInfos);
+//                    ArrayList<HistoryCallInfo> historyCallInfos = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<HistoryCallInfo>>(){}.getType());
+                    mView.showListSuccess(response.body().getHistoryCallInfos());
                 } else {
                     mView.showErrorToast(response.body().getMessage());
                     mView.showListEmpty();
@@ -85,7 +85,7 @@ public class HistoryCallPresenter extends Presenter<HistoryCallContract.View, Hi
             }
 
             @Override
-            protected void onError(Call<SimpleResult> call, String message) {
+            protected void onError(Call<HistoryCallResult> call, String message) {
                 super.onError(call, message);
                 mView.hideProgress();
                 mView.showErrorToast(message);
