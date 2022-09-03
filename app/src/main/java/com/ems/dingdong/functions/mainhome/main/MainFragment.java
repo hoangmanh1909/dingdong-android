@@ -123,7 +123,6 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
         String callProvider = sharedPref.getString(Constants.KEY_CALL_PROVIDER_HOME, callProviderHome);
         userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
-        routeInfoJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
         mCalendar = Calendar.getInstance();
         Date today = Calendar.getInstance().getTime();
         Calendar cal = Calendar.getInstance();
@@ -137,6 +136,8 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
         if (!postOfficeJson.isEmpty()) {
             postOffice = NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class);
         }
+        routeInfoJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
+
         if (!routeInfoJson.isEmpty()) {
             routeInfo = NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class);
         }
@@ -412,6 +413,12 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
     public void setBalance(String x) {
         BalanceRespone balance = NetWorkController.getGson().fromJson(x, BalanceRespone.class);
         viewTop.setVisibility(View.VISIBLE);
+        SharedPref sharedPref = new SharedPref(getViewContext());
+        routeInfoJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
+        if (!routeInfoJson.isEmpty()) {
+            routeInfo = NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class);
+        }
+        Log.d("ASDASDASDSD",  routeInfo.getRouteName());
 
         String accInfo = "";
         if (userInfo != null) {
@@ -442,7 +449,6 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
     private void updateUserHeader() {
 
     }
-
     private void removeHeader() {
         firstHeader.setText("");
         secondHeader.setText("");

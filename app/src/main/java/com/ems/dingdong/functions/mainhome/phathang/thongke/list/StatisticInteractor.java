@@ -4,6 +4,7 @@ import com.core.base.viper.Interactor;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.network.NetWorkControllerGateWay;
 
 /**
  * The Statistic interactor
@@ -17,6 +18,6 @@ class StatisticInteractor extends Interactor<StatisticContract.Presenter>
 
     @Override
     public void searchDeliveryStatistic(String fromDate, String toDate, String status, String postmanId, String routeCode, CommonCallback<CommonObjectListResult> callback) {
-        NetWorkController.searchDeliveryStatistic(fromDate, toDate, status, postmanId, routeCode, callback);
+        NetWorkControllerGateWay.searchDeliveryStatistic(fromDate, toDate, status, postmanId, routeCode, callback);
     }
 }

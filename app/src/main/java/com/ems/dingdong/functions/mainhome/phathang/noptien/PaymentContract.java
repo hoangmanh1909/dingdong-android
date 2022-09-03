@@ -12,6 +12,7 @@ import com.ems.dingdong.model.EWalletDataResult;
 import com.ems.dingdong.model.EWalletRemoveDataRequest;
 import com.ems.dingdong.model.EWalletRemoveRequest;
 import com.ems.dingdong.model.EWalletRequestResult;
+import com.ems.dingdong.model.PaymentRequestResponse;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
 import com.ems.dingdong.model.request.LadingPaymentInfo;
@@ -19,7 +20,9 @@ import com.ems.dingdong.model.request.PaymentConfirmModel;
 import com.ems.dingdong.model.request.PaymentRequestModel;
 import com.ems.dingdong.model.response.EWalletDataResponse;
 import com.ems.dingdong.model.response.SmartBankLink;
+import com.ems.dingdong.model.thauchi.DanhSachNganHangRepsone;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Single;
@@ -31,13 +34,15 @@ public interface PaymentContract {
 
         Single<SimpleResult> getHistoryPayment(DataRequestPayment dataRequestPayment);
 
-        Single<EWalletRequestResult> requestPayment(PaymentRequestModel paymentRequestModel);
+        Single<PaymentRequestResponse> requestPayment(PaymentRequestModel paymentRequestModel);
 
         Single<SimpleResult> deletePayment(DataRequestPayment dataRequestPayment);
 
         Single<SimpleResult> confirmPayment(PaymentConfirmModel paymentConfirmModel);
 
         Single<SimpleResult> getDDsmartBankConfirmLinkRequest(BaseRequestModel request);
+
+        Single<SimpleResult> getDanhSachNganHang();
 
 
     }
@@ -60,6 +65,8 @@ public interface PaymentContract {
         void showThanhCong();
 
         void setsmartBankConfirmLink(String x);
+
+        void showDanhSach(ArrayList<DanhSachNganHangRepsone> list);
 
     }
 
@@ -114,6 +121,8 @@ public interface PaymentContract {
         void titleChanged(int quantity, int currentSetTab);
 
         int getCurrentTab();
+
+        void getDanhSachNganHang();
 
     }
 

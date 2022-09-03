@@ -29,6 +29,7 @@ import com.ems.dingdong.model.InquiryAmountResult;
 import com.ems.dingdong.model.LinkEWalletResult;
 import com.ems.dingdong.model.LinkHistory;
 import com.ems.dingdong.model.LoginResult;
+import com.ems.dingdong.model.PaymentRequestResponse;
 import com.ems.dingdong.model.PostOfficeResult;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.ReceiverVpostcodeMode;
@@ -559,6 +560,9 @@ public interface VinattiAPI {
     @POST("api/EWallet/PayLinkRequest")
     Single<LinkEWalletResult> linkEWallet(@Body PayLinkRequest request);
 
+    @POST("Gateway/Execute")
+    Single<LinkEWalletResult> linkEWallet(@Body RequestObject request);
+
     @POST("api/EWallet/PayLinkConfirm")
     Single<VerifyLinkOtpResult> verifyLinkWithOtp(@Body PayLinkConfirm payLinkConfirm);
 
@@ -575,6 +579,9 @@ public interface VinattiAPI {
                                              @Query("poCode") String poCode,
                                              @Query("routeCode") String routeCode,
                                              @Query("postmanCode") String postmanCode);
+
+    @POST("Gateway/Execute")
+    Single<EWalletDataResult> getDataPayment(@Body RequestObject requestObject);
 
     @POST("api/Delivery/CheckAmountPayment")
     Single<DeliveryCheckAmountPaymentResult> checkAmountPayment(@Body List<PaypostPaymentRequest> request);
@@ -631,8 +638,22 @@ public interface VinattiAPI {
     Call<SimpleResult> commonService(@Body RequestObject requestObject);
 
     @POST("Gateway/Execute")
+    Call<CommonObjectListResult> commonServiceCommonObjectListResult(@Body RequestObject requestObject);
+
+    @POST("Gateway/Execute")
+    Single<SimpleResult> commonServiceRx(@Body RequestObject requestObject);
+
+    @POST("Gateway/Execute")
+    Call<StatisticDeliveryGeneralResult> commonServiceStatisticDeliveryGeneralResult(@Body RequestObject requestObject);
+
+    @POST("Gateway/Execute")
     Observable<CommonObjectResult> findLocation(@Body RequestObject requestObject);
 
+    @POST("Gateway/Execute")
+    Single<PaymentRequestResponse> paymentRequest(@Body RequestObject requestObject);
+
+    @POST("Gateway/Execute")
+    Single<VerifyLinkOtpResult> verifyLinkWithOtp(@Body RequestObject requestObject);
 //    @FormUrlEncoded
 //    @POST("api/Collect/SearchOrderPostman")
 //    Single<CommonObjectListResult> searchOrderPostmanCollect1(@Field("OrderPostmanID") String orderPostmanID,

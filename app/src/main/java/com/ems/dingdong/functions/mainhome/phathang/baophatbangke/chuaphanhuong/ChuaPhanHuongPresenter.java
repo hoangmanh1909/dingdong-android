@@ -66,7 +66,7 @@ public class ChuaPhanHuongPresenter extends Presenter<ChuaPhanHuongContract.View
                         }
                         mView.showComfrimThanCong(simpleResult.getMessage(), chuaPhanHuongModes);
                         mView.hideProgress();
-                    }
+                    }else Toast.showToast(getViewContext(),simpleResult.getMessage());
                     mView.hideProgress();
                 });
     }

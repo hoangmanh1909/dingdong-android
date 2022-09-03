@@ -55,11 +55,7 @@ public class ListBankAdapter extends RecyclerView.Adapter<ListBankAdapter.Holder
 
     @Override
     public void onBindViewHolder(@NonNull HolderView holder, int position) {
-        try {
-            holder.bindView(mListFilter.get(position));
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
+        holder.bindView(mListFilter.get(position));
     }
 
     @Override
@@ -80,14 +76,19 @@ public class ListBankAdapter extends RecyclerView.Adapter<ListBankAdapter.Holder
         @BindView(R.id.tv_trang_thai)
         TextView tv_trang_thai;
 
+
         HolderView(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
 
-        public void bindView(Object model) throws MalformedURLException {
+        public void bindView(Object model) {
             SmartBankLink item = (SmartBankLink) model;
-            Glide.with(mContext).load(new URL(item.getBankLogo())).into(imgMotaikhoan);
+            try {
+                Glide.with(mContext).load(new URL(item.getBankLogo())).into(imgMotaikhoan);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
             tvTitle.setText(item.getGroupName());
 
             if (item.getGroupType() == 1) { // GroupType == 1 ví điện tử
@@ -117,7 +118,7 @@ public class ListBankAdapter extends RecyclerView.Adapter<ListBankAdapter.Holder
         try {
             for (int i = 0; i < mListFilter.size(); i++) {
                 if (mListFilter.get(i).getBankCode().equals(smartBankLink.getBankCode())) {
-                    notifyItemChanged(i);
+                    notifyDataSetChanged();
                     resetItem();
                     return;
                 }

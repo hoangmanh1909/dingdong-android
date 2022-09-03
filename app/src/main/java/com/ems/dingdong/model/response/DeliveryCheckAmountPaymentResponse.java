@@ -33,6 +33,7 @@ public class DeliveryCheckAmountPaymentResponse {
 
     @SerializedName("FeePA")
     private long FeePA;
+
     @SerializedName("FeePAPNS")
     private long FeePAPNS;
 

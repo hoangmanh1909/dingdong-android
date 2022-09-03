@@ -30,4 +30,9 @@
 
     </LinearLayout>
 
+    <View
+        android:id="@+id/viewFooter"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_20sdp"
+        android:visibility="gone" />
 </LinearLayout>

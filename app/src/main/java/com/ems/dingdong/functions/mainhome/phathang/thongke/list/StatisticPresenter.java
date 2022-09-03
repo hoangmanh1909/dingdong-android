@@ -64,7 +64,6 @@ public class StatisticPresenter extends Presenter<StatisticContract.View, Statis
                 assert response.body() != null;
                 if (response.body().getErrorCode().equals("00")) {
                     mView.showListSuccess(response.body().getList());
-
                 } else {
                     mView.showListEmpty();
                 }

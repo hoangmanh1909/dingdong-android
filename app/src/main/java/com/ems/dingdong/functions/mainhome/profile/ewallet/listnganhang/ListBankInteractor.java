@@ -6,6 +6,7 @@ import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.request.CallOTP;
 import com.ems.dingdong.model.thauchi.SmartBankConfirmLinkRequest;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.network.NetWorkControllerGateWay;
 
 import io.reactivex.Single;
 
@@ -19,16 +20,21 @@ public class ListBankInteractor extends Interactor<ListBankContract.Presenter> i
 
     @Override
     public Single<SimpleResult> vnpCallOTP(CallOTP callOTP) {
-        return NetWorkController.ddCallOTP(callOTP);
+        return NetWorkControllerGateWay.ddCallOTP(callOTP);
     }
 
     @Override
     public Single<SimpleResult> smartBankConfirmLinkRequest(SmartBankConfirmLinkRequest request) {
-        return NetWorkController.smartBankConfirmLinkRequest(request);
+        return NetWorkControllerGateWay.smartBankConfirmLinkRequest(request);
     }
 
     @Override
     public Single<SimpleResult> getDDsmartBankConfirmLinkRequest(BaseRequestModel request) {
-        return NetWorkController.getDDsmartBankConfirmLinkRequest(request);
+        return NetWorkControllerGateWay.getDDsmartBankConfirmLinkRequest(request);
+    }
+
+    @Override
+    public Single<SimpleResult> getDanhSachNganHang() {
+        return NetWorkControllerGateWay.getDanhSachNganHang();
     }
 }

@@ -15,7 +15,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/textlines_item"
+            android:background="@drawable/textlines_item1"
             android:gravity="center|left"
             android:padding="@dimen/dimen_5dp"
             android:textColor="@color/black"
@@ -27,7 +27,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.5"
-            android:background="@drawable/textlines_item"
+            android:background="@drawable/textlines_item1"
             android:gravity="center|right"
             android:padding="@dimen/dimen_5dp"
             android:textColor="@color/red_light"
@@ -39,31 +39,31 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1.17"
-            android:background="@drawable/textlines_item"
+            android:background="@drawable/textlines_item1"
             android:gravity="center|right"
             android:padding="@dimen/dimen_5dp"
             android:textColor="@color/red_light"
             android:textSize="@dimen/text_size_12sp"
             tools:text="Số tiền COD" />
 
-<!--        <com.ems.dingdong.views.CustomTextView-->
-<!--            android:id="@+id/tv_money_c"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:layout_weight="1.17"-->
-<!--            android:background="@drawable/textlines_item"-->
-<!--            android:gravity="center|right"-->
-<!--            android:padding="@dimen/dimen_5dp"-->
-<!--            android:textColor="@color/red_light"-->
-<!--            android:textSize="@dimen/text_size_12sp"-->
-<!--            tools:text="Tiền C" />-->
+        <!--        <com.ems.dingdong.views.CustomTextView-->
+        <!--            android:id="@+id/tv_money_c"-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="match_parent"-->
+        <!--            android:layout_weight="1.17"-->
+        <!--            android:background="@drawable/textlines_item1"-->
+        <!--            android:gravity="center|right"-->
+        <!--            android:padding="@dimen/dimen_5dp"-->
+        <!--            android:textColor="@color/red_light"-->
+        <!--            android:textSize="@dimen/text_size_12sp"-->
+        <!--            tools:text="Tiền C" />-->
 
         <com.ems.dingdong.views.CustomTextView
             android:id="@+id/tv_money_cuoc"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1.17"
-            android:background="@drawable/textlines_item"
+            android:background="@drawable/textlines_item1"
             android:gravity="center|right"
             android:padding="@dimen/dimen_5dp"
             android:textColor="@color/red_light"

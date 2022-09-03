@@ -1,5 +1,7 @@
 package com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang;
 
+import android.content.Context;
+
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.functions.mainhome.profile.chitiettaikhoan.ChiTietTaiKhoanPresenter;
@@ -12,9 +14,13 @@ import com.ems.dingdong.model.LinkEWalletResult;
 import com.ems.dingdong.model.request.CallOTP;
 import com.ems.dingdong.model.response.DanhSachTaiKhoanRespone;
 import com.ems.dingdong.model.response.SmartBankLink;
+import com.ems.dingdong.model.thauchi.DanhSachNganHangRepsone;
 import com.ems.dingdong.model.thauchi.SmartBankConfirmLinkRequest;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
+import com.google.common.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -69,7 +75,7 @@ public class ListBankPresenter extends Presenter<ListBankContract.View, ListBank
     public void ddCallOTP(CallOTP request) {
         mView.showProgress();
         mInteractor.vnpCallOTP(request)
-                .delay(500, TimeUnit.MILLISECONDS)
+                .delay(1000, TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(simpleResult -> {
@@ -92,7 +98,7 @@ public class ListBankPresenter extends Presenter<ListBankContract.View, ListBank
     public void smartBankConfirmLinkRequest(SmartBankConfirmLinkRequest request) {
         mView.showProgress();
         mInteractor.smartBankConfirmLinkRequest(request)
-                .delay(500, TimeUnit.MILLISECONDS)
+                .delay(1000, TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(simpleResult -> {
@@ -111,12 +117,13 @@ public class ListBankPresenter extends Presenter<ListBankContract.View, ListBank
     public void getDDsmartBankConfirmLinkRequest(BaseRequestModel x) {
         mView.showProgress();
         mInteractor.getDDsmartBankConfirmLinkRequest(x)
-                .delay(500, TimeUnit.MILLISECONDS)
+                .delay(1000, TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(simpleResult -> {
                     if (simpleResult != null) {
                         if (simpleResult.getErrorCode().equals("00")) {
+//                            Toast.showToast(getViewContext(), simpleResult.getMessage());
                             mView.setsmartBankConfirmLink(simpleResult.getData());
                         } else {
                             Toast.showToast(getViewContext(), simpleResult.getMessage());
@@ -125,5 +132,31 @@ public class ListBankPresenter extends Presenter<ListBankContract.View, ListBank
                         mView.hideProgress();
                     }
                 });
+    }
+
+    @Override
+    public void getDanhSachNganHang() {
+        try {
+            mView.showProgress();
+            mInteractor.getDanhSachNganHang()
+                    .delay(1000, TimeUnit.MILLISECONDS)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(simpleResult -> {
+                        if (simpleResult != null) {
+                            if (simpleResult.getErrorCode().equals("00")) {
+                                SharedPref sharedPref = new SharedPref((Context) mContainerView);
+                                sharedPref.putString(Constants.KEY_LIST_BANK, simpleResult.getData());
+                                ArrayList<DanhSachNganHangRepsone> list = NetWorkController.getGson().fromJson(simpleResult.getData(),new TypeToken<ArrayList<DanhSachNganHangRepsone>>(){}.getType());
+                                mView.showDanhSach(list);
+                                mView.hideProgress();
+                            } else Toast.showToast(getViewContext(), simpleResult.getMessage());
+                            mView.hideProgress();
+                        }
+                    });
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 }

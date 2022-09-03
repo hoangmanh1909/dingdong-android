@@ -1,6 +1,8 @@
 package com.ems.dingdong.functions.mainhome.phathang.noptien;
 
+import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.WindowManager;
 
 import com.core.base.viper.Presenter;
@@ -25,11 +27,12 @@ import com.ems.dingdong.model.request.PaymentConfirmModel;
 import com.ems.dingdong.model.request.PaymentRequestModel;
 import com.ems.dingdong.model.response.EWalletDataResponse;
 import com.ems.dingdong.model.response.SmartBankLink;
+import com.ems.dingdong.model.thauchi.DanhSachNganHangRepsone;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
-import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
+import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 
 import org.apache.poi.ss.formula.functions.T;
@@ -92,7 +95,7 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
                 .delay(1500, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(eWalletDataResult -> {
-                    if (eWalletDataResult != null && eWalletDataResult.getErrorCode().equals("00")) {
+                    if (eWalletDataResult.getListEWalletData() != null && eWalletDataResult.getErrorCode().equals("00")) {
                         mView.showListSuccess(eWalletDataResult.getListEWalletData());
                         mView.hideProgress();
                         if (eWalletDataResult.getListEWalletData().size() == 0) {
@@ -144,13 +147,13 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(simpleResult -> {
-                    if (simpleResult != null && simpleResult.getErrorCode().equals("00")) {
+                    if (simpleResult != null && simpleResult.getCode().equals("00")) {
                         if (type == 1) {
 //                            mView.showRequestSuccess(list, simpleResult.getMessage(),
 //                                    simpleResult.getListEWalletResponse().getTranid(),
 //                                    simpleResult.getListEWalletResponse().getRetRefNumber());
-                            Tranid = simpleResult.getListEWalletResponse().getTranid();
-                            RetRefNumber = simpleResult.getListEWalletResponse().getRetRefNumber();
+                            Tranid = simpleResult.getValue().getTranid();
+                            RetRefNumber = simpleResult.getValue().getRetRefNumber();
                             Mess = simpleResult.getMessage();
                             otpDialog = new OtpDialog(getViewContext(), type, item, new OtpDialog.OnPaymentCallback() {
                                 @Override
@@ -328,6 +331,31 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
         return tabListener.getCurrentTab();
     }
 
+    @Override
+    public void getDanhSachNganHang() {
+        try {
+            mView.showProgress();
+            mInteractor.getDanhSachNganHang()
+                    .delay(1000, TimeUnit.MILLISECONDS)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(simpleResult -> {
+                        if (simpleResult != null) {
+                            if (simpleResult.getErrorCode().equals("00")) {
+                                SharedPref sharedPref = new SharedPref((Context) mContainerView);
+                                sharedPref.putString(Constants.KEY_LIST_BANK, simpleResult.getData());
+                                ArrayList<DanhSachNganHangRepsone> list = NetWorkController.getGson().fromJson(simpleResult.getData(),new TypeToken<ArrayList<DanhSachNganHangRepsone>>(){}.getType());
+                                mView.showDanhSach(list);
+                                mView.hideProgress();
+                            } else Toast.showToast(getViewContext(), simpleResult.getMessage());
+                            mView.hideProgress();
+                        }
+                    });
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
 
     public PaymentPresenter setTypeTab(int position) {
         mPos = position;
@@ -353,8 +381,6 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
                         } else Toast.showToast(getViewContext(), simpleResult.getMessage());
                         mView.hideProgress();
                     }
-                }, throwable -> {
-                    mView.hideProgress();
-                });
+                }, Throwable::printStackTrace);
     }
 }

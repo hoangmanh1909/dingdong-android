@@ -8,6 +8,7 @@ import com.ems.dingdong.model.request.DanhSachTaiKhoanRequest;
 import com.ems.dingdong.model.thauchi.SmartBankConfirmLinkRequest;
 import com.ems.dingdong.model.thauchi.YeuCauLienKetRequest;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.network.NetWorkControllerGateWay;
 
 import io.reactivex.Single;
 
@@ -19,27 +20,27 @@ public class SeabankInteractor extends Interactor<SeabankContract.Presenter> imp
 
     @Override
     public Single<SimpleResult> getDanhSachNganHang() {
-        return NetWorkController.getDanhSachNganHang();
+        return NetWorkControllerGateWay.getDanhSachNganHang();
     }
 
     @Override
     public Single<SimpleResult> getDanhSachTaiKhoan(DanhSachTaiKhoanRequest danhSachTaiKhoanRequest) {
-        return NetWorkController.getDanhSachTaiKhoan(danhSachTaiKhoanRequest);
+        return NetWorkControllerGateWay.getDanhSachTaiKhoan(danhSachTaiKhoanRequest);
     }
 
     @Override
     public Single<SimpleResult> yeuCauLienKet(YeuCauLienKetRequest request) {
-        return NetWorkController.yeuCauLienKet(request);
+        return NetWorkControllerGateWay.yeuCauLienKet(request);
     }
 
     @Override
     public Single<SimpleResult> smartBankConfirmLinkRequest(SmartBankConfirmLinkRequest request) {
-        return NetWorkController.smartBankConfirmLinkRequest(request);
+        return NetWorkControllerGateWay.smartBankConfirmLinkRequest(request);
     }
 
     @Override
     public Single<SimpleResult> vnpCallOTP(CallOTP callOTP) {
-        return NetWorkController.ddCallOTP(callOTP);
+        return NetWorkControllerGateWay.ddCallOTP(callOTP);
     }
 
 

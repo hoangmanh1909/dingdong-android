@@ -41,6 +41,7 @@ import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
+import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -64,8 +65,9 @@ public class SeabankFragment extends ViewFragment<SeabankContract.Presenter> imp
     String userJson;
     String postOfficeJson;
     String routeInfoJson;
+    String listBankJson;
     String maNganHang;
-    List<DanhSachNganHangRepsone> danhSachNganHangRepsone;
+    ArrayList<DanhSachNganHangRepsone> danhSachNganHangRepsone = new ArrayList<>();
     SmartBankLink thonTinSoTaiKhoanRespone;
 
     int idDanhSach;
@@ -145,6 +147,17 @@ public class SeabankFragment extends ViewFragment<SeabankContract.Presenter> imp
         if (!routeInfoJson.isEmpty()) {
             routeInfo = NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class);
         }
+        listBankJson = sharedPref.getString(Constants.KEY_LIST_BANK, "");
+        if (!listBankJson.isEmpty()) {
+            danhSachNganHangRepsone.clear();
+            try {
+                danhSachNganHangRepsone.addAll(NetWorkController.getGson().fromJson(listBankJson, new TypeToken<ArrayList<DanhSachNganHangRepsone>>() {
+                }.getType()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
         mList = new ArrayList<>();
         mAdapter = new SeabankAdapter(getViewContext(), mList);
         RecyclerUtils.setupVerticalRecyclerView(getViewContext(), recyclerView);
@@ -205,7 +218,11 @@ public class SeabankFragment extends ViewFragment<SeabankContract.Presenter> imp
                 }
                 break;
             case R.id.tv_chonnagnhang:
-                pickFilter(tvChonnagnhang);
+                if (danhSachNganHangRepsone.size() == 0) {
+                    mPresenter.getDanhSachNganHang();
+                } else {
+                    pickFilter(tvChonnagnhang);
+                }
                 break;
             case R.id.img_back:
                 mPresenter.back();
@@ -226,10 +243,7 @@ public class SeabankFragment extends ViewFragment<SeabankContract.Presenter> imp
         danhSachTaiKhoanRequest.setPIDNumber(userInfo.getPIDNumber());
         danhSachTaiKhoanRequest.setBankCode(maNganHang);
         danhSachTaiKhoanRequest.setPIDType(userInfo.getPIDType());
-//        if (edtSotaikhoan.getText().toString().trim().isEmpty()) {
-//            Toast.showToast(getViewContext(), "Vui lòng nhập số tài khoản thấu chi");
-//            return;
-//        }
+
         mPresenter.getDanhSachTaiKhoan(danhSachTaiKhoanRequest);
     }
 
@@ -256,9 +270,14 @@ public class SeabankFragment extends ViewFragment<SeabankContract.Presenter> imp
     }
 
     @Override
-    public void showDanhSach(List<DanhSachNganHangRepsone> list) {
-        danhSachNganHangRepsone = new ArrayList<>();
-        danhSachNganHangRepsone.addAll(list);
+    public void showDanhSach(ArrayList<DanhSachNganHangRepsone> list) {
+        try {
+            danhSachNganHangRepsone.clear();
+            if (list != null) danhSachNganHangRepsone.addAll(list);
+            pickFilter(tvChonnagnhang);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -395,13 +414,9 @@ public class SeabankFragment extends ViewFragment<SeabankContract.Presenter> imp
     @Override
     public void showMain() {
         EWalletData.setMeasurements(StateEWallet.NOTIFY, null);
-        try {
-            otpDialog.dismiss();
-        } catch (Exception e) {
-            e.getMessage();
-        }
         for (int i = 0; i < userInfo.getSmartBankLink().size(); i++) {
             if (userInfo.getSmartBankLink().get(i).getBankCode().equals("SeABank")) {
+                otpDialog.dismiss();
                 mPresenter.back();
             }
         }

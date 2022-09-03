@@ -9,9 +9,11 @@ import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.request.CallOTP;
 import com.ems.dingdong.model.request.DanhSachTaiKhoanRequest;
 import com.ems.dingdong.model.response.SmartBankLink;
+import com.ems.dingdong.model.thauchi.DanhSachNganHangRepsone;
 import com.ems.dingdong.model.thauchi.SmartBankConfirmLinkRequest;
 import com.ems.dingdong.model.thauchi.YeuCauLienKetRequest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Single;
@@ -24,6 +26,8 @@ public interface ListBankContract {
         Single<SimpleResult> smartBankConfirmLinkRequest(SmartBankConfirmLinkRequest request);
 
         Single<SimpleResult> getDDsmartBankConfirmLinkRequest(BaseRequestModel request);
+
+        Single<SimpleResult> getDanhSachNganHang();
     }
 
     interface View extends PresentView<Presenter> {
@@ -34,6 +38,8 @@ public interface ListBankContract {
         void dissmisOTP();
 
         void setsmartBankConfirmLink(String x);
+
+        void showDanhSach(ArrayList<DanhSachNganHangRepsone> list);
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
@@ -51,5 +57,7 @@ public interface ListBankContract {
         void smartBankConfirmLinkRequest(SmartBankConfirmLinkRequest request);
 
         void getDDsmartBankConfirmLinkRequest(BaseRequestModel x);
+
+        void getDanhSachNganHang();
     }
 }

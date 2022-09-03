@@ -141,7 +141,6 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
                 mPresenter.back();
                 break;
             case R.id.rl_logout:
-
                 SharedPref sharedPref = new SharedPref(getActivity());
                 sharedPref.clear();
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
@@ -164,7 +163,6 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
             SharedPref sharedPref = new SharedPref(getActivity());
             sharedPref.putString(Constants.KEY_ROUTE_INFO, NetWorkController.getGson().toJson(routeInfo));
             tv_route.setText(routeInfo.getRouteName());
-//            mPresenter.back();
             getViewContext().sendBroadcast(new Intent(HomeV1Fragment.ACTION_HOME_VIEW_CHANGE));
         }).show();
     }

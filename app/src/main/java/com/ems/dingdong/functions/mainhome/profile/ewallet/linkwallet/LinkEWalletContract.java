@@ -10,6 +10,7 @@ import com.ems.dingdong.model.request.PayLinkConfirm;
 import com.ems.dingdong.model.request.PayLinkRequest;
 import com.ems.dingdong.model.thauchi.DanhSachNganHangRepsone;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Single;
@@ -34,7 +35,7 @@ public interface LinkEWalletContract {
 
         void showOtpError(String message);
 
-        void showDanhSach(List<DanhSachNganHangRepsone> list);
+        void showDanhSach(ArrayList<DanhSachNganHangRepsone> list);
 
     }
 

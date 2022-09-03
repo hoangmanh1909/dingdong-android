@@ -6,7 +6,11 @@ import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.functions.mainhome.phathang.gachno.thongke.detail.StatisticDebitDetailPresenter;
+import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.StatisticDebitGeneralResult;
+import com.ems.dingdong.model.response.StatisticDebitGeneralResponse;
+import com.ems.dingdong.network.NetWorkControllerGateWay;
+import com.google.gson.reflect.TypeToken;
 
 import retrofit2.Call;
 import retrofit2.Response;
@@ -41,20 +45,40 @@ public class StatisticDebitPresenter extends Presenter<StatisticDebitContract.Vi
     public void showStatistic(String postmanID, String fromDate, String toDate, String routeCode) {
         mFromDate = fromDate;
         mToDate = toDate;
-        mInteractor.getDebitStatistic(postmanID, mFromDate, mToDate, routeCode, new CommonCallback<StatisticDebitGeneralResult>((Activity) mContainerView) {
+//        mInteractor.getDebitStatistic(postmanID, mFromDate, mToDate, routeCode, new CommonCallback<StatisticDebitGeneralResult>((Activity) mContainerView) {
+//            @Override
+//            protected void onSuccess(Call<StatisticDebitGeneralResult> call, Response<StatisticDebitGeneralResult> response) {
+//                super.onSuccess(call, response);
+//                mView.hideProgress();
+//                if (response.body().getErrorCode().equals("00")) {
+//                    mView.showStatistic(response.body().getStatisticDebitGeneralResponses());
+//                } else {
+//                    mView.showErrorToast(response.body().getMessage());
+//                }
+//            }
+//
+//            @Override
+//            protected void onError(Call<StatisticDebitGeneralResult> call, String message) {
+//                super.onError(call, message);
+//                mView.hideProgress();
+//                mView.showErrorToast(message);
+//            }
+//        });
+        mInteractor.getDebitStatistic(postmanID, mFromDate, mToDate, routeCode, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
-            protected void onSuccess(Call<StatisticDebitGeneralResult> call, Response<StatisticDebitGeneralResult> response) {
+            protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
                 mView.hideProgress();
                 if (response.body().getErrorCode().equals("00")) {
-                    mView.showStatistic(response.body().getStatisticDebitGeneralResponses());
+                    StatisticDebitGeneralResponse statisticDebitGeneralResponse = NetWorkControllerGateWay.getGson().fromJson(response.body().getData(), new TypeToken<StatisticDebitGeneralResponse>(){}.getType());
+                    mView.showStatistic(statisticDebitGeneralResponse);
                 } else {
                     mView.showErrorToast(response.body().getMessage());
                 }
             }
 
             @Override
-            protected void onError(Call<StatisticDebitGeneralResult> call, String message) {
+            protected void onError(Call<SimpleResult> call, String message) {
                 super.onError(call, message);
                 mView.hideProgress();
                 mView.showErrorToast(message);

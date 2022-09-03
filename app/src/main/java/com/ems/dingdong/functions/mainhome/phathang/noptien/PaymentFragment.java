@@ -33,6 +33,7 @@ import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.request.LadingPaymentInfo;
 import com.ems.dingdong.model.response.EWalletDataResponse;
 import com.ems.dingdong.model.response.SmartBankLink;
+import com.ems.dingdong.model.thauchi.DanhSachNganHangRepsone;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.observer.DisplayElement;
 import com.ems.dingdong.observer.EWalletData;
@@ -45,6 +46,7 @@ import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.form.FormItemEditText;
+import com.google.common.reflect.TypeToken;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
 import org.json.JSONException;
@@ -143,6 +145,9 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
 
     String postOfficeJson;
     String routeInfoJson;
+    String listBankJson;
+
+    ArrayList<DanhSachNganHangRepsone> listBank = new ArrayList<DanhSachNganHangRepsone>();
 
     @Override
     public void initLayout() {
@@ -167,6 +172,7 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
         routeInfoJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
+        listBankJson = sharedPref.getString(Constants.KEY_LIST_BANK, "");
         Log.d("asdasdas12341", userJson);
         if (!TextUtils.isEmpty(userJson)) {
             postmanCode = NetWorkController.getGson().fromJson(userJson, UserInfo.class).getUserName();
@@ -177,6 +183,16 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
         }
         if (!TextUtils.isEmpty(routeInfoJson)) {
             routeCode = NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class).getRouteCode();
+        }
+        if (!listBankJson.isEmpty()) {
+            listBank.clear();
+            try {
+                listBank.addAll(NetWorkController.getGson().fromJson(listBankJson, new TypeToken<ArrayList<DanhSachNganHangRepsone>>() {
+                }.getType()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
         }
         fromDate = DateTimeUtils.calculateDay(0);
         toDate = DateTimeUtils.calculateDay(0);
@@ -216,7 +232,7 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
 
     }
 
-    private void getDDsmartBankConfirmLinkRequest(){
+    private void getDDsmartBankConfirmLinkRequest() {
         BalanceModel v = new BalanceModel();
         v.setPOProvinceCode(NetWorkController.getGson().fromJson(userJson, UserInfo.class).getPOProvinceCode());
         v.setPODistrictCode(NetWorkController.getGson().fromJson(userJson, UserInfo.class).getPODistrictCode());
@@ -422,146 +438,37 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
                 showErrorToast("Bạn chưa chọn bưu gửi nào");
                 return;
             }
-            long cod = 0;
-            long fee = 0;
-            for (EWalletDataResponse item : mAdapter.getItemsSelected()) {
-                cod += item.getCodAmount();
-                fee += item.getFee();
+            if (listBank.size() == 0) {
+                mPresenter.getDanhSachNganHang();
+            } else {
+                showDialogTabNopPhi1();
             }
-            String codAmount = NumberUtils.formatPriceNumber(cod);
-            String feeAmount = NumberUtils.formatPriceNumber(fee);
-            List<LadingPaymentInfo> list = new ArrayList<>();
-            int countFee = 0;
-            for (EWalletDataResponse item : mAdapter.getItemsSelected()) {
-                LadingPaymentInfo info = new LadingPaymentInfo();
-                info.setCodAmount(item.getCodAmount());
-                info.setFeeCod(item.getFee());
-                info.setLadingCode(item.getLadingCode());
-                info.setFeeType(item.getFeeType());
-                if (item.getFee() > 0)
-                    countFee++;
-                list.add(info);
-            }
-            if (k == null) k = new ArrayList<>();
-            else Collections.sort(k, new PaymentFragment.NameComparator());
 
-
-            int finalCountFee = countFee;
-            new DiaLogOptionNew(getViewContext(), k, (ContainerView) getViewContext(), new ViNewCallback() {
-                @Override
-                public void onResponse(SmartBankLink item) {
-                    String content = "Bạn chắc chắn nộp " + "<font color=\"red\", size=\"20dp\">" +
-                            list.size() + "</font>" + " bưu gửi với tổng số tiền COD: " +
-                            "<font color=\"red\", size=\"20dp\">" + codAmount + "</font>" + " đ, cước: " +
-                            "<font color=\"red\", size=\"20dp\">" + feeAmount + "</font>" + " đ qua " + item.getBankName();
-                    new NotificationDialog(getViewContext()).
-                            setConfirmText(getString(R.string.payment_confirn))
-                            .setCancelText(getString(R.string.payment_cancel))
-                            .setHtmlContent(content)
-                            .setCancelClickListener(Dialog::dismiss)
-                            .setImage(NotificationDialog.DialogType.NOTIFICATION_WARNING)
-                            .setConfirmClickListener(sweetAlertDialog -> {
-                                String posmanTel = "";
-                                if (item.getGroupType() == 2) {
-                                    posmanTel = userInfo.getMobileNumber();
-                                    mPresenter.requestPayment(list, poCode, routeCode, postmanCode,
-                                            item.getGroupType(), item.getBankCode(), posmanTel, item.getPaymentToken(), item);
-                                } else {
-                                    if (finalCountFee > 0) {
-                                        showErrorToast("Bưu gửi có cước COD không được nộp qua ví bưu điện");
-                                    } else {
-                                        posmanTel = userInfo.getMobileNumber();
-                                        mPresenter.requestPayment(list, poCode, routeCode, postmanCode,
-                                                item.getGroupType(), item.getBankCode(), posmanTel, item.getPaymentToken(), item);
-                                    }
-                                }
-
-                                sweetAlertDialog.dismiss();
-                            }).show();
-                }
-            }).show();
-//            new DiaLogOption(getViewContext(), new ViCallback() {
-//                @Override
-//                public void onResponse(String id, String token, String bankcode) {
-//                    if (id.equals("3")) {
-//                        mPresenter.showLienket();
-//                    } else {
-//                        String con = "";
-//                        if (id.equals("1"))
-//                            con = "Tài khoản thấu chi NHTM SeABank?";
-//                        else if (id.equals("2")) con = "Ví điện tử PostPay?";
-//                        else if (id.equals("4")) con = "Ví điện tử PostPay - MB?";
-//
-//                        String content = "Bạn chắc chắn nộp " + "<font color=\"red\", size=\"20dp\">" +
-//                                list.size() + "</font>" + " bưu gửi với tổng số tiền COD: " +
-//                                "<font color=\"red\", size=\"20dp\">" + codAmount + "</font>" + " đ, cước: " +
-//                                "<font color=\"red\", size=\"20dp\">" + feeAmount + "</font>" + " đ qua " + con;
-//
-//                        new NotificationDialog(getViewContext())
-//                                .setConfirmText(getString(R.string.payment_confirn))
-//                                .setCancelText(getString(R.string.payment_cancel))
-//                                .setHtmlContent(content)
-//                                .setCancelClickListener(Dialog::dismiss)
-//                                .setImage(NotificationDialog.DialogType.NOTIFICATION_WARNING)
-//                                .setConfirmClickListener(sweetAlertDialog -> {
-//                                    String posmanTel = "";
-////                                    if (id.equals("1"))
-////                                        bankcode = "SeABank";
-////                                    else if (id.equals("2")) bankcode = "EW";
-////                                    else if (id.equals("4")) bankcode = "VNPD";
-//                                    posmanTel = userInfo.getMobileNumber();
-//                                    mPresenter.requestPayment(list, poCode, routeCode, postmanCode, Integer.parseInt(id), bankcode, posmanTel, token);
-//                                    sweetAlertDialog.dismiss();
-//
-////                                    if (id.equals("2") || id.equals("4")) {
-////                                        otpDialog = new OtpDialog(getViewContext(), id, new OtpDialog.OnPaymentCallback() {
-////                                            @Override
-////                                            public void onPaymentClick(String otp) {
-////                                                if (ketquaINT == 1)
-////                                                    mPresenter.confirmPayment(list, otp,
-////                                                            requestIdKq, retRefNumberKq, poCode, routeCode, postmanCode, mobileNumber, token);
-////                                                else {
-////                                                    Toast.showToast(getViewContext(), "Vui lòng kiểm tra OTP được gửi trong SMS của bạn.");
-////                                                }
-////                                            }
-////                                        }, messageKq);
-////
-////                                        otpDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-////                                        otpDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-////                                        otpDialog.show();
-////                                    }
-//                                    showProgress();
-//
-//                                })
-//                                .show();
-//                    }
-//                }
-//            }).show();
         }
     }
 
     @Override
     public void display(Object data) {
         try {
-            if (data instanceof EWalletData){
+            if (data instanceof EWalletData) {
                 EWalletData eWalletData = (EWalletData) data;
-                switch (eWalletData.getStateEWallet()){
-                    case UPDATE:{
+                switch (eWalletData.getStateEWallet()) {
+                    case UPDATE: {
                         updateItemSmartBank(eWalletData.getSmartBankLink());
                         break;
                     }
-                    case DELETE:{
+                    case DELETE: {
                         removeItemSmartBank(eWalletData.getSmartBankLink());
                         break;
                     }
-                    case NOTIFY:{
+                    case NOTIFY: {
                         getDDsmartBankConfirmLinkRequest();
                         break;
                     }
                 }
 
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -600,96 +507,11 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
                 showErrorToast("Bạn chưa chọn bưu gửi nào");
                 return;
             }
-            long cod = 0;
-            long fee = 0;
-            for (EWalletDataResponse item : mAdapter.getItemsSelected()) {
-                cod += item.getCodAmount();
-                fee += item.getFee();
+            if (listBank.size() == 0) {
+                mPresenter.getDanhSachNganHang();
+            } else {
+                showDialogTabNopPhi2();
             }
-            List<LadingPaymentInfo> list = new ArrayList<>();
-            for (EWalletDataResponse item : mAdapter.getItemsSelected()) {
-                LadingPaymentInfo info = new LadingPaymentInfo();
-                info.setCodAmount(item.getCodAmount());
-                info.setFeeCod(item.getFee());
-                info.setLadingCode(item.getLadingCode());
-                info.setFeeType(item.getFeeType());
-                list.add(info);
-            }
-            String codAmount = NumberUtils.formatPriceNumber(cod);
-            String feeAmount = NumberUtils.formatPriceNumber(fee);
-
-            Collections.sort(k, new PaymentFragment.NameComparator());
-            new DiaLogOptionNew(getViewContext(), k, (ContainerView) getViewContext(), new ViNewCallback() {
-                @Override
-                public void onResponse(SmartBankLink item) {
-                    String content = "Bạn chắc chắn nộp " + "<font color=\"red\", size=\"20dp\">" +
-                            list.size() + "</font>" + " bưu gửi với tổng số tiền: " +
-                            "<font color=\"red\", size=\"20dp\">" + codAmount + "</font>" + " đ, cước: " +
-                            "<font color=\"red\", size=\"20dp\">" + feeAmount + "</font>" + " đ qua " + item.getBankName();
-                    new NotificationDialog(getViewContext()).
-                            setConfirmText(getString(R.string.payment_confirn))
-                            .setCancelText(getString(R.string.payment_cancel))
-                            .setHtmlContent(content)
-                            .setCancelClickListener(Dialog::dismiss)
-                            .setImage(NotificationDialog.DialogType.NOTIFICATION_WARNING)
-                            .setConfirmClickListener(sweetAlertDialog -> {
-                                String posmanTel = "";
-                                posmanTel = userInfo.getMobileNumber();
-                                mPresenter.requestPayment(list, poCode, routeCode, postmanCode,
-                                        item.getGroupType(), item.getBankCode(), posmanTel, item.getPaymentToken(), item);
-                                sweetAlertDialog.dismiss();
-                            }).show();
-                }
-            }).show();
-//            new DiaLogOption(getViewContext(), new ViCallback() {
-//                @Override
-//                public void onResponse(String id, String token, String bankcode) {
-//                    String con = "";
-//                    if (id.equals("1"))
-//                        con = "Tài khoản thấu chi NHTM SeABank?";
-//                    else if (id.equals("2")) con = "Ví điện tử PostPay?";
-//                    else if (id.equals("4")) con = "Ví điện tử PostPay - MB?";
-//                    String content = "Bạn chắc chắn nộp " + "<font color=\"red\", size=\"20dp\">" +
-//                            list.size() + "</font>" + " khoản thu với tổng số tiền : " +
-//                            "<font color=\"red\", size=\"20dp\">" + codAmount + "</font>" + " đ, " + con;
-//                    new NotificationDialog(getViewContext())
-//                            .setConfirmText(getString(R.string.payment_confirn))
-//                            .setCancelText(getString(R.string.payment_cancel))
-//                            .setHtmlContent(content)
-//                            .setCancelClickListener(Dialog::dismiss)
-//                            .setImage(NotificationDialog.DialogType.NOTIFICATION_WARNING)
-//                            .setConfirmClickListener(sweetAlertDialog -> {
-////                                String bankcode = "";
-//                                String posmanTel = "";
-////                                if (id.equals("1"))
-////                                    bankcode = "SeABank";
-////                                else if (id.equals("2")) bankcode = "EW";
-////                                else if (id.equals("4")) bankcode = "VNPD";
-//                                posmanTel = userInfo.getMobileNumber();
-//
-////                                mPresenter.requestPayment(list, poCode, routeCode, postmanCode, Integer.parseInt(id), bankcode, posmanTel, token);
-////                                sweetAlertDialog.dismiss();
-////                                if (id.equals("2") || id.equals("4")) {
-////                                    otpDialog = new OtpDialog(getViewContext(), id, new OtpDialog.OnPaymentCallback() {
-////                                        @Override
-////                                        public void onPaymentClick(String otp) {
-////                                            if (ketquaINT == 1)
-////                                                mPresenter.confirmPayment(list, otp,
-////                                                        requestIdKq, retRefNumberKq, poCode, routeCode, postmanCode, mobileNumber, token);
-////                                            else {
-////                                                Toast.showToast(getViewContext(), "Vui lòng kiểm tra OTP được gửi trong SMS của bạn.");
-////                                            }
-////                                        }
-////                                    }, messageKq);
-////                                    otpDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-////                                    otpDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-////                                    otpDialog.show();
-////                                }
-//                                showProgress();
-//                            })
-//                            .show();
-//                }
-//            }).show();
         }
     }
 
@@ -735,7 +557,7 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
                     .setCancelClickListener(Dialog::dismiss)
                     .setImage(NotificationDialog.DialogType.NOTIFICATION_WARNING)
                     .setConfirmClickListener(sweetAlertDialog -> {
-                        mPresenter.deletePayment(mAdapter.getItemsSelected(),mobileNumber);
+                        mPresenter.deletePayment(mAdapter.getItemsSelected(), mobileNumber);
                         sweetAlertDialog.dismiss();
                     })
                     .show();
@@ -760,28 +582,145 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
         k = new ArrayList<>(Arrays.asList(v));
     }
 
-    private void updateItemSmartBank(SmartBankLink smartBankLink){
+    @Override
+    public void showDanhSach(ArrayList<DanhSachNganHangRepsone> list) {
+        listBank.clear();
+        if (list != null) listBank.addAll(list);
+        if (mPresenter.getCurrentTab() == 0) {
+            showDialogTabNopPhi1();
+        } else {
+            showDialogTabNopPhi2();
+        }
+    }
+
+    private void updateItemSmartBank(SmartBankLink smartBankLink) {
         try {
-            for (int i=0;i<k.size();i++){
-                if (k.get(i).getBankCode().equals(smartBankLink.getBankCode())){
+            for (int i = 0; i < k.size(); i++) {
+                if (k.get(i).getBankCode().equals(smartBankLink.getBankCode())) {
                     k.get(i).setIsDefaultPayment(smartBankLink.getIsDefaultPayment());
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    private void removeItemSmartBank(SmartBankLink smartBankLink){
+
+    private void removeItemSmartBank(SmartBankLink smartBankLink) {
         try {
-            for (int i=0;i<k.size();i++){
-                if (k.get(i).getBankCode().equals(smartBankLink.getBankCode())){
+            for (int i = 0; i < k.size(); i++) {
+                if (k.get(i).getBankCode().equals(smartBankLink.getBankCode())) {
                     k.remove(i);
                     return;
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void showDialogTabNopPhi1() {
+        long cod = 0;
+        long fee = 0;
+        for (EWalletDataResponse item : mAdapter.getItemsSelected()) {
+            cod += item.getCodAmount();
+            fee += item.getFee();
+        }
+        String codAmount = NumberUtils.formatPriceNumber(cod);
+        String feeAmount = NumberUtils.formatPriceNumber(fee);
+        List<LadingPaymentInfo> list = new ArrayList<>();
+        int countFee = 0;
+        for (EWalletDataResponse item : mAdapter.getItemsSelected()) {
+            LadingPaymentInfo info = new LadingPaymentInfo();
+            info.setCodAmount(item.getCodAmount());
+            info.setFeeCod(item.getFee());
+            info.setLadingCode(item.getLadingCode());
+            info.setFeeType(item.getFeeType());
+            if (item.getFee() > 0)
+                countFee++;
+            list.add(info);
+        }
+        if (k == null) k = new ArrayList<>();
+        else Collections.sort(k, new PaymentFragment.NameComparator());
+
+
+        int finalCountFee = countFee;
+        new DiaLogOptionNew(getViewContext(), k, listBank, (ContainerView) getViewContext(), new ViNewCallback() {
+            @Override
+            public void onResponse(SmartBankLink item) {
+                String content = "Bạn chắc chắn nộp " + "<font color=\"red\", size=\"20dp\">" +
+                        list.size() + "</font>" + " bưu gửi với tổng số tiền COD: " +
+                        "<font color=\"red\", size=\"20dp\">" + codAmount + "</font>" + " đ, cước: " +
+                        "<font color=\"red\", size=\"20dp\">" + feeAmount + "</font>" + " đ qua " + item.getBankName();
+                new NotificationDialog(getViewContext()).
+                        setConfirmText(getString(R.string.payment_confirn))
+                        .setCancelText(getString(R.string.payment_cancel))
+                        .setHtmlContent(content)
+                        .setCancelClickListener(Dialog::dismiss)
+                        .setImage(NotificationDialog.DialogType.NOTIFICATION_WARNING)
+                        .setConfirmClickListener(sweetAlertDialog -> {
+                            String posmanTel = "";
+                            if (item.getGroupType() == 2) {
+                                posmanTel = userInfo.getMobileNumber();
+                                mPresenter.requestPayment(list, poCode, routeCode, postmanCode,
+                                        item.getGroupType(), item.getBankCode(), posmanTel, item.getPaymentToken(), item);
+                            } else {
+                                if (finalCountFee > 0) {
+                                    showErrorToast("Bưu gửi có cước COD không được nộp qua ví bưu điện");
+                                } else {
+                                    posmanTel = userInfo.getMobileNumber();
+                                    mPresenter.requestPayment(list, poCode, routeCode, postmanCode,
+                                            item.getGroupType(), item.getBankCode(), posmanTel, item.getPaymentToken(), item);
+                                }
+                            }
+
+                            sweetAlertDialog.dismiss();
+                        }).show();
+            }
+        }).show();
+    }
+
+    private void showDialogTabNopPhi2() {
+        long cod = 0;
+        long fee = 0;
+        for (EWalletDataResponse item : mAdapter.getItemsSelected()) {
+            cod += item.getCodAmount();
+            fee += item.getFee();
+        }
+        List<LadingPaymentInfo> list = new ArrayList<>();
+        for (EWalletDataResponse item : mAdapter.getItemsSelected()) {
+            LadingPaymentInfo info = new LadingPaymentInfo();
+            info.setCodAmount(item.getCodAmount());
+            info.setFeeCod(item.getFee());
+            info.setLadingCode(item.getLadingCode());
+            info.setFeeType(item.getFeeType());
+            list.add(info);
+        }
+        String codAmount = NumberUtils.formatPriceNumber(cod);
+        String feeAmount = NumberUtils.formatPriceNumber(fee);
+
+        Collections.sort(k, new PaymentFragment.NameComparator());
+        new DiaLogOptionNew(getViewContext(), k, listBank, (ContainerView) getViewContext(), new ViNewCallback() {
+            @Override
+            public void onResponse(SmartBankLink item) {
+                String content = "Bạn chắc chắn nộp " + "<font color=\"red\", size=\"20dp\">" +
+                        list.size() + "</font>" + " bưu gửi với tổng số tiền: " +
+                        "<font color=\"red\", size=\"20dp\">" + codAmount + "</font>" + " đ, cước: " +
+                        "<font color=\"red\", size=\"20dp\">" + feeAmount + "</font>" + " đ qua " + item.getBankName();
+                new NotificationDialog(getViewContext()).
+                        setConfirmText(getString(R.string.payment_confirn))
+                        .setCancelText(getString(R.string.payment_cancel))
+                        .setHtmlContent(content)
+                        .setCancelClickListener(Dialog::dismiss)
+                        .setImage(NotificationDialog.DialogType.NOTIFICATION_WARNING)
+                        .setConfirmClickListener(sweetAlertDialog -> {
+                            String posmanTel = "";
+                            posmanTel = userInfo.getMobileNumber();
+                            mPresenter.requestPayment(list, poCode, routeCode, postmanCode,
+                                    item.getGroupType(), item.getBankCode(), posmanTel, item.getPaymentToken(), item);
+                            sweetAlertDialog.dismiss();
+                        }).show();
+            }
+        }).show();
     }
 
     @Override

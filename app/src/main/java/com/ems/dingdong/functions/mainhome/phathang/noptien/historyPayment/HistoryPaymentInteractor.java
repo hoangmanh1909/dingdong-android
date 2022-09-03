@@ -6,10 +6,12 @@ import com.ems.dingdong.model.DataRequestPayment;
 import com.ems.dingdong.model.EWalletDataHistoryResult;
 import com.ems.dingdong.model.EWalletDataResult;
 import com.ems.dingdong.model.EWalletRequestResult;
+import com.ems.dingdong.model.PaymentRequestResponse;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.request.PaymentConfirmModel;
 import com.ems.dingdong.model.request.PaymentRequestModel;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.network.NetWorkControllerGateWay;
 
 import io.reactivex.Single;
 
@@ -21,22 +23,22 @@ public class HistoryPaymentInteractor extends Interactor<HistoryPaymentContract.
 
     @Override
     public Single<SimpleResult> getHistoryPayment(DataRequestPayment dataRequestPayment) {
-        return NetWorkController.getHistoryPayment(dataRequestPayment);
+        return NetWorkControllerGateWay.getHistoryPayment(dataRequestPayment);
     }
 
 
     @Override
-    public Single<EWalletRequestResult> requestPayment(PaymentRequestModel paymentRequestModel) {
-        return NetWorkController.requestPayment(paymentRequestModel);
+    public Single<PaymentRequestResponse> requestPayment(PaymentRequestModel paymentRequestModel) {
+        return NetWorkControllerGateWay.requestPayment(paymentRequestModel);
     }
 
     @Override
     public Single<SimpleResult> confirmPayment(PaymentConfirmModel paymentConfirmModel) {
-        return NetWorkController.confirmPayment(paymentConfirmModel);
+        return NetWorkControllerGateWay.confirmPayment(paymentConfirmModel);
     }
 
     @Override
     public Single<SimpleResult> cancelPayment(DataRequestPayment dataRequestPayment) {
-        return NetWorkController.deletePayment(dataRequestPayment);
+        return NetWorkControllerGateWay.cancelPayment(dataRequestPayment);
     }
 }

@@ -77,7 +77,7 @@ interface BaoPhatOfflineContract {
          *
          * @param commonObjects list chosen.
          */
-        void offlineDeliver(List<CommonObject> commonObjects);
+        void offlineDeliver(List<CommonObject> commonObjects, double deliveryLat, double deliveryLon, double receiverLat, double receiverLon);
 
         List<CommonObject> getOfflineRecord(Date from, Date to);
 
