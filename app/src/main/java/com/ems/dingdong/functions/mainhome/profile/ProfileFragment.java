@@ -41,6 +41,7 @@ import com.ems.dingdong.views.CustomMediumTextView;
 import com.ems.dingdong.views.CustomTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.zoho.livechat.android.ZohoLiveChat;
+import com.zoho.livechat.android.utils.LiveChatUtil;
 import com.zoho.livechat.android.utils.SalesIQCache;
 import com.zoho.salesiqembed.ZohoSalesIQ;
 //import com.sip.cmc.SipCmc;
@@ -143,8 +144,9 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_chat:
-                Toast.showToast(getViewContext(),"Bạn đã chọn chức năng chat với chung tôi ngay");
-                ZohoLiveChat.Chat.show();
+                Toast.showToast(getViewContext(), "Bạn đã chọn chức năng chat với chung tôi ngay");
+//                ZohoLiveChat.Chat.show();
+                LiveChatUtil.openChat(getViewContext());
                 break;
             case R.id.sw_switch:
                 new DialoggoiLai(getViewContext(), "Bạn có muốn đẩy log gọi lên hệ thống", new IdCallback() {
@@ -172,6 +174,7 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
             case R.id.rl_logout:
                 SharedPref sharedPref = new SharedPref(getActivity());
                 sharedPref.clear();
+                ZohoSalesIQ.unregisterVisitor(getViewContext());
                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 getActivity().finishAffinity();

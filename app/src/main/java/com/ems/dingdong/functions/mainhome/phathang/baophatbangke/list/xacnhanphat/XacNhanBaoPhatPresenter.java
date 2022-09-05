@@ -434,6 +434,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             request.setcODAmountEdit(codeEdit);
             request.setFeeCOD(item.getFeeCOD());
             request.setFeePA(item.getFeePA());
+            request.setFeeC(item.getFeeC());
 
             request.setExchange(IsExchange);
             request.setExchangePODeliveryCode(ExchangePODeliveryCode);

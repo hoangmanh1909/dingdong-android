@@ -192,7 +192,7 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
         } catch (Exception e) {
 
         }
-        mPresenter.getBalance();
+        getBalance();
         bottomBar.setOnTabSelectListener(tabId -> {
             UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
             TicketNotifyRequest ticketNotifyRequest = new TicketNotifyRequest();
@@ -202,20 +202,19 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
             mobilenumber = userInfo.getMobileNumber();
             try {
                 mPresenter.getListTicket(ticketNotifyRequest);
-
             } catch (Exception x) {
                 x.getSuppressed();
             }
             if (tabId == R.id.action_home) {
                 viewPager.setCurrentItem(0);
-                if (mPresenter != null)
-                    mPresenter.getBalance();
+                getBalance();
             } else if (tabId == R.id.action_cart) {
                 viewPager.setCurrentItem(1);
                 removeHeader();
             } else if (tabId == R.id.action_airplane) {
                 viewPager.setCurrentItem(2);
-                getBalance();
+                if (mPresenter != null)
+                    mPresenter.getBalance();
             } else if (tabId == R.id.action_location) {
                 viewPager.setCurrentItem(3);
                 removeHeader();
@@ -533,6 +532,11 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
 
     @Override
     public void setBalance(String x) {
+        SharedPref sharedPref = new SharedPref(getViewContext());
+        routeInfoJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
+        if (!routeInfoJson.isEmpty()) {
+            routeInfo = NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class);
+        }
         if (x != null) {
             BalanceRespone balance = NetWorkController.getGson().fromJson(x, BalanceRespone.class);
             viewTop.setVisibility(View.VISIBLE);

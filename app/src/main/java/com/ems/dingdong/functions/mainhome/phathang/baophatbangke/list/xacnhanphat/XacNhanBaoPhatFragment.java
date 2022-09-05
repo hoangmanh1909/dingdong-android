@@ -2893,7 +2893,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         totalFee = 0;
         for (DeliveryPostman i : getItemSelected()) {
             totalAmount += i.getAmount();
-            totalFee += i.getFeeShip() + i.getFeeCollectLater() + i.getFeePPA() + i.getFeeCOD() + i.getFeePA();
+            totalFee += i.getFeeShip() + i.getFeeCollectLater() + i.getFeePPA() + i.getFeeCOD() + i.getFeePA() ;
         }
         tv_quantity.setText(String.format(" %s", getItemSelected().size()));
         tv_total_amount.setText(String.format(" %s đ", NumberUtils.formatPriceNumber(totalAmount)));

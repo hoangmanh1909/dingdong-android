@@ -101,7 +101,8 @@ public class PaypostPaymentRequest {
     private long feeCollectLaterPNS;
 
     @SerializedName("FeePA")
-    private long FeePA;
+    private long FeePA; @SerializedName("FeeC")
+    private long FeeC;
     @SerializedName("FeeCOD")
     private long FeeCOD;
     @SerializedName("FeePAPNS")
@@ -129,6 +130,13 @@ public class PaypostPaymentRequest {
     @SerializedName("SourceChanel")
     private String SourceChanel = "DD_ANDROID";
 
+    public long getFeeC() {
+        return FeeC;
+    }
+
+    public void setFeeC(long feeC) {
+        FeeC = feeC;
+    }
 
     @SerializedName("IsExchange")
     private boolean IsExchange;
