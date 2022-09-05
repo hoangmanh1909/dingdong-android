@@ -507,21 +507,7 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
         ticketNotifyRequest.setToDate(Integer.parseInt(mToDate));
         mobilenumber = userInfo.getMobileNumber();
         mPresenter.getListTicket(ticketNotifyRequest);
-//        switch (viewPager.getCurrentItem()) {
-//            case 0:
-//                try {
-//                    mPresenter.getBalance();
-//                } catch (NullPointerException nullPointerException) {
-//
-//                }
-//                break;
-//            case 2:
-//                getBalance();
-//
-//                break;
-//            default:
-//                removeHeader();
-//        }
+
     }
 
     @SuppressLint("SetTextI18n")
