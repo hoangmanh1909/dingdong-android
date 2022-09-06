@@ -14,6 +14,7 @@ import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
+import com.ems.dingdong.utiles.Toast;
 
 import java.util.List;
 
@@ -93,6 +94,7 @@ public class HoanThanhTinDetailPresenter extends Presenter<HoanThanhTinDetailCon
             protected void onSuccess(Call<UploadSingleResult> call, Response<UploadSingleResult> response) {
                 super.onSuccess(call, response);
                 mView.showImage(response.body().getFile());
+//                Toast.showToast(getViewContext(),response.body().getFile());
             }
 
             @Override

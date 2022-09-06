@@ -142,8 +142,8 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
     private LocationManager mLocationManager;
     private Location mLocation;
 
-    String senderLat="";
-    String senderLon="";
+    String senderLat = "";
+    String senderLon = "";
 
     public static HoanThanhTinDetailFragment getInstance() {
         return new HoanThanhTinDetailFragment();
@@ -225,6 +225,8 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
         if (requestCode == Constants.CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
             if (resultCode == getActivity().RESULT_OK) {
                 mPresenter.postImage(data.getData().getPath());
+//                Uri picUri = Uri.fromFile(new File(data.getData().getPath()));
+//                ivPackage.setImageURI(picUri);
             }
         }
     }
@@ -353,6 +355,7 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
 //        Item item = new Item(BuildConfig.URL_IMAGE + file, file);
         mFile = file;
         ivPackage.setImageURI(BuildConfig.URL_IMAGE + file, file);
+//        ivPackage.setImageURI(BuildConfig.URL_IMAGE + file, file);
     }
 
     @Override

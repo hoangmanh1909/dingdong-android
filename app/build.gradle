@@ -145,7 +145,7 @@ android {
             def E_WALLET_SIGNATURE_KEY = '"Smh2TurfIRenCqi1Y9LcvqM8NCj0VCCw"'
             def DOMAIN_CTEL = '"https://dev.api-connect.io"'
             def AUTH_CTEL = '"Basic NWZhNTAwZWM2NmMxOGQ0ODFmMTg3OTM2OjJ0aG9kODY3N2tkanIxYmV4cWVsd2VlcA=="'
-            def URL_IMAGE = '"http://118.70.72.107:1233/Assets/Images/"'
+            def URL_IMAGE = '"http://14.232.208.220:1233/Assets/Images/"'
             def API_DINGDONG_GATEWAY = '"http://118.70.72.107:5000/"'
             buildConfigField("String", "API_DINGDONG_GATEWAY", API_DINGDONG_GATEWAY)
 
