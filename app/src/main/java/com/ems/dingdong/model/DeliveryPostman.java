@@ -208,7 +208,7 @@ public class DeliveryPostman implements Comparable {
     private String DeliveryWardName;
     @SerializedName("DeliveryProvinceName")
     private String DeliveryProvinceName;
-    @SerializedName("DeliveryDistrictName ")
+    @SerializedName("DeliveryDistrictName")
     private String DeliveryDistrictName;
 
     public String getDeliveryProvinceName() {

@@ -341,6 +341,10 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     LinearLayout rlTinhtp;
     @BindView(R.id.rl_quanhuyen)
     LinearLayout rlQuanhuyen;
+    @BindView(R.id.rl_sogtt)
+    LinearLayout rlSogtt;
+    @BindView(R.id.rl_ghichu)
+    LinearLayout rlGhichu;
 
     List<WardModels> mListXaPhuong = new ArrayList<>();
     int idXaphuong = 0;
@@ -1294,6 +1298,9 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 ll_confirm_fail.setVisibility(LinearLayout.GONE);
                 ll_partial.setVisibility(View.GONE);
                 linearLayoutName.setVisibility(View.VISIBLE);
+                rlSogtt.setVisibility(View.VISIBLE);
+                rlGhichu.setVisibility(View.VISIBLE);
+                rlRelationship.setVisibility(View.VISIBLE);
                 if (mBaoPhatBangke.size() == 1) {
                     String gtgt[] = mBaoPhatBangke.get(0).getVatCode().split(",");
                     for (int i = 0; i < gtgt.length; i++) {
@@ -1329,11 +1336,14 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 ll_confirm_fail.setVisibility(LinearLayout.VISIBLE);
                 ll_change_route.setVisibility(LinearLayout.GONE);
                 ll_partial.setVisibility(View.GONE);
-                linearLayoutName.setVisibility(View.GONE);
+                linearLayoutName.setVisibility(View.VISIBLE);
                 llDoitra.setVisibility(View.GONE);
                 llVerify.setVisibility(View.GONE);
                 ll_image.setVisibility(View.VISIBLE);
                 lledtcod.setVisibility(View.GONE);
+                rlSogtt.setVisibility(View.GONE);
+                rlGhichu.setVisibility(View.GONE);
+                rlRelationship.setVisibility(View.GONE);
                 rad_success.setBackgroundResource(R.color.color_rad_success);
                 rad_fail.setBackgroundResource(R.drawable.bg_form_fail);
                 rad_change_route.setBackgroundResource(R.color.color_rad_change_route);
@@ -1380,7 +1390,9 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 ll_image.setVisibility(View.GONE);
 
                 lledtcod.setVisibility(View.GONE);
-
+                rlSogtt.setVisibility(View.VISIBLE);
+                rlGhichu.setVisibility(View.VISIBLE);
+                rlRelationship.setVisibility(View.VISIBLE);
                 rad_success.setBackgroundResource(R.color.color_rad_success);
                 rad_fail.setBackgroundResource(R.color.color_rad_fail);
                 rad_change_route.setBackgroundResource(R.color.color_rad_change_route);
@@ -2032,12 +2044,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             long final_amountShow = _amountShow;
 
 
-//            if (mBaoPhatBangke.size() == 1) {
-//                if (idXaphuong == 0) {
-//                    Toast.showToast(getViewContext(), "Vui lòng chọn xã/ Phường điều chỉnh/Bổ sung");
-//                    return;
-//                }
-//            }
             new ConfirmDialog(getViewContext(), listSelected.size(), final_amountShow, totalFee)
                     .setOnCancelListener(Dialog::dismiss)
                     .setOnOkListener(confirmDialog -> {
@@ -2150,7 +2156,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                                             mFile,
                                             mFileAvatar + ";" + mFileVerify + ";" + mFileOther,
                                             mSign,
-                                            time, false, id);
+                                            time, false, id, idXaphuong);
                                 }
                             }).show();
                         })
@@ -2163,7 +2169,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                                     mFile,
                                     mFileAvatar + ";" + mFileVerify + ";" + mFileOther,
                                     mSign,
-                                    time, true, "");
+                                    time, true, "", idXaphuong);
                         })
                         .setWarning(mess)
                         .show();
@@ -2180,7 +2186,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                                     mFile,
                                     mFileAvatar + ";" + mFileVerify + ";" + mFileOther,
                                     mSign,
-                                    time, false, "");
+                                    time, false, "", idXaphuong);
                         })
                         .setWarning(getViewContext().getString(R.string.are_you_sure_deliver_un_successfully))
                         .show();
@@ -2309,8 +2315,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
         request.setDeliveryLat(item.getDeliveryLat());
         request.setDeliveryLon(item.getDeliveryLon());
-        request.setReceiverLat(Double.parseDouble(item.getReceiverLat()));
-        request.setReceiverLon(Double.parseDouble(item.getReceiverLon()));
+        request.setReceiverLat(item.getReceiverLat() == null ? 0.0 : Double.parseDouble(item.getReceiverLat()));
+        request.setReceiverLon(item.getReceiverLon() == null ? 0.0 : Double.parseDouble(item.getReceiverLon()));
         request.setSourceChanel("DD_ANDROID");
 
         request.setPODeliveryLat(NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLat());
@@ -2893,7 +2899,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         totalFee = 0;
         for (DeliveryPostman i : getItemSelected()) {
             totalAmount += i.getAmount();
-            totalFee += i.getFeeShip() + i.getFeeCollectLater() + i.getFeePPA() + i.getFeeCOD() + i.getFeePA() ;
+            totalFee += i.getFeeShip() + i.getFeeCollectLater() + i.getFeePPA() + i.getFeeCOD() + i.getFeePA();
         }
         tv_quantity.setText(String.format(" %s", getItemSelected().size()));
         tv_total_amount.setText(String.format(" %s đ", NumberUtils.formatPriceNumber(totalAmount)));

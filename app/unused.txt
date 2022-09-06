@@ -7504,8 +7504,8 @@ com.ems.dingdong.functions.mainhome.phathang.noptien.PaymentPresenter$2
 com.zoho.livechat.android.ui.adapters.LocationSuggestionAdapter$LocationSuggestionViewHolder
     final synthetic com.zoho.livechat.android.ui.adapters.LocationSuggestionAdapter this$0
 com.google.firebase.crashlytics.buildtools.reloc.com.google.common.hash.AbstractHasher
-    public synthetic bridge com.google.firebase.crashlytics.buildtools.reloc.com.google.common.hash.PrimitiveSink putByte(byte)
     public synthetic bridge com.google.firebase.crashlytics.buildtools.reloc.com.google.common.hash.PrimitiveSink putBytes(byte[],int,int)
+    public synthetic bridge com.google.firebase.crashlytics.buildtools.reloc.com.google.common.hash.PrimitiveSink putByte(byte)
     public synthetic bridge com.google.firebase.crashlytics.buildtools.reloc.com.google.common.hash.PrimitiveSink putBytes(java.nio.ByteBuffer)
 com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.chi_tiet_hoan_tat_tin_theo_dia_chi.ChiTietHoanThanhTinTheoDiaChiFragment$$ViewBinder$3
     final synthetic com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.chi_tiet_hoan_tat_tin_theo_dia_chi.ChiTietHoanThanhTinTheoDiaChiFragment$$ViewBinder this$0

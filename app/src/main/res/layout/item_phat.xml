@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-
     android:id="@+id/layout_real_receiver_name"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -68,8 +67,6 @@
     </LinearLayout>
 
 
-
-
     <LinearLayout
         android:id="@+id/rl_tinhtp"
         android:layout_width="match_parent"
@@ -108,7 +105,6 @@
             android:textSize="14dp" />
 
     </LinearLayout>
-
 
     <LinearLayout
         android:id="@+id/rl_quanhuyen"
@@ -149,7 +145,6 @@
 
     </LinearLayout>
 
-
     <LinearLayout
         android:id="@+id/rl_xaphuong"
         android:layout_width="match_parent"
@@ -189,18 +184,18 @@
 
     </LinearLayout>
 
-
     <LinearLayout
         android:id="@+id/rl_xaphuong_bosung"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
         <View
             style="@style/Devider"
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp" />
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -214,13 +209,13 @@
                 android:textColor="@color/black"
                 android:textSize="12dp" />
 
-<!--            <TextView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_centerVertical="true"-->
-<!--                android:text="( * )"-->
-<!--                android:textColor="@color/red_light"-->
-<!--                android:textSize="12dp" />-->
+            <!--            <TextView-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_centerVertical="true"-->
+            <!--                android:text="( * )"-->
+            <!--                android:textColor="@color/red_light"-->
+            <!--                android:textSize="12dp" />-->
         </LinearLayout>
 
         <TextView
@@ -241,18 +236,18 @@
     </LinearLayout>
 
 
-    <View
-        style="@style/Devider"
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_marginTop="5dp" />
-
     <LinearLayout
         android:id="@+id/rl_relationship"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:orientation="vertical">
+
+        <View
+            style="@style/Devider"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp" />
 
         <TextView
             android:id="@+id/tv_relationship"
@@ -288,11 +283,6 @@
     </LinearLayout>
 
 
-    <View
-        style="@style/Devider"
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_marginTop="5dp" />
 
     <LinearLayout
         android:id="@+id/ll_other_relationship"
@@ -301,6 +291,12 @@
         android:layout_marginTop="5dp"
         android:orientation="vertical"
         android:visibility="gone">
+        <View
+            style="@style/Devider"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -339,13 +335,14 @@
             android:textSize="14dp" />
     </LinearLayout>
 
-<!--    <View-->
-<!--        style="@style/Devider"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="0.5dp"-->
-<!--        android:layout_marginTop="5dp" />-->
+    <!--    <View-->
+    <!--        style="@style/Devider"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="0.5dp"-->
+    <!--        android:layout_marginTop="5dp" />-->
 
     <LinearLayout
+        android:id="@+id/rl_sogtt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
@@ -358,24 +355,6 @@
             android:text="Số GTTT: "
             android:textColor="@color/black"
             android:textSize="12dp" />
-
-
-        <!--        <com.google.android.material.textfield.TextInputLayout-->
-        <!--            android:layout_width="0dp"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_weight="2"-->
-        <!--            android:gravity="right"-->
-        <!--            app:endIconMode="clear_text">-->
-
-        <!--            <com.google.android.material.textfield.TextInputEditText-->
-        <!--                android:id="@+id/edt_GTTT"-->
-        <!--                android:layout_width="match_parent"-->
-        <!--                android:layout_height="wrap_content"-->
-        <!--                android:gravity="right"-->
-        <!--                android:textColor="@color/red_light"-->
-        <!--                android:textSize="14dp" />-->
-
-        <!--        </com.google.android.material.textfield.TextInputLayout>-->
 
         <EditText
             android:id="@+id/edt_GTTT"
@@ -390,16 +369,18 @@
 
     </LinearLayout>
 
-    <View
-        style="@style/Devider"
-        android:layout_width="match_parent"
-        android:layout_marginTop="5dp" />
-
     <LinearLayout
+        android:id="@+id/rl_ghichu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:orientation="vertical">
+        <View
+            style="@style/Devider"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp" />
 
         <TextView
             android:layout_width="wrap_content"

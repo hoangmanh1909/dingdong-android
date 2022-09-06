@@ -246,7 +246,7 @@ public interface XacNhanBaoPhatContract {
          * delivery not success.
          */
         void submitToPNS(String reason, String solution, String note, String deliveryImage, String authenImage,
-                         String signCapture, String EstimateProcessTime, boolean ischeck, String lydo);
+                         String signCapture, String EstimateProcessTime, boolean ischeck, String lydo,int idXaPhuong);
 
         /**
          * delivery success.

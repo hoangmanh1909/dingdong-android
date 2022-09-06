@@ -80,6 +80,16 @@ public class PushToPnsRequest {
     private String SourceChanel;
     @SerializedName("ReasonCancelOrder")
     private String ReasonCancelOrder;
+    @SerializedName("DeliveryWardIdAdditional")
+    private long DeliveryWardIdAdditional;
+
+    public long getDeliveryWardIdAdditional() {
+        return DeliveryWardIdAdditional;
+    }
+
+    public void setDeliveryWardIdAdditional(long deliveryWardIdAdditional) {
+        DeliveryWardIdAdditional = deliveryWardIdAdditional;
+    }
 
     public String getPostmanID() {
         return postmanID;
@@ -133,7 +143,8 @@ public class PushToPnsRequest {
                             String PODeliveryLat,
                             String PODeliveryLon,
                             String EstimateProcessTime,
-                            String SourceChanel, String ReasonCancelOrder) {
+                            String SourceChanel,
+                            String ReasonCancelOrder) {
         this.EstimateProcessTime = EstimateProcessTime;
         this.SourceChanel = SourceChanel;
         this.postmanID = postmanID;

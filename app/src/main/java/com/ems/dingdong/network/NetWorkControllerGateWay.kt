@@ -2275,7 +2275,7 @@ object NetWorkControllerGateWay {
 
     @JvmStatic
     fun getRaCa(request: String): Single<SimpleResult> {
-        val data = getGson().toJson(request)
+        val data = request
         val signature = signature(data)
         val requestObject = RequestObject(
             "ANDROID", "", Constants.DLV_POSTMAN_SHIFT_OUTPUT, data,

@@ -39,7 +39,7 @@ public class ApplicationController extends Application {
     static ApplicationController applicationController;
     private PortSipService portSipService;
     private boolean mBound = true;
-//    public PortSipSdk portSipSdk;
+    //    public PortSipSdk portSipSdk;
     public boolean mConference = false;
 
     private ServiceConnection connection = new ServiceConnection() {
@@ -91,7 +91,6 @@ public class ApplicationController extends Application {
         }
     }
 
-    //
     public boolean isPortsipConnected() {
         return portSipService.isConnectCallService();
     }

@@ -42,6 +42,7 @@ import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.utiles.Utils;
 import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
@@ -227,7 +228,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
     @Override
     public void submitToPNS(String reason, String solution, String note, String deliveryImage,
                             String authenImage, String signCapture,
-                            String EstimateProcessTime, boolean ischeck, String lydo) {
+                            String EstimateProcessTime, boolean ischeck, String lydo, int idXaPhuong) {
         mView.showProgress();
         Log.d("thanhkhieee", note);
         String postmanID = userInfo.getiD();
@@ -285,12 +286,12 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                     postManCode1,
                     item.getDeliveryLat(),
                     item.getDeliveryLon(),
-                    Double.parseDouble(item.getReceiverLat()),
-                    Double.parseDouble(item.getReceiverLon()),
+                    item.getReceiverLat() == null ? 0.0 : Double.parseDouble(item.getReceiverLat()),
+                    item.getReceiverLon() == null ? 0.0 : Double.parseDouble(item.getReceiverLon()),
                     NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLat(),
                     NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLon(),
                     EstimateProcessTime, "DD_ANDROID", lydo);
-
+            request.setDeliveryWardIdAdditional(idXaPhuong);
             request.setCustomerCode(item.getCustomerCode());
             request.setVATCode(item.getVatCode());
 
@@ -381,8 +382,8 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             PaypostPaymentRequest request = new PaypostPaymentRequest();
             request.setDeliveryLat(item.getDeliveryLat());
             request.setDeliveryLon(item.getDeliveryLon());
-            request.setReceiverLat(Double.parseDouble(item.getReceiverLat()));
-            request.setReceiverLon(Double.parseDouble(item.getReceiverLon()));
+            request.setReceiverLat(item.getReceiverLat() == null ? 0.0 : Double.parseDouble(item.getReceiverLat()));
+            request.setReceiverLon(item.getReceiverLon() == null ? 0.0 : Double.parseDouble(item.getReceiverLon()));
             request.setPODeliveryLat(NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLat());
             request.setPODeliveryLon(NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLon());
             request.setPostmanID(postmanID);

@@ -535,13 +535,13 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 //                                    } else
                                     mPresenter.callForward(phone, mAdapter.getListFilter().get(position).getMaE());
                                 } else {
-                                    if (mAdapter.getListFilter().get(position).getSenderBookingPhone() == null ||
+                                    if (mAdapter.getListFilter().get(position).getReceiverBookingPhone() == null ||
                                             TextUtils.isEmpty(mAdapter.getListFilter().get(position).getReceiverBookingPhone())) {
                                         Toast.showToast(getViewContext(), "Bưu gửi chưa được booking thành công. Vui lòng gọi điện thoại qua sim của bưu tá");
                                         return;
                                     }
                                     Intent intent = new Intent(Intent.ACTION_CALL);
-                                    intent.setData(Uri.parse("tel:" + mAdapter.getListFilter().get(position).getSenderBookingPhone()));
+                                    intent.setData(Uri.parse("tel:" + mAdapter.getListFilter().get(position).getReceiverBookingPhone()));
                                     if (ContextCompat.checkSelfPermission(getActivity(),
                                             Manifest.permission.CALL_PHONE)
                                             != PackageManager.PERMISSION_GRANTED) {

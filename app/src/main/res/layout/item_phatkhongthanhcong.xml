@@ -4,7 +4,6 @@
     android:id="@+id/ll_confirm_fail"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="10dp"
     android:orientation="vertical"
     android:paddingLeft="@dimen/dimen_10dp"
     android:paddingRight="@dimen/dimen_10dp">
@@ -13,6 +12,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+        <View
+            style="@style/Devider"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp" />
 
         <com.ems.dingdong.views.CustomTextView
             android:layout_width="wrap_content"
