@@ -172,7 +172,16 @@ public class DeliveryProductRequest {
     @SerializedName("SourceChanel")
     private String SourceChanel;
     @SerializedName("DeliveryWardIdAdditional")
-    private long DeliveryWardIdAdditional;
+    private long DeliveryWardIdAdditional;   @SerializedName("DeliveryDistrictIdAdditional")
+    private long DeliveryDistrictIdAdditional;
+
+    public long getDeliveryDistrictIdAdditional() {
+        return DeliveryDistrictIdAdditional;
+    }
+
+    public void setDeliveryDistrictIdAdditional(long deliveryDistrictIdAdditional) {
+        DeliveryDistrictIdAdditional = deliveryDistrictIdAdditional;
+    }
 
     public long getDeliveryWardIdAdditional() {
         return DeliveryWardIdAdditional;

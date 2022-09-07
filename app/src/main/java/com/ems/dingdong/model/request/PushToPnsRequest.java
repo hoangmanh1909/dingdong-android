@@ -81,7 +81,16 @@ public class PushToPnsRequest {
     @SerializedName("ReasonCancelOrder")
     private String ReasonCancelOrder;
     @SerializedName("DeliveryWardIdAdditional")
-    private long DeliveryWardIdAdditional;
+    private long DeliveryWardIdAdditional; @SerializedName("DeliveryDistrictIdAdditional")
+    private long DeliveryDistrictIdAdditional ;
+
+    public long getDeliveryDistrictIdAdditional() {
+        return DeliveryDistrictIdAdditional;
+    }
+
+    public void setDeliveryDistrictIdAdditional(long deliveryDistrictIdAdditional) {
+        DeliveryDistrictIdAdditional = deliveryDistrictIdAdditional;
+    }
 
     public long getDeliveryWardIdAdditional() {
         return DeliveryWardIdAdditional;

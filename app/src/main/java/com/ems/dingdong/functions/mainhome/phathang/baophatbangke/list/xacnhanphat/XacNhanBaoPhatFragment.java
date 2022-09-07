@@ -82,6 +82,7 @@ import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanph
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.parital.PhiThuHoAdapter;
 import com.ems.dingdong.model.BuuCucHuyenMode;
 import com.ems.dingdong.model.DeliveryPostman;
+import com.ems.dingdong.model.DistrictModels;
 import com.ems.dingdong.model.InfoVerify;
 import com.ems.dingdong.model.Item;
 import com.ems.dingdong.model.PhithuhoModel;
@@ -334,6 +335,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     TextView tvQuanhuyen;
     @BindView(R.id.tv_xaphuong_bosung)
     TextView tvXaphuongBosung;
+    @BindView(R.id.tv_quanhuyen_bosung)
+    TextView tvQuanhuyenBosung;
     @BindView(R.id.edt_ma_buu_gui)
     EditText edtMaBuuGui;
     @BindView(R.id.rl_xaphuong_bosung)
@@ -348,9 +351,13 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     LinearLayout rlSogtt;
     @BindView(R.id.rl_ghichu)
     LinearLayout rlGhichu;
+    @BindView(R.id.rl_quanhuyen_bosung)
+    LinearLayout rlQuanhuyenBosung;
 
     List<WardModels> mListXaPhuong = new ArrayList<>();
+    List<DistrictModels> mListQuanHuyen = new ArrayList<>();
     int idXaphuong = 0;
+    int idQuanhuyen = 0;
 
     String toPoCode = "";
     private Calendar calDateOfBirth = Calendar.getInstance();
@@ -584,7 +591,10 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             tvXaphuong.setText(mBaoPhatBangke.get(0).getDeliveryWardName());
             tvTinhtp.setText(mBaoPhatBangke.get(0).getDeliveryProvinceName());
             tvQuanhuyen.setText(mBaoPhatBangke.get(0).getDeliveryDistrictName());
-            mPresenter.getXaPhuong((int) mBaoPhatBangke.get(0).getDeliveryDistrictId());
+            if (mBaoPhatBangke.get(0).getDeliveryProvinceId() > 0)
+                mPresenter.getQuanHuyen((int) mBaoPhatBangke.get(0).getDeliveryProvinceId());
+            if (mBaoPhatBangke.get(0).getDeliveryDistrictId() > 0)
+                mPresenter.getXaPhuong((int) mBaoPhatBangke.get(0).getDeliveryDistrictId());
         } else {
             rlXaphuongBosung.setVisibility(View.GONE);
             rlXaphuong.setVisibility(View.GONE);
@@ -1271,11 +1281,14 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             R.id.rad_success, R.id.rad_fail, R.id.rad_change_route, R.id.rad_partial, R.id.iv_add_delivery, R.id.iv_add_refund,
             R.id.rl_image_partial_d, R.id.rl_image_partial_r, R.id.cb_selected, R.id.tv_buu_cuc,
             R.id.rl_e_wallet, R.id.tv_time, R.id.iv_add_hang_doi_tra, R.id.tv_date_hoantra
-            , R.id.tv_tiem_hoantra, R.id.rl_image_hang_doi_tra, R.id.tv_xaphuong_bosung})
+            , R.id.tv_tiem_hoantra, R.id.rl_image_hang_doi_tra, R.id.tv_xaphuong_bosung, R.id.tv_quanhuyen_bosung})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_xaphuong_bosung:
                 showXaPhuong();
+                break;
+            case R.id.tv_quanhuyen_bosung:
+                showQuanHuyen();
                 break;
             case R.id.rl_e_wallet:
                 new DialogNhaptienCOD(getViewContext(), tvTongTienTamthu.getText().toString().replaceAll("\\.", ""), new IdCallback() {
@@ -2049,16 +2062,16 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 mExchangeDeliveryTime = Integer.parseInt(String.format("%s%s00", mHours, mMinutes));
                 mExchangeDetails.clear();
                 mExchangeDetails.addAll(mHoanDoiTra);
-                if (listImageHangDoiTra.size() > 0) {
-                    if (mHoanDoiTra.size() == 0) {
-                        Toast.showToast(getViewContext(), "Vui lòng nhập sản phẩm hàng hóa");
-                        return;
-                    }
-                }
-                if (mHoanDoiTra.size() == 0) {
-                    Toast.showToast(getViewContext(), "Vui lòng nhập sản phẩm hàng hóa");
-                    return;
-                }
+//                if (listImageHangDoiTra.size() > 0) {
+//                    if (mHoanDoiTra.size() == 0) {
+//                        Toast.showToast(getViewContext(), "Vui lòng nhập sản phẩm hàng hóa");
+//                        return;
+//                    }
+//                }
+//                if (mHoanDoiTra.size() == 0) {
+//                    Toast.showToast(getViewContext(), "Vui lòng nhập sản phẩm hàng hóa");
+//                    return;
+//                }
                 if (listImageHangDoiTra.size() > 0) {
                     String[] arrImg = new String[listImageHangDoiTra.size()];
                     for (int i = 0; i < listImageHangDoiTra.size(); i++) {
@@ -2096,7 +2109,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                                         tiem_tam, edtNote.getText().toString()
                                         , IsExchange, mBuuCuc, mTuyen,
                                         mExchangeLadingCode, mExchangeDeliveryDate,
-                                        mExchangeDeliveryTime, mExchangeDetails, imgAnhHoanTra, idXaphuong, phoneCodeEdit.getId());
+                                        mExchangeDeliveryTime, mExchangeDetails, imgAnhHoanTra, idXaphuong, idQuanhuyen, phoneCodeEdit.getId());
                             } else {
                                 mPresenter.paymentDelivery(mFile, mFileAvatar + ";" + mFileVerify + ";" + mFileOther
                                         , mSign, edtReceiverName.getText().toString(),
@@ -2104,7 +2117,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                                         checkBoxedtCod.isChecked(), tiem_tam, edtNote.getText().toString()
                                         , IsExchange, mBuuCuc, mTuyen,
                                         mExchangeLadingCode, mExchangeDeliveryDate,
-                                        mExchangeDeliveryTime, mExchangeDetails, imgAnhHoanTra, idXaphuong, phoneCodeEdit.getId());
+                                        mExchangeDeliveryTime, mExchangeDetails, imgAnhHoanTra, idXaphuong, idQuanhuyen, phoneCodeEdit.getId());
                             }
                         } else {
                             if (totalAmount > 0) {
@@ -2183,7 +2196,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                                             mFile,
                                             mFileAvatar + ";" + mFileVerify + ";" + mFileOther,
                                             mSign,
-                                            time, false, id, idXaphuong);
+                                            time, false, id, idXaphuong,idQuanhuyen);
                                 }
                             }).show();
                         })
@@ -2196,7 +2209,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                                     mFile,
                                     mFileAvatar + ";" + mFileVerify + ";" + mFileOther,
                                     mSign,
-                                    time, true, "", idXaphuong);
+                                    time, true, "", idXaphuong,idQuanhuyen);
                         })
                         .setWarning(mess)
                         .show();
@@ -2213,7 +2226,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                                     mFile,
                                     mFileAvatar + ";" + mFileVerify + ";" + mFileOther,
                                     mSign,
-                                    time, false, "", idXaphuong);
+                                    time, false, "", idXaphuong,idQuanhuyen);
                         })
                         .setWarning(getViewContext().getString(R.string.are_you_sure_deliver_un_successfully))
                         .show();
@@ -2365,6 +2378,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         request.setReturnProducts(listProductRefund);
         request.setDeliveryProducts(listProductDeliveryRequest);
         request.setDeliveryWardIdAdditional(idXaphuong);
+        request.setDeliveryDistrictIdAdditional(idQuanhuyen);
         String bankCode = new String();
 
         for (int i = 0; i < userInfo.getSmartBankLink().size(); i++) {
@@ -2474,33 +2488,33 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     private void attemptSendMediaFolder(String path_media, int type) {
         File file = new File(path_media);
         Observable.fromCallable(() -> {
-            Uri uri = Uri.fromFile(new File(path_media));
-            return BitmapUtils.processingBitmap(uri, getViewContext());
-        }).subscribeOn(Schedulers.computation())
+                    Uri uri = Uri.fromFile(new File(path_media));
+                    return BitmapUtils.processingBitmap(uri, getViewContext());
+                }).subscribeOn(Schedulers.computation())
                 .observeOn(Schedulers.io())
                 .map(bitmap -> BitmapUtils.saveImage(bitmap, file.getParent(), "Process_" + file.getName(), Bitmap.CompressFormat.JPEG, 40))
                 .observeOn(AndroidSchedulers.mainThread()).subscribe(
-                isSavedImage -> {
-                    if (true) {
-                        String path = file.getParent() + File.separator + "Process_" + file.getName();
-                        // mSignPosition = false;
-                        //mPresenter.postImageAvatar(pathAvatar);
-                        if (isCaptureAvatar) {
-                            mPresenter.postImageAvatar(path);
-                        } else {
-                            mPresenter.postImage(path);
-                        }
-                        if (type == 0)
-                            if (file.exists())
-                                file.delete();
-                    } else {
-                        String path = file.getParent() + File.separator + "Process_" + file.getName();
-                        Log.d("ASDASDSADasd", path);
-                        mPresenter.postImage(path_media);
-                    }
-                },
-                onError -> Logger.e("error save image")
-        );
+                        isSavedImage -> {
+                            if (true) {
+                                String path = file.getParent() + File.separator + "Process_" + file.getName();
+                                // mSignPosition = false;
+                                //mPresenter.postImageAvatar(pathAvatar);
+                                if (isCaptureAvatar) {
+                                    mPresenter.postImageAvatar(path);
+                                } else {
+                                    mPresenter.postImage(path);
+                                }
+                                if (type == 0)
+                                    if (file.exists())
+                                        file.delete();
+                            } else {
+                                String path = file.getParent() + File.separator + "Process_" + file.getName();
+                                Log.d("ASDASDSADasd", path);
+                                mPresenter.postImage(path_media);
+                            }
+                        },
+                        onError -> Logger.e("error save image")
+                );
     }
 
     public static File bitmapToFile(Context context, Bitmap bitmap, String fileNameToSave) { // File name like "image.png"
@@ -2530,31 +2544,31 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     private void attemptSendMedia(String path_media, int type) {
         File file = new File(path_media);
         Observable.fromCallable(() -> {
-            Uri uri = Uri.fromFile(new File(path_media));
-            return BitmapUtils.processingBitmap(uri, getViewContext());
-        }).subscribeOn(Schedulers.computation())
+                    Uri uri = Uri.fromFile(new File(path_media));
+                    return BitmapUtils.processingBitmap(uri, getViewContext());
+                }).subscribeOn(Schedulers.computation())
                 .observeOn(Schedulers.io())
                 .map(bitmap -> BitmapUtils.saveImage(bitmap, file.getParent(), "Process_" + file.getName(), Bitmap.CompressFormat.JPEG, 40))
                 .observeOn(AndroidSchedulers.mainThread()).subscribe(
-                isSavedImage -> {
-                    if (isSavedImage) {
-                        String path = file.getParent() + File.separator + "Process_" + file.getName();
-                        // mSignPosition = false;
-                        //mPresenter.postImageAvatar(pathAvatar);
-                        if (isCaptureAvatar) {
-                            mPresenter.postImageAvatar(path);
-                        } else {
-                            mPresenter.postImage(path);
-                        }
-                        if (type == 0)
-                            if (file.exists())
-                                file.delete();
-                    } else {
-                        mPresenter.postImage(path_media);
-                    }
-                },
-                onError -> Logger.e("error save image")
-        );
+                        isSavedImage -> {
+                            if (isSavedImage) {
+                                String path = file.getParent() + File.separator + "Process_" + file.getName();
+                                // mSignPosition = false;
+                                //mPresenter.postImageAvatar(pathAvatar);
+                                if (isCaptureAvatar) {
+                                    mPresenter.postImageAvatar(path);
+                                } else {
+                                    mPresenter.postImage(path);
+                                }
+                                if (type == 0)
+                                    if (file.exists())
+                                        file.delete();
+                            } else {
+                                mPresenter.postImage(path_media);
+                            }
+                        },
+                        onError -> Logger.e("error save image")
+                );
     }
 
     private void showUIReason() {
@@ -3206,6 +3220,12 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         mListXaPhuong = list;
     }
 
+    @Override
+    public void showQuanHuyen(List<DistrictModels> list) {
+        mListQuanHuyen = new ArrayList<>();
+        mListQuanHuyen = list;
+    }
+
     private void showXaPhuong() {
         ArrayList<Item> items = new ArrayList<>();
         int i = 0;
@@ -3218,6 +3238,23 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             public void onClickItem(Item item) {
                 tvXaphuongBosung.setText(item.getText());
                 idXaphuong = Integer.parseInt(item.getValue());
+            }
+        }).show();
+    }
+
+    private void showQuanHuyen() {
+        ArrayList<Item> items = new ArrayList<>();
+        int i = 0;
+        for (DistrictModels item : mListQuanHuyen) {
+            items.add(new Item(String.valueOf(item.getDistrictId()), item.getDistrictName()));
+            i++;
+        }
+        new DialogReason(getViewContext(), "Chọn Quận/Huyện", items, new PickerCallback() {
+            @Override
+            public void onClickItem(Item item) {
+                tvQuanhuyenBosung.setText(item.getText());
+                idQuanhuyen = Integer.parseInt(item.getValue());
+                mPresenter.getXaPhuong(idQuanhuyen);
             }
         }).show();
     }

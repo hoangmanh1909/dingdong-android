@@ -12,6 +12,7 @@ import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanph
 import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.model.DeliverySuccessRequest;
 import com.ems.dingdong.model.DingDongCancelDividedRequest;
+import com.ems.dingdong.model.DistrictModels;
 import com.ems.dingdong.model.InfoVerify;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.ReasonInfo;
@@ -228,7 +229,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
     @Override
     public void submitToPNS(String reason, String solution, String note, String deliveryImage,
                             String authenImage, String signCapture,
-                            String EstimateProcessTime, boolean ischeck, String lydo, int idXaPhuong) {
+                            String EstimateProcessTime, boolean ischeck, String lydo, int idXaPhuong, int idQuanhuyen) {
         mView.showProgress();
         Log.d("thanhkhieee", note);
         String postmanID = userInfo.getiD();
@@ -292,6 +293,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                     NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLon(),
                     EstimateProcessTime, "DD_ANDROID", lydo);
             request.setDeliveryWardIdAdditional(idXaPhuong);
+            request.setDeliveryDistrictIdAdditional(idQuanhuyen);
             request.setCustomerCode(item.getCustomerCode());
             request.setVATCode(item.getVatCode());
 
@@ -353,7 +355,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                                 String relationship, InfoVerify infoVerify, boolean isCod, long codeEdit, String note,
                                 boolean IsExchange, String ExchangePODeliveryCode, String ExchangeRouteCode, String ExchangeLadingCode,
                                 long ExchangeDeliveryDate, int ExchangeDeliveryTime, List<LadingProduct> ExchangeDetails,
-                                String imgAnhHoangTra, int idXaphuong, String idCOD) {
+                                String imgAnhHoangTra, int idXaphuong, int idQuanHUyen, String idCOD) {
         mView.showProgress();
         paymentRequests = new ArrayList<>();
         String postmanID = userInfo.getiD();
@@ -446,6 +448,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             request.setExchangeDetails(ExchangeDetails);
             request.setImageExchange(imgAnhHoangTra);
             request.setDeliveryWardIdAdditional(idXaphuong);
+            request.setDeliveryDistrictIdAdditional(idQuanHUyen);
             request.setEditCODAmountCallId(idCOD);
 
             request.setSourceChanel("DD_ANDROID");
@@ -751,6 +754,29 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                         WardModels[] list = NetWorkController.getGson().fromJson(simpleResult.getData(), WardModels[].class);
                         List<WardModels> list1 = Arrays.asList(list);
                         mView.showXaPhuong(list1);
+                        mView.hideProgress();
+                    }
+                    mView.hideProgress();
+                }, throwable -> {
+                    mView.showErrorToast(throwable.getMessage());
+                    mView.hideProgress();
+                });
+    }
+
+    @Override
+    public void getQuanHuyen(int id) {
+        mView.showProgress();
+        SharedPref sharedPref = new SharedPref(getViewContext());
+        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+        mInteractor.getQuanHuyen(new BaseRequest(id, userInfo.getMobileNumber(), null, null))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    if (simpleResult != null && simpleResult.getErrorCode().equals("00")) {
+                        DistrictModels[] list = NetWorkController.getGson().fromJson(simpleResult.getData(), DistrictModels[].class);
+                        List<DistrictModels> list1 = Arrays.asList(list);
+                        mView.showQuanHuyen(list1);
                         mView.hideProgress();
                     }
                     mView.hideProgress();

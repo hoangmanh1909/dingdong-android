@@ -11,6 +11,7 @@ import com.ems.dingdong.model.DeliveryCheckAmountPaymentResult;
 import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.model.DeliverySuccessRequest;
 import com.ems.dingdong.model.DingDongCancelDividedRequest;
+import com.ems.dingdong.model.DistrictModels;
 import com.ems.dingdong.model.InfoVerify;
 import com.ems.dingdong.model.ReasonInfo;
 import com.ems.dingdong.model.ReasonResult;
@@ -120,10 +121,14 @@ public interface XacNhanBaoPhatContract {
                                               String ladingCode, String PostmanId, String POCode, CommonCallback<SimpleResult> callback);
 
         Single<SimpleResult> getXaPhuong(BaseRequest request);
+
+        Single<SimpleResult> getQuanHuyen(BaseRequest request);
     }
 
     interface View extends PresentView<Presenter> {
         void showXaPhuong(List<WardModels> list);
+
+        void showQuanHuyen(List<DistrictModels> list);
 
         /**
          * Show list reasons.
@@ -208,6 +213,8 @@ public interface XacNhanBaoPhatContract {
     interface Presenter extends IPresenter<View, Interactor> {
         void getXaPhuong(int id);
 
+        void getQuanHuyen(int id);
+
         void callForward(String phone, String parcelCode);
 
         void callForwardEditCOD(String phone, String parcelCode);
@@ -246,7 +253,7 @@ public interface XacNhanBaoPhatContract {
          * delivery not success.
          */
         void submitToPNS(String reason, String solution, String note, String deliveryImage, String authenImage,
-                         String signCapture, String EstimateProcessTime, boolean ischeck, String lydo,int idXaPhuong);
+                         String signCapture, String EstimateProcessTime, boolean ischeck, String lydo, int idXaPhuong, int idQuanhuyen);
 
         /**
          * delivery success.
@@ -255,7 +262,7 @@ public interface XacNhanBaoPhatContract {
                              String relationship, InfoVerify infoVerify, boolean isCod, long codeEdit, String note,
                              boolean IsExchange, String ExchangePODeliveryCode, String ExchangeRouteCode, String ExchangeLadingCode,
                              long ExchangeDeliveryDate, int ExchangeDeliveryTime, List<LadingProduct> ExchangeDetails, String imgAnhHoangTra
-                , int idXaphuong, String idCOD);
+                , int idXaphuong,int idQuanHUyen, String idCOD);
 
 
         void paymentV2(boolean isAutoUpdateCODAmount);

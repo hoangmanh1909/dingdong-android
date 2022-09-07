@@ -101,7 +101,8 @@ public class PaypostPaymentRequest {
     private long feeCollectLaterPNS;
 
     @SerializedName("FeePA")
-    private long FeePA; @SerializedName("FeeC")
+    private long FeePA;
+    @SerializedName("FeeC")
     private long FeeC;
     @SerializedName("FeeCOD")
     private long FeeCOD;
@@ -154,8 +155,18 @@ public class PaypostPaymentRequest {
     private int ExchangeDeliveryTime;
     @SerializedName("DeliveryWardIdAdditional")
     private long DeliveryWardIdAdditional;
+    @SerializedName("DeliveryDistrictIdAdditional")
+    private long DeliveryDistrictIdAdditional;
     @SerializedName("ExchangeDetails")
     private List<LadingProduct> ExchangeDetails;
+
+    public long getDeliveryDistrictIdAdditional() {
+        return DeliveryDistrictIdAdditional;
+    }
+
+    public void setDeliveryDistrictIdAdditional(long deliveryDistrictIdAdditional) {
+        DeliveryDistrictIdAdditional = deliveryDistrictIdAdditional;
+    }
 
     public String getEditCODAmountCallId() {
         return EditCODAmountCallId;

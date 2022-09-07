@@ -203,13 +203,22 @@ public class DeliveryPostman implements Comparable {
     @SerializedName("ReceiverBookingPhone")
     private String ReceiverBookingPhone;
     @SerializedName("DeliveryDistrictId")
-    private long DeliveryDistrictId;
+    private long DeliveryDistrictId; @SerializedName("DeliveryProvinceId")
+    private long DeliveryProvinceId;
     @SerializedName("DeliveryWardName")
     private String DeliveryWardName;
     @SerializedName("DeliveryProvinceName")
     private String DeliveryProvinceName;
     @SerializedName("DeliveryDistrictName")
     private String DeliveryDistrictName;
+
+    public long getDeliveryProvinceId() {
+        return DeliveryProvinceId;
+    }
+
+    public void setDeliveryProvinceId(long deliveryProvinceId) {
+        DeliveryProvinceId = deliveryProvinceId;
+    }
 
     public String getDeliveryProvinceName() {
         return DeliveryProvinceName;

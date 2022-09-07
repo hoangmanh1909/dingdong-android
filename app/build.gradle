@@ -359,6 +359,5 @@ dependencies {
     implementation 'com.google.android.exoplayer:exoplayer:2.14.2'
 
     implementation 'com.zoho.salesiq:mobilisten:4.2.8'
-
 }
 apply plugin: 'com.google.gms.google-services'

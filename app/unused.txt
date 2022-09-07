@@ -4654,7 +4654,6 @@ com.google.zxing.aztec.encoder.State
     com.google.zxing.aztec.encoder.Token getToken()
 com.ems.dingdong.functions.mainhome.lichsucuocgoi.tabcall.TabCallAdapter
     void setTittle(int,int)
-com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.XacNhanBaoPhatFragment$13$1
 androidx.fragment.app.BackStackRecord
     static final java.lang.String TAG
 org.apache.poi.poifs.macros.VBAMacroReader
@@ -7505,9 +7504,9 @@ com.ems.dingdong.functions.mainhome.phathang.noptien.PaymentPresenter$2
 com.zoho.livechat.android.ui.adapters.LocationSuggestionAdapter$LocationSuggestionViewHolder
     final synthetic com.zoho.livechat.android.ui.adapters.LocationSuggestionAdapter this$0
 com.google.firebase.crashlytics.buildtools.reloc.com.google.common.hash.AbstractHasher
-    public synthetic bridge com.google.firebase.crashlytics.buildtools.reloc.com.google.common.hash.PrimitiveSink putByte(byte)
     public synthetic bridge com.google.firebase.crashlytics.buildtools.reloc.com.google.common.hash.PrimitiveSink putBytes(java.nio.ByteBuffer)
     public synthetic bridge com.google.firebase.crashlytics.buildtools.reloc.com.google.common.hash.PrimitiveSink putBytes(byte[],int,int)
+    public synthetic bridge com.google.firebase.crashlytics.buildtools.reloc.com.google.common.hash.PrimitiveSink putByte(byte)
 com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.chi_tiet_hoan_tat_tin_theo_dia_chi.ChiTietHoanThanhTinTheoDiaChiFragment$$ViewBinder$3
     final synthetic com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.chi_tiet_hoan_tat_tin_theo_dia_chi.ChiTietHoanThanhTinTheoDiaChiFragment$$ViewBinder this$0
 com.ems.dingdong.functions.mainhome.phathang.noptien.PaymentFragment$2
@@ -9479,6 +9478,8 @@ com.ems.dingdong.dialog.DialogEditSdt
     int i
 com.ems.dingdong.functions.mainhome.phathang.baophatbangke.huybaophat.CancelBD13Fragment$$ViewBinder$1
     final synthetic com.ems.dingdong.functions.mainhome.phathang.baophatbangke.huybaophat.CancelBD13Fragment$$ViewBinder this$0
+com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.XacNhanBaoPhatFragment$$ViewBinder$32
+    final synthetic com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.XacNhanBaoPhatFragment$$ViewBinder this$0
 androidx.browser.customtabs.PostMessageService$1
     final synthetic androidx.browser.customtabs.PostMessageService this$0
 org.apache.poi.hssf.record.CFRuleBase

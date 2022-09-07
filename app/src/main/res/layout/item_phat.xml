@@ -124,7 +124,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_weight="1"
-            android:text="Quận/ Huyện: "
+            android:text="Quận/ Huyện cũ: "
             android:textColor="@color/black"
             android:textSize="12dp" />
 
@@ -207,7 +207,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_weight="1"
-            android:text="Xã/Phường: "
+            android:text="Xã/Phường cũ: "
             android:textColor="@color/black"
             android:textSize="12dp" />
 
