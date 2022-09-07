@@ -216,8 +216,8 @@ public class ChuaPhanHuongFragment extends ViewFragment<ChuaPhanHuongContract.Pr
                             request.setId(i.getId());
                             request.setLadingCode(i.getLadingCode());
                             request.setReceiverAddress(i.getReceiverAddress());
-                            request.setReceiverLat(i.getReceiverLat());
-                            request.setReceiverLon(i.getReceiverLon());
+                            request.setReceiverLat((i.getReceiverLat() == null || i.getReceiverLat().isEmpty()) ? 0.0 : Double.parseDouble(i.getReceiverLat()));
+                            request.setReceiverLon((i.getReceiverLon() == null || i.getReceiverLon().isEmpty()) ? 0.0 : Double.parseDouble(i.getReceiverLon()));
 //            request.setOrderNumber(String.valueOf(i.getReferenceCode()));
                             dataRequests.add(request);
                         }

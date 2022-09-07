@@ -2210,7 +2210,7 @@ object NetWorkControllerGateWay {
         val data = NetWorkController.getGson().toJson(request)
         val signature = signature(data)
         val requestObject = RequestObject(
-            "ANDROID", "", Constants.DLV_INQUIRY_AMOUNT, data,
+            "ANDROID", "", Constants.DLV_GET_PAYPOST_ERROR, data,
             Utils.getLocalTime(Constants.DATE_FORMAT), "", signature
         )
         val call: Call<GachNoResult> =
@@ -2227,7 +2227,7 @@ object NetWorkControllerGateWay {
         val data = NetWorkController.getGson().toJson(request)
         val signature = signature(data)
         val requestObject = RequestObject(
-            "ANDROID", "", Constants.DLV_INQUIRY_AMOUNT, data,
+            "ANDROID", "", Constants.DLV_CHANGE_ROUTE_CANCEL, data,
             Utils.getLocalTime(Constants.DATE_FORMAT), "", signature
         )
         val call: Call<SimpleResult> =
