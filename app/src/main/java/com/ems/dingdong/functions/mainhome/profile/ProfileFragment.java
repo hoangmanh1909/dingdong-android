@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
@@ -140,13 +141,19 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
 
     }
 
-    @OnClick({R.id.img_back, R.id.rl_logout, R.id.rl_e_wallet, R.id.rl_route, R.id.rl_cuocgoi, R.id.rl_e_luong, R.id.sw_switch, R.id.rl_chat})
+    @OnClick({R.id.img_back, R.id.rl_logout, R.id.rl_e_wallet, R.id.rl_route, R.id.rl_cuocgoi, R.id.rl_e_luong, R.id.sw_switch, R.id.rl_chat, R.id.rl_capnhat})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_chat:
                 Toast.showToast(getViewContext(), "Bạn đã chọn chức năng chat với chung tôi ngay");
 //                ZohoLiveChat.Chat.show();
                 LiveChatUtil.openChat(getViewContext());
+                break;
+            case R.id.rl_capnhat:
+                Intent viewIntent =
+                        new Intent("android.intent.action.VIEW",
+                                Uri.parse("https://pns.vnpost.vn/app"));
+                startActivity(viewIntent);
                 break;
             case R.id.sw_switch:
                 new DialoggoiLai(getViewContext(), "Bạn có muốn đẩy log gọi lên hệ thống", new IdCallback() {

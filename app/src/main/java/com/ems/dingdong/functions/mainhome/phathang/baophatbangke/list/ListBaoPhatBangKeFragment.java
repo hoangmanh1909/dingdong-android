@@ -817,7 +817,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         new DialogXacThuc(getViewContext(), x, new XacMinhCallback() {
             @Override
             public void onResponse(CreateVietMapRequest v) {
-                v.setId(String.valueOf(mID));
+                v.setId(mID);
                 v.setLatitude(new GetLocation().getLastKnownLocation(getViewContext()).getLatitude());
                 v.setLongitude(new GetLocation().getLastKnownLocation(getViewContext()).getLongitude());
                 v.setPOProvinceCode(finalUserInfo.getPOProvinceCode());

@@ -78,6 +78,7 @@ import com.zoho.salesiqembed.ZohoSalesIQ;
 //import com.sip.cmc.callback.PhoneCallback;
 //import com.sip.cmc.callback.RegistrationCallback;
 
+import org.apache.poi.ss.formula.functions.T;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.linphone.core.LinphoneCall;
@@ -470,7 +471,9 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
                 if (isCheck) {
                     String data = sharedPref.getString(Constants.KEY_RA_VAO, "");
                     ModeCA modeCA = NetWorkController.getGson().fromJson(data, ModeCA.class);
-                    mPresenter.getRaCa(modeCA.getData());
+                    if (!data.isEmpty())
+                        mPresenter.getRaCa(modeCA.getData());
+//                    else Toast.showToast(getViewContext(), "");
                 } else {
                     MainMode mode = new MainMode();
                     mode.setPostmanTel(userInfo.getMobileNumber());

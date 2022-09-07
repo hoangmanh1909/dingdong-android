@@ -4654,6 +4654,7 @@ com.google.zxing.aztec.encoder.State
     com.google.zxing.aztec.encoder.Token getToken()
 com.ems.dingdong.functions.mainhome.lichsucuocgoi.tabcall.TabCallAdapter
     void setTittle(int,int)
+com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.XacNhanBaoPhatFragment$13$1
 androidx.fragment.app.BackStackRecord
     static final java.lang.String TAG
 org.apache.poi.poifs.macros.VBAMacroReader
@@ -7120,8 +7121,8 @@ com.ems.dingdong.dialog.PhoneNumberUpdateDialogIcon$$ViewBinder$2
 com.ems.dingdong.dialog.RouteDialog
     boolean check
 com.google.firebase.crashlytics.buildtools.reloc.com.google.common.graph.AbstractBaseGraph
-    public synthetic bridge java.lang.Iterable predecessors(java.lang.Object)
     public synthetic bridge java.lang.Iterable successors(java.lang.Object)
+    public synthetic bridge java.lang.Iterable predecessors(java.lang.Object)
 com.journeyapps.barcodescanner.CaptureManager
     static void <clinit>()
 com.ems.dingdong.functions.mainhome.profile.tienluong.luongthang.MonthlySalaryFragment$2
@@ -7504,9 +7505,9 @@ com.ems.dingdong.functions.mainhome.phathang.noptien.PaymentPresenter$2
 com.zoho.livechat.android.ui.adapters.LocationSuggestionAdapter$LocationSuggestionViewHolder
     final synthetic com.zoho.livechat.android.ui.adapters.LocationSuggestionAdapter this$0
 com.google.firebase.crashlytics.buildtools.reloc.com.google.common.hash.AbstractHasher
-    public synthetic bridge com.google.firebase.crashlytics.buildtools.reloc.com.google.common.hash.PrimitiveSink putBytes(byte[],int,int)
-    public synthetic bridge com.google.firebase.crashlytics.buildtools.reloc.com.google.common.hash.PrimitiveSink putByte(byte)
     public synthetic bridge com.google.firebase.crashlytics.buildtools.reloc.com.google.common.hash.PrimitiveSink putBytes(java.nio.ByteBuffer)
+    public synthetic bridge com.google.firebase.crashlytics.buildtools.reloc.com.google.common.hash.PrimitiveSink putByte(byte)
+    public synthetic bridge com.google.firebase.crashlytics.buildtools.reloc.com.google.common.hash.PrimitiveSink putBytes(byte[],int,int)
 com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.chi_tiet_hoan_tat_tin_theo_dia_chi.ChiTietHoanThanhTinTheoDiaChiFragment$$ViewBinder$3
     final synthetic com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.chi_tiet_hoan_tat_tin_theo_dia_chi.ChiTietHoanThanhTinTheoDiaChiFragment$$ViewBinder this$0
 com.ems.dingdong.functions.mainhome.phathang.noptien.PaymentFragment$2
@@ -10048,6 +10049,8 @@ com.google.android.gms.internal.measurement.zzef
     abstract boolean zza(com.google.android.gms.internal.measurement.zzdu,int,int)
 com.roughike.bottombar.BottomBar$6
     final synthetic com.roughike.bottombar.BottomBar this$0
+com.ems.dingdong.functions.mainhome.profile.ProfileFragment$$ViewBinder$9
+    final synthetic com.ems.dingdong.functions.mainhome.profile.ProfileFragment$$ViewBinder this$0
 com.ems.dingdong.dialog.BangKe13SearchDialog$$ViewBinder$4
     final synthetic com.ems.dingdong.dialog.BangKe13SearchDialog$$ViewBinder this$0
 com.ems.dingdong.dialog.CallProviderDialog$$ViewBinder$2

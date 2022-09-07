@@ -4,23 +4,23 @@ import com.google.gson.annotations.SerializedName;
 
 public class DataRevertModel {
     @SerializedName("cityId")
-    private String cityId;
+    private Integer cityId;
     @SerializedName("cityName")
     private String cityName;
     @SerializedName("districtId")
-    private String districtId;
+    private Integer districtId;
     @SerializedName("districtName")
     private String districtName;
     @SerializedName("wardId")
-    private String wardId;
+    private Integer wardId;
     @SerializedName("wardName")
     private String wardName;
 
-    public String getCityId() {
+    public Integer getCityId() {
         return cityId;
     }
 
-    public void setCityId(String cityId) {
+    public void setCityId(Integer cityId) {
         this.cityId = cityId;
     }
 
@@ -32,11 +32,11 @@ public class DataRevertModel {
         this.cityName = cityName;
     }
 
-    public String getDistrictId() {
+    public Integer getDistrictId() {
         return districtId;
     }
 
-    public void setDistrictId(String districtId) {
+    public void setDistrictId(Integer districtId) {
         this.districtId = districtId;
     }
 
@@ -48,11 +48,11 @@ public class DataRevertModel {
         this.districtName = districtName;
     }
 
-    public String getWardId() {
+    public Integer getWardId() {
         return wardId;
     }
 
-    public void setWardId(String wardId) {
+    public void setWardId(Integer wardId) {
         this.wardId = wardId;
     }
 

@@ -747,7 +747,7 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
                 v.setRouteId(Long.parseLong(finalRouteInfo.getRouteId()));
                 v.setPhone(mPhoneS);
                 v.setType(2);
-                v.setId(String.valueOf(mID));
+                v.setId(mID);
                 mPresenter.ddCreateVietMap(v);
             }
         }).show();

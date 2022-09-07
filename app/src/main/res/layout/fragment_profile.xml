@@ -413,6 +413,42 @@
             <View style="@style/Devider" />
 
             <RelativeLayout
+                android:id="@+id/rl_capnhat"
+                android:layout_width="match_parent"
+                style="@style/RelativeLayoutPersonal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        style="@style/ImageViewPersonal"
+                        android:src="@drawable/ic_outline_download_for_offline_24" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Cập nhập ứng dụng"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12sdp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_version"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:gravity="end"
+                    android:text="V1.1"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
+            <View style="@style/Devider" />
+
+            <RelativeLayout
                 android:id="@+id/rl_logout"
                 style="@style/RelativeLayoutPersonal">
 

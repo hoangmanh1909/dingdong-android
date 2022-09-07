@@ -113,6 +113,7 @@ import com.ems.dingdong.views.form.FormItemTextView;
 import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
 import com.google.android.gms.common.util.DataUtils;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 //import com.sip.cmc.SipCmc;
@@ -246,6 +247,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     TextView tv_pt_des;
     @BindView(R.id.et_pt_amount)
     TextInputEditText et_pt_amount;
+    @BindView(R.id.et_pt_amountlayout)
+    TextInputLayout et_pt_amountlayout;
     @BindView(R.id.recycler_delivery_partial)
     RecyclerView recycler_delivery_partial;
     @BindView(R.id.iv_camera_partial_d)
@@ -1021,11 +1024,35 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         checkVerify();
 
         EditTextUtils.editTextListener(et_pt_amount);
+        et_pt_amountlayout.setEndIconOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                et_pt_amount.setText("0");
+                tv_pt_amount_r.setText("0");
+
+            }
+        });
         et_pt_amount.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                et_pt_amount.removeTextChangedListener(this);
+                if (!TextUtils.isEmpty(s.toString())) {
+                    try {
+                        if ((totalFee + totalAmount) > 0) {
+                            et_pt_amount.setText(NumberUtils.formatVinatti(Long.parseLong(s.toString().replace(".", ""))));
+                            tv_pt_amount_r.setText(NumberUtils.formatVinatti((totalFee + totalAmount) - Long.parseLong(s.toString().replace(".", ""))));
+                        } else
+                            et_pt_amount.setText(NumberUtils.formatVinatti(Long.parseLong(s.toString().replace(".", ""))));
+                    } catch (Exception ex) {
+                        com.ems.dingdong.utiles.Logger.w(ex);
+                    }
+                } else {
+                    et_pt_amount.setText("0");
+                    tv_pt_amount_r.setText("0");
+                }
+                et_pt_amount.addTextChangedListener(this);
+                et_pt_amount.setSelection(et_pt_amount.getText().length());
             }
 
             @Override

@@ -48,7 +48,7 @@ public class DialogXacThuc extends Dialog {
     TextView edtDonvihanhchinh;
     Values k = new Values();
     private final BaseActivity mActivity;
-    String mID = "";
+    Integer mID = 0;
     XacMinhCallback callback;
 
     public DialogXacThuc(@NonNull Context context, Values x, XacMinhCallback callback) {
@@ -125,7 +125,7 @@ public class DialogXacThuc extends Dialog {
                 @Override
                 public void onClickItem(Item item) {
                     edtPhanloai.setText(item.getText().trim());
-                    mID = item.getValue();
+                    mID = Integer.valueOf(item.getValue());
                 }
             }).show();
 

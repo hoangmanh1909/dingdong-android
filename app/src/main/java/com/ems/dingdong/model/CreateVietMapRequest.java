@@ -8,15 +8,15 @@ public class CreateVietMapRequest extends BaseRequestModel {
     @SerializedName("Name")
     private String Name;
     @SerializedName("CategoryID")
-    private String CategoryID;
+    private Integer CategoryID;
     @SerializedName("StreetName")
     private String StreetName;
     @SerializedName("CityID")
-    private String CityID;
+    private Integer CityID;
     @SerializedName("DistID")
-    private String DistID;
+    private Integer DistID;
     @SerializedName("WardID")
-    private String WardID;
+    private Integer WardID;
     @SerializedName("Village")
     private String Village;
     @SerializedName("Longitude")
@@ -24,7 +24,7 @@ public class CreateVietMapRequest extends BaseRequestModel {
     @SerializedName("Latitude")
     private double Latitude;
     @SerializedName("Id")
-    private String Id;
+    private long  Id;
     @SerializedName("CityName")
     private String CityName = "";
     @SerializedName("DistrictName")
@@ -68,13 +68,6 @@ public class CreateVietMapRequest extends BaseRequestModel {
         Name = name;
     }
 
-    public String getCategoryID() {
-        return CategoryID;
-    }
-
-    public void setCategoryID(String categoryID) {
-        CategoryID = categoryID;
-    }
 
     public String getStreetName() {
         return StreetName;
@@ -84,28 +77,49 @@ public class CreateVietMapRequest extends BaseRequestModel {
         StreetName = streetName;
     }
 
-    public String getCityID() {
+    public Integer getCategoryID() {
+        return CategoryID;
+    }
+
+    public void setCategoryID(Integer categoryID) {
+        CategoryID = categoryID;
+    }
+
+    public Integer getCityID() {
         return CityID;
     }
 
-    public void setCityID(String cityID) {
+    public void setCityID(Integer cityID) {
         CityID = cityID;
     }
 
-    public String getDistID() {
+    public Integer getDistID() {
         return DistID;
     }
 
-    public void setDistID(String distID) {
+    public void setDistID(Integer distID) {
         DistID = distID;
     }
 
-    public String getWardID() {
+    public long getId() {
+        return Id;
+    }
+
+    public void setId(long id) {
+        Id = id;
+    }
+
+    public Integer getWardID() {
         return WardID;
     }
 
-    public void setWardID(String wardID) {
+    public void setWardID(Integer wardID) {
         WardID = wardID;
+    }
+
+
+    public void setId(Integer id) {
+        Id = id;
     }
 
     public String getVillage() {
@@ -132,13 +146,6 @@ public class CreateVietMapRequest extends BaseRequestModel {
         Latitude = latitude;
     }
 
-    public String getId() {
-        return Id;
-    }
-
-    public void setId(String id) {
-        Id = id;
-    }
 
     public String getCityName() {
         return CityName;

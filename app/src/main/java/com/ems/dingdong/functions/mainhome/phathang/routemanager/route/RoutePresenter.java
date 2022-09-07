@@ -25,6 +25,7 @@ import com.ems.dingdong.model.response.RouteResponse;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.SharedPref;
+import com.ems.dingdong.utiles.Toast;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
@@ -163,7 +164,8 @@ public class RoutePresenter extends Presenter<RouteConstract.View, RouteConstrac
                         mView.hideProgress();
                         assert response.body() != null;
                         if (response.body().getErrorCode().equals("00")) {
-                            ArrayList<RouteResponse> routeResponses = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<RouteResponse>>(){}.getType());
+                            ArrayList<RouteResponse> routeResponses = NetWorkController.getGson().fromJson(response.body().getData(), new TypeToken<List<RouteResponse>>() {
+                            }.getType());
                             mView.showListSucces(routeResponses);
                             if (titleTabsListener != null)
                                 titleTabsListener.setQuantity(routeResponses.size(), typeRoute);
@@ -193,7 +195,8 @@ public class RoutePresenter extends Presenter<RouteConstract.View, RouteConstrac
                         mView.hideProgress();
                         assert response.body() != null;
                         if (response.body().getErrorCode().equals("00")) {
-                            ArrayList<RouteResponse> routeResponses = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<RouteResponse>>(){}.getType());
+                            ArrayList<RouteResponse> routeResponses = NetWorkController.getGson().fromJson(response.body().getData(), new TypeToken<List<RouteResponse>>() {
+                            }.getType());
                             mView.showListSucces(routeResponses);
                             if (titleTabsListener != null) {
                                 titleTabsListener.setQuantity(routeResponses.size(), typeRoute);
@@ -268,7 +271,7 @@ public class RoutePresenter extends Presenter<RouteConstract.View, RouteConstrac
                 mView.showSuccessToast(response.body().getMessage());
                 if (response.body().getErrorCode().equals("00")) {
                     mView.showChangeRouteCommandSucces();
-                }
+                }else Toast.showToast(getViewContext(), response.body().getMessage());
             }
         });
     }
@@ -283,7 +286,7 @@ public class RoutePresenter extends Presenter<RouteConstract.View, RouteConstrac
                     if (simpleResult != null && simpleResult.getErrorCode().equals("00")) {
                         mView.showChangeRouteCommandSucces();
                         mView.showSuccessToast(simpleResult.getMessage());
-                    }
+                    } else Toast.showToast(getViewContext(), simpleResult.getMessage());
                 }, throwable -> {
                     mView.hideProgress();
                     mView.showErrorToast(throwable.getMessage());
@@ -309,7 +312,7 @@ public class RoutePresenter extends Presenter<RouteConstract.View, RouteConstrac
                 if (response.body().getErrorCode().equals("00")) {
                     mView.showChangeRouteCommandSucces();
                     mView.showSuccessToast(response.body().getMessage());
-                }
+                }else Toast.showToast(getViewContext(), response.body().getMessage());
             }
         });
     }
@@ -324,7 +327,7 @@ public class RoutePresenter extends Presenter<RouteConstract.View, RouteConstrac
                     if (simpleResult != null && simpleResult.getErrorCode().equals("00")) {
                         mView.showChangeRouteCommandSucces();
                         mView.showSuccessToast(simpleResult.getMessage());
-                    }
+                    }else Toast.showToast(getViewContext(), simpleResult.getMessage());
                 }, throwable -> {
                     mView.hideProgress();
                     mView.showErrorToast(throwable.getMessage());
