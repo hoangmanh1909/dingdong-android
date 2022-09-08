@@ -19,7 +19,8 @@ public class MediaUltisV1 {
     public static void captureImage(Fragment fragment) {
         File saveDir = null;
         if (ContextCompat.checkSelfPermission(fragment.getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-            saveDir = new File(Environment.getExternalStorageDirectory(), "DingDongImg");
+            String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)+"/DingDongImg/";
+            saveDir = new File(path);
             saveDir.mkdirs();
         }
         MaterialCamera materialCamera = new MaterialCamera(fragment)

@@ -2446,26 +2446,32 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == Constants.CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
-            if (resultCode == getActivity().RESULT_OK) {
-                if (isCaptureAvatar) {
-                    attemptSendMedia(data.getData().getPath(), 0);
-                } else {
-                    attemptSendMedia(data.getData().getPath(), 0);
+        try {
+            if (requestCode == Constants.CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
+                if (resultCode == getActivity().RESULT_OK) {
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
+                        attemptSendMedia(data.getData().getPath().replace("///","//"), 0);
+                    }else {
+                        attemptSendMedia(data.getData().getPath(), 0);
+
+                    }
                 }
-            } else {
-//                Toast.showToast(getViewContext(), resultCode + "");
+
+            } else if (requestCode == 1) {
+                if (data != null) {
+                    Uri selectedImageUri = data.getData();
+                    File file = new File(getPath(selectedImageUri));
+                    long length = file.length();
+                    length = length / 1024;
+                    attemptSendMediaFolder(JavaImageResizer.resizeAndCompressImageBeforeSend(getViewContext(), getPath(selectedImageUri), "DINGDONG.jpg"), 1);
+                    System.out.println("File Path : " + file.getPath() + ", File size : " + length + " KB");
+                }
             }
-        } else if (requestCode == 1) {
-            if (data != null) {
-                Uri selectedImageUri = data.getData();
-                File file = new File(getPath(selectedImageUri));
-                long length = file.length();
-                length = length / 1024;
-                attemptSendMediaFolder(JavaImageResizer.resizeAndCompressImageBeforeSend(getViewContext(), getPath(selectedImageUri), "DINGDONG.jpg"), 1);
-                System.out.println("File Path : " + file.getPath() + ", File size : " + length + " KB");
-            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
+
     }
 
 
