@@ -2355,8 +2355,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
         request.setDeliveryLat(item.getDeliveryLat());
         request.setDeliveryLon(item.getDeliveryLon());
-        request.setReceiverLat(item.getReceiverLat() == null ? 0.0 : Double.parseDouble(item.getReceiverLat()));
-        request.setReceiverLon(item.getReceiverLon() == null ? 0.0 : Double.parseDouble(item.getReceiverLon()));
+        request.setReceiverLat(item.getReceiverLat() == null|| item.getReceiverLat().isEmpty() ? 0.0 : Double.parseDouble(item.getReceiverLat()));
+        request.setReceiverLon(item.getReceiverLon() == null || item.getReceiverLon().isEmpty()? 0.0 : Double.parseDouble(item.getReceiverLon()));
         request.setSourceChanel("DD_ANDROID");
 
         request.setPODeliveryLat(NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLat());

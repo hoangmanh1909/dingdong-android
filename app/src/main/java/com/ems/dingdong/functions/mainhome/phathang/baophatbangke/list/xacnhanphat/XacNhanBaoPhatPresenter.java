@@ -287,8 +287,8 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                     postManCode1,
                     item.getDeliveryLat(),
                     item.getDeliveryLon(),
-                    item.getReceiverLat() == null ? 0.0 : Double.parseDouble(item.getReceiverLat()),
-                    item.getReceiverLon() == null ? 0.0 : Double.parseDouble(item.getReceiverLon()),
+                    item.getReceiverLat() == null ||item.getReceiverLat().isEmpty() ? 0.0 : Double.parseDouble(item.getReceiverLat()),
+                    item.getReceiverLon() == null||item.getReceiverLon().isEmpty() ? 0.0 : Double.parseDouble(item.getReceiverLon()),
                     NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLat(),
                     NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLon(),
                     EstimateProcessTime, "DD_ANDROID", lydo);
@@ -384,8 +384,8 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             PaypostPaymentRequest request = new PaypostPaymentRequest();
             request.setDeliveryLat(item.getDeliveryLat());
             request.setDeliveryLon(item.getDeliveryLon());
-            request.setReceiverLat(item.getReceiverLat() == null ? 0.0 : Double.parseDouble(item.getReceiverLat()));
-            request.setReceiverLon(item.getReceiverLon() == null ? 0.0 : Double.parseDouble(item.getReceiverLon()));
+            request.setReceiverLat(item.getReceiverLat() == null|| item.getReceiverLat().isEmpty() ? 0.0 : Double.parseDouble(item.getReceiverLat()));
+            request.setReceiverLon(item.getReceiverLon() == null || item.getReceiverLon().isEmpty()? 0.0 : Double.parseDouble(item.getReceiverLon()));
             request.setPODeliveryLat(NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLat());
             request.setPODeliveryLon(NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLon());
             request.setPostmanID(postmanID);
