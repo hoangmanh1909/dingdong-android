@@ -88,8 +88,8 @@ public class ListHoanTatNhieuTinFragment extends ViewFragment<ListHoanTatNhieuTi
     private LocationManager mLocationManager;
     private Location mLocation;
 
-    String senderLat;
-    String senderLon;
+    double senderLat = 0.0;
+    double senderLon = 0.0;
 
     public static ListHoanTatNhieuTinFragment getInstance() {
         return new ListHoanTatNhieuTinFragment();
@@ -271,8 +271,8 @@ public class ListHoanTatNhieuTinFragment extends ViewFragment<ListHoanTatNhieuTi
 //                    || it.getStatus() == Constants.GREY) {
                 HoanTatTinRequest rq = new HoanTatTinRequest();
                 rq.setEmployeeID(it.getEmployeeId());
-                rq.setOrderPostmanID(it.getOrderPostmanId());
-                rq.setOrderID(it.getOrderId());
+                rq.setOrderPostmanID(it.getOrderPostmanId().isEmpty() ? 0 : Long.parseLong(it.getOrderPostmanId()));
+                rq.setOrderID(it.getOrderId().isEmpty() ? 0 : Long.parseLong(it.getOrderId()));
                 rq.setShipmentCodev1(it.getShipmentCode());
                 rq.setNoteReason(edtGhichu.getText().toString().trim());
                 tinGReen++;
@@ -307,8 +307,8 @@ public class ListHoanTatNhieuTinFragment extends ViewFragment<ListHoanTatNhieuTi
             if (it.getStatus() == Constants.GREY) {
                 HoanTatTinRequest rq = new HoanTatTinRequest();
                 rq.setEmployeeID(it.getEmployeeId());
-                rq.setOrderPostmanID(it.getOrderPostmanId());
-                rq.setOrderID(it.getOrderId());
+                rq.setOrderPostmanID(it.getOrderPostmanId().isEmpty() ? 0 : Long.parseLong(it.getOrderPostmanId()));
+                rq.setOrderID(it.getOrderId().isEmpty() ? 0 : Long.parseLong(it.getOrderId()));
                 rq.setShipmentCodev1(it.getShipmentCode());
                 rq.setNoteReason(edtGhichu.getText().toString().trim());
                 if (it.getStatus() == Constants.GREEN) {
@@ -339,7 +339,9 @@ public class ListHoanTatNhieuTinFragment extends ViewFragment<ListHoanTatNhieuTi
                 listKoHoan.add(rq);
             }
         }
-        Log.d("asd123123123",new Gson().toJson(listKoHoan));
+        Log.d("asd123123123", new Gson().toJson(list));
+        Log.d("Đóngasd123123123", new Gson().toJson(listKoHoan));
+
         if (tinGrey == 0)
             new SweetAlertDialog(getActivity(), SweetAlertDialog.NORMAL_TYPE)
                     .setConfirmText("OK")
@@ -348,8 +350,10 @@ public class ListHoanTatNhieuTinFragment extends ViewFragment<ListHoanTatNhieuTi
                     .setContentText(String.format("Số tin cần hoàn tất thành công: %s", FluentIterable.from(mList).filter(s -> s.getStatus() == Constants.GREEN).toList().size()))
                     .setConfirmClickListener(sweetAlertDialog -> {
                         mPresenter.collectAllOrderPostman(list);
+
                         sweetAlertDialog.dismiss();
                     }).show();
+
 //        if (checkKhongThanhCong && mReason == null) {
 //            Toast.showToast(getActivity(), "Chưa chọn lý do cho bưu gửi không thành công");
 //            return;
@@ -377,10 +381,11 @@ public class ListHoanTatNhieuTinFragment extends ViewFragment<ListHoanTatNhieuTi
             int count = item.getListParcelCode().size();
             for (ParcelCodeInfo it : item.getListParcelCode()) {
                 ItemHoanTatNhieuTin tin = new ItemHoanTatNhieuTin(it.getTrackingCode(), count > 1 ? Constants.RED : Constants.GREY,
-                        mUserInfo.getiD(), item.getOrderPostmanID(), item.getiD());
+                        mUserInfo.getiD(), it.getOrderPostmanId(), it.getOrderId());
                 mList.add(tin);
             }
         }
+
         if (!list.get(0).getSenderVpostcode().equals(""))
             mPresenter.vietmapDecode(list.get(0).getSenderVpostcode());
         mAdapter.setItems(mList);
@@ -399,6 +404,7 @@ public class ListHoanTatNhieuTinFragment extends ViewFragment<ListHoanTatNhieuTi
                 it.setStatus(Constants.GREEN);
                 mAdapter.refresh(mList);
             }
+
             showCount();
         }
 
@@ -416,7 +422,7 @@ public class ListHoanTatNhieuTinFragment extends ViewFragment<ListHoanTatNhieuTi
     }
 
     @Override
-    public void showVitringuoinhan(String lat, String lon) {
+    public void showVitringuoinhan(double lat, double lon) {
         senderLat = lat;
         senderLon = lon;
     }

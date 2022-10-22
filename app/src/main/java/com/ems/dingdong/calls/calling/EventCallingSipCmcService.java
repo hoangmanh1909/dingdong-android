@@ -20,69 +20,6 @@ import java.util.Objects;
 
 public class EventCallingSipCmcService extends Service {
 
-//    private String channelID = "SipService";
-//    private static final int SERVICE_NOTIFICATION  = 1000001;
-//
-//    @Nullable
-//    @Override
-//    public IBinder onBind(Intent intent) {
-//        return null;
-//    }
-//
-//    public void event() {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            NotificationChannel channel = new NotificationChannel("abc", "notification", NotificationManager.IMPORTANCE_DEFAULT);
-//            NotificationManager manager = getApplicationContext().getSystemService(NotificationManager.class);
-//            manager.createNotificationChannel(channel);
-//        }
-//        SipCmc.startService(this);
-//        SipCmc.addCallback(null, new PhoneCallback() {
-//            @Override
-//            public void incomingCall(LinphoneCall linphoneCall) {
-//                super.incomingCall(linphoneCall);
-//
-//                showServiceNotifiCation();
-//                Toast.makeText(EventCallingSipCmc.this, "có cuộc gọi Ctel 1", Toast.LENGTH_SHORT).show();
-//
-//                //
-//                Intent intent = new Intent(getApplicationContext(), CallingFragment.class);
-//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, 0);
-//
-//                NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), "abc");
-//                builder.setContentTitle("Cuộc gọi Ctel");
-//                builder.setContentText("cuộc gọi đến"/*+ SipCmc.getCallerNumber()*/);
-//                builder.setSmallIcon(R.drawable.ic_logo_ding_dong);
-//                builder.setContentIntent(pendingIntent);
-//                builder.setAutoCancel(true);
-//
-//                NotificationManagerCompat notificationCompat = NotificationManagerCompat.from(getApplicationContext());
-//                notificationCompat.notify(1, builder.build());
-//
-//            }
-//        });
-//    }
-//
-//    private void showServiceNotifiCation(){
-//        Intent intent = new Intent(this, MainActivity.class);
-//        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-//        PendingIntent contentIntent = PendingIntent.getActivity(this, 0/*requestCode*/, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-//
-//        Notification.Builder builder;
-//        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-//            builder = new Notification.Builder(this,channelID);
-//        }else{
-//            builder = new Notification.Builder(this);
-//        }
-//        builder.setSmallIcon(R.drawable.ic_logo_ding_dong)
-//                ///.setContentTitle(getString(R.string.app_name))
-//                .setContentText("Service Running")
-//                .setContentIntent(contentIntent)
-//                .build();// getNotification()
-//        startForeground(SERVICE_NOTIFICATION, builder.build());
-//    }
-
-
     /////
     private String CHANNEL_ID = "VoipChannel";
     private String CHANNEL_NAME = "Voip Channel";

@@ -29,6 +29,7 @@ import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
 
 public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.View, BaoPhatOfflineContract.Interactor>
@@ -91,16 +92,16 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
 
     @Override
     public void removeOfflineItem(String parcelCode) {
-        Realm realm = Realm.getDefaultInstance();
-        RealmResults<CommonObject> result = realm.where(CommonObject.class).equalTo(Constants.COMMON_OBJECT_PRIMARY_KEY, parcelCode).findAll();
-        if (result != null) {
-            realm.beginTransaction();
-            result.deleteAllFromRealm();
-            realm.commitTransaction();
-            realm.close();
-        } else {
-            mView.showErrorFromRealm();
-        }
+//        Realm realm = Realm.getDefaultInstance();
+//        RealmResults<CommonObject> result = realm.where(CommonObject.class).equalTo(Constants.COMMON_OBJECT_PRIMARY_KEY, parcelCode).findAll();
+//        if (result != null) {
+//            realm.beginTransaction();
+//            result.deleteAllFromRealm();
+//            realm.commitTransaction();
+//            realm.close();
+//        } else {
+//            mView.showErrorFromRealm();
+//        }
     }
 
     @Override
@@ -301,23 +302,30 @@ public class BaoPhatOfflinePresenter extends Presenter<BaoPhatOfflineContract.Vi
     @Override
     public List<CommonObject> getOfflineRecord(Date from, Date to) {
         List<CommonObject> list = new ArrayList<>();
-        Realm realm = Realm.getDefaultInstance();
+//        Realm realm = Realm.getDefaultInstance();
+        RealmConfiguration config = new RealmConfiguration.Builder()
+                .name("DINGDONGOFFLINE.realm")
+                .schemaVersion(1)
+                .deleteRealmIfMigrationNeeded()
+                .build();
+        Realm.setDefaultConfiguration(config);
+        Realm realm = Realm.getInstance(config);
         RealmResults<CommonObject> results;
-        if (getViewContext().getIntent().getBooleanExtra(Constants.IS_ONLINE, false)) {
-            results = realm.where(CommonObject.class).equalTo(Constants.FIELD_LOCAL, true).findAll();
-        } else {
-            results = realm.where(CommonObject.class).equalTo(Constants.FIELD_LOCAL, false).findAll();
-        }
-
-        if (results.size() > 0) {
-            for (CommonObject item : results) {
-                CommonObject itemReal = realm.copyFromRealm(item);
-                Date compareDate = DateTimeUtils.convertStringToDate(itemReal.getDeliveryDate(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
-                if (compareDate.compareTo(from) >= 0 && compareDate.compareTo(to) <= 0) {
-                    list.add(itemReal);
-                }
-            }
-        }
+//        if (getViewContext().getIntent().getBooleanExtra(Constants.IS_ONLINE, false)) {
+//            results = realm.where(CommonObject.class).equalTo(Constants.FIELD_LOCAL, true).findAll();
+//        } else {
+//            results = realm.where(CommonObject.class).equalTo(Constants.FIELD_LOCAL, false).findAll();
+//        }
+//
+//        if (results.size() > 0) {
+//            for (CommonObject item : results) {
+//                CommonObject itemReal = realm.copyFromRealm(item);
+//                Date compareDate = DateTimeUtils.convertStringToDate(itemReal.getDeliveryDate(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+//                if (compareDate.compareTo(from) >= 0 && compareDate.compareTo(to) <= 0) {
+//                    list.add(itemReal);
+//                }
+//            }
+//        }
         return list;
     }
 }

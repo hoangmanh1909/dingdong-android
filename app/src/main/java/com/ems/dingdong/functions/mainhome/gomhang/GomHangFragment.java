@@ -121,7 +121,6 @@ public class GomHangFragment extends ViewFragment<GomHangContract.Presenter> imp
         };
 
 
-
 //            @Override
 //            public void onBindItemViewHolder(ItemViewHolder viewHolder, final int section, final int position) {
 //                super.onBindItemViewHolder(viewHolder, section, position);

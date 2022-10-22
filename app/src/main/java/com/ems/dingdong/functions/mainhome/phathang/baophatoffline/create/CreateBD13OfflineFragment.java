@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -24,6 +25,7 @@ import com.ems.dingdong.dialog.SignDialog;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.ImageCaptureAdapter;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.Item;
+import com.ems.dingdong.model.ModeTu;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.ReasonInfo;
 import com.ems.dingdong.model.RouteInfo;
@@ -41,21 +43,25 @@ import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.form.FormItemEditText;
 import com.ems.dingdong.views.form.FormItemTextView;
+import com.google.gson.Gson;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineContract.Presenter>
         implements CreateBD13OfflineContract.View {
 
-    @BindView(R.id.scrollView)
-    NestedScrollView scrollView;
+    //    @BindView(R.id.scrollView)
+//    NestedScrollView scrollView;
     @BindView(R.id.img_back)
     ImageView img_back;
     @BindView(R.id.img_capture)
@@ -124,10 +130,14 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
     private PostOffice postOffice;
     private RouteInfo routeInfo;
     private ImageCaptureAdapter imageVerifyAdapter;
+    SharedPref sharedPref;
+    List<SolutionInfo> solutionInfos;
 
     public static CreateBD13OfflineFragment getInstance() {
         return new CreateBD13OfflineFragment();
     }
+
+    ReasonInfo[] reasonInfos;
 
     @Override
     protected int getLayoutId() {
@@ -138,19 +148,20 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
     public void initLayout() {
         super.initLayout();
 
-        scrollView.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
-        scrollView.setFocusable(true);
-        scrollView.setFocusableInTouchMode(true);
-        scrollView.setOnTouchListener((v, event) -> {
-            v.requestFocusFromTouch();
-            return false;
-        });
+//        scrollView.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
+//        scrollView.setFocusable(true);
+//        scrollView.setFocusableInTouchMode(true);
+//        scrollView.setOnTouchListener((v, event) -> {
+//            v.requestFocusFromTouch();
+//            return false;
+//        });
 
-        SharedPref sharedPref = new SharedPref(getActivity());
+        sharedPref = new SharedPref(getActivity());
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
         String routeInfoJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
-
+        String string = sharedPref.getString(Constants.REASONINFO_PRIMARY_KEY, "");
+        reasonInfos = NetWorkController.getGson().fromJson(string, ReasonInfo[].class);
         if (!userJson.isEmpty()) {
             userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
         }
@@ -397,6 +408,7 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
         commonObject.setDeliveryDate(deliveryDate);
         commonObject.setSignatureCapture(mSign);
         mPresenter.saveLocal(commonObject);
+
         if (getActivity() != null) {
             new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
                     .setConfirmText("OK")
@@ -429,10 +441,11 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
     private void showUIReason() {
         isFirstChangeReason = true;
         ArrayList<Item> items = new ArrayList<>();
-        final List<ReasonInfo> list = RealmUtils.getReasons();
+        final List<ReasonInfo> list = Arrays.asList(reasonInfos);
         for (ReasonInfo item : list) {
-            items.add(new Item(item.getCode(), item.getName()));
+            items.add(new Item(item.getCode(), item.getName(), item.getSolutionInfoList()));
         }
+        Log.d("THANHKHIEM", new Gson().toJson(list));
         new PickerDialog(getViewContext(), "Chọn lý do", items,
                 item -> {
                     for (ReasonInfo info : list) {
@@ -448,63 +461,47 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
                     if (mReasonInfo != null) {
                         tv_reason.setText(mReasonInfo.getName());
                         tv_solution.setText("");
+                        solutionInfos = new ArrayList<>();
+                        solutionInfos.addAll(item.getSolutionInfos());
+                        Log.d("THANHKHIEM", new Gson().toJson(item.getSolutionInfos()));
                         showUISolution();
                     }
                 }).show();
     }
 
-    private void showUISolution() {
-        if (!TextUtils.isEmpty(mReasonCode) && mReasonInfo != null) {
-            ArrayList<Item> items = new ArrayList<>();
-            final List<SolutionInfo> list = RealmUtils.getSolutionByReason(mReasonCode);
-            for (SolutionInfo item : list) {
-                items.add(new Item(item.getCode(), item.getName()));
-            }
-            if ((mReasonInfo.getID() == 48 || mReasonInfo.getID() == 11) && isFirstChangeReason) {
-                isFirstChangeReason = false;
-                for (SolutionInfo info : list) {
-                    if (info.getID() == 8) {
-                        mSolutionInfo = info;
-                        tv_solution.setText(mSolutionInfo.getName());
-                    }
-                }
-            } else if (isFirstChangeReason) {
-                isFirstChangeReason = false;
-                try {
-                    SolutionInfo firstInfo = list.get(0);
-                    tv_solution.setText(firstInfo.getName());
-                    mSolutionCode = firstInfo.getCode();
-                    mSolutionInfo = firstInfo;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
 
-            } else {
-                new PickerDialog(getViewContext(), "Chọn giải pháp", items,
-                        item -> {
-                            for (SolutionInfo info : list) {
-                                if (item.getValue().equals(info.getCode())) {
-                                    tv_solution.setText(item.getText());
-                                    mSolutionCode = info.getCode();
-                                    mSolutionInfo = info;
-                                    break;
-                                }
-                            }
-                        }).show();
-            }
-        } else {
-            Toast.showToast(getActivity(), "Bạn chưa chọn lý do");
+    private void showUISolution() {
+        ArrayList<Item> items = new ArrayList<>();
+        for (SolutionInfo item : solutionInfos) {
+            items.add(new Item(item.getCode(), item.getName()));
         }
+        new PickerDialog(getViewContext(), "Chọn giải pháp", items,
+                item -> {
+                    for (SolutionInfo info : solutionInfos) {
+                        if (item.getValue().equals(info.getCode())) {
+                            tv_solution.setText(item.getText());
+                            mSolutionCode = info.getCode();
+                            mSolutionInfo = info;
+                            break;
+                        }
+                    }
+                }).show();
     }
 
     private void loadReasonAndSolution() {
-        final List<ReasonInfo> listReason = RealmUtils.getReasons();
-        for (ReasonInfo item : listReason) {
+//        final List<ReasonInfo> listReason = RealmUtils.getReasons();
+//        SharedPref sharedPref = new SharedPref(getActivity());
+//        String string = sharedPref.getString(Constants.REASONINFO_PRIMARY_KEY, "");
+//        ReasonInfo[] reasonInfos = NetWorkController.getGson().fromJson(string, ReasonInfo[].class);
+//        final List<ReasonInfo> list = Arrays.asList(reasonInfos);
+        final List<ReasonInfo> list = Arrays.asList(reasonInfos);
+        for (ReasonInfo item : list) {
             if (item.getID() == 42) {
                 mReasonInfo = item;
                 mReasonCode = item.getCode();
                 tv_reason.setText(item.getName());
-                final List<SolutionInfo> listSolution = RealmUtils.getSolutionByReason(item.getCode());
+                final List<SolutionInfo> listSolution = new ArrayList<>();
+                listSolution.addAll(item.getSolutionInfoList());
                 for (SolutionInfo solutionInfo : listSolution) {
                     if (solutionInfo.getID() == 1) {
                         tv_solution.setText(solutionInfo.getName());

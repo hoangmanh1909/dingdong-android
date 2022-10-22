@@ -13,5 +13,7 @@ public interface AddressContract {
 
     interface Presenter extends IPresenter<View, Interactor> {
         void showXacMinhDiaChi();
+
+        void showDanhBa();
     }
 }

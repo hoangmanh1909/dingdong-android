@@ -4,6 +4,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import com.astuetz.PagerSlidingTabStrip;
@@ -37,7 +38,8 @@ public class TabListCommonFragment extends ViewFragment<TabListCommonContract.Pr
     private List<ViewFragment> tabList;
     private int mPosition = 0;
     private TabListCommonAdapter mAdapter;
-
+    @BindView(R.id.layout_swipe_refresh)
+    SwipeRefreshLayout swipeRefresh;
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_tab_common;
@@ -50,6 +52,15 @@ public class TabListCommonFragment extends ViewFragment<TabListCommonContract.Pr
     @Override
     public void initLayout() {
         super.initLayout();
+        swipeRefresh.setOnRefreshListener(() -> {
+            swipeRefresh.setRefreshing(true);
+            onCanceledDelivery();
+        });
+        swipeRefresh.setRefreshing(false);
+        swipeRefresh.setColorSchemeResources(R.color.colorAccent,
+                android.R.color.holo_green_dark,
+                android.R.color.holo_orange_dark,
+                android.R.color.holo_blue_dark);
         tabList = new ArrayList<>();
         tabList.add((ListCommonFragment) new ListCommonPresenter(mPresenter.getContainerView()).setTypeTab(0).setType(mPresenter.getType()).setOnTabListener(this).getFragment());
         tabList.add((ListCommonFragment) new ListCommonPresenter(mPresenter.getContainerView()).setTypeTab(1).setType(mPresenter.getType()).setOnTabListener(this).getFragment());
@@ -94,6 +105,7 @@ public class TabListCommonFragment extends ViewFragment<TabListCommonContract.Pr
     @Override
     public void onCanceledDelivery() {
 //        if (mPosition == 0) {
+        swipeRefresh.setRefreshing(false);
         ListCommonFragment commonFragment = (ListCommonFragment) tabList.get(0);
         commonFragment.refreshLayout();
 //        } else {

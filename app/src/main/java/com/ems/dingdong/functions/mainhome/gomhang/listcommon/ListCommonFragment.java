@@ -2,8 +2,10 @@ package com.ems.dingdong.functions.mainhome.gomhang.listcommon;
 
 import android.content.Intent;
 
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Build;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -11,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -18,10 +21,17 @@ import android.widget.TextView;
 import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.callback.BarCodeCallback;
+import com.ems.dingdong.callback.PickerCallback;
+import com.ems.dingdong.functions.mainhome.gomhang.listcommon.more.DialoChonKhuVuc;
+import com.ems.dingdong.functions.mainhome.gomhang.listcommon.more.DialogItemDichvu;
+import com.ems.dingdong.functions.mainhome.gomhang.listcommon.more.DichVuMode;
+import com.ems.dingdong.functions.mainhome.gomhang.listcommon.more.Mpit;
 import com.ems.dingdong.model.ConfirmAllOrderPostman;
+import com.ems.dingdong.model.Item;
 import com.ems.dingdong.model.SearchMode;
 import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.form.FormItemEditText;
+import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.ems.dingdong.R;
@@ -34,13 +44,22 @@ import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.views.CustomBoldTextView;
+//import com.ringme.ott.sdk.model.ChatData;
+//import com.ringme.ott.sdk.utils.RingmeOttSdk;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -53,6 +72,8 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
     RecyclerView recycler;
     @BindView(R.id.tv_nodata)
     TextView tvNodata;
+    @BindView(R.id.notification_badge)
+    TextView notificationBadge;
     @BindView(R.id.tv_title)
     TextView tvTitle;
     @BindView(R.id.img_view)
@@ -68,6 +89,10 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
     LinearLayout llGomHang;
     @BindView(R.id.img_confirm)
     ImageView imgConfirm;
+    @BindView(R.id.img_tim_kiem_dich_vu)
+    ImageView img_tim_kiem_dich_vu;
+    @BindView(R.id.fr_thongbao)
+    FrameLayout fr_thongbao;
     @BindView(R.id.edt_search)
     FormItemEditText edtSearch;
     private ListCommonAdapter mAdapterChua, mAdapterDa;
@@ -78,11 +103,13 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
     private Calendar mCalendar;
     private String fromDate;
     private String toDate;
-    ArrayList<CommonObject> mListFilter;
+    ArrayList<CommonObject> mListFilter = new ArrayList<>();
     CommonObject itemAtPosition;
-    ArrayList<CommonObject> mListChua;
-    ArrayList<CommonObject> mListDa;
+    ArrayList<CommonObject> mListChua = new ArrayList<>();
+    ArrayList<CommonObject> mListDa = new ArrayList<>();
+    List<DichVuMode> dichVuModeList = new ArrayList<>();
     int type = 0;
+    ArrayList<Item> items = new ArrayList<>();
 
     public static ListCommonFragment getInstance() {
         return new ListCommonFragment();
@@ -104,9 +131,11 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
             }
             return;
         }
+        mpitList = new ArrayList<>();
         mListChua = new ArrayList<>();
         mListDa = new ArrayList<>();
         if (mPresenter.getTab() == 0) {
+//            RingmeOttSdk.openChat(getViewContext(), "ekpmbv7rdg@localhost", new ChatData(), false, false);
             mListChua = new ArrayList<>();
             mAdapterChua = new ListCommonAdapter(getActivity(), mPresenter.getType(), mListChua) {
                 @Override
@@ -160,16 +189,22 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
             llGomHang.setVisibility(View.VISIBLE);
             cbAll.setVisibility(View.VISIBLE);
             imgConfirm.setVisibility(View.VISIBLE);
+            fr_thongbao.setVisibility(View.VISIBLE);
+            img_tim_kiem_dich_vu.setVisibility(View.VISIBLE);
         } else if (mPresenter.getType() == 2) {
             tvTitle.setText("Hoàn tất tin");
             llGomHang.setVisibility(View.VISIBLE);
             cbAll.setVisibility(View.GONE);
             imgConfirm.setVisibility(View.GONE);
+            fr_thongbao.setVisibility(View.GONE);
+            img_tim_kiem_dich_vu.setVisibility(View.GONE);
         } else if (mPresenter.getType() == 3) {
             tvTitle.setText("Danh sách vận đơn");
             llGomHang.setVisibility(View.GONE);
             cbAll.setVisibility(View.GONE);
             imgConfirm.setVisibility(View.GONE);
+            fr_thongbao.setVisibility(View.VISIBLE);
+            img_tim_kiem_dich_vu.setVisibility(View.VISIBLE);
         }
 
         Date today = Calendar.getInstance().getTime();
@@ -286,6 +321,7 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
     }
 
     public void refreshLayout() {
+        edtSearch.setText("");
         if (mPresenter.getType() == 3 && !TextUtils.isEmpty(mDate) && mUserInfo != null) {
             mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mDate, mOrder, mRoute);
         }
@@ -299,9 +335,20 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
         }
     }
 
-    @OnClick({R.id.img_back, R.id.img_view, R.id.img_confirm, R.id.ll_scan_qr})
+    @OnClick({R.id.img_back, R.id.img_view, R.id.img_confirm, R.id.ll_scan_qr, R.id.img_tim_kiem_dich_vu, R.id.fr_thongbao})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.img_tim_kiem_dich_vu:
+                showDichVu();
+                break;
+            case R.id.fr_thongbao:
+                if (mpitList.size() == 0) {
+                    Toast.showToast(getViewContext(), "Không có dịch vụ nào");
+                    return;
+                }
+                pickFilterNhom(1);
+//                mPresenter.showDichVu(mpitList.get(0).getCommonObject());
+                break;
             case R.id.img_back:
                 mPresenter.back();
                 break;
@@ -320,6 +367,10 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
                 });
                 break;
         }
+    }
+
+    private void pickFilterNhom(int type) {
+        mPresenter.showDichVu(mpitList);
     }
 
     public void confirmAll() {
@@ -383,7 +434,6 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
                 tvRejectCount.setVisibility(View.VISIBLE);
                 tvAcceptCount.setVisibility(View.GONE);
                 mAdapterChua.notifyDataSetChanged();
-
             } else {
                 mListDa.clear();
                 mListDa.addAll(mListDatam);
@@ -416,7 +466,6 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
                 tvRejectCount.setVisibility(View.VISIBLE);
                 mPresenter.titleChanged(mListChua.size(), 0);
                 mAdapterChua.notifyDataSetChanged();
-
             } else {
                 mListDa.clear();
                 mListDa.addAll(mListDatam);
@@ -431,6 +480,12 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
     }
 
     @Override
+    public void showDichVuMpit(List<DichVuMode> list) {
+        dichVuModeList = new ArrayList<>();
+        dichVuModeList.addAll(list);
+    }
+
+    @Override
     public void showError(String message) {
         type = 1;
         Toast.showToast(getViewContext(), message);
@@ -438,7 +493,7 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
 
     @Override
     public void showResult(ConfirmAllOrderPostman allOrderPostman) {
-        EventBus.getDefault().post(Constants.EVENTBUS_HOAN_THANH_TIN_THANH_CONG_NOTIFY_DATA);
+//        EventBus.getDefault().post(Constants.EVENTBUS_HOAN_THANH_TIN_THANH_CONG_NOTIFY_DATA);
         if (getActivity() != null) {
             new SweetAlertDialog(getActivity(), SweetAlertDialog.NORMAL_TYPE)
                     .setConfirmText("OK")
@@ -448,10 +503,163 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
                             sweetAlertDialog.dismiss();
-                           mPresenter.onCanceled();
+                            mPresenter.onCanceled();
                         }
                     }).show();
         }
     }
 
+
+    List<Mpit> mpitList = new ArrayList<>();
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void showDichVuMPit(ArrayList<CommonObject> list) {
+
+        if (mPresenter.getType() == 1) {
+            if (mPresenter.getTab() == 0) {
+//                boolean checkCTN006 = false;
+//                Mpit mpit = new Mpit();
+//                for (int i = 0; i < list.size(); i++)
+//                    if (Objects.equals(list.get(i).getServiceCodeMPITS(), "CTN006") && Objects.equals(list.get(i).getStatusCode(), "P0")) {
+//                        mpit.setServiceCodeMPITS(list.get(i).getServiceCodeMPITS());
+//                        mpit.setServiceNameMPITS(list.get(i).getServiceNameMPITS());
+//                        checkCTN006 = true;
+//                        break;
+//                    }
+//                if (checkCTN006) {
+//                    List<CommonObject> list1 = new ArrayList<>();
+//                    list1.addAll(giongnhau(list, list.size(), "P0"));
+//                    mpit.setCommonObject(list1);
+//                    mpitList.add(mpit);
+//                    if (mpitList.size() > 0) {
+//                        notificationBadge.setVisibility(View.VISIBLE);
+//                        notificationBadge.setText(mpitList.size() + "");
+//                    }
+//                }
+
+//                List<Integer> listWithDuplicates = Lists.newArrayList(1, 1, 2, 2, 3, 3);
+//                for (int i = 0; i < list.size(); i++) {
+//                    if (list.get(i).getServiceCodeMPITS().isEmpty()) {
+//                        list.get(i).setServiceCodeMPITS("KHIEM");
+//                        list.get(i).setServiceNameMPITS("KHIEM001");
+//                    }
+//                }
+//                DichVuMode dichVuMode = new DichVuMode();
+//                dichVuMode.setCode("KHIEM");
+//                dichVuMode.setName("KHIEM001");
+//                dichVuModeList.add(dichVuMode);
+                mpitList = new ArrayList<>();
+                for (int i = 0; i < dichVuModeList.size(); i++) {
+                    Mpit mpit = new Mpit();
+                    List<CommonObject> list1 = new ArrayList<>();
+                    mpit.setServiceCodeMPITS(dichVuModeList.get(i).getCode());
+                    mpit.setServiceNameMPITS(dichVuModeList.get(i).getName());
+                    list1.addAll(giongnhau(list, list.size(), "P0", dichVuModeList.get(i).getCode()));
+                    mpit.setCommonObject(list1);
+                    if (list1.size() > 0)
+                        mpitList.add(mpit);
+                }
+
+                if (mpitList.size() > 0) {
+                    notificationBadge.setVisibility(View.VISIBLE);
+                    notificationBadge.setText(mpitList.size() + "");
+                } else notificationBadge.setVisibility(View.GONE);
+
+
+            } else {
+//                boolean checkCTN006 = false;
+//                Mpit mpit = new Mpit();
+//
+//                for (int i = 0; i < list.size(); i++)
+//                    if (Objects.equals(list.get(i).getServiceCodeMPITS(), "CTN006") && Objects.equals(list.get(i).getStatusCode(), "P1")) {
+//                        mpit.setServiceCodeMPITS(list.get(i).getServiceCodeMPITS());
+//                        mpit.setServiceNameMPITS(list.get(i).getServiceNameMPITS());
+//                        checkCTN006 = true;
+//                        break;
+//                    }
+//                if (checkCTN006) {
+//                    List<CommonObject> list1 = new ArrayList<>();
+//                    list1.addAll(giongnhau(list, list.size(), "P1"));
+//                    mpit.setCommonObject(list1);
+//                    mpitList.add(mpit);
+//                    if (mpitList.size() > 0) {
+//                        notificationBadge.setVisibility(View.VISIBLE);
+//                        notificationBadge.setText(mpitList.size() + "");
+//                    }
+//                }
+                mpitList = new ArrayList<>();
+                for (int i = 0; i < dichVuModeList.size(); i++) {
+                    Mpit mpit = new Mpit();
+                    List<CommonObject> list1 = new ArrayList<>();
+                    mpit.setServiceCodeMPITS(dichVuModeList.get(i).getCode());
+                    mpit.setServiceNameMPITS(dichVuModeList.get(i).getName());
+                    list1.addAll(giongnhau(list, list.size(), "P1", dichVuModeList.get(i).getCode()));
+                    mpit.setCommonObject(list1);
+                    if (list1.size() > 0)
+                        mpitList.add(mpit);
+
+                }
+                if (mpitList.size() > 0) {
+                    notificationBadge.setVisibility(View.VISIBLE);
+                    notificationBadge.setText(mpitList.size() + "");
+                } else notificationBadge.setVisibility(View.GONE);
+            }
+        }
+
+    }
+
+    ArrayList<CommonObject> take_duplicate_element(ArrayList<CommonObject> list, int size) {
+        ArrayList<CommonObject> list1 = new ArrayList<>();
+        int count = 0;
+        for (int i = 0; i < size - 1; ++i) {
+            for (int j = i + 1; j < size; ++j) {
+                if (!list.get(i).getServiceCodeMPITS().isEmpty() && Objects.equals(list.get(i).getServiceCodeMPITS(), list.get(j).getServiceCodeMPITS())) {
+                    list1.add(count, list.get(i));
+                    ++count;
+                }
+            }
+        }
+        return list1;
+    }
+
+    ArrayList<CommonObject> giongnhau(ArrayList<CommonObject> list, int n, String code, String macode) {
+        int i, j;
+        ArrayList<CommonObject> ketqua = new ArrayList<>();
+        for (i = 0; i < n; i++) {
+            for (i = 0; i < n; i++) {
+                if (Objects.equals(list.get(i).getServiceCodeMPITS(), macode) && Objects.equals(list.get(i).getStatusCode(), code)) {
+                    ketqua.add(list.get(i));
+                }
+            }
+        }
+        return ketqua;
+    }
+
+    public static boolean bruteforce(String[] input) {
+        for (int i = 0; i < input.length; i++) {
+            for (int j = 0; j < input.length; j++) {
+                if (input[i].equals(input[j]) && i != j) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private void showDichVu() {
+        ArrayList<Item> items = new ArrayList<>();
+        int i = 0;
+        for (DichVuMode item : dichVuModeList) {
+            items.add(new Item(item.getCode(), item.getName()));
+            i++;
+        }
+
+        new DialoChonKhuVuc(getViewContext(), "Tìm kiếm dịch vụ", items, new PickerCallback() {
+            @Override
+            public void onClickItem(Item item) {
+                edtSearch.setText(item.getText());
+            }
+        }).show();
+    }
 }

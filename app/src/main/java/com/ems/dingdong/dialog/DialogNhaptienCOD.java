@@ -58,7 +58,6 @@ public class DialogNhaptienCOD extends Dialog {
                 break;
             case R.id.tv_goi:
                 idCallback.onResponse("GOI");
-
                 break;
             case R.id.tv_xac_nhan:
                 if (TextUtils.isEmpty(tvTienCOD.getText().toString())) {

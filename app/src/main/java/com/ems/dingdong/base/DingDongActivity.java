@@ -18,7 +18,6 @@ import com.ems.dingdong.app.ApplicationController;
 //import com.sip.cmc.SipCmc;
 //import com.sip.cmc.callback.PhoneCallback;
 
-import org.linphone.core.LinphoneCall;
 
 
 /**

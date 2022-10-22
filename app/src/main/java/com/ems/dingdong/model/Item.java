@@ -1,5 +1,7 @@
 package com.ems.dingdong.model;
 
+import java.util.List;
+
 public class Item {
     String value;
     String text;
@@ -21,10 +23,26 @@ public class Item {
     String POCode;
     String PaymentToken;
     boolean defaut;
+    boolean is;
+    List<CommonObject> list;
+    List<SolutionInfo> solutionInfos;
 
     public Item(String value, String text) {
         this.value = value;
         this.text = text;
+    }
+
+    public Item(String value, String text, List<SolutionInfo> solutionInfos) {
+        this.value = value;
+        this.text = text;
+        this.solutionInfos = solutionInfos;
+    }
+
+    public Item(String value, String text, List<CommonObject> list, boolean is) {
+        this.value = value;
+        this.text = text;
+        this.is = is;
+        this.list = list;
     }
 
 
@@ -56,6 +74,30 @@ public class Item {
         this.POCode = POCode;
         this.PaymentToken = PaymentToken;
         this.defaut = defaut;
+    }
+
+    public List<SolutionInfo> getSolutionInfos() {
+        return solutionInfos;
+    }
+
+    public void setSolutionInfos(List<SolutionInfo> solutionInfos) {
+        this.solutionInfos = solutionInfos;
+    }
+
+    public List<CommonObject> getList() {
+        return list;
+    }
+
+    public void setList(List<CommonObject> list) {
+        this.list = list;
+    }
+
+    public boolean isIs() {
+        return is;
+    }
+
+    public void setIs(boolean is) {
+        this.is = is;
     }
 
     public boolean isDefaut() {

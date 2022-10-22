@@ -41,7 +41,6 @@ public class HoanThanhTinDetailPresenter extends Presenter<HoanThanhTinDetailCon
 
     @Override
     public void start() {
-
         if (!commonObject.getSenderVpostcode().equals(""))
             vietmapDecode(commonObject.getSenderVpostcode());
     }
@@ -151,12 +150,13 @@ public class HoanThanhTinDetailPresenter extends Presenter<HoanThanhTinDetailCon
                 .subscribe(simpleResult -> {
                     if (simpleResult.getErrorCode().equals("00")) {
                         try {
-                            mView.showVitringuoinhan(String.valueOf(simpleResult.getObject().getResult().getLocation().getLatitude()),
-                                    String.valueOf(simpleResult.getObject().getResult().getLocation().getLongitude()));
+                            mView.showVitringuoinhan(simpleResult.getObject().getResult().getLocation().getLatitude(),
+                                    simpleResult.getObject().getResult().getLocation().getLongitude());
                         } catch (Exception e) {
-
+//                            mView.showError("Lỗi xử lý dữ liệu");
+                            mView.hideProgress();
                         }
-
+                        mView.hideProgress();
                     } else {
 //                        mView.showError(simpleResult.getMessage());
                         mView.hideProgress();

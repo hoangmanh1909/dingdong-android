@@ -142,8 +142,8 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
     private LocationManager mLocationManager;
     private Location mLocation;
 
-    String senderLat="";
-    String senderLon="";
+    double senderLat = 0.0;
+    double senderLon = 0.0;
 
     public static HoanThanhTinDetailFragment getInstance() {
         return new HoanThanhTinDetailFragment();
@@ -363,7 +363,7 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
     }
 
     @Override
-    public void showVitringuoinhan(String lat, String lon) {
+    public void showVitringuoinhan(double lat, double lon) {
         senderLat = lat;
         senderLon = lon;
 
@@ -394,8 +394,8 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
                                     UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
                                     HoanTatTinRequest hoanTatTinRequest = new HoanTatTinRequest();
                                     hoanTatTinRequest.setEmployeeID(userInfo.getiD());
-                                    hoanTatTinRequest.setOrderID(mHoanThanhTin.getiD());
-                                    hoanTatTinRequest.setOrderPostmanID(mHoanThanhTin.getOrderPostmanID());
+                                    hoanTatTinRequest.setOrderID(mHoanThanhTin.getiD().isEmpty() ? 0 : Long.parseLong(mHoanThanhTin.getiD()));
+                                    hoanTatTinRequest.setOrderPostmanID(mHoanThanhTin.getOrderPostmanID().isEmpty() ? 0 : Long.parseLong(mHoanThanhTin.getOrderPostmanID()));
                                     hoanTatTinRequest.setStatusCode(statusCode);
                                     hoanTatTinRequest.setCollectReason(reasonInfo != null ? reasonInfo.getName() : "");
                                     hoanTatTinRequest.setPickUpDate(pickUpDate);
@@ -502,9 +502,11 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
 
         }
     }
-    private void updateTvCountScanWhenRemoveItem(){
-        if (mAdapter.getItemCount()==0) tvCountScan.setText("SCAN ĐƠN HÀNG");
-        else tvCountScan.setText(String.format("Scan đơn hàng: %s/%s", mAdapter.getItemCount(), mHoanThanhTin.getListParcelCode().size()));
+
+    private void updateTvCountScanWhenRemoveItem() {
+        if (mAdapter.getItemCount() == 0) tvCountScan.setText("SCAN ĐƠN HÀNG");
+        else
+            tvCountScan.setText(String.format("Scan đơn hàng: %s/%s", mAdapter.getItemCount(), mHoanThanhTin.getListParcelCode().size()));
     }
 
   /*  @Override

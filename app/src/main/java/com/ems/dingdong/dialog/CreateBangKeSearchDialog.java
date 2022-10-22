@@ -21,6 +21,7 @@ import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -86,6 +87,8 @@ public class CreateBangKeSearchDialog extends Dialog implements com.tsongkha.spi
 //        mChuyenThu = String.format("%s", 5000 + calendar.get(Calendar.DAY_OF_YEAR));//DateTimeUtils.convertDateToString(new Date(), DateTimeUtils.SIMPLE_DATE_FORMAT5);// String.format("%s", 5000  + calendar.get(Calendar.DATE));
 //        tv_chuyenthu.setText(mChuyenThu);
 //        tvBag.setText(mBag);
+        Locale locale = getContext().getResources().getConfiguration().locale;
+        Locale.setDefault(locale);
     }
 
     @Override

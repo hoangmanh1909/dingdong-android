@@ -137,47 +137,27 @@ public class MapFragment extends ViewFragment<MapContract.Presenter>
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        // Add a marker in Sydney and move the camera
-
         for (int i = 0; i < mList.size(); i++) {
             com.google.android.gms.maps.model.LatLng sydney = new com.google.android.gms.maps.model.LatLng(mList.get(i).getLatitude(), mList.get(i).getLongitude());
             mMap.addMarker(new MarkerOptions().position(sydney).title(mList.get(i).getFullAdress()));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         }
-
         mMap.animateCamera(CameraUpdateFactory.zoomTo(14), 2000, null);
-        LatLng TamWorth = new LatLng(mList.get(0).getLatitude(), mList.get(0).getLongitude());
-        LatLng NewCastle = new LatLng(mList.get(1).getLatitude(), mList.get(1).getLongitude());
-//        PolylineOptions line=
-//                new PolylineOptions().add()
-//                        .width(5).color(Color.RED);
-//
-//        mMap.addPolyline(line);
-
-
-        // mMap is the Map Object
         List<LatLng> latLngList = new ArrayList<>();
         for (int i = 0; i < mList.size(); i++) {
             latLngList.add(i, new LatLng(mList.get(i).getLatitude(), mList.get(i).getLongitude()));
         }
-        Log.d("asdasda2eqwe",new Gson().toJson(latLngList));
-
         PolylineOptions polylineOptions = new PolylineOptions();
-
-// Create polyline options with existing LatLng ArrayList
 
         polylineOptions.addAll(latLngList);
         polylineOptions
                 .width(5)
                 .color(Color.RED);
-
-// Adding multiple points in map using polyline and arraylist
-
         mMap.addPolyline(polylineOptions);
     }
 
 
-    public String makeURL (double srcLat, double srcLong, double destLat, double destLong){
+    public String makeURL(double srcLat, double srcLong, double destLat, double destLong) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("https://maps.googleapis.com/maps/api/directions/json");
         stringBuilder.append("?origin");
@@ -195,8 +175,6 @@ public class MapFragment extends ViewFragment<MapContract.Presenter>
     @OnClick({R.id.img_back, R.id.btn_dong})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-
-
             case R.id.btn_dong:
 
                 break;
@@ -205,7 +183,6 @@ public class MapFragment extends ViewFragment<MapContract.Presenter>
                 break;
         }
     }
-
 
 
 //    public static void sortASC(List<Double> arr) {

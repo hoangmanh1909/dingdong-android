@@ -27,6 +27,10 @@ class XacNhanDiaChiInteractor extends Interactor<XacNhanDiaChiContract.Presenter
         NetWorkControllerGateWay.searchOrderPostmanCollect(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate, callback);
     }
 
+    @Override
+    public Single<SimpleResult> ddGetDichVuMpit() {
+        return NetWorkControllerGateWay.ddGetDichVuMpit();
+    }
 //    @Override
 //    public Single<CommonObjectListResult> searchOrderPostmanCollect(String orderPostmanID, String orderID, String postmanID, String status, String fromAssignDate, String toAssignDate) {
 //        Single<CommonObjectListResult> null;

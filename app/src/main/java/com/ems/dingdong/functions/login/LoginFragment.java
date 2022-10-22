@@ -9,6 +9,7 @@ import android.os.Build;
 import android.text.TextUtils;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 
@@ -16,6 +17,7 @@ import com.core.base.viper.ViewFragment;
 import com.core.utils.NetworkUtils;
 import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.R;
+import com.ems.dingdong.callback.DialogVersionCallback;
 import com.ems.dingdong.callback.RouteOptionCallBack;
 import com.ems.dingdong.dialog.RouteDialog;
 import com.ems.dingdong.functions.mainhome.main.MainActivity;
@@ -23,6 +25,7 @@ import com.ems.dingdong.model.Item;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.model.response.GetVersionResponse;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.Log;
@@ -31,7 +34,12 @@ import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.views.CustomMediumTextView;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
+import com.google.gson.Gson;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
+import com.ringme.ott.sdk.listener.RingmeChatLoginListener;
+import com.ringme.ott.sdk.utils.RingmeOttSdk;
+//import com.ringme.ott.sdk.listener.RingmeChatLoginListener;
+//import com.ringme.ott.sdk.utils.RingmeOttSdk;
 
 import java.util.List;
 
@@ -62,6 +70,8 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
         return new LoginFragment();
     }
 
+    boolean isVersion;
+
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_login;
@@ -70,16 +80,19 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
     @Override
     public void initLayout() {
         super.initLayout();
+        isVersion = true;
         tvVersion.setText(String.format("V.%s (%s)", BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE));
         mSharedPref = new SharedPref(getActivity());
         if (BuildConfig.DEBUG) {
 //        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0394610790;0BE19E95374396A6B4C64201E7255638ED304A0FDBEACEA542ED2A2150F4FB45");//dev EMS
 //        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0973222902;A0F0033A62B4FB523F85F25C0469F41F35AABCCE42165823EB9E11D42C91D427");// pro vinatti
 //         mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0947278893;73AA9207BC84142291421BC028955CBC6637BF01CE20948531B259787B5C74CE");// dev vinatti
-//            mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0963797600;430149EFEF6E8BA2936011A12082CF8D7C231BBC83C1449E959393D990DFDFB1");// dev UAT
-            mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0914532228;FB3839BC60CE623420FC01C4D9BCAA51A3003FABEA0C49965922F3ABDD4DB00D");// pre UAT
+//         product
+//            mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0846043045;8BA5730A24D18630D3B442451CBCE4950BE906606BAA9796D49D238C03A2EF9F");// dev UAT
+//            mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0914532228;FB3839BC60CE623420FC01C4D9BCAA51A3003FABEA0C49965922F3ABDD4DB00D");// pre UAT
+//            mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0935271867;7790BAABB8FFC68592EE7F53045706EC326AC735B52B78339CE1D2D1791013F9");// pre UAT
             // dev vinatti
-//            mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0907859321;61BA38010909F754331BE4C4494FFF9EBAF0E17566B1B5F7E574455DD0B4E620"); // dev
+//            mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0934527127;E2B0467E0DA4BB72DF471E37D2B5BD16703755B46154EED603959632B0FAEC30"); // dev
 
         }
         checkPermissionCall();
@@ -226,6 +239,32 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
             routeInfo = NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class);
         }
 
+        RingmeOttSdk.login("ms45j52u35@vnpost"
+                , "6aab7b753496d649b1f26d9ea1de107de4a1d3a1", new RingmeChatLoginListener() {
+                    @Override
+                    public void onLoginSuccessful() {
+                        Log.d("onLoginSuccessful", "THANHCONG");
+                    }
+
+                    @Override
+                    public void onLoginFailed() {
+                        Log.d("onLoginFailed", "THANHCONG");
+                    }
+
+                    @Override
+                    public void onChatNotConnectedYet() {
+                        Log.d("onChatNotConnectedYet", "THANHCONG");
+                    }
+
+                    @Override
+                    public void onLoginProcessError(@NonNull Exception e) {
+                        Log.d("onLoginProcessError", e.getMessage());
+                    }
+                });
+
+
+//        Log.d("KIEMTRADANGNHAP", RingmeOttSdk.isLoggedIn() + "");
+//        RingmeOttSdk.openChatList(getViewContext());
         if (routeInfo != null) {
             if (getActivity() != null) {
                 // showUIShift();
@@ -257,6 +296,8 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
                 getActivity().startActivity(intent);
             }
         }
+        isVersion = true;
+
     }
 
     @Override
@@ -278,6 +319,50 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
             showProgress();
             mPresenter.login(mobileNumber, signCode);
         }
+    }
+
+    @Override
+    public void showVersionV1(List<GetVersionResponse> list) {
+        if (isVersion) {
+            int isKtr = 0;
+            int version = Integer.parseInt(BuildConfig.VERSION_NAME.replaceAll("\\.", ""));
+            String v = BuildConfig.VERSION_NAME;
+            for (int i = 0; i < list.size(); i++) {
+                if (i == 0) {
+                    if (Integer.parseInt(list.get(i).getVersion().replaceAll("\\.", "")) == version) {
+                        break;
+                    }
+                }
+                if (Integer.parseInt(list.get(i).getVersion().replaceAll("\\.", "")) != version) {
+                    isKtr++;
+                    v = list.get(i).getVersion();
+                    break;
+                }
+            }
+            if (isKtr > 0) {
+                new DialogVersion(getViewContext(), v, new DialogVersionCallback() {
+                    @Override
+                    public void onPhienBanCu() {
+                        showThanhCong();
+                        isVersion = false;
+                    }
+
+                    @Override
+                    public void onPhienBanMoi() {
+                        Intent viewIntent =
+                                new Intent("android.intent.action.VIEW",
+                                        Uri.parse(list.get(0).getUrlDownload()));
+                        startActivity(viewIntent);
+                    }
+                }).show();
+            } else showThanhCong();
+        } else {
+            showThanhCong();
+        }
+        //                        if (!responses.get(0).getVersion().equals(versionApp)) {
+//                            mView.showVersion(responses.get(0).getVersion(), responses.get(0).getUrlDownload());
+//                        } else
+//                            mView.showThanhCong();
     }
 
    /* private void showUIShift() {

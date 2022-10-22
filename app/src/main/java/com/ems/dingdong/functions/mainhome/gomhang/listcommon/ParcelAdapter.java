@@ -15,8 +15,10 @@ import com.core.widget.BaseViewHolder;
 import com.ems.dingdong.R;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.ParcelCodeInfo;
+import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.Typefaces;
+import com.google.gson.Gson;
 
 import java.util.List;
 
@@ -49,6 +51,9 @@ public class ParcelAdapter extends RecyclerBaseAdapter {
         @Override
         public void bindView(Object model, int position) {
             ParcelCodeInfo item = (ParcelCodeInfo) model;
+            if (item.getOrderNumber().isEmpty()){
+                tvSodonhang.setVisibility(View.GONE);
+            }else tvSodonhang.setVisibility(View.VISIBLE);
             tvCode.setText(item.getTrackingCode());
             tvSodonhang.setText(item.getOrderNumber());
         }

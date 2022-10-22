@@ -13,6 +13,7 @@ import com.ems.dingdong.model.DeliverySuccessRequest;
 import com.ems.dingdong.model.DingDongCancelDividedRequest;
 import com.ems.dingdong.model.DistrictModels;
 import com.ems.dingdong.model.InfoVerify;
+import com.ems.dingdong.model.ProvinceModels;
 import com.ems.dingdong.model.ReasonInfo;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.RouteInfo;
@@ -123,12 +124,18 @@ public interface XacNhanBaoPhatContract {
         Single<SimpleResult> getXaPhuong(BaseRequest request);
 
         Single<SimpleResult> getQuanHuyen(BaseRequest request);
+
+        Single<SimpleResult> getTinhThanhPho(BaseRequest request);
     }
 
     interface View extends PresentView<Presenter> {
         void showXaPhuong(List<WardModels> list);
 
+        void showXaPhuongNew(List<WardModels> list);
+
         void showQuanHuyen(List<DistrictModels> list);
+
+        void showQuanHuyenNew(List<DistrictModels> list);
 
         /**
          * Show list reasons.
@@ -185,7 +192,7 @@ public interface XacNhanBaoPhatContract {
         /**
          * Show success code.
          */
-        void showSuccess(String code, String id);
+        void showSuccess(String code, String id, String mess);
 
         /**
          * Show change route status.
@@ -207,13 +214,20 @@ public interface XacNhanBaoPhatContract {
 
         void showCallEdit(String x);
 
+        void showTinhThanhPho(List<ProvinceModels> list);
     }
 
 
     interface Presenter extends IPresenter<View, Interactor> {
+        void getTinhThanhPho();
+
         void getXaPhuong(int id);
 
+        void getXaPhuongNew(int id);
+
         void getQuanHuyen(int id);
+
+        void getQuanHuyenNew(int id);
 
         void callForward(String phone, String parcelCode);
 
@@ -253,7 +267,8 @@ public interface XacNhanBaoPhatContract {
          * delivery not success.
          */
         void submitToPNS(String reason, String solution, String note, String deliveryImage, String authenImage,
-                         String signCapture, String EstimateProcessTime, boolean ischeck, String lydo, int idXaPhuong, int idQuanhuyen);
+                         String signCapture, String EstimateProcessTime, boolean ischeck, String lydo, int idXaPhuong, int idQuanhuyen, String diachinew,
+                         String hinhthucphat, String ghichu, String doituong, int ngaydukien);
 
         /**
          * delivery success.
@@ -262,7 +277,7 @@ public interface XacNhanBaoPhatContract {
                              String relationship, InfoVerify infoVerify, boolean isCod, long codeEdit, String note,
                              boolean IsExchange, String ExchangePODeliveryCode, String ExchangeRouteCode, String ExchangeLadingCode,
                              long ExchangeDeliveryDate, int ExchangeDeliveryTime, List<LadingProduct> ExchangeDetails, String imgAnhHoangTra
-                , int idXaphuong,int idQuanHUyen, String idCOD);
+                , int idXaphuong, int idQuanHUyen, String idCOD);
 
 
         void paymentV2(boolean isAutoUpdateCODAmount);

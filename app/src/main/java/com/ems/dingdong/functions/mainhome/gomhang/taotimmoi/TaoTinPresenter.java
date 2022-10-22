@@ -62,7 +62,7 @@ public class TaoTinPresenter extends Presenter<TaoTinContract.View, TaoTinContra
     @Override
     public void getTinhThanhPho() {
         mView.showProgress();
-        mInteractor.getTinhThanhPho(new BaseRequest(0,mobileNumber,null,null))
+        mInteractor.getTinhThanhPho(new BaseRequest(0, mobileNumber, null, null))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(simpleResult -> {
@@ -82,7 +82,7 @@ public class TaoTinPresenter extends Presenter<TaoTinContract.View, TaoTinContra
     @Override
     public void getQuanHuyen(int id) {
         mView.showProgress();
-        mInteractor.getQuanHuyen(new BaseRequest(id,mobileNumber,null,null))
+        mInteractor.getQuanHuyen(new BaseRequest(id, mobileNumber, null, null))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(simpleResult -> {
@@ -102,7 +102,7 @@ public class TaoTinPresenter extends Presenter<TaoTinContract.View, TaoTinContra
     @Override
     public void getXaPhuong(int id) {
         mView.showProgress();
-        mInteractor.getXaPhuong(new BaseRequest(id,mobileNumber,null,null))
+        mInteractor.getXaPhuong(new BaseRequest(id, mobileNumber, null, null))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(simpleResult -> {
@@ -176,10 +176,11 @@ public class TaoTinPresenter extends Presenter<TaoTinContract.View, TaoTinContra
                     mView.hideProgress();
                 });
     }
-    private void getUserMobileNumber(){
+
+    private void getUserMobileNumber() {
         SharedPref sharedPref = new SharedPref(getViewContext());
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
-        if (!userJson.isEmpty()){
+        if (!userJson.isEmpty()) {
             UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
             this.mobileNumber = userInfo.getMobileNumber();
         }

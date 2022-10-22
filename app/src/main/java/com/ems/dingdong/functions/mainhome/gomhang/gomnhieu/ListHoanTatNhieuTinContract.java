@@ -12,6 +12,7 @@ import com.ems.dingdong.model.ReasonInfo;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +30,7 @@ interface ListHoanTatNhieuTinContract {
                                           String status,
                                           String fromAssignDate,
                                           String toAssignDate, CommonCallback<SimpleResult> callback);
+
         void getReasonsHoanTat(CommonCallback<SimpleResult> commonCallback);
 
         void collectAllOrderPostman(List<HoanTatTinRequest> list, CommonCallback<SimpleResult> callback);
@@ -41,7 +43,7 @@ interface ListHoanTatNhieuTinContract {
 
         void getReasonsSuccess(ArrayList<ReasonInfo> reasonInfos);
 
-        void showVitringuoinhan(String lat, String lon);
+        void showVitringuoinhan(double lat, double lon);
     }
 
     interface Presenter extends IPresenter<View, Interactor> {

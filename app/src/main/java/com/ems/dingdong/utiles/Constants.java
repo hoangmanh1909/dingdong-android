@@ -58,7 +58,9 @@ public class Constants {
     public static final String IS_ONLINE = "is_online";
     public static final String FIELD_LOCAL = "local";
     public static final String SOLUTIONINFO_PRIMARY_KEY = "id";
+    public static final String SOLUTIONINFO = "SOLUTIONINFO";
     public static final String REASONINFO_PRIMARY_KEY = "id";
+    public static final String LIST_COM_OFFLINE = "LIST_COM_OFFLINE";
     public static final String REASONINFO_CODE = "code";
     public static final String SOLUTIONINFO_CODE = "code";
     public static String SHIFT = "";
@@ -205,6 +207,7 @@ public class Constants {
     public static final String DLV_CALL_HISTORY  = "DLV_CALL_HISTORY";
     public static final String DLV_CALL_HISTORY_TOTAL  = "DLV_CALL_HISTORY_TOTAL";
     public static final String DLV_ROUTE_ADDRESS_SEARCH_ADDRESS  = "DLV_ROUTE_ADDRESS_SEARCH_ADDRESS";
+    public static final String PU_DIC_GET_SERVICE_CODE_MPITS  = "PU_DIC_GET_SERVICE_CODE_MPITS";
 
 
 

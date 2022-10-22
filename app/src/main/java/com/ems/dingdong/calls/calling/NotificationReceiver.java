@@ -13,7 +13,6 @@ import com.ems.dingdong.utiles.Constants;
 
 import org.greenrobot.eventbus.EventBus;
 
-import static org.linphone.mediastream.MediastreamerAndroidContext.getContext;
 
 public class NotificationReceiver extends BroadcastReceiver {
     @Override

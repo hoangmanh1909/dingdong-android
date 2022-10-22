@@ -614,7 +614,7 @@ public class Utils {
             };
             builder.readTimeout(readTimeOut, TimeUnit.SECONDS)
                     .connectTimeout(connectTimeOut, TimeUnit.SECONDS)
-                    .sslSocketFactory(sslSocketFactory)
+//                    .sslSocketFactory(sslSocketFactory)
                     .hostnameVerifier(hostnameVerifier);//org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER
 
             if (BuildConfig.DEBUG) {
@@ -684,7 +684,7 @@ public class Utils {
             };
             builder.readTimeout(readTimeOut, TimeUnit.SECONDS)
                     .connectTimeout(connectTimeOut, TimeUnit.SECONDS)
-                    .sslSocketFactory(sslSocketFactory)
+//                    .sslSocketFactory(sslSocketFactory)
                     .hostnameVerifier(hostnameVerifier);//org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER
 
             loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);

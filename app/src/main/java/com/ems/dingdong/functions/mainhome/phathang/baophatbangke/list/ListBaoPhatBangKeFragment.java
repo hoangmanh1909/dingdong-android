@@ -45,6 +45,8 @@ import com.ems.dingdong.dialog.PhoneConectDialogExtend;
 import com.ems.dingdong.dialog.PhoneConectDialogIcon;
 import com.ems.dingdong.eventbus.BaoPhatCallback;
 import com.ems.dingdong.functions.mainhome.address.laydiachi.GetLocation;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.more.DateCallback;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.more.DialogTuyChon;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.loadhinhanh.DataModel;
 import com.ems.dingdong.functions.mainhome.profile.CustomLadingCode;
 import com.ems.dingdong.functions.mainhome.profile.CustomNumberSender;
@@ -77,6 +79,8 @@ import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.picker.BottomPickerCallUIFragment;
 import com.google.gson.Gson;
 import com.rengwuxian.materialedittext.MaterialEditText;
+//import com.ringme.ott.sdk.model.ChatData;
+//import com.ringme.ott.sdk.utils.RingmeOttSdk;
 //import com.sip.cmc.SipCmc;
 //import com.sip.cmc.callback.RegistrationCallback;
 
@@ -241,6 +245,14 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         super.initLayout();
         sharedPref = new SharedPref(getViewContext());
         sharedPref.clearPTC();
+//        RingmeOttSdk.openChatList(getViewContext());
+//        RingmeOttSdk.openChat(
+//                getViewContext(),
+//                "o42pkzheai@localhost",
+//                "", // Chuỗi JSON truyền vào thông tin đơn hàng theo định dạng ở mục 4.4
+//                false
+//        );
+
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
         if (!TextUtils.isEmpty(userJson)) {
@@ -829,6 +841,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                 v.setRouteId(Long.parseLong(routeInfo.getRouteId()));
                 v.setPhone(mPhoneS + "");
                 v.setType(1);
+                v.setCategoryID(v.getCategoryID());
                 mPresenter.ddCreateVietMap(v);
             }
         }).show();
@@ -876,7 +889,21 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mFromDate, mToDate, routeInfo.getRouteCode(), Constants.ALL_SEARCH_TYPE);
             mPresenter.onSearched(mFromDate, mToDate, mPresenter.getType());
         }).show();
+
+//        new DialogTuyChon(getContext(), Calendar.getInstance(), Calendar.getInstance(), new DateCallback() {
+//            @Override
+//            public void onResponse(String mFromdate1, String mToDate1) {
+//                mFromDate = mFromdate1;
+//                mToDate = mToDate1;
+//                mFromDate = DateTimeUtils.convertStringToDatToString(mFromdate1, DateTimeUtils.SIMPLE_DATE_FORMAT5);
+//                mToDate = DateTimeUtils.convertStringToDatToString(mToDate1, DateTimeUtils.SIMPLE_DATE_FORMAT5);
+//                mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mFromDate, mToDate, routeInfo.getRouteCode(), Constants.ALL_SEARCH_TYPE);
+//                mPresenter.onSearched(mFromDate, mToDate, mPresenter.getType());
+//            }
+//
+//        }).show();
     }
+
 
     @Override
     public void onDisplay() {
@@ -953,14 +980,10 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     void updateViewList(String data, int mType) {
         DataModel dataModel = new DataModel();
         dataModel = NetWorkController.getGson().fromJson(data, DataModel.class);
-//        try {
         if (!data.isEmpty()) {
             List<String> dataSuccess = new ArrayList<>(dataModel.getSuccess());
             xoaPhanTuSuccess(mList, dataSuccess, mType);
         }
-//        } catch (Exception e) {
-//            Toast.showToast(getViewContext(), e.toString());
-//        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -999,7 +1022,6 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                 mList.get(i).setSelected(false);
             }
             deliveryPostmen.addAll(mList);
-//        sharedPref.clearPTC();
             if (mPresenter.getType() == Constants.NOT_YET_DELIVERY_TAB) {
                 sharedPref.clearPTC();
                 ArrayList<DeliveryPostman> deliveryPKTC = new ArrayList<>();

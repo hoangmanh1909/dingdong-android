@@ -139,7 +139,6 @@ public class AddressListPresenter extends Presenter<AddressListContract.View, Ad
             @Override
             protected void onSuccess(Call<XacMinhDiaChiResult> call, Response<XacMinhDiaChiResult> response) {
                 super.onSuccess(call, response);
-
                 if (response.body().getErrorCode().equals("00")) {
                     try {
                         mView.showAddressList(handleObjectList(response.body().getResponseLocation()));

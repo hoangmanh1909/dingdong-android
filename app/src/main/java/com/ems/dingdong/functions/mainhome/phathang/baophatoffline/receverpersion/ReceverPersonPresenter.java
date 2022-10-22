@@ -134,16 +134,16 @@ public class ReceverPersonPresenter extends Presenter<ReceverPersonContract.View
         for (CommonObject item : mListBaoPhatOffline) {
             String parcelCode = item.getParcelCode();
             Realm realm = Realm.getDefaultInstance();
-            CommonObject result = realm.where(CommonObject.class).equalTo(Constants.COMMON_OBJECT_PRIMARY_KEY, parcelCode).findFirst();
-            if (result != null) {
-                realm.beginTransaction();
-                realm.copyToRealmOrUpdate(item);
-                realm.commitTransaction();
-            } else {
-                realm.beginTransaction();
-                realm.copyToRealm(item);
-                realm.commitTransaction();
-            }
+//            CommonObject result = realm.where(CommonObject.class).equalTo(Constants.COMMON_OBJECT_PRIMARY_KEY, parcelCode).findFirst();
+//            if (result != null) {
+//                realm.beginTransaction();
+//                realm.copyToRealmOrUpdate(item);
+//                realm.commitTransaction();
+//            } else {
+//                realm.beginTransaction();
+//                realm.copyToRealm(item);
+//                realm.commitTransaction();
+//            }
         }
     }
 
@@ -175,8 +175,8 @@ public class ReceverPersonPresenter extends Presenter<ReceverPersonContract.View
                             realm.executeTransaction(new Realm.Transaction() {
                                 @Override
                                 public void execute(Realm realm) {
-                                    RealmResults<CommonObject> result = realm.where(CommonObject.class).equalTo(Constants.COMMON_OBJECT_PRIMARY_KEY, parcelCode).findAll();
-                                    result.deleteAllFromRealm();
+//                                    RealmResults<CommonObject> result = realm.where(CommonObject.class).equalTo(Constants.COMMON_OBJECT_PRIMARY_KEY, parcelCode).findAll();
+//                                    result.deleteAllFromRealm();
                                 }
                             });
                             mView.showSuccessToast("Cập nhật giao dịch thành công.");

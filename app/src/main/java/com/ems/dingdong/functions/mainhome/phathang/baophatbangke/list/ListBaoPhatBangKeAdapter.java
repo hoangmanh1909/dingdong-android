@@ -34,12 +34,10 @@ public class ListBaoPhatBangKeAdapter extends RecyclerView.Adapter<ListBaoPhatBa
     private List<CommonObject> mList;
 
     public ListBaoPhatBangKeAdapter(Context context, int type, List<CommonObject> items, FilterDone filterDone) {
-
         mType = type;
         mListFilter = items;
         mList = items;
         mFilterDone = filterDone;
-
     }
 
     @Override

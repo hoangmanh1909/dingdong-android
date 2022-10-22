@@ -102,13 +102,12 @@ import static com.google.android.gms.maps.model.BitmapDescriptorFactory.*;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineColor;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineWidth;
 
-public class TimDuongDiFragment extends ViewFragment<TimDuongDiContract.Presenter>
-        implements TimDuongDiContract.View, OnMapReadyCallback, PermissionsListener {
+public class TimDuongDiFragment extends ViewFragment<TimDuongDiContract.Presenter> implements TimDuongDiContract.View, OnMapReadyCallback, PermissionsListener {
 
     //    @BindView(R.id.tv_address_from)
 //    CustomTextView tv_address_from;
     @BindView(R.id.mapView)
-    MapView mapView;
+    MapView mapBoxsdk;
     @BindView(R.id.tv_km)
     TextView tvKm;
     @BindView(R.id.tv_time)
@@ -131,6 +130,7 @@ public class TimDuongDiFragment extends ViewFragment<TimDuongDiContract.Presente
     LatLng mLatLng;
 
     TravelSales mApiTravel;
+
     private TimDuongDiFragment.MainActivityLocationCallback mCallback = new TimDuongDiFragment.MainActivityLocationCallback(this);
 
     public static TimDuongDiFragment getInstance() {
@@ -174,7 +174,7 @@ public class TimDuongDiFragment extends ViewFragment<TimDuongDiContract.Presente
                                         mapboxMap.removeAnnotations();
                                         if (mPresenter.getApiTravel() != null)
                                             mApiTravel.getPoints().remove(position);
-                                        mapView.getMapAsync(TimDuongDiFragment.this);
+                                        mapBoxsdk.getMapAsync(TimDuongDiFragment.this);
                                         hideProgress();
 
                                     }
@@ -193,20 +193,19 @@ public class TimDuongDiFragment extends ViewFragment<TimDuongDiContract.Presente
         };
         RecyclerUtils.setupVerticalRecyclerView(getActivity(), recyclerView);
         recyclerView.setAdapter(mAdapter);
-        ItemTouchHelper.Callback callback =
-                new SimpleItemTouchHelperCallback(mAdapter) {
-                    @Override
-                    public void onSelectedChanged(@Nullable @org.jetbrains.annotations.Nullable RecyclerView.ViewHolder viewHolder, int actionState) {
-                        super.onSelectedChanged(viewHolder, actionState);
-                    }
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(mAdapter) {
+            @Override
+            public void onSelectedChanged(@Nullable @org.jetbrains.annotations.Nullable RecyclerView.ViewHolder viewHolder, int actionState) {
+                super.onSelectedChanged(viewHolder, actionState);
+            }
 
-                    @Override
-                    public void clearView(@NonNull @NotNull RecyclerView recyclerView, @NonNull @NotNull RecyclerView.ViewHolder viewHolder) {
-                        super.clearView(recyclerView, viewHolder);
-                        mAdapter.notifyDataSetChanged();
-                        mapView.getMapAsync(TimDuongDiFragment.this);
-                    }
-                };
+            @Override
+            public void clearView(@NonNull @NotNull RecyclerView recyclerView, @NonNull @NotNull RecyclerView.ViewHolder viewHolder) {
+                super.clearView(recyclerView, viewHolder);
+                mAdapter.notifyDataSetChanged();
+                mapBoxsdk.getMapAsync(TimDuongDiFragment.this);
+            }
+        };
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(recyclerView);
 
@@ -215,18 +214,9 @@ public class TimDuongDiFragment extends ViewFragment<TimDuongDiContract.Presente
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mapView.onCreate(savedInstanceState);
-        mapView.getMapAsync(TimDuongDiFragment.this);
+        mapBoxsdk.onCreate(savedInstanceState);
+        mapBoxsdk.getMapAsync(TimDuongDiFragment.this);
         Log.d("ThKhiem2", "initLayout");
-    }
-
-    @Override
-    public void onExplanationNeeded(List<String> permissionsToExplain) {
-    }
-
-    @Override
-    public void onPermissionResult(boolean granted) {
-
     }
 
     @Override
@@ -258,11 +248,7 @@ public class TimDuongDiFragment extends ViewFragment<TimDuongDiContract.Presente
             LocationComponent locationComponent = mapboxMap.getLocationComponent();
 
             // Set the LocationComponent activation options
-            LocationComponentActivationOptions locationComponentActivationOptions =
-                    LocationComponentActivationOptions.builder(getContext(), loadedMapStyle)
-                            .useDefaultLocationEngine(false)
-                            .locationComponentOptions(locationComponentOptions)
-                            .build();
+            LocationComponentActivationOptions locationComponentActivationOptions = LocationComponentActivationOptions.builder(getContext(), loadedMapStyle).useDefaultLocationEngine(false).locationComponentOptions(locationComponentOptions).build();
 
             // Activate with the LocationComponentActivationOptions object
             locationComponent.activateLocationComponent(locationComponentActivationOptions);
@@ -356,7 +342,7 @@ public class TimDuongDiFragment extends ViewFragment<TimDuongDiContract.Presente
                         vpostcodeModel.setFullAdress(reason.getFullAdress());
                         mList.add(reason);
                         mAdapter.notifyDataSetChanged();
-                        mapView.getMapAsync(TimDuongDiFragment.this);
+                        mapBoxsdk.getMapAsync(TimDuongDiFragment.this);
                         hideProgress();
 
                     }
@@ -430,6 +416,7 @@ public class TimDuongDiFragment extends ViewFragment<TimDuongDiContract.Presente
                     mathchedRoute.setFeatures(features);
                     List<Double> endPoint = new ArrayList<>();
                     JSONArray element = coordinates.getJSONArray(coordinates.length() - 1);
+                    Log.d("THanhkhiemOPhuong", new Gson().toJson(mathchedRoute));
                     new DrawGeoJson(TimDuongDiFragment.this, mathchedRoute).execute();
                 }
             } else {
@@ -442,36 +429,20 @@ public class TimDuongDiFragment extends ViewFragment<TimDuongDiContract.Presente
 
     }
 
-//    public static void sortASC(List<Double> arr) {
-//        double temp = arr.get(0);
-//        for (int i = 0; i < arr.size(); i++) {
-//            for (int j = i + 1; j < arr.size(); j++) {
-//                if (arr.get(i) > arr.get(j)) {
-//                    temp = j;
-//                    j = i;
-//                    i = temp;
-//                }
-//            }
-//        }
-//    }
-
-
     public void getRoutes() {
         if (mLocation != null) {
             List<String> requests = new ArrayList<>();
-            mList= new ArrayList<>();
+            mList = new ArrayList<>();
             mList = mPresenter.getListVpostcodeModell();
             Log.d("ThKhiem6", new Gson().toJson(mPresenter.getListVpostcodeModell()));
             for (int i = 0; i < mList.size(); i++) {
-                if (mPresenter.getType() == 99)
-                    requests.add(mList.get(i).getReceiverVpostcode());
+                if (mPresenter.getType() == 99) requests.add(mList.get(i).getReceiverVpostcode());
                 else requests.add(mList.get(i).getSenderVpostcode());
             }
 
             if (mPresenter.getApiTravel() != null)
                 mPresenter.vietmapTravelSalesmanProblem(mApiTravel);
-            else
-                mPresenter.getPoint(requests);
+            else mPresenter.getPoint(requests);
         }
     }
 
@@ -488,8 +459,17 @@ public class TimDuongDiFragment extends ViewFragment<TimDuongDiContract.Presente
         tvTime.setText("Thời gian: 00h00p");
     }
 
-    private static class MainActivityLocationCallback
-            implements LocationEngineCallback<LocationEngineResult> {
+    @Override
+    public void onExplanationNeeded(List<String> permissionsToExplain) {
+
+    }
+
+    @Override
+    public void onPermissionResult(boolean granted) {
+
+    }
+
+    private static class MainActivityLocationCallback implements LocationEngineCallback<LocationEngineResult> {
 
         private final WeakReference<TimDuongDiFragment> activityWeakReference;
 
@@ -597,8 +577,7 @@ public class TimDuongDiFragment extends ViewFragment<TimDuongDiContract.Presente
         Point point = points.get(points.size() - 1);
         Log.d("thansdasda", new Gson().toJson(point));
         List<Point> after = PolylineUtils.simplify(points, 0.001);
-        mapboxMap.addMarker(new MarkerOptions()
-                .position(new LatLng(point.latitude(), point.longitude())));
+        mapboxMap.addMarker(new MarkerOptions().position(new LatLng(point.latitude(), point.longitude())));
         Random generator = new Random(19900828);
         addLine("rawLine" + generator, Feature.fromGeometry(LineString.fromLngLats(after)), "#1E90FF");
     }
@@ -607,10 +586,7 @@ public class TimDuongDiFragment extends ViewFragment<TimDuongDiContract.Presente
         mapboxMap.getStyle(style -> {
             try {
                 style.addSource(new GeoJsonSource(layerId, feature));
-                style.addLayer(new LineLayer(layerId, layerId).withProperties(
-                        lineColor(ColorUtils.colorToRgbaString(Color.parseColor(lineColorHex))),
-                        lineWidth(4f)
-                ));
+                style.addLayer(new LineLayer(layerId, layerId).withProperties(lineColor(ColorUtils.colorToRgbaString(Color.parseColor(lineColorHex))), lineWidth(4f)));
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -620,35 +596,35 @@ public class TimDuongDiFragment extends ViewFragment<TimDuongDiContract.Presente
     @Override
     public void onStart() {
         super.onStart();
-        mapView.onStart();
+        mapBoxsdk.onStart();
         Log.d("ThKhiem8", "onStart");
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        mapView.onResume();
+        mapBoxsdk.onResume();
         Log.d("ThKhiem8", "onResume");
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        mapView.onPause();
+        mapBoxsdk.onPause();
         Log.d("ThKhiem9", "onPause");
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        mapView.onStop();
+        mapBoxsdk.onStop();
         Log.d("ThKhiem10", "onStop");
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        mapView.onSaveInstanceState(outState);
+        mapBoxsdk.onSaveInstanceState(outState);
     }
 
     @Override
@@ -659,14 +635,14 @@ public class TimDuongDiFragment extends ViewFragment<TimDuongDiContract.Presente
         if (locationEngine != null) {
             locationEngine.removeLocationUpdates(mCallback);
         }
-        mapView.onDestroy();
+        mapBoxsdk.onDestroy();
     }
 
     @Override
     public void onLowMemory() {
         super.onLowMemory();
         Log.d("ThKhiem12", "onLowMemory");
-        mapView.onLowMemory();
+        mapBoxsdk.onLowMemory();
     }
 
 }

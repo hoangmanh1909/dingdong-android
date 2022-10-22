@@ -20,7 +20,10 @@ interface ProfileContract {
         void moveToEWallet();
 
         void showLichsuCuocgoi();
+
         void showLuong();
+
+        void showChat();
     }
 }
 

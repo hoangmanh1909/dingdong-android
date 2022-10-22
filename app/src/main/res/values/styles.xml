@@ -1,7 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/bg_yellow_primary</item>
         <item name="colorPrimaryDark">@color/bg_yellow_primary</item>
@@ -37,6 +37,13 @@
     <style name="CustomRadioButtonStyle" parent="@android:style/Widget.CompoundButton.RadioButton">
         <item name="android:button">@drawable/custom_btn_radio</item>
     </style>
+
+    <!--    <style name="Theme.SalesIQ.Base.DarkActionBar" parent="Theme.SalesIQ.Light.DarkActionBar">-->
+    <!--        <color name="siq_primary_darkactionbar">#f6a71b</color>-->
+    <!--        <color name="siq_primary_light">#ffffff</color>-->
+    <!--        <color name="siq_primarydark_darkactionbar">#f6a71b</color>-->
+    <!--    </style>-->
+
 
     <declare-styleable name="FormItem">
         <attr name="formValue" format="string" />
@@ -266,6 +273,13 @@
         <item name="android:windowBackground">@drawable/bg_splash</item>
     </style>
 
+    <style name="AppBottomSheetDialog" parent="Theme.Design.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppModeStyle</item>
+        <item name="behavior_draggable">false</item>
+    </style>
+
+    <style name="AppModeStyle" parent="Widget.Design.BottomSheet.Modal"></style>
+
     <style name="TextViewSuccess">
         <item name="android:background">@drawable/bg_form_success</item>
     </style>
@@ -344,5 +358,19 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowSoftInputMode">stateUnchanged</item>
         <item name="android:windowBackground">@color/transparent</item>
+    </style>
+
+    <style name="Theme.SalesIQ.Base.DarkActionBar" parent="Theme.SalesIQ.Light.DarkActionBar">
+        <item name="siq_toolbar_backgroundcolor">@color/colorPrimary</item>
+        <item name="siq_statusbar_color">@color/colorPrimary</item>
+    </style>
+    <style name="dialog_blue_button" parent="android:Widget.Button">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">42dp</item>
+        <item name="android:background">@drawable/blue_button_background</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:paddingLeft">21dp</item>
+        <item name="android:paddingRight">21dp</item>
+        <item name="android:textColor">@color/button_text_color</item>
     </style>
 </resources>

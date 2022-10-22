@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.core.app.ActivityCompat;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import com.astuetz.PagerSlidingTabStrip;
@@ -56,6 +57,8 @@ public class TabListDiachiFragment extends ViewFragment<TabListDiaChiContract.Pr
     TextView tvTitle;
     @BindView(R.id.img_confirm)
     ImageView img_confirm;
+    @BindView(R.id.layout_swipe_refresh)
+    SwipeRefreshLayout swipeRefresh;
     private List<ViewFragment> tabList;
     private int mPosition = 0;
     private TabListDiaChiAdapter mAdapter;
@@ -72,6 +75,15 @@ public class TabListDiachiFragment extends ViewFragment<TabListDiaChiContract.Pr
     @Override
     public void initLayout() {
         super.initLayout();
+        swipeRefresh.setOnRefreshListener(() -> {
+            swipeRefresh.setRefreshing(true);
+            onCanceledDelivery();
+        });
+        swipeRefresh.setRefreshing(false);
+        swipeRefresh.setColorSchemeResources(R.color.colorAccent,
+                android.R.color.holo_green_dark,
+                android.R.color.holo_orange_dark,
+                android.R.color.holo_blue_dark);
         tabList = new ArrayList<>();
         tabList.add((XacNhanDiaChiFragment) new XacNhanDiaChiPresenter(mPresenter.getContainerView())
                 .setTypeTab(0)
@@ -124,6 +136,11 @@ public class TabListDiachiFragment extends ViewFragment<TabListDiaChiContract.Pr
 
     @Override
     public void onCanceledDelivery() {
+        swipeRefresh.setRefreshing(false);
+        XacNhanDiaChiFragment commonFragment = (XacNhanDiaChiFragment) tabList.get(0);
+        commonFragment.onDisPlayFaKe(0);
+        XacNhanDiaChiFragment commonFragment1 = (XacNhanDiaChiFragment) tabList.get(1);
+        commonFragment1.onDisPlayFaKe(1);
     }
 
     @Override

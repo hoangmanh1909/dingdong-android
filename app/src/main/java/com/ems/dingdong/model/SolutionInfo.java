@@ -6,9 +6,9 @@ import com.google.gson.annotations.SerializedName;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
-public class SolutionInfo extends RealmObject {
+public class SolutionInfo {
+
     @SerializedName("ID")
-    @Expose
     @PrimaryKey
     private Integer id;
     @SerializedName("Code")

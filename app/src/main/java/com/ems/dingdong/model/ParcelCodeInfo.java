@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import io.realm.RealmObject;
 
-public class ParcelCodeInfo extends RealmObject {
+public class ParcelCodeInfo  {
     @SerializedName("TrackingCode")
     private String trackingCode;
     @SerializedName("OrderNumber")
@@ -49,7 +49,7 @@ public class ParcelCodeInfo extends RealmObject {
         return orderCode;
     }
 
-    private boolean selected=false;
+    private boolean selected = false;
 
     public String getTrackingCode() {
         return trackingCode;

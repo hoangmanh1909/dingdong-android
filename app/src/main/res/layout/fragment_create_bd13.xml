@@ -110,7 +110,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="@dimen/_10sdp">
+        android:padding="10dp">
 
         <com.ems.dingdong.views.CustomTextView
             android:layout_width="match_parent"
@@ -149,7 +149,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:padding="@dimen/_2sdp"
+                android:padding="2dp"
                 android:src="@drawable/ic_qr" />
 
         </RelativeLayout>
@@ -158,7 +158,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/_5sdp">
+        android:padding="5dp">
 
         <com.ems.dingdong.views.CustomBoldTextView
             android:id="@+id/tv_count"
@@ -180,7 +180,7 @@
         android:id="@+id/layout_item_pick_all"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/_5sdp">
+        android:padding="5dp">
 
         <CheckBox
             android:id="@+id/cb_pick_all"
@@ -189,14 +189,14 @@
             android:layout_alignParentLeft="true"
             android:button="@drawable/custom_btn_radio"
             android:clickable="false"
-            android:padding="@dimen/_5sdp" />
+            android:padding="5dp" />
 
         <com.ems.dingdong.views.CustomBoldTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:layout_toRightOf="@id/cb_pick_all"
-            android:padding="@dimen/_5sdp"
+            android:padding="5dp"
             android:text="@string/pick_all" />
     </RelativeLayout>
 
@@ -263,16 +263,16 @@
 
         </RelativeLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/dimen_10dp"
-            android:layout_marginTop="@dimen/dimen_10dp"
-            android:layout_marginRight="@dimen/dimen_10dp"
-            android:layout_marginBottom="@dimen/dimen_5dp">
+<!--        <androidx.recyclerview.widget.RecyclerView-->
+<!--            android:id="@+id/recycler"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_marginLeft="@dimen/dimen_10dp"-->
+<!--            android:layout_marginTop="@dimen/dimen_10dp"-->
+<!--            android:layout_marginRight="@dimen/dimen_10dp"-->
+<!--            android:layout_marginBottom="@dimen/dimen_5dp">-->
 
-        </androidx.recyclerview.widget.RecyclerView>
+<!--        </androidx.recyclerview.widget.RecyclerView>-->
 
         <ImageView
             android:id="@+id/tv_search"
@@ -280,8 +280,8 @@
             android:layout_height="@dimen/dimen_70dp"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginRight="@dimen/_10sdp"
-            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
             android:padding="@dimen/dimen_10dp"
             android:src="@drawable/ic_choose_calendar" />
     </RelativeLayout>

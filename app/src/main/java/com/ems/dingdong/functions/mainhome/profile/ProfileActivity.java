@@ -8,6 +8,7 @@ import com.ems.dingdong.callback.DialogCallback;
 import com.ems.dingdong.dialog.DialogTextThanhConhg;
 import com.ems.dingdong.functions.login.LoginActivity;
 import com.ems.dingdong.utiles.Log;
+import com.ringme.ott.sdk.utils.RingmeOttSdk;
 
 
 /**
@@ -19,7 +20,6 @@ public class ProfileActivity extends DingDongActivity {
 
     @Override
     public ViewFragment onCreateFirstFragment() {
-
         mFragment = (ProfileFragment) new ProfilePresenter(this).getFragment();
         return mFragment;
     }

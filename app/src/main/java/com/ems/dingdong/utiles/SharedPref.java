@@ -78,6 +78,7 @@ public class SharedPref {
             }
         }
     }
+
     public void clearPTC() {
         try {
             editor.remove(Constants.KEY_PKTC);
@@ -95,6 +96,7 @@ public class SharedPref {
             Logger.w(ex);
         }
     }
+
     public void clear() {
         try {
             editor.remove("UniqueID");
@@ -108,6 +110,8 @@ public class SharedPref {
             editor.remove(Constants.KEY_PAYMENT_TOKEN);
             editor.remove(Constants.KEY_UPLOAD_IMAGE);
             editor.remove(Constants.KEY_RA_VAO);
+            editor.remove(Constants.SOLUTIONINFO);
+            editor.remove(Constants.LIST_COM_OFFLINE);
             editor.commit();
         } catch (Exception ex) {
             Logger.w(ex);

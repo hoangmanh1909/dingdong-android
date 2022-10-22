@@ -1,5 +1,6 @@
 package com.ems.dingdong.model;
 
+import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -11,7 +12,7 @@ import io.realm.RealmObject;
 import io.realm.annotations.Ignore;
 import io.realm.annotations.PrimaryKey;
 
-public class CommonObject extends RealmObject {
+public class CommonObject  {
 
 
     String mType = "";
@@ -34,6 +35,28 @@ public class CommonObject extends RealmObject {
     @SerializedName("SourceChanel")
     @Expose
     private String SourceChanel;
+    @SerializedName("ServiceCodeMPITS")
+    @Expose
+    private String ServiceCodeMPITS;
+    @SerializedName("ServiceNameMPITS")
+    @Expose
+    private String ServiceNameMPITS;
+
+    public String getServiceCodeMPITS() {
+        return ServiceCodeMPITS;
+    }
+
+    public void setServiceCodeMPITS(String serviceCodeMPITS) {
+        ServiceCodeMPITS = serviceCodeMPITS;
+    }
+
+    public String getServiceNameMPITS() {
+        return ServiceNameMPITS;
+    }
+
+    public void setServiceNameMPITS(String serviceNameMPITS) {
+        ServiceNameMPITS = serviceNameMPITS;
+    }
 
     public String getSourceChanel() {
         return SourceChanel;
@@ -397,6 +420,12 @@ public class CommonObject extends RealmObject {
     @Ignore
     List<String> codeS1;
     @Ignore
+    List<String> mPit;
+
+    @Ignore
+    String listMpit = "";
+
+    @Ignore
     List<String> khoiluong;
 
     public List<String> getKhoiluong() {
@@ -438,6 +467,25 @@ public class CommonObject extends RealmObject {
         codeS1.add(code);
     }
 
+    public void addCodelistMpit(String code) {
+        System.out.println("KHIEM123" + new Gson().toJson(code));
+        if (listMpit.isEmpty())
+            listMpit += code;
+        else {
+            listMpit += ",";
+            listMpit += code;
+        }
+
+    }
+
+    public void addCodemPit(String code) {
+        if (mPit == null) {
+            mPit = new ArrayList<>();
+        }
+        mPit.add(code);
+
+    }
+
     public List<String> getCodeS1() {
         return codeS1;
     }
@@ -448,6 +496,14 @@ public class CommonObject extends RealmObject {
 
     public List<String> getCodeS() {
         return codeS;
+    }
+
+    public List<String> getmPit() {
+        return mPit;
+    }
+
+    public String getListMpit() {
+        return listMpit;
     }
 
     public String getAutoCallStatus() {

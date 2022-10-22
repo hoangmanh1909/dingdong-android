@@ -49,7 +49,6 @@ import com.google.gson.Gson;
 //import com.sip.cmc.SipCmc;
 
 import org.greenrobot.eventbus.EventBus;
-import org.linphone.core.LinphoneCall;
 
 import java.util.Arrays;
 import java.util.HashSet;

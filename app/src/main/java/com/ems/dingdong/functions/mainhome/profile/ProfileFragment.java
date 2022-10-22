@@ -1,55 +1,37 @@
 package com.ems.dingdong.functions.mainhome.profile;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.appcompat.widget.SwitchCompat;
-import androidx.appcompat.widget.Toolbar;
 
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.R;
 import com.ems.dingdong.callback.IdCallback;
-import com.ems.dingdong.dialog.CallProviderDialog;
 import com.ems.dingdong.dialog.DialoggoiLai;
 import com.ems.dingdong.dialog.PhoneDecisionDialog;
 import com.ems.dingdong.dialog.RouteDialog;
 import com.ems.dingdong.functions.login.LoginActivity;
 import com.ems.dingdong.functions.mainhome.home.HomeV1Fragment;
-import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.CreateBd13Fragment;
-import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.ListDeliveryTabFragment;
-import com.ems.dingdong.model.AccountCtel;
-import com.ems.dingdong.model.CallProvider;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
-import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.SharedPref;
-import com.ems.dingdong.utiles.StringUtils;
-import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.CustomMediumTextView;
-import com.ems.dingdong.views.CustomTextView;
-import com.facebook.drawee.view.SimpleDraweeView;
-import com.zoho.livechat.android.ZohoLiveChat;
-import com.zoho.livechat.android.utils.LiveChatUtil;
-import com.zoho.livechat.android.utils.SalesIQCache;
+//import com.zoho.livechat.android.ZohoLiveChat;
+//import com.zoho.livechat.android.utils.LiveChatUtil;
+//import com.zoho.livechat.android.utils.SalesIQCache;
 import com.zoho.salesiqembed.ZohoSalesIQ;
 //import com.sip.cmc.SipCmc;
 //import com.sip.cmc.callback.LogOutCallBack;
 //import com.sip.cmc.network.Account;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -145,9 +127,24 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.rl_chat:
-                Toast.showToast(getViewContext(), "Bạn đã chọn chức năng chat với chung tôi ngay");
+//                Intent c = new Intent(getActivity(), ChatDingDongActivity.class);
+//                startActivity(c);
+                mPresenter.showChat();
+//                Toast.showToast(getViewContext(), "Bạn đã chọn chức năng chat với chung tôi ngay");
 //                ZohoLiveChat.Chat.show();
-                LiveChatUtil.openChat(getViewContext());
+//                RingmeOttSdk.openChatList(getViewContext());
+//                RingmeOttSdk.openChat(
+//                        getViewContext(),
+//                        "o42pkzheai@localhost",
+//                        "", // Chuỗi JSON truyền vào thông tin đơn hàng theo định dạng ở mục 4.4
+//                        false
+//                );
+//                RingmeOttSdk.openChat(
+//                        getActivity(),
+//                to = usernameOfReceiver,
+//                        typeQuestion = 1)
+
+//                LiveChatUtil.openChat(getViewContext());
                 break;
             case R.id.rl_capnhat:
                 Intent viewIntent =

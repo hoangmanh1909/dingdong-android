@@ -13,6 +13,9 @@ import com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.chi_tiet_hoan_tat_t
 import com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.confirm.XacNhanConfirmPresenter;
 import com.ems.dingdong.functions.mainhome.gomhang.listcommon.ListCommonContract;
 import com.ems.dingdong.functions.mainhome.gomhang.listcommon.ListCommonPresenter;
+import com.ems.dingdong.functions.mainhome.gomhang.listcommon.chitietdichvu.ChiTietDichVuPresenter;
+import com.ems.dingdong.functions.mainhome.gomhang.listcommon.more.DichVuMode;
+import com.ems.dingdong.functions.mainhome.gomhang.listcommon.more.Mpit;
 import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
 import com.ems.dingdong.model.AddressListModel;
 import com.ems.dingdong.model.CommonObject;
@@ -71,6 +74,7 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
     @Override
     public void start() {
         // Start getting data here
+        ddgetDichVuMpit();
     }
 
     @Override
@@ -88,7 +92,9 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
                 super.onSuccess(call, response);
                 mView.hideProgress();
                 if (response.body().getErrorCode().equals("00")) {
-                    ArrayList<CommonObject> list = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<CommonObject>>(){}.getType());
+                    ArrayList<CommonObject> list = NetWorkController.getGson().fromJson(response.body().getData(), new TypeToken<List<CommonObject>>() {
+                    }.getType());
+                    mView.showDichVuMPit(list);
                     ArrayList<CommonObject> listG = new ArrayList<>();
                     for (CommonObject item : list) {
                         int tam = 0;
@@ -103,6 +109,8 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
                             item.addOrderPostmanID(item.getOrderPostmanID());
                             item.addCode(item.getCode());
                             item.addCode1(item.getiD());
+                            item.addCodelistMpit(item.getServiceNameMPITS());
+                            item.addCodemPit(item.getServiceCodeMPITS());
                             try {
                                 item.weightS += Integer.parseInt(item.getWeigh());
                             } catch (Exception e) {
@@ -123,6 +131,8 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
                             itemExists.addCode(item.getCode());
                             itemExists.addCode1(item.getiD());
                             itemExists.addKhoiluong(item.getWeigh());
+                            itemExists.addCodelistMpit(item.getServiceNameMPITS());
+                            itemExists.addCodemPit(item.getServiceCodeMPITS());
                             itemExists.weightS += Integer.parseInt(item.getWeigh());
                             tam += Integer.parseInt(item.getWeigh());
                         }
@@ -146,6 +156,31 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
     public XacNhanDiaChiPresenter setType(int type) {
         mType = type;
         return this;
+    }
+
+    @Override
+    public void ddgetDichVuMpit() {
+        mView.showProgress();
+        mInteractor.ddGetDichVuMpit()
+                .subscribeOn(Schedulers.io())
+                .delay(1000, TimeUnit.MICROSECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    if (simpleResult.getErrorCode().equals("00")) {
+
+                        ArrayList<DichVuMode> list = NetWorkController.getGson().fromJson(simpleResult.getData(), new TypeToken<List<DichVuMode>>() {
+                        }.getType());
+                        mView.showDichVuMpit(list);
+                    } else {
+                        Toast.showToast(getViewContext(), simpleResult.getMessage());
+                    }
+                    mView.hideProgress();
+                });
+    }
+
+    @Override
+    public void showDichVu(List<Mpit> list) {
+        new ChiTietDichVuPresenter(mContainerView).setListCommonObject(list).pushView();
     }
 
     @Override
@@ -175,6 +210,8 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
                     confirmOrderPostman.setEmployeeID(userInfo.getiD());
                     confirmOrderPostman.setOrderPostmanID(orderPostmanID);
                     confirmOrderPostman.setStatusCode("P1");
+//                    confirmOrderPostman.setServiceCodeMPITS("P1");
+//                    confirmOrderPostman.setStatusCode("P1");
                     confirmOrderPostman.parcel = item.getCodeS().get(index);
                     listRequest.add(confirmOrderPostman);
                     index++;
@@ -183,6 +220,45 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
         }
         if (!listRequest.isEmpty()) {
             new XacNhanConfirmPresenter(mContainerView).setListRequest(listRequest).setTenKH(tenkhachhang).pushView();
+        }
+    }
+
+    @Override
+    public void confirmAllOrderPostmanMpit(ArrayList<CommonObject> list, String tenkhachhang, String code) {
+        ArrayList<ConfirmOrderPostman> listRequest = new ArrayList<>();
+        SharedPref sharedPref = new SharedPref((Context) mContainerView);
+        String user = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        UserInfo userInfo = null;
+        if (!user.isEmpty()) {
+            userInfo = NetWorkController.getGson().fromJson(user, UserInfo.class);
+        }
+        if (userInfo != null) {
+            for (CommonObject item : list) {
+                int index = 0;
+                for (int i = 0; i < item.getOrderPostmanIDS().size(); i++) {
+                    ConfirmOrderPostman confirmOrderPostman = new ConfirmOrderPostman();
+                    confirmOrderPostman.setAssignDateTime(item.getAssignDateTime());
+                    confirmOrderPostman.setWeigh(item.getWeigh());
+                    confirmOrderPostman.setCode(item.getCodeS().get(index));
+                    confirmOrderPostman.setConfirmReason("");
+                    confirmOrderPostman.setConfirmReason("");
+                    confirmOrderPostman.setEmployeeID(userInfo.getiD());
+                    confirmOrderPostman.setOrderPostmanID(item.getOrderPostmanIDS().get(i));
+                    confirmOrderPostman.setServiceCodeMPITS(item.getmPit().get(i));
+                    confirmOrderPostman.setStatusCode("P1");
+                    confirmOrderPostman.parcel = item.getCodeS().get(index);
+                    listRequest.add(confirmOrderPostman);
+                    index++;
+                }
+            }
+        }
+        ArrayList<ConfirmOrderPostman> listRequestNetx = new ArrayList<>();
+        for (ConfirmOrderPostman item : listRequest) {
+            if (item.getServiceCodeMPITS().equals(code))
+                listRequestNetx.add(item);
+        }
+        if (!listRequest.isEmpty()) {
+            new XacNhanConfirmPresenter(mContainerView).setListRequest(listRequestNetx).setTenKH(tenkhachhang).pushView();
         }
     }
 

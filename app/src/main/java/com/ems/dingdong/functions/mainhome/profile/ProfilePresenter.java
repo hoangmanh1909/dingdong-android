@@ -3,6 +3,7 @@ package com.ems.dingdong.functions.mainhome.profile;
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.functions.mainhome.lichsucuocgoi.tabcall.TabCallPresenter;
+import com.ems.dingdong.functions.mainhome.profile.chat.ChatPresenter;
 import com.ems.dingdong.functions.mainhome.profile.ewallet.EWalletPresenter;
 import com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.ListBankPresenter;
 import com.ems.dingdong.functions.mainhome.profile.tienluong.SalaryPresenter;
@@ -50,5 +51,10 @@ public class ProfilePresenter extends Presenter<ProfileContract.View, ProfileCon
     @Override
     public void showLuong() {
         new SalaryPresenter(mContainerView).pushView();
+    }
+
+    @Override
+    public void showChat() {
+       new ChatPresenter(mContainerView).pushView();
     }
 }

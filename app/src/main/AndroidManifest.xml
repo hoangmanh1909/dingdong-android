@@ -7,8 +7,7 @@
 
     <dist:module dist:instant="true" />
 
-    <uses-feature
-        android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera" />
 
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
@@ -23,26 +22,10 @@
     <uses-permission android:name="android.permission.READ_CALL_LOG" />
     <uses-permission android:name="android.permission.WRITE_CALL_LOG" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.GET_TASKS" /> <!-- tools:overrideLibrary="com.tsongkha.spinnerdatepicker" -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" /> <!-- tools:overrideLibrary="com.tsongkha.spinnerdatepicker" -->
     <!-- for audio access -->
     <eat-comment />
 
-    <queries>
-
-        <!-- Camera -->
-        <intent>
-            <action android:name="android.media.action.IMAGE_CAPTURE" />
-        </intent>
-    </queries>
-
-    <uses-feature
-        android:name="android.hardware.camera.front"
-        android:required="false" />
-    <!--
- Used for permissions that are associated with accessing
-         microphone audio from the device. Note that phone calls also capture audio
-         but are in a separate (more visible) permission group.
-    -->
     <permission-group
         android:name="android.permission-group.MICROPHONE"
         android:description="@string/permgroupdesc_microphone"
@@ -56,6 +39,7 @@
     <permission
         android:name="android.permission.RECORD_AUDIO"
         android:description="@string/permdesc_recordAudio"
+        android:exported="false"
         android:label="@string/permlab_recordAudio"
         android:permissionGroup="android.permission-group.MICROPHONE"
         android:protectionLevel="dangerous" /> <!-- ====================================================================== -->
@@ -77,22 +61,27 @@
             android:name=".functions.mainhome.location.AudioActivity"
             android:exported="false" />
 
+
         <uses-library
             android:name="com.google.android.maps"
+            android:exported="false"
             android:required="true" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
             android:exported="false"
-            android:grantUriPermissions="true">
+            android:grantUriPermissions="true"
+            tools:replace="android:authorities">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths" />
+                android:resource="@xml/provider_paths"
+                tools:replace="android:resource" />
         </provider>
 
         <activity
             android:name=".functions.login.LoginActivity"
+            android:exported="true"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -101,20 +90,19 @@
             </intent-filter>
         </activity>
 
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
+        <meta-data android:name="com.google.android.gms.version" />
 
         <activity
             android:name="com.afollestad.materialcamera.CaptureActivity"
-            android:theme="@style/MaterialCamera.CaptureActivity" />
+            android:exported="false" />
         <activity
             android:name="com.afollestad.materialcamera.CaptureActivity2"
-            android:theme="@style/MaterialCamera.CaptureActivity" />
+            android:exported="false" />
         <activity
             android:name=".functions.mainhome.main.MainActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|screenLayout"
             android:exported="false"
+
             android:label="@string/app_name"
             android:launchMode="singleTask"
             android:noHistory="false"
@@ -276,6 +264,14 @@
             android:launchMode="singleTask"
             android:noHistory="false"
             android:screenOrientation="portrait" />
+        <!--        <activity-->
+        <!--            android:name=".functions.mainhome.profile.chat.ChatActivity"-->
+        <!--            android:configChanges="orientation|screenSize|keyboardHidden|screenLayout"-->
+        <!--            android:exported="false"-->
+        <!--            android:label="@string/app_name"-->
+        <!--            android:launchMode="singleTask"-->
+        <!--            android:noHistory="false"-->
+        <!--            android:screenOrientation="portrait" />-->
         <activity
             android:name=".functions.mainhome.phathang.routemanager.RouteTabsActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|screenLayout"
@@ -406,14 +402,25 @@
         </activity>
 
         <meta-data
+            android:name="com.ringme.ott.sdk.serviceId"
+            android:value="vnpost" />
+        <meta-data
+            android:name="com.ringme.ott.sdk.appId"
+            android:value="DingDong" />
+
+
+        <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"
             android:value="barcode" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDU5P_3XtqsqZMFSF9Ul_1gxsRVoVv0lKs" /> <!-- <meta-data -->
+            android:value="AIzaSyDU5P_3XtqsqZMFSF9Ul_1gxsRVoVv0lKs"
+            tools:replace="android:value" /> <!-- <meta-data -->
         <!-- android:name="com.google.android.geo.API_KEY" -->
         <!-- android:value="AIzaSyAFjjD5f4UJ6N6LP6nU26yWqGc-8jLqWWA" /> -->
-        <service android:name=".fcm.DingDongFirebaseMessagingService">
+        <service
+            android:name=".fcm.DingDongFirebaseMessagingService"
+            android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
@@ -442,25 +449,31 @@
             android:name="io.fabric.ApiKey"
             android:value="0cce76e3c35418e2833d7caeb11a76a15fc38dd0" />
 
-        <activity android:name=".fcm.NotificationActivity" />
-        <activity android:name=".functions.mainhome.notify.NotifiActivity" />
-        <activity android:name=".functions.mainhome.notify.ListNotifyActivity" /> <!-- Register library Activities -->
-        <activity
-            android:name="com.afollestad.materialcamera.CaptureActivity"
-            android:theme="@style/MaterialCamera.CaptureActivity" />
-        <activity
-            android:name="com.afollestad.materialcamera.CaptureActivity2"
-            android:theme="@style/MaterialCamera.CaptureActivity" />
+        <activity android:name=".fcm.NotificationActivity"
+            android:exported="false"/>
+        <activity android:name=".functions.mainhome.notify.NotifiActivity"
+            android:exported="false"/>
+        <activity android:name=".functions.mainhome.notify.ListNotifyActivity"
+            android:exported="false"/> <!-- Register library Activities -->
+        <!--        <activity-->
+        <!--            android:name="com.afollestad.materialcamera.CaptureActivity"-->
+        <!--            android:theme="@style/MaterialCamera.CaptureActivity" />-->
+        <!--        <activity-->
+        <!--            android:name="com.afollestad.materialcamera.CaptureActivity2"-->
+        <!--            android:theme="@style/MaterialCamera.CaptureActivity" />-->
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
-            android:value="@string/notification_channel_id" />
+            android:value="@string/notification_channel_id"
+            android:required="false"/>
 
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
 
-        <receiver android:name=".calls.calling.NotificationReceiver">
+        <receiver
+            android:name=".calls.calling.NotificationReceiver"
+            android:exported="true">
             <intent-filter>
                 <action android:name="YES_ACTION" />
                 <action android:name="STOP_ACTION" />

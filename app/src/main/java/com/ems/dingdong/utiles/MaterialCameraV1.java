@@ -24,7 +24,7 @@ import com.afollestad.materialcamera.MaterialCamera;
 import com.afollestad.materialcamera.internal.CameraIntentKey;
 import com.afollestad.materialcamera.util.CameraUtil;
 import com.ems.dingdong.R;
-
+import com.afollestad.materialcamera.util.CameraUtil;
 import java.io.File;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -91,7 +91,7 @@ public class MaterialCameraV1 {
     public MaterialCameraV1(@NonNull Activity context) {
         mContext = context;
         mActivityContext = context;
-        mPrimaryColor = com.afollestad.materialdialogs.util.DialogUtils.resolveColor(context, R.attr.colorPrimary);
+//        mPrimaryColor = DialogUtils.resolveColor(context, R.attr.colorPrimary);
     }
 
     public MaterialCameraV1(@NonNull android.app.Fragment context) {
@@ -99,7 +99,7 @@ public class MaterialCameraV1 {
         mContext = context.getActivity();
         mAppFragment = context;
         mSupportFragment = null;
-        mPrimaryColor = com.afollestad.materialdialogs.util.DialogUtils.resolveColor(mContext, R.attr.colorPrimary);
+//        mPrimaryColor = DialogUtils.resolveColor(mContext, R.attr.colorPrimary);
     }
 
     public MaterialCameraV1(@NonNull Fragment context) {
@@ -107,7 +107,7 @@ public class MaterialCameraV1 {
         mContext = context.getContext();
         mSupportFragment = context;
         mAppFragment = null;
-        mPrimaryColor = com.afollestad.materialdialogs.util.DialogUtils.resolveColor(mContext, R.attr.colorPrimary);
+//        mPrimaryColor = DialogUtils.resolveColor(mContext, R.attr.colorPrimary);
     }
 
     public MaterialCameraV1 countdownMillis(long lengthLimitMs) {
@@ -158,7 +158,8 @@ public class MaterialCameraV1 {
     }
 
     public MaterialCameraV1 primaryColorAttr(@AttrRes int colorAttr) {
-        return primaryColor(com.afollestad.materialdialogs.util.DialogUtils.resolveColor(mContext, colorAttr));
+//        return primaryColor(DialogUtils.resolveColor(mContext, colorAttr));
+        return null;
     }
 
     public MaterialCameraV1 showPortraitWarning(boolean show) {

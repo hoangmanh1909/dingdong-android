@@ -969,8 +969,8 @@ object NetWorkControllerGateWay {
     @JvmStatic
     fun themTin(request: CreateOrderRequest?): Single<SimpleResult> {
         val dataRequestPayment = DataRequestPayment()
-        dataRequestPayment.data = NetWorkController.getGson().toJson(request)
-        val data = NetWorkController.getGson().toJson(dataRequestPayment)
+//        dataRequestPayment.data = NetWorkController.getGson().toJson(request)
+        val data = NetWorkController.getGson().toJson(request)
         val signature = signature(data)
         val requestObject = RequestObject(
             "ANDROID",
@@ -1620,7 +1620,8 @@ object NetWorkControllerGateWay {
 
     @JvmStatic
     fun searchLadingCreatedBd13(
-        objRequest: DingDongGetLadingCreateBD13Request?): Single<DeliveryPostmanResponse> {
+        objRequest: DingDongGetLadingCreateBD13Request?
+    ): Single<DeliveryPostmanResponse> {
         val data = getGson().toJson(objRequest)
         val signature = signature(data)
         val requestObject = RequestObject(
@@ -2323,6 +2324,17 @@ object NetWorkControllerGateWay {
         val signature = signature(data)
         val requestObject = RequestObject(
             "ANDROID", "", Constants.DLV_ROUTE_ADDRESS_SEARCH_ADDRESS, data,
+            Utils.getLocalTime(Constants.DATE_FORMAT), "", signature
+        )
+        return getApiRxBuilderVer().commonServiceRx(requestObject)
+    }
+
+    @JvmStatic
+    fun ddGetDichVuMpit(): Single<SimpleResult> {
+        val data = getGson().toJson("")
+        val signature = signature(data)
+        val requestObject = RequestObject(
+            "ANDROID", "", Constants.PU_DIC_GET_SERVICE_CODE_MPITS, data,
             Utils.getLocalTime(Constants.DATE_FORMAT), "", signature
         )
         return getApiRxBuilderVer().commonServiceRx(requestObject)

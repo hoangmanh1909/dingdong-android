@@ -121,6 +121,8 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                         mView.phatSmlSuccess(simpleResult.getMessage());
                     } else mView.showThongBao(simpleResult.getMessage());
                     mView.hideProgress();
+                }, throwable -> {
+                    mView.hideProgress();
                 });
     }
 
@@ -135,6 +137,8 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                         mView.huySmlSuccess(simpleResult.getMessage());
                     } else mView.showThongBao(simpleResult.getMessage());
 
+                    mView.hideProgress();
+                }, throwable -> {
                     mView.hideProgress();
                 });
     }
@@ -380,8 +384,10 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                     if (simpleResult.getErrorCode().equals("00")) {
                         Log.d("asdasdasdasd", new Gson().toJson(simpleResult.getValue()));
                         mView.showAddress(simpleResult.getValue());
-                    }
+                    } else Toast.showToast(getViewContext(), simpleResult.getMessage());
 
+                    mView.hideProgress();
+                }, throwable -> {
                     mView.hideProgress();
                 });
     }
@@ -398,6 +404,8 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                         mView.shoSucces(simpleResult.getValue());
                     } else Toast.showToast(getViewContext(), simpleResult.getMessage());
 
+                    mView.hideProgress();
+                }, throwable -> {
                     mView.hideProgress();
                 });
     }
@@ -425,6 +433,8 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                     } else Toast.showToast(getViewContext(), simpleResult.getMessage());
 
                     mView.hideProgress();
+                }, throwable -> {
+                    mView.hideProgress();
                 });
     }
 
@@ -451,6 +461,8 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                     } else {
                         Toast.showToast(getViewContext(), simpleResult.getMessage());
                     }
+                    mView.hideProgress();
+                }, throwable -> {
                     mView.hideProgress();
                 });
     }
@@ -489,6 +501,8 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                         }
                     } else {
                     }
+                    mView.hideProgress();
+                }, throwable -> {
                     mView.hideProgress();
                 });
     }

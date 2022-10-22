@@ -424,6 +424,8 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
                     Point point = new Point();
                     point.setLatitude(mLocation.getLatitude());
                     point.setLongitude(mLocation.getLongitude());
+//                    point.setLatitude(21.02521717084667);
+//                    point.setLongitude(105.78886083337086);
                     orderCreateBD13Mode.setStartPoint(point);
                     orderCreateBD13Mode.setTransportType(String.valueOf(routeInfo.getTransportType()));
                     List<VietMapOrderCreateBD13DataRequest> dataRequests = new ArrayList<>();
@@ -434,9 +436,9 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
                         request.setId(i.getId());
                         request.setLadingCode(i.getMaE());
                         request.setReceiverAddress(i.getReciverAddress());
-                        Log.d("ASDSDSDASDSDASDSD",new Gson().toJson(i));
-                        request.setReceiverLat((i.getReceiverLat() == null || i.getReceiverLat().isEmpty()) ?  0.0 :Double.parseDouble(i.getReceiverLat()));
-                        request.setReceiverLon((i.getReceiverLat() == null || i.getReceiverLat().isEmpty()) ? 0.0:  Double.parseDouble(i.getReceiverLon()));
+//                        Log.d("ASDSDSDASDSDASDSD", new Gson().toJson(i));
+                        request.setReceiverLat((i.getReceiverLat() == null || i.getReceiverLat().isEmpty()) ? 0.0 : Double.parseDouble(i.getReceiverLat()));
+                        request.setReceiverLon((i.getReceiverLat() == null || i.getReceiverLat().isEmpty()) ? 0.0 : Double.parseDouble(i.getReceiverLon()));
 //            request.setOrderNumber(String.valueOf(i.getReferenceCode()));
                         dataRequests.add(request);
                     }

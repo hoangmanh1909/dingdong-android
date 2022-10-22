@@ -16,12 +16,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.airbnb.lottie.L;
 import com.core.utils.RecyclerUtils;
 import com.core.widget.BaseViewHolder;
 import com.ems.dingdong.R;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.log.LogFragment;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.ParcelCodeInfo;
 import com.ems.dingdong.utiles.Log;
@@ -86,6 +88,7 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
                     for (CommonObject row : mList) {
                         if (row.getReceiverAddress().toLowerCase().contains(charString.toLowerCase())
                                 || row.getReceiverPhone().toLowerCase().contains(charString.toLowerCase())
+                                || row.getServiceNameMPITS().toLowerCase().contains(charString.toLowerCase())
                                 || row.getReceiverName().toLowerCase().contains(charString.toLowerCase())
                                 || row.getCustomerName().toLowerCase().contains(charString.toLowerCase())
                                 || row.getCode().toLowerCase().contains(charString.toLowerCase())
@@ -133,7 +136,7 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
         CheckBox cbSelected;
         @BindView(R.id.tv_thoi_gian)
         CustomTextView tvThoiGian;
-        ParcelAdapter adapter;
+        BuuguiAdapter adapter;
         @BindView(R.id.tv_customName)
         CustomTextView tvCustomName;
         @BindView(R.id.tv_sodonhang)
@@ -258,7 +261,6 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
                     }
                     tvStatus.setBackgroundResource(R.drawable.bg_status_not);
                 } else {
-//                    tvCode.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
                     Typeface typeface = Typefaces.getTypefaceRobotoNormal(mContext);
                     if (typeface != null) {
                         tvStt.setTypeface(typeface);
@@ -271,68 +273,17 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
                     tvStatus.setBackgroundResource(R.drawable.bg_status_done);
                 }
             }
+
             if (mType == 1 || mType == 2) {
                 List<ParcelCodeInfo> filteredList = new ArrayList<>();
-                if (parcelCodeSearch.equals("")) {
-                    filteredList = item.getListParcelCode();
-                } else {
-                    for (ParcelCodeInfo row : item.getListParcelCode()) {
-                        filteredList.add(row);
-                    }
-                }
                 tvRecycler.setVisibility(View.GONE);
-
-                adapter = new ParcelAdapter(mContext, item.getListParcelCode()) {
-                    @Override
-                    public void onBindViewHolder(BaseViewHolder holder, final int position) {
-                        super.onBindViewHolder(holder, position);
-                        ((HolderView) holder).cbSelected.setVisibility(View.GONE);
-                    }
-                };
-                RecyclerUtils.setupVerticalRecyclerView(mContext, recycler);
-                recycler.setVisibility(View.VISIBLE);
+                filteredList.addAll(item.getListParcelCode());
+                adapter = new BuuguiAdapter(mContext, filteredList);
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
+                recycler.setLayoutManager(linearLayoutManager);
                 recycler.setAdapter(adapter);
-
-//                binParcelCode(filteredList);
-//                tvParcelCode.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        if (recycler.getVisibility() == View.GONE) {
-//                            recycler.setVisibility(View.VISIBLE);
-//                        } else {
-//                            recycler.setVisibility(View.GONE);
-//                        }
-//                    }
-//                });
-//                if (item.getListParcelCode() != null && !item.getListParcelCode().isEmpty()) {
-//                    if (item.getListParcelCode().size() == 1) {
-//                        recycler.setVisibility(View.VISIBLE);
-//                        tvParcelCode.setVisibility(View.GONE);
-//                    } else {
-//                        recycler.setVisibility(View.GONE);
-//                        tvParcelCode.setVisibility(View.VISIBLE);
-//                    }
-//                } else {
-//                    tvParcelCode.setVisibility(View.GONE);
-//                }
             }
             currentItem = (CommonObject) model;
-        }
-
-        private void binParcelCode(List<ParcelCodeInfo> listParcelCode) {
-            if (adapter == null) {
-                adapter = new ParcelAdapter(mContext, listParcelCode) {
-                    @Override
-                    public void onBindViewHolder(BaseViewHolder holder, final int position) {
-                        super.onBindViewHolder(holder, position);
-                        ((HolderView) holder).cbSelected.setVisibility(View.GONE);
-                    }
-                };
-                RecyclerUtils.setupVerticalRecyclerView(mContext, recycler);
-                recycler.setAdapter(adapter);
-            } else {
-                adapter.refresh(listParcelCode);
-            }
         }
     }
 

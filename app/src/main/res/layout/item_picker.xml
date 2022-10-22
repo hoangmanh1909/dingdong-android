@@ -9,12 +9,16 @@
         android:id="@+id/tv_reason"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
         android:gravity="left"
-        android:padding="@dimen/dimen_5dp"
+        android:padding="10dp"
+        android:text="asd"
         android:textColor="@color/black"
-        android:textSize="12dp" />
+        android:textSize="14dp" />
 
     <View
-        style="@style/Devider"
-        android:layout_marginTop="@dimen/dimen_5dp" />
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/gray" />
 </LinearLayout>

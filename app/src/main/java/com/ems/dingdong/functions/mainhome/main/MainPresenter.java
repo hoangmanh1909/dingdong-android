@@ -126,6 +126,7 @@ public class MainPresenter extends Presenter<MainContract.View, MainContract.Int
                             mView.hideProgress();
                         } else {
                             mView.showError();
+                            Toast.showToast(getViewContext(), simpleResult.getMessage());
                             mView.hideProgress();
                         }
                     }, Throwable::getMessage);
@@ -149,6 +150,7 @@ public class MainPresenter extends Presenter<MainContract.View, MainContract.Int
                             mView.hideProgress();
                         } else {
                             mView.showError();
+                            Toast.showToast(getViewContext(), simpleResult.getMessage());
                             mView.hideProgress();
                         }
                     }, Throwable::getMessage);

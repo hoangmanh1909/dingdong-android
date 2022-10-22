@@ -16,7 +16,7 @@ import com.ems.dingdong.utiles.Constants;
 //import com.sip.cmc.SipCmc;
 //import com.sip.cmc.callback.PhoneCallback;
 
-import org.linphone.core.LinphoneCall;
+//import ;
 
 import java.util.ArrayList;
 import java.util.List;

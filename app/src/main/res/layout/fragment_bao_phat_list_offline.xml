@@ -87,8 +87,8 @@
         <com.ems.dingdong.views.CustomBoldTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/_5sdp"
             android:layout_gravity="right"
+            android:padding="@dimen/_5sdp"
             android:text="@string/pick_all" />
 
         <CheckBox
@@ -130,7 +130,6 @@
             android:id="@+id/recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/btn_confirm_all"
             android:layout_marginLeft="@dimen/dimen_10dp"
             android:layout_marginTop="@dimen/dimen_10dp"
             android:layout_marginRight="@dimen/dimen_10dp">
@@ -146,7 +145,8 @@
             android:layout_marginRight="@dimen/_10sdp"
             android:layout_marginBottom="@dimen/_10sdp"
             android:padding="@dimen/dimen_10dp"
-            android:src="@drawable/ic_choose_calendar" />
+            android:src="@drawable/ic_choose_calendar"
+            android:visibility="gone" />
     </RelativeLayout>
 
 </LinearLayout>

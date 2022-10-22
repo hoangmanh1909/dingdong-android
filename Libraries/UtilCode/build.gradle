@@ -10,15 +10,8 @@ android {
         //buildToolsVersion '28.0.2'
         minSdkVersion project.minSdkVersion as int
         targetSdkVersion project.targetSdkVersion as int
-        versionCode 1
-        versionName "1.0"
     }
 
-    buildTypes {
-        release {
-            debuggable false
-        }
-    }
 }
 
 dependencies {
@@ -42,7 +35,7 @@ dependencies {
     // Resolve conflicts between main and test APK:
     //    androidTestCompile "com.android.support:support-annotations:${supportLibraryVersion}
 //    implementation 'org.apache.commons:commons-lang3:3.+'
-    compile 'org.apache.commons:commons-lang3:3.9'
+    implementation 'org.apache.commons:commons-lang3:3.9'
 
 }
 
@@ -56,7 +49,7 @@ task javadoc(type: Javadoc) {
     failOnError false
     source = android.sourceSets.main.java.sourceFiles
     classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-    classpath += configurations.compile
+    classpath += configurations.implementation
 }
 
 // build a jar with javadoc

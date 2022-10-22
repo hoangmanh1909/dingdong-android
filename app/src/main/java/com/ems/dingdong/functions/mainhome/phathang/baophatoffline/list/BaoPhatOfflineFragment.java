@@ -26,12 +26,15 @@ import com.ems.dingdong.dialog.DialogText;
 import com.ems.dingdong.dialog.EditDayDialog;
 import com.ems.dingdong.eventbus.BaoPhatCallback;
 import com.ems.dingdong.model.CommonObject;
+import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.NumberUtils;
+import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
+import com.google.gson.Gson;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
 import org.greenrobot.eventbus.EventBus;
@@ -39,6 +42,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -111,10 +115,12 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
                 holder.imgClear.setOnClickListener(v -> {
                     if (position < mList.size()) {
                         CommonObject item = mList.get(position);
-                        mPresenter.removeOfflineItem(item.getCode());
+//                        mPresenter.removeOfflineItem(item.getCode());
                         mList.remove(position);
                         mAdapter.removeItem(position);
                         mAdapter.notifyItemRemoved(position);
+                        SharedPref sharedPref = new SharedPref(getViewContext());
+                        sharedPref.putString(Constants.LIST_COM_OFFLINE, new Gson().toJson(mList));
                         loadViewCount();
                     }
                     showAddAll();
@@ -178,7 +184,13 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
         mAmount = 0;
         Date from = DateTimeUtils.convertStringToDate(DateTimeUtils.calculateDay(0), DateTimeUtils.SIMPLE_DATE_FORMAT5);
         Date to = DateTimeUtils.convertStringToDate(DateTimeUtils.calculateDay(0), DateTimeUtils.SIMPLE_DATE_FORMAT5);
-        mList = mPresenter.getOfflineRecord(from, to);
+//        mList = mPresenter.getOfflineRecord(from, to);
+        SharedPref sharedPref = new SharedPref(getViewContext());
+        String string = sharedPref.getString(Constants.LIST_COM_OFFLINE, "");
+        CommonObject[] commonObjects = NetWorkController.getGson().fromJson(string, CommonObject[].class);
+        if (commonObjects != null && commonObjects.length > 0)
+            mList.addAll(Arrays.asList(commonObjects));
+
         if (mList.size() > 0) {
             for (CommonObject item : mList) {
                 if (org.apache.commons.lang3.math.NumberUtils.isDigits(item.getCollectAmount()))
@@ -342,7 +354,7 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
                     .setOnCancelListener(Dialog::dismiss)
                     .setOnOkListener(confirmDialog -> {
                         showProgress();
-                        mPresenter.offlineDeliver(itemsSelected, finalSetDeliveryLat, finalSetDeliveryLon,0,0);
+                        mPresenter.offlineDeliver(itemsSelected, finalSetDeliveryLat, finalSetDeliveryLon, 0, 0);
                         confirmDialog.dismiss();
                     })
                     .setWarning("Bạn có muốn thực hiện báo phát với:")

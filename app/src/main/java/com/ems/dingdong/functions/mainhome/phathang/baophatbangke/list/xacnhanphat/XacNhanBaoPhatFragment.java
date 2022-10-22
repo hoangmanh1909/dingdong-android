@@ -88,6 +88,7 @@ import com.ems.dingdong.model.Item;
 import com.ems.dingdong.model.PhithuhoModel;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.ProductModel;
+import com.ems.dingdong.model.ProvinceModels;
 import com.ems.dingdong.model.ReasonInfo;
 import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.SolutionInfo;
@@ -353,6 +354,27 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     LinearLayout rlGhichu;
     @BindView(R.id.rl_quanhuyen_bosung)
     LinearLayout rlQuanhuyenBosung;
+    @BindView(R.id.tv_tinhtp_new)
+    TextView tv_tinhtp_new;
+    @BindView(R.id.tv_quanhuyen_new)
+    TextView tv_quanhuyen_new;
+    @BindView(R.id.tv_xaphuong_new)
+    TextView tv_xaphuong_new;
+    @BindView(R.id.tv_thoi_gian_du_kien)
+    TextView tv_thoi_gian_du_kien;
+    @BindView(R.id.tv_diachi_khac)
+    LinearLayout tv_diachi_khac;
+    @BindView(R.id.ll_thoi_gian_du_kien)
+    LinearLayout ll_thoi_gian_du_kien;
+    @BindView(R.id.radio_group_new)
+    RadioGroup radio_group;
+    @BindView(R.id.radio_group_doituong)
+    RadioGroup radio_group_doituong;
+    @BindView(R.id.tv_Description_new)
+    EditText tv_Description_new;
+    String ghichunew = "";
+    String doiTuong = "";
+
 
     List<WardModels> mListXaPhuong = new ArrayList<>();
     List<DistrictModels> mListQuanHuyen = new ArrayList<>();
@@ -363,6 +385,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     private Calendar calDateOfBirth = Calendar.getInstance();
     private Calendar calendar = Calendar.getInstance();
     private Calendar calendarHoanTra = Calendar.getInstance();
+    private Calendar calendarDuKien = Calendar.getInstance();
     private Calendar calendarmin = Calendar.getInstance();
     private Calendar calDateAccepted = Calendar.getInstance();
     private XacNhanBaoPhatAdapter adapter;
@@ -472,11 +495,13 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     private int mMinute;
     String mBuuCuc = "";
     String mTuyen = "";
+    String hinhthucPhat = "";
     String mExchangeLadingCode = "";
     int mExchangeDeliveryTime = 0;
     long mExchangeDeliveryDate = 0;
     List<LadingProduct> mExchangeDetails = new ArrayList<>();
     String imgAnhHoanTra;
+    String diachiNew = "";
 
     private File getImageFile() throws IOException {
         String timeStr = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -523,12 +548,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     @Override
     public void initLayout() {
         super.initLayout();
-        if (ContextCompat.checkSelfPermission(getActivity(), READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
-                ContextCompat.checkSelfPermission(getActivity(), WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ||
-                ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
-                ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_PHONE_STATE,
-                    Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_ASK_PERMISSIONS);
+        if (ContextCompat.checkSelfPermission(getActivity(), READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(getActivity(), WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_PHONE_STATE, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_ASK_PERMISSIONS);
         }
         if (((AppCompatActivity) getActivity()).getSupportActionBar() != null) {
             ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
@@ -551,7 +572,28 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         String buuCuchuyen = sharedPref.getString(Constants.KEY_BUU_CUC_HUYEN, "");
         String routeJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
         String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
-
+        hinhthucPhat = "1";
+        radio_group.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                if (i == R.id.rad_bc_phat) {
+                    hinhthucPhat = "1";
+                } else {
+                    hinhthucPhat = "2";
+                }
+            }
+        });
+        doiTuong = "1";
+        radio_group_doituong.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                if (i == R.id.rad_nguoi_gui) {
+                    doiTuong = "1";
+                } else {
+                    doiTuong = "2";
+                }
+            }
+        });
         if (!userJson.isEmpty()) {
             userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
         }
@@ -613,36 +655,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                             llTongTienTamThu.setVisibility(View.GONE);
                             ll_tong_tien_tam_thu1.setVisibility(View.GONE);
                             mPresenter.callForwardEditCOD(mBaoPhatBangke.get(0).getSenderMobile(), mBaoPhatBangke.get(0).getMaE());
-//                        }
-//                            if (!NetworkUtils.isNoNetworkAvailable(getViewContext())) {
-////                                if (mBaoPhatBangke.get(0).getSenderBookingPhone() != null && !TextUtils.isEmpty(mBaoPhatBangke.get(0).getSenderBookingPhone())) {
-////                                    Intent intent = new Intent(Intent.ACTION_CALL);
-////                                    intent.setData(Uri.parse("tel:" + mBaoPhatBangke.get(0).getSenderBookingPhone()));
-////                                    if (ContextCompat.checkSelfPermission(getActivity(),
-////                                            Manifest.permission.CALL_PHONE)
-////                                            != PackageManager.PERMISSION_GRANTED) {
-////                                        ActivityCompat.requestPermissions(getActivity(), new String[]{CALL_PHONE}, REQUEST_CODE_ASK_PERMISSIONS);
-////                                    } else {
-////                                        startActivity(intent);
-////                                    }
-////                                } else
-//                                mPresenter.callForward(mBaoPhatBangke.get(0).getSenderMobile(), mBaoPhatBangke.get(0).getMaE());
-//                            } else {
-//                                Toast.showToast(getViewContext(), "Thiết bị chưa kết nối internet");
-////                                if (mBaoPhatBangke.get(0).getSenderBookingPhone() != null && !TextUtils.isEmpty(mBaoPhatBangke.get(0).getSenderBookingPhone())) {
-////                                    Intent intent = new Intent(Intent.ACTION_CALL);
-////                                    intent.setData(Uri.parse("tel:" + mBaoPhatBangke.get(0).getSenderBookingPhone()));
-////                                    if (ContextCompat.checkSelfPermission(getActivity(),
-////                                            Manifest.permission.CALL_PHONE)
-////                                            != PackageManager.PERMISSION_GRANTED) {
-////                                        ActivityCompat.requestPermissions(getActivity(), new String[]{CALL_PHONE}, REQUEST_CODE_ASK_PERMISSIONS);
-////                                    } else {
-////                                        startActivity(intent);
-////                                    }
-////                                }
-//
-//                            }
-
                         } else if (id.equals("false")) {
                             checkBoxedtCod.setChecked(false);
                             tvTongTienTamthu.setText("");
@@ -661,9 +673,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             }
         });
 
-        tvTime.setText(DateTimeUtils
-                .convertDateToString(calendarHoanTra.getTime(),
-                        DateTimeUtils.SIMPLE_DATE_FORMAT));
+        tvTime.setText(DateTimeUtils.convertDateToString(calendarHoanTra.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT));
+        tv_thoi_gian_du_kien.setText(DateTimeUtils.convertDateToString(calendarDuKien.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT));
         if (mBaoPhatBangke.size() == 1) {
             cList = new ArrayList();
             if (mBaoPhatBangke.get(0).getFeeCOD() != 0)
@@ -686,34 +697,40 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             recyclercuoc.setAdapter(cAdapter);
         }
 
-        if (mBaoPhatBangke.get(0).getIsDOP() == 1) {
+        if (mBaoPhatBangke.get(0).
+
+                getIsDOP() == 1) {
             rad_dop1.setChecked(true);
             rad_dop2.setChecked(false);
-        } else if (mBaoPhatBangke.get(0).getIsDOP() == 2) {
+        } else if (mBaoPhatBangke.get(0).
+
+                getIsDOP() == 2) {
             rad_dop2.setChecked(true);
             rad_dop1.setChecked(false);
         }
 
-        adapter = new XacNhanBaoPhatAdapter(getViewContext(), mBaoPhatBangke) {
-            @Override
-            public void onBindViewHolder(@NonNull HolderView holder, int position) {
-                super.onBindViewHolder(holder, position);
-                holder.itemView.setOnClickListener(v -> {
-                    mBaoPhatBangke.get(position).setSelected(!mBaoPhatBangke.get(position).isSelected());
-                    if (getItemsSelected().size() == 1 || checkSameAddress()) {
-                        edtReceiverName.setText(getItemsSelected().get(0).getReciverName());
-                        tvGTTT.setText("");
-                    } else {
-                        edtReceiverName.setText("");
-                    }
-                    checkVerify();
-                    adapter.notifyDataSetChanged();
-                    final Handler handler = new Handler();
+        adapter = new
 
-                    updateTotalPackage();
-                });
-            }
-        }
+                XacNhanBaoPhatAdapter(getViewContext(), mBaoPhatBangke) {
+                    @Override
+                    public void onBindViewHolder(@NonNull HolderView holder, int position) {
+                        super.onBindViewHolder(holder, position);
+                        holder.itemView.setOnClickListener(v -> {
+                            mBaoPhatBangke.get(position).setSelected(!mBaoPhatBangke.get(position).isSelected());
+                            if (getItemsSelected().size() == 1 || checkSameAddress()) {
+                                edtReceiverName.setText(getItemsSelected().get(0).getReciverName());
+                                tvGTTT.setText("");
+                            } else {
+                                edtReceiverName.setText("");
+                            }
+                            checkVerify();
+                            adapter.notifyDataSetChanged();
+                            final Handler handler = new Handler();
+
+                            updateTotalPackage();
+                        });
+                    }
+                }
 
         ;
         RecyclerUtils.setupVerticalRecyclerView(
@@ -721,7 +738,13 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 getViewContext(), recycler);
         recycler.setAdapter(adapter);
 
-        if (getItemSelected().size() == 1 || checkSameAddress()) {
+        if (
+
+                getItemSelected().
+
+                        size() == 1 ||
+
+                        checkSameAddress()) {
             edtReceiverName.setText(getItemSelected().get(0).getReciverName());
             tvGTTT.setText("");
         }
@@ -771,8 +794,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 String join = " - ";
                 for (ProductModel productModel : listProductDelivery) {
                     ++i;
-                    content += i + ". " + productModel.getProductName() + join + productModel.getQuantity() + "(" + productModel.getUnitName() + ")" + join + productModel.getWeight() + "g" +
-                            " Đơn giá:" + NumberUtils.formatAmount(productModel.getPrice()) + join + " Thành tiền: " + NumberUtils.formatAmount(productModel.getAmounts()) + "\n";
+                    content += i + ". " + productModel.getProductName() + join + productModel.getQuantity() + "(" + productModel.getUnitName() + ")" + join + productModel.getWeight() + "g" + " Đơn giá:" + NumberUtils.formatAmount(productModel.getPrice()) + join + " Thành tiền: " + NumberUtils.formatAmount(productModel.getAmounts()) + "\n";
                 }
                 content = content.substring(0, content.length() - 1);
                 tv_pt_des.setText(content);
@@ -954,6 +976,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         ;
         listImageDelivery = new ArrayList<>();
         imageDeliveryAdapter = new
+
                 ImageAdapter(getViewContext(), listImageDelivery) {
                     @Override
                     public void onBindViewHolder(@NonNull HolderView holder, int position) {
@@ -1024,16 +1047,14 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
         verifyImage();
 
-        edtDateOfBirth.setText(DateTimeUtils
-                .convertDateToString(calDateOfBirth.getTime(),
-                        DateTimeUtils.SIMPLE_DATE_FORMAT));
-        edtGTTTDateAccepted.setText(DateTimeUtils
-                .convertDateToString(calDateOfBirth.getTime(),
-                        DateTimeUtils.SIMPLE_DATE_FORMAT));
+        edtDateOfBirth.setText(DateTimeUtils.convertDateToString(calDateOfBirth.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT));
+        edtGTTTDateAccepted.setText(DateTimeUtils.convertDateToString(calDateOfBirth.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT));
 
         checkVerify();
 
         EditTextUtils.editTextListener(et_pt_amount);
+
+
         et_pt_amountlayout.setEndIconOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1043,54 +1064,56 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
             }
         });
-        et_pt_amount.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                et_pt_amount.removeTextChangedListener(this);
-                if (!TextUtils.isEmpty(s.toString())) {
-                    try {
-                        if ((totalFee + totalAmount) > 0) {
-                            et_pt_amount.setText(NumberUtils.formatVinatti(Long.parseLong(s.toString().replace(".", ""))));
-                            tv_pt_amount_r.setText(NumberUtils.formatVinatti((totalFee + totalAmount) - Long.parseLong(s.toString().replace(".", ""))));
-                        } else
-                            et_pt_amount.setText(NumberUtils.formatVinatti(Long.parseLong(s.toString().replace(".", ""))));
-                    } catch (Exception ex) {
-                        com.ems.dingdong.utiles.Logger.w(ex);
-                    }
-                } else {
-                    et_pt_amount.setText("0");
-                    tv_pt_amount_r.setText("0");
-                }
-                et_pt_amount.addTextChangedListener(this);
-                et_pt_amount.setSelection(et_pt_amount.getText().length());
-            }
+        et_pt_amount.addTextChangedListener(new
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                et_pt_amount.removeTextChangedListener(this);
-                if (!TextUtils.isEmpty(s.toString())) {
-                    try {
-                        if ((totalFee + totalAmount) > 0) {
-                            et_pt_amount.setText(NumberUtils.formatVinatti(Long.parseLong(s.toString().replace(".", ""))));
-                            tv_pt_amount_r.setText(NumberUtils.formatVinatti((totalFee + totalAmount) - Long.parseLong(s.toString().replace(".", ""))));
-                        } else
-                            et_pt_amount.setText(NumberUtils.formatVinatti(Long.parseLong(s.toString().replace(".", ""))));
-                    } catch (Exception ex) {
-                        com.ems.dingdong.utiles.Logger.w(ex);
-                    }
-                } else {
-                    et_pt_amount.setText("0");
-                    tv_pt_amount_r.setText("0");
-                }
-                et_pt_amount.addTextChangedListener(this);
-                et_pt_amount.setSelection(et_pt_amount.getText().length());
-            }
+                                                    TextWatcher() {
+                                                        @Override
+                                                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                                                            et_pt_amount.removeTextChangedListener(this);
+                                                            if (!TextUtils.isEmpty(s.toString())) {
+                                                                try {
+                                                                    if ((totalFee + totalAmount) > 0) {
+                                                                        et_pt_amount.setText(NumberUtils.formatVinatti(Long.parseLong(s.toString().replace(".", ""))));
+                                                                        tv_pt_amount_r.setText(NumberUtils.formatVinatti((totalFee + totalAmount) - Long.parseLong(s.toString().replace(".", ""))));
+                                                                    } else
+                                                                        et_pt_amount.setText(NumberUtils.formatVinatti(Long.parseLong(s.toString().replace(".", ""))));
+                                                                } catch (Exception ex) {
+                                                                    com.ems.dingdong.utiles.Logger.w(ex);
+                                                                }
+                                                            } else {
+                                                                et_pt_amount.setText("0");
+                                                                tv_pt_amount_r.setText("0");
+                                                            }
+                                                            et_pt_amount.addTextChangedListener(this);
+                                                            et_pt_amount.setSelection(et_pt_amount.getText().length());
+                                                        }
 
-            @Override
-            public void afterTextChanged(Editable s) {
+                                                        @Override
+                                                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+                                                            et_pt_amount.removeTextChangedListener(this);
+                                                            if (!TextUtils.isEmpty(s.toString())) {
+                                                                try {
+                                                                    if ((totalFee + totalAmount) > 0) {
+                                                                        et_pt_amount.setText(NumberUtils.formatVinatti(Long.parseLong(s.toString().replace(".", ""))));
+                                                                        tv_pt_amount_r.setText(NumberUtils.formatVinatti((totalFee + totalAmount) - Long.parseLong(s.toString().replace(".", ""))));
+                                                                    } else
+                                                                        et_pt_amount.setText(NumberUtils.formatVinatti(Long.parseLong(s.toString().replace(".", ""))));
+                                                                } catch (Exception ex) {
+                                                                    com.ems.dingdong.utiles.Logger.w(ex);
+                                                                }
+                                                            } else {
+                                                                et_pt_amount.setText("0");
+                                                                tv_pt_amount_r.setText("0");
+                                                            }
+                                                            et_pt_amount.addTextChangedListener(this);
+                                                            et_pt_amount.setSelection(et_pt_amount.getText().length());
+                                                        }
 
-            }
-        });
+                                                        @Override
+                                                        public void afterTextChanged(Editable s) {
+
+                                                        }
+                                                    });
         recyclerds.setVisibility(View.GONE);
         for (
                 int i = 0; i < mBaoPhatBangke.size(); i++) {
@@ -1117,19 +1140,17 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             }
         }
 
-        if (mBaoPhatBangke.size() > 1)
-            for (
-                    int i = 0; i < mBaoPhatBangke.size(); i++)
-                if (mBaoPhatBangke.get(i).
+        if (mBaoPhatBangke.size() > 1) for (
+                int i = 0; i < mBaoPhatBangke.size(); i++)
+            if (mBaoPhatBangke.get(i).
 
-                        getFeeCancelOrder() > 0)
-                    mBaoPhatBangke.get(i).
+                    getFeeCancelOrder() > 0) mBaoPhatBangke.get(i).
 
-                            setCheckFeeCancelOrder(true);
-                else {
-                    mDemTrangThai++;
-                    mBaoPhatBangke.get(i).setCheckFeeCancelOrder(false);
-                }
+                    setCheckFeeCancelOrder(true);
+            else {
+                mDemTrangThai++;
+                mBaoPhatBangke.get(i).setCheckFeeCancelOrder(false);
+            }
 
         phiThuHoAdapter = new
 
@@ -1142,8 +1163,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                         } else holder.tv_monney.setEnabled(false);
                         holder.tv_monney.addTextChangedListener(new TextWatcher() {
                             @Override
-                            public void onTextChanged(CharSequence s, int start,
-                                                      int before, int count) {
+                            public void onTextChanged(CharSequence s, int start, int before, int count) {
                                 //setting data to array, when changed
 
                                 if (!TextUtils.isEmpty(s.toString())) {
@@ -1153,8 +1173,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                             }
 
                             @Override
-                            public void beforeTextChanged(CharSequence s, int start,
-                                                          int count, int after) {
+                            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                                 //blank
                             }
 
@@ -1228,19 +1247,11 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                     };
                     RecyclerUtils.setupHorizontalRecyclerView(getViewContext(), recyclerUmageHangDoiTra);
                     recyclerUmageHangDoiTra.setAdapter(imageHangDoiTraAdapter);
-                    tvDateHoantra.setText(DateTimeUtils
-                            .convertDateToString(calendarHoanTra.getTime(),
-                                    DateTimeUtils.SIMPLE_DATE_FORMAT));
-                    tvTiemHoantra.setText(DateTimeUtils
-                            .convertDateToString(calendarHoanTra.getTime(),
-                                    DateTimeUtils.SIMPLE_DATE_FORMAT9));
+                    tvDateHoantra.setText(DateTimeUtils.convertDateToString(calendarHoanTra.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT));
+                    tvTiemHoantra.setText(DateTimeUtils.convertDateToString(calendarHoanTra.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT9));
 
-                    mHour = Integer.parseInt(DateTimeUtils
-                            .convertDateToString(calendarHoanTra.getTime(),
-                                    DateTimeUtils.SIMPLE_DATE_FORMAT8).split(":")[0]);
-                    mMinute = Integer.parseInt(DateTimeUtils
-                            .convertDateToString(calendarHoanTra.getTime(),
-                                    DateTimeUtils.SIMPLE_DATE_FORMAT8).split(":")[1]);
+                    mHour = Integer.parseInt(DateTimeUtils.convertDateToString(calendarHoanTra.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT8).split(":")[0]);
+                    mMinute = Integer.parseInt(DateTimeUtils.convertDateToString(calendarHoanTra.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT8).split(":")[1]);
 //                    Log.d("ASDASDASDD", mHour + ":" + mMinute);
                     break;
                 } else {
@@ -1275,15 +1286,18 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    @OnClick({R.id.img_back, R.id.img_send, R.id.tv_reason, R.id.tv_solution, R.id.tv_route,
-            R.id.tv_postman, R.id.btn_sign, R.id.rl_relationship, R.id.rl_image_capture,
-            R.id.edt_date_of_birth, R.id.edt_GTTT_date_accepted, R.id.rl_image_capture_verify, R.id.rl_image_capture_avatar, R.id.rl_image_other,
-            R.id.rad_success, R.id.rad_fail, R.id.rad_change_route, R.id.rad_partial, R.id.iv_add_delivery, R.id.iv_add_refund,
-            R.id.rl_image_partial_d, R.id.rl_image_partial_r, R.id.cb_selected, R.id.tv_buu_cuc,
-            R.id.rl_e_wallet, R.id.tv_time, R.id.iv_add_hang_doi_tra, R.id.tv_date_hoantra
-            , R.id.tv_tiem_hoantra, R.id.rl_image_hang_doi_tra, R.id.tv_xaphuong_bosung, R.id.tv_quanhuyen_bosung})
+    @OnClick({R.id.img_back, R.id.img_send, R.id.tv_reason, R.id.tv_solution, R.id.tv_route, R.id.tv_postman, R.id.btn_sign, R.id.rl_relationship, R.id.rl_image_capture, R.id.edt_date_of_birth, R.id.edt_GTTT_date_accepted, R.id.rl_image_capture_verify, R.id.rl_image_capture_avatar, R.id.rl_image_other, R.id.rad_success, R.id.rad_fail, R.id.rad_change_route, R.id.rad_partial, R.id.iv_add_delivery, R.id.iv_add_refund, R.id.rl_image_partial_d, R.id.rl_image_partial_r, R.id.cb_selected, R.id.tv_buu_cuc, R.id.rl_e_wallet, R.id.tv_time, R.id.iv_add_hang_doi_tra, R.id.tv_date_hoantra, R.id.tv_tiem_hoantra, R.id.rl_image_hang_doi_tra, R.id.tv_xaphuong_bosung, R.id.tv_quanhuyen_bosung, R.id.tv_tinhtp_new, R.id.tv_quanhuyen_new, R.id.tv_xaphuong_new, R.id.tv_thoi_gian_du_kien})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.tv_tinhtp_new:
+                showTinhThanhPho();
+                break;
+            case R.id.tv_quanhuyen_new:
+                showQuanHuyenNew();
+                break;
+            case R.id.tv_xaphuong_new:
+                showXaPhuongNew();
+                break;
             case R.id.tv_xaphuong_bosung:
                 showXaPhuong();
                 break;
@@ -1294,8 +1308,15 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 new DialogNhaptienCOD(getViewContext(), tvTongTienTamthu.getText().toString().replaceAll("\\.", ""), new IdCallback() {
                     @Override
                     public void onResponse(String id) {
-                        tvTongTienTamthu.setText(String.format("%s", NumberUtils.formatPriceNumber(Long.parseLong(id))));
-                        tvTongTienTamthu1.setText(String.format("%s", NumberUtils.formatPriceNumber(Long.parseLong(id) + totalFee)));
+                        if (id.equals("GOI")) {
+                            mPresenter.callForwardEditCOD(mBaoPhatBangke.get(0).getSenderMobile(), mBaoPhatBangke.get(0).getMaE());
+                        } else if (id.equals("false")) {
+
+                        } else {
+                            tvTongTienTamthu.setText(String.format("%s", NumberUtils.formatPriceNumber(Long.parseLong(id))));
+                            tvTongTienTamthu1.setText(String.format("%s", NumberUtils.formatPriceNumber(Long.parseLong(id) + totalFee)));
+                        }
+
                     }
                 }).show();
                 break;
@@ -1453,11 +1474,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 }
                 lastClickTime = SystemClock.elapsedRealtime();
                 if (checkInfoClick) {
-                    if (TextUtils.isEmpty(edtGTTTDateAccepted.getText())
-                            || TextUtils.isEmpty(edtGTTTLocatedAccepted.getText()) ||
-                            TextUtils.isEmpty(edtDateOfBirth.getText())
-                            || TextUtils.isEmpty(tvGTTT.getText())
-                            || TextUtils.isEmpty(edtUserAddress.getText())) {
+                    if (TextUtils.isEmpty(edtGTTTDateAccepted.getText()) || TextUtils.isEmpty(edtGTTTLocatedAccepted.getText()) || TextUtils.isEmpty(edtDateOfBirth.getText()) || TextUtils.isEmpty(tvGTTT.getText()) || TextUtils.isEmpty(edtUserAddress.getText())) {
                         if (TextUtils.isEmpty(tvGTTT.getText())) {
                             showErrorToast("Vui lòng nhập Số GTTT");
                             return;
@@ -1604,48 +1621,22 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 }
                 break;
             case R.id.edt_date_of_birth:
-                new SpinnerDatePickerDialogBuilder()
-                        .context(getViewContext())
-                        .callback((view1, year, monthOfYear, dayOfMonth) -> {
-                            calDateOfBirth.set(year, monthOfYear, dayOfMonth);
-                            edtDateOfBirth.setText(DateTimeUtils
-                                    .convertDateToString(calDateOfBirth.getTime(),
-                                            DateTimeUtils.SIMPLE_DATE_FORMAT));
-                        })
-                        .spinnerTheme(R.style.DatePickerSpinner)
-                        .showTitle(true)
-                        .showDaySpinner(true)
-                        .defaultDate(calDateOfBirth.get(Calendar.YEAR),
-                                calDateOfBirth.get(Calendar.MONTH),
-                                calDateOfBirth.get(Calendar.DAY_OF_MONTH))
-                        .maxDate(calDateOfBirth.get(Calendar.YEAR),
-                                calDateOfBirth.get(Calendar.MONTH),
-                                calDateOfBirth.get(Calendar.DAY_OF_MONTH))
-                        .minDate(1600, 0, 1)
-                        .build()
-                        .show();
+                new SpinnerDatePickerDialogBuilder().context(getViewContext()).callback((view1, year, monthOfYear, dayOfMonth) -> {
+                    calDateOfBirth.set(year, monthOfYear, dayOfMonth);
+                    edtDateOfBirth.setText(DateTimeUtils.convertDateToString(calDateOfBirth.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT));
+                }).spinnerTheme(R.style.DatePickerSpinner).showTitle(true).showDaySpinner(true).defaultDate(calDateOfBirth.get(Calendar.YEAR), calDateOfBirth.get(Calendar.MONTH), calDateOfBirth.get(Calendar.DAY_OF_MONTH)).maxDate(calDateOfBirth.get(Calendar.YEAR), calDateOfBirth.get(Calendar.MONTH), calDateOfBirth.get(Calendar.DAY_OF_MONTH)).minDate(1600, 0, 1).build().show();
                 break;
             case R.id.tv_time:
-                new SpinnerDatePickerDialogBuilder()
-                        .context(getViewContext())
-                        .callback((view1, year, monthOfYear, dayOfMonth) -> {
-                            calendarHoanTra.set(year, monthOfYear, dayOfMonth);
-                            tvTime.setText(DateTimeUtils
-                                    .convertDateToString(calendarHoanTra.getTime(),
-                                            DateTimeUtils.SIMPLE_DATE_FORMAT));
-                        })
-                        .spinnerTheme(R.style.DatePickerSpinner)
-                        .showTitle(true)
-                        .showDaySpinner(true)
-                        .defaultDate(calendarHoanTra.get(Calendar.YEAR),
-                                calendarHoanTra.get(Calendar.MONTH),
-                                calendarHoanTra.get(Calendar.DAY_OF_MONTH))
-                        .maxDate(6000, 12, 31)
-                        .minDate(calendarmin.get(Calendar.YEAR),
-                                calendarmin.get(Calendar.MONTH),
-                                calendarmin.get(Calendar.DAY_OF_MONTH))
-                        .build()
-                        .show();
+                new SpinnerDatePickerDialogBuilder().context(getViewContext()).callback((view1, year, monthOfYear, dayOfMonth) -> {
+                    calendarHoanTra.set(year, monthOfYear, dayOfMonth);
+                    tvTime.setText(DateTimeUtils.convertDateToString(calendarHoanTra.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT));
+                }).spinnerTheme(R.style.DatePickerSpinner).showTitle(true).showDaySpinner(true).defaultDate(calendarHoanTra.get(Calendar.YEAR), calendarHoanTra.get(Calendar.MONTH), calendarHoanTra.get(Calendar.DAY_OF_MONTH)).maxDate(6000, 12, 31).minDate(calendarmin.get(Calendar.YEAR), calendarmin.get(Calendar.MONTH), calendarmin.get(Calendar.DAY_OF_MONTH)).build().show();
+                break;
+            case R.id.tv_thoi_gian_du_kien:
+                new SpinnerDatePickerDialogBuilder().context(getViewContext()).callback((view1, year, monthOfYear, dayOfMonth) -> {
+                    calendarDuKien.set(year, monthOfYear, dayOfMonth);
+                    tv_thoi_gian_du_kien.setText(DateTimeUtils.convertDateToString(calendarDuKien.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT));
+                }).spinnerTheme(R.style.DatePickerSpinner).showTitle(true).showDaySpinner(true).defaultDate(calendarDuKien.get(Calendar.YEAR), calendarDuKien.get(Calendar.MONTH), calendarDuKien.get(Calendar.DAY_OF_MONTH)).maxDate(6000, 12, 31).minDate(calendarDuKien.get(Calendar.YEAR), calendarDuKien.get(Calendar.MONTH), calendarDuKien.get(Calendar.DAY_OF_MONTH)).build().show();
                 break;
 //            case R.id.tv_date_hoantra:
 //                new SpinnerDatePickerDialogBuilder()
@@ -1692,26 +1683,10 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 //                timePickerDialog.show();
 //                break;
             case R.id.edt_GTTT_date_accepted:
-                new SpinnerDatePickerDialogBuilder()
-                        .context(getViewContext())
-                        .callback((view1, year, monthOfYear, dayOfMonth) -> {
-                            calDateAccepted.set(year, monthOfYear, dayOfMonth);
-                            edtGTTTDateAccepted.setText(DateTimeUtils
-                                    .convertDateToString(calDateAccepted.getTime(),
-                                            DateTimeUtils.SIMPLE_DATE_FORMAT));
-                        })
-                        .spinnerTheme(R.style.DatePickerSpinner)
-                        .showTitle(true)
-                        .showDaySpinner(true)
-                        .defaultDate(calDateAccepted.get(Calendar.YEAR),
-                                calDateAccepted.get(Calendar.MONTH),
-                                calDateAccepted.get(Calendar.DAY_OF_MONTH))
-                        .maxDate(calDateAccepted.get(Calendar.YEAR),
-                                calDateAccepted.get(Calendar.MONTH),
-                                calDateAccepted.get(Calendar.DAY_OF_MONTH))
-                        .minDate(1600, 0, 1)
-                        .build()
-                        .show();
+                new SpinnerDatePickerDialogBuilder().context(getViewContext()).callback((view1, year, monthOfYear, dayOfMonth) -> {
+                    calDateAccepted.set(year, monthOfYear, dayOfMonth);
+                    edtGTTTDateAccepted.setText(DateTimeUtils.convertDateToString(calDateAccepted.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT));
+                }).spinnerTheme(R.style.DatePickerSpinner).showTitle(true).showDaySpinner(true).defaultDate(calDateAccepted.get(Calendar.YEAR), calDateAccepted.get(Calendar.MONTH), calDateAccepted.get(Calendar.DAY_OF_MONTH)).maxDate(calDateAccepted.get(Calendar.YEAR), calDateAccepted.get(Calendar.MONTH), calDateAccepted.get(Calendar.DAY_OF_MONTH)).minDate(1600, 0, 1).build().show();
                 break;
             case R.id.rl_relationship:
                 PopupMenu popup = new PopupMenu(getViewContext(), rlRelationship);
@@ -1768,13 +1743,9 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
     @SuppressLint("IntentReset")
     private void chooseFromGallery() {
-        @SuppressLint("IntentReset") Intent intent = new Intent(
-                Intent.ACTION_PICK,
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        @SuppressLint("IntentReset") Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.setType("image/*");
-        startActivityForResult(
-                intent,
-                OPEN_MEDIA_PICKER);
+        startActivityForResult(intent, OPEN_MEDIA_PICKER);
 //        }
 
 
@@ -1862,7 +1833,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
     void setIsCapture(String type) {
         Log.d("AAAAASDASDASD", new Gson().toJson(listImageHangDoiTra));
-
         switch (type) {
             case "AVATAR":
                 isCaptureHoanTra = false;
@@ -1993,8 +1963,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 }
             }
 
-            if ((TextUtils.isEmpty(edtOtherRelationship.getText()) || Utils.isBlank(edtOtherRelationship.getText().toString())) &&
-                    edtRelationship.getText().equals(getViewContext().getString(R.string.other))) {
+            if ((TextUtils.isEmpty(edtOtherRelationship.getText()) || Utils.isBlank(edtOtherRelationship.getText().toString())) && edtRelationship.getText().equals(getViewContext().getString(R.string.other))) {
                 showErrorToast(getViewContext().getString(R.string.you_have_not_entered_reeceiver_relationship));
                 return;
             }
@@ -2030,11 +1999,9 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                         }
                     }
                 }
-            } else
-                _amountShow = totalAmount;
+            } else _amountShow = totalAmount;
 
-            if (TextUtils.isEmpty(tvTongTienTamthu.getText().toString()))
-                tiem_tam = 0;
+            if (TextUtils.isEmpty(tvTongTienTamthu.getText().toString())) tiem_tam = 0;
             else
                 tiem_tam = Long.parseLong(tvTongTienTamthu.getText().toString().replaceAll("\\.", ""));
 
@@ -2049,15 +2016,12 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 }
 
                 mExchangeLadingCode = edtMaBuuGui.getText().toString().trim();
-                mExchangeDeliveryDate = Long.parseLong(DateTimeUtils.convertDateToString(calendarHoanTra.getTime(),
-                        DateTimeUtils.SIMPLE_DATE_FORMAT5));
+                mExchangeDeliveryDate = Long.parseLong(DateTimeUtils.convertDateToString(calendarHoanTra.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5));
                 String mHours = "";
                 String mMinutes = "";
-                if (mHour < 10)
-                    mHours = "0" + mHour;
+                if (mHour < 10) mHours = "0" + mHour;
                 else mHours = mHour + "";
-                if (mMinute < 10)
-                    mMinutes = "0" + mMinute;
+                if (mMinute < 10) mMinutes = "0" + mMinute;
                 else mMinutes = mMinute + "";
                 mExchangeDeliveryTime = Integer.parseInt(String.format("%s%s00", mHours, mMinutes));
                 mExchangeDetails.clear();
@@ -2084,56 +2048,36 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             long final_amountShow = _amountShow;
 
 
-            new ConfirmDialog(getViewContext(), listSelected.size(), final_amountShow, totalFee)
-                    .setOnCancelListener(Dialog::dismiss)
-                    .setOnOkListener(confirmDialog -> {
-                        confirmDialog.dismiss();
-                        InfoVerify infoVerify = new InfoVerify();//llVerifyImage.setVisibility(View.VISIBLE);
-                        if (llVerifyInfo.getVisibility() == View.VISIBLE || llVerifyImage.getVisibility() == View.VISIBLE) {//llCaptureVerify -> llVerifyImage
-                            infoVerify.setReceiverPIDWhere(edtGTTTLocatedAccepted.getText().toString());
-                            infoVerify.setReceiverAddressDetail(edtUserAddress.getText().toString());
-                            infoVerify.setReceiverPIDDate(edtGTTTDateAccepted.getText().toString());
-                            infoVerify.setReceiverBirthday(edtDateOfBirth.getText().toString());
-                            infoVerify.setGtgt(tvGTTT.getText().toString());
-                            if (authenType == 0)
-                                infoVerify.setAuthenType(3);
+            new ConfirmDialog(getViewContext(), listSelected.size(), final_amountShow, totalFee).setOnCancelListener(Dialog::dismiss).setOnOkListener(confirmDialog -> {
+                confirmDialog.dismiss();
+                InfoVerify infoVerify = new InfoVerify();//llVerifyImage.setVisibility(View.VISIBLE);
+                if (llVerifyInfo.getVisibility() == View.VISIBLE || llVerifyImage.getVisibility() == View.VISIBLE) {//llCaptureVerify -> llVerifyImage
+                    infoVerify.setReceiverPIDWhere(edtGTTTLocatedAccepted.getText().toString());
+                    infoVerify.setReceiverAddressDetail(edtUserAddress.getText().toString());
+                    infoVerify.setReceiverPIDDate(edtGTTTDateAccepted.getText().toString());
+                    infoVerify.setReceiverBirthday(edtDateOfBirth.getText().toString());
+                    infoVerify.setGtgt(tvGTTT.getText().toString());
+                    if (authenType == 0) infoVerify.setAuthenType(3);
+                    else infoVerify.setAuthenType(authenType);
+                }
+                // baophat thanh cong
+                if (mDeliveryType == 2) {
+                    if (!TextUtils.isEmpty(edtOtherRelationship.getText())) {
+                        mPresenter.paymentDelivery(mFile, mFileAvatar + ";" + mFileVerify + ";" + mFileOther, mSign, edtReceiverName.getText().toString(), edtOtherRelationship.getText().toString(), infoVerify, checkBoxedtCod.isChecked(), tiem_tam, edtNote.getText().toString(), IsExchange, mBuuCuc, mTuyen, mExchangeLadingCode, mExchangeDeliveryDate, mExchangeDeliveryTime, mExchangeDetails, imgAnhHoanTra, idXaphuong, idQuanhuyen, phoneCodeEdit.getId());
+                    } else {
+                        mPresenter.paymentDelivery(mFile, mFileAvatar + ";" + mFileVerify + ";" + mFileOther, mSign, edtReceiverName.getText().toString(), edtRelationship.getText().toString(), infoVerify, checkBoxedtCod.isChecked(), tiem_tam, edtNote.getText().toString(), IsExchange, mBuuCuc, mTuyen, mExchangeLadingCode, mExchangeDeliveryDate, mExchangeDeliveryTime, mExchangeDetails, imgAnhHoanTra, idXaphuong, idQuanhuyen, phoneCodeEdit.getId());
+                    }
+                } else {
+                    if (totalAmount > 0) {
+                        int amount = Integer.parseInt(et_pt_amount.getText().toString().replaceAll("\\.", ""));
+                        if (!TextUtils.isEmpty(et_pt_amount.getText())) {
+                            if (amount <= totalAmount) deliveryPartial(infoVerify, amount);
                             else
-                                infoVerify.setAuthenType(authenType);
-                        }
-                        // baophat thanh cong
-                        if (mDeliveryType == 2) {
-                            if (!TextUtils.isEmpty(edtOtherRelationship.getText())) {
-                                mPresenter.paymentDelivery(mFile, mFileAvatar + ";" + mFileVerify + ";" +
-                                                mFileOther, mSign, edtReceiverName.getText().toString(),
-                                        edtOtherRelationship.getText().toString(), infoVerify, checkBoxedtCod.isChecked(),
-                                        tiem_tam, edtNote.getText().toString()
-                                        , IsExchange, mBuuCuc, mTuyen,
-                                        mExchangeLadingCode, mExchangeDeliveryDate,
-                                        mExchangeDeliveryTime, mExchangeDetails, imgAnhHoanTra, idXaphuong, idQuanhuyen, phoneCodeEdit.getId());
-                            } else {
-                                mPresenter.paymentDelivery(mFile, mFileAvatar + ";" + mFileVerify + ";" + mFileOther
-                                        , mSign, edtReceiverName.getText().toString(),
-                                        edtRelationship.getText().toString(), infoVerify,
-                                        checkBoxedtCod.isChecked(), tiem_tam, edtNote.getText().toString()
-                                        , IsExchange, mBuuCuc, mTuyen,
-                                        mExchangeLadingCode, mExchangeDeliveryDate,
-                                        mExchangeDeliveryTime, mExchangeDetails, imgAnhHoanTra, idXaphuong, idQuanhuyen, phoneCodeEdit.getId());
-                            }
-                        } else {
-                            if (totalAmount > 0) {
-                                int amount = Integer.parseInt(et_pt_amount.getText().toString().replaceAll("\\.", ""));
-                                if (!TextUtils.isEmpty(et_pt_amount.getText())) {
-                                    if (amount <= totalAmount)
-                                        deliveryPartial(infoVerify, amount);
-                                    else
-                                        Toast.showToast(getContext(), "Số tiền COD phát lớn hơn tổng tiền COD");
-                                } else
-                                    Toast.showToast(getContext(), "Bạn chưa nhập số tiền COD phát");
-                            } else deliveryPartial(infoVerify, 0);
-                        }
-                    })
-                    .setWarning(getViewContext().getString(R.string.are_you_sure_deliver_successfully))
-                    .show();
+                                Toast.showToast(getContext(), "Số tiền COD phát lớn hơn tổng tiền COD");
+                        } else Toast.showToast(getContext(), "Bạn chưa nhập số tiền COD phát");
+                    } else deliveryPartial(infoVerify, 0);
+                }
+            }).setWarning(getViewContext().getString(R.string.are_you_sure_deliver_successfully)).show();
         } else if (mDeliveryType == 1) {
             if (TextUtils.isEmpty(tv_reason.getText())) {
                 Toast.showToast(tv_reason.getContext(), getViewContext().getString(R.string.please_pick_reason));
@@ -2177,59 +2121,74 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             String mess = null;
 
             mess = "Danh sách bưu gửi có Tổng phí hủy đơn hàng: " + "<font color=\"red\">" + String.format("%s", NumberUtils.formatPriceNumber(t)) + "</font>" + " VNĐ, bạn có thu đủ tiền hay không?";
+            String timeDukien = TimeUtils.convertDateToString(calendarDuKien.getTime(), TimeUtils.DATE_FORMAT_18).replaceAll("/", "");
+
+            if (mReasonInfo.getCode().equals("02")) {
+                if (mSolutionInfo.getCode().equals("C") || mSolutionInfo.getCode().equals("I") || mSolutionInfo.getCode().equals("A") || mSolutionInfo.getCode().equals("R")) {
+                    if (idTinhnew == 0) {
+                        tv_tinhtp_new.setTextColor(getViewContext().getResources().getColor(R.color.red));
+                        tv_tinhtp_new.setText("Vui lòng chọn Tỉnh/ Thành Phố");
+//                        Toast.showToast(getViewContext(), "Vui lòng chọn địa chỉ mới");
+                        return;
+                    }
+                    if (idQuanHuyenNew == 0) {
+                        tv_quanhuyen_new.setTextColor(getViewContext().getResources().getColor(R.color.red));
+                        tv_quanhuyen_new.setText("Vui lòng chọn Quận/Huyện");
+//                        tv_quanhuyen_new.setError("Vui lòng chọn ");
+//                        Toast.showToast(getViewContext(), "Vui lòng chọn địa chỉ mới");
+                        return;
+                    }
+                    if (idXaPhuongNew == 0) {
+                        tv_xaphuong_new.setTextColor(getViewContext().getResources().getColor(R.color.red));
+                        tv_xaphuong_new.setText("Vui lòng chọn Xã/ Phường");
+//                        tv_xaphuong_new.setError("Vui lòng chọn Xã/ Phường");
+//                        Toast.showToast(getViewContext(), "Vui lòng chọn địa chỉ mới");
+                        return;
+                    }
+                    if (tv_Description_new.getText().toString().trim().isEmpty()) {
+                        Toast.showToast(getViewContext(), "Vui lòng nhập ghi chú");
+                        tv_Description_new.requestFocus();
+                        return;
+                    }
+                    diachiNew = "";
+                    diachiNew = idTinhnew + ";" + idQuanHuyenNew + ";" + idXaPhuongNew;
+                    ghichunew = tv_Description_new.getText().toString().trim();
+                    timeDukien = "0";
+                    doiTuong = "";
+                }
+            }
+            if (mReasonInfo.getCode().equals("71")) {
+                if (mSolutionInfo.getCode().equals("A") || mSolutionInfo.getCode().equals("I") || mSolutionInfo.getCode().equals("R")) {
+                    diachiNew = "";
+                    ghichunew = "";
+                    hinhthucPhat = "";
+                }
+            }
 
             if (cbSelected.isChecked()) {
-                new ConfirmPhiHuyDonHangDialog(getViewContext(),
-                        listSelected.size(), t)
-                        .setOnCallBacklClickListener(confirmDialog -> {
-                            confirmDialog.dismiss();
-                        })
-                        .setOnCancelListener((ConfirmPhiHuyDonHangDialog.OnCancelClickListener) confirmDialog1 -> {
-                            confirmDialog1.dismiss();
-                            new DialogNhapKhongThanhCong(getViewContext(), new IdCallback() {
-                                @Override
-                                public void onResponse(String id) {
-                                    mPresenter.submitToPNS(
-                                            mReasonInfo.getCode(),
-                                            mSolutionInfo.getCode(),
-                                            tv_Description.getText().toString(),
-                                            mFile,
-                                            mFileAvatar + ";" + mFileVerify + ";" + mFileOther,
-                                            mSign,
-                                            time, false, id, idXaphuong,idQuanhuyen);
-                                }
-                            }).show();
-                        })
-                        .setOnOkListener(confirmDialog -> {
-                            confirmDialog.dismiss();
-                            mPresenter.submitToPNS(
-                                    mReasonInfo.getCode(),
-                                    mSolutionInfo.getCode(),
-                                    tv_Description.getText().toString(),
-                                    mFile,
-                                    mFileAvatar + ";" + mFileVerify + ";" + mFileOther,
-                                    mSign,
-                                    time, true, "", idXaphuong,idQuanhuyen);
-                        })
-                        .setWarning(mess)
-                        .show();
+                String finalTimeDukien = timeDukien;
+                String finalTimeDukien1 = timeDukien;
+                new ConfirmPhiHuyDonHangDialog(getViewContext(), listSelected.size(), t).setOnCallBacklClickListener(confirmDialog -> {
+                    confirmDialog.dismiss();
+                }).setOnCancelListener((ConfirmPhiHuyDonHangDialog.OnCancelClickListener) confirmDialog1 -> {
+                    confirmDialog1.dismiss();
+                    new DialogNhapKhongThanhCong(getViewContext(), new IdCallback() {
+                        @Override
+                        public void onResponse(String id) {
+                            mPresenter.submitToPNS(mReasonInfo.getCode(), mSolutionInfo.getCode(), tv_Description.getText().toString(), mFile, mFileAvatar + ";" + mFileVerify + ";" + mFileOther, mSign, time, false, id, idXaphuong, idQuanhuyen, diachiNew, hinhthucPhat, ghichunew, doiTuong, Integer.parseInt(finalTimeDukien));
+                        }
+                    }).show();
+                }).setOnOkListener(confirmDialog -> {
+                    confirmDialog.dismiss();
+                    mPresenter.submitToPNS(mReasonInfo.getCode(), mSolutionInfo.getCode(), tv_Description.getText().toString(), mFile, mFileAvatar + ";" + mFileVerify + ";" + mFileOther, mSign, time, true, "", idXaphuong, idQuanhuyen, diachiNew, hinhthucPhat, ghichunew, doiTuong, Integer.parseInt(finalTimeDukien1));
+                }).setWarning(mess).show();
 
             } else {
-                new ConfirmPKTCDialog(getViewContext(), listSelected.size())
-                        .setOnCancelListener(Dialog::dismiss)
-                        .setOnOkListener(confirmDialog -> {
-                            confirmDialog.dismiss();
-                            mPresenter.submitToPNS(
-                                    mReasonInfo.getCode(),
-                                    mSolutionInfo.getCode(),
-                                    tv_Description.getText().toString(),
-                                    mFile,
-                                    mFileAvatar + ";" + mFileVerify + ";" + mFileOther,
-                                    mSign,
-                                    time, false, "", idXaphuong,idQuanhuyen);
-                        })
-                        .setWarning(getViewContext().getString(R.string.are_you_sure_deliver_un_successfully))
-                        .show();
+                String finalTimeDukien2 = timeDukien;
+                new ConfirmPKTCDialog(getViewContext(), listSelected.size()).setOnCancelListener(Dialog::dismiss).setOnOkListener(confirmDialog -> {
+                    confirmDialog.dismiss();
+                    mPresenter.submitToPNS(mReasonInfo.getCode(), mSolutionInfo.getCode(), tv_Description.getText().toString(), mFile, mFileAvatar + ";" + mFileVerify + ";" + mFileOther, mSign, time, false, "", idXaphuong, idQuanhuyen, diachiNew, hinhthucPhat, ghichunew, doiTuong, Integer.parseInt(finalTimeDukien2));
+                }).setWarning(getViewContext().getString(R.string.are_you_sure_deliver_un_successfully)).show();
             }
 //            }
         } else if (mDeliveryType == 3) {
@@ -2355,8 +2314,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
         request.setDeliveryLat(item.getDeliveryLat());
         request.setDeliveryLon(item.getDeliveryLon());
-        request.setReceiverLat(item.getReceiverLat() == null|| item.getReceiverLat().isEmpty() ? 0.0 : Double.parseDouble(item.getReceiverLat()));
-        request.setReceiverLon(item.getReceiverLon() == null || item.getReceiverLon().isEmpty()? 0.0 : Double.parseDouble(item.getReceiverLon()));
+        request.setReceiverLat(item.getReceiverLat() == null || item.getReceiverLat().isEmpty() ? 0.0 : Double.parseDouble(item.getReceiverLat()));
+        request.setReceiverLon(item.getReceiverLon() == null || item.getReceiverLon().isEmpty() ? 0.0 : Double.parseDouble(item.getReceiverLon()));
         request.setSourceChanel("DD_ANDROID");
 
         request.setPODeliveryLat(NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLat());
@@ -2450,9 +2409,9 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             if (requestCode == Constants.CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
                 if (resultCode == getActivity().RESULT_OK) {
 
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q){
-                        attemptSendMedia(data.getData().getPath().replace("///","//"), 0);
-                    }else {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        attemptSendMedia(data.getData().getPath().replace("///", "//"), 0);
+                    } else {
                         attemptSendMedia(data.getData().getPath(), 0);
 
                     }
@@ -2468,7 +2427,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                     System.out.println("File Path : " + file.getPath() + ", File size : " + length + " KB");
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -2480,8 +2439,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         bmp.compress(Bitmap.CompressFormat.JPEG, 60, bytes);
         @SuppressLint("SimpleDateFormat") String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
-        File f = new File(Environment.getExternalStorageDirectory()
-                + File.separator + imageFileName + ".jpg");
+        File f = new File(Environment.getExternalStorageDirectory() + File.separator + imageFileName + ".jpg");
         f.createNewFile();
         FileOutputStream fo = new FileOutputStream(f);
         fo.write(bytes.toByteArray());
@@ -2494,33 +2452,25 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     private void attemptSendMediaFolder(String path_media, int type) {
         File file = new File(path_media);
         Observable.fromCallable(() -> {
-                    Uri uri = Uri.fromFile(new File(path_media));
-                    return BitmapUtils.processingBitmap(uri, getViewContext());
-                }).subscribeOn(Schedulers.computation())
-                .observeOn(Schedulers.io())
-                .map(bitmap -> BitmapUtils.saveImage(bitmap, file.getParent(), "Process_" + file.getName(), Bitmap.CompressFormat.JPEG, 40))
-                .observeOn(AndroidSchedulers.mainThread()).subscribe(
-                        isSavedImage -> {
-                            if (true) {
-                                String path = file.getParent() + File.separator + "Process_" + file.getName();
-                                // mSignPosition = false;
-                                //mPresenter.postImageAvatar(pathAvatar);
-                                if (isCaptureAvatar) {
-                                    mPresenter.postImageAvatar(path);
-                                } else {
-                                    mPresenter.postImage(path);
-                                }
-                                if (type == 0)
-                                    if (file.exists())
-                                        file.delete();
-                            } else {
-                                String path = file.getParent() + File.separator + "Process_" + file.getName();
-                                Log.d("ASDASDSADasd", path);
-                                mPresenter.postImage(path_media);
-                            }
-                        },
-                        onError -> Logger.e("error save image")
-                );
+            Uri uri = Uri.fromFile(new File(path_media));
+            return BitmapUtils.processingBitmap(uri, getViewContext());
+        }).subscribeOn(Schedulers.computation()).observeOn(Schedulers.io()).map(bitmap -> BitmapUtils.saveImage(bitmap, file.getParent(), "Process_" + file.getName(), Bitmap.CompressFormat.JPEG, 40)).observeOn(AndroidSchedulers.mainThread()).subscribe(isSavedImage -> {
+            if (true) {
+                String path = file.getParent() + File.separator + "Process_" + file.getName();
+                // mSignPosition = false;
+                //mPresenter.postImageAvatar(pathAvatar);
+                if (isCaptureAvatar) {
+                    mPresenter.postImageAvatar(path);
+                } else {
+                    mPresenter.postImage(path);
+                }
+                if (type == 0) if (file.exists()) file.delete();
+            } else {
+                String path = file.getParent() + File.separator + "Process_" + file.getName();
+                Log.d("ASDASDSADasd", path);
+                mPresenter.postImage(path_media);
+            }
+        }, onError -> Logger.e("error save image"));
     }
 
     public static File bitmapToFile(Context context, Bitmap bitmap, String fileNameToSave) { // File name like "image.png"
@@ -2550,31 +2500,23 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     private void attemptSendMedia(String path_media, int type) {
         File file = new File(path_media);
         Observable.fromCallable(() -> {
-                    Uri uri = Uri.fromFile(new File(path_media));
-                    return BitmapUtils.processingBitmap(uri, getViewContext());
-                }).subscribeOn(Schedulers.computation())
-                .observeOn(Schedulers.io())
-                .map(bitmap -> BitmapUtils.saveImage(bitmap, file.getParent(), "Process_" + file.getName(), Bitmap.CompressFormat.JPEG, 40))
-                .observeOn(AndroidSchedulers.mainThread()).subscribe(
-                        isSavedImage -> {
-                            if (isSavedImage) {
-                                String path = file.getParent() + File.separator + "Process_" + file.getName();
-                                // mSignPosition = false;
-                                //mPresenter.postImageAvatar(pathAvatar);
-                                if (isCaptureAvatar) {
-                                    mPresenter.postImageAvatar(path);
-                                } else {
-                                    mPresenter.postImage(path);
-                                }
-                                if (type == 0)
-                                    if (file.exists())
-                                        file.delete();
-                            } else {
-                                mPresenter.postImage(path_media);
-                            }
-                        },
-                        onError -> Logger.e("error save image")
-                );
+            Uri uri = Uri.fromFile(new File(path_media));
+            return BitmapUtils.processingBitmap(uri, getViewContext());
+        }).subscribeOn(Schedulers.computation()).observeOn(Schedulers.io()).map(bitmap -> BitmapUtils.saveImage(bitmap, file.getParent(), "Process_" + file.getName(), Bitmap.CompressFormat.JPEG, 40)).observeOn(AndroidSchedulers.mainThread()).subscribe(isSavedImage -> {
+            if (isSavedImage) {
+                String path = file.getParent() + File.separator + "Process_" + file.getName();
+                // mSignPosition = false;
+                //mPresenter.postImageAvatar(pathAvatar);
+                if (isCaptureAvatar) {
+                    mPresenter.postImageAvatar(path);
+                } else {
+                    mPresenter.postImage(path);
+                }
+                if (type == 0) if (file.exists()) file.delete();
+            } else {
+                mPresenter.postImage(path_media);
+            }
+        }, onError -> Logger.e("error save image"));
     }
 
     private void showUIReason() {
@@ -2584,27 +2526,27 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 items.add(new Item(item.getCode(), item.getName()));
             }
         }
-        new PickerDialog(getViewContext(), "Chọn lý do", items,
-                item -> {
-                    for (ReasonInfo info : mListReason) {
-                        if (item.getValue().equals(info.getCode())) {
-                            mReasonInfo = info;
-                            break;
-                        }
-                    }
-                    if (mReasonInfo != null) {
-                        tv_reason.setText(mReasonInfo.getName());
-                        mListSolution = null;
-                        tv_solution.setText("");
-                        mReloadSolution = true;
-                        loadSolution();
-                    }
-                }).show();
+        new PickerDialog(getViewContext(), "Chọn lý do", items, item -> {
+            for (ReasonInfo info : mListReason) {
+                if (item.getValue().equals(info.getCode())) {
+                    mReasonInfo = info;
+                    break;
+                }
+            }
+            if (mReasonInfo != null) {
+                tv_reason.setText(mReasonInfo.getName());
+                mListSolution = null;
+                tv_solution.setText("");
+                mReloadSolution = true;
+                loadSolution();
+                tv_diachi_khac.setVisibility(View.GONE);
+                ll_thoi_gian_du_kien.setVisibility(View.GONE);
+            }
+        }).show();
     }
 
     private void loadSolution() {
-        if (mReasonInfo != null)
-            mPresenter.loadSolution(mReasonInfo.getCode());
+        if (mReasonInfo != null) mPresenter.loadSolution(mReasonInfo.getCode());
     }
 
     @Override
@@ -2643,8 +2585,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                     mClickSolution = true;
                 }
             }
-            if (mClickSolution)
-                showUISolution();
+            if (mClickSolution) showUISolution();
         }
     }
 
@@ -2672,45 +2613,24 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     @Override
     public void showPaymentV2Success(String message, String data) {
         if (null != getViewContext()) {
-            new SweetAlertDialog(getViewContext())
-                    .setTitleText("Thông báo")
-                    .setContentText(message)
-                    .setConfirmText("Ok")
-                    .setConfirmClickListener(v -> {
-                        v.dismiss();
-                        mData = data;
-//                        mTypeTrangThai = 1;
-//                        if (getItemSelected().size() > 1) {
-//                            mDeliveryType = 3;
-//                        }
-//                        DataModel dataModel = new DataModel();
-//                        dataModel = NetWorkController.getGson().fromJson(data, DataModel.class);
-//
-//                        try {
-//                            if (dataModel.getError().length() > 0)
-//                                mTypeTrangThai = 2;
-//                        } catch (Exception e) {
-//                        }
-
-                        hideProgress();
-                        finishView();
-                    }).show();
+            new SweetAlertDialog(getViewContext()).setTitleText("Thông báo").setContentText(message).setConfirmText("Ok").setConfirmClickListener(v -> {
+                v.dismiss();
+                mData = data;
+                hideProgress();
+                finishView();
+            }).show();
         } else showSuccessToast(message);
     }
 
     @Override
     public void showPaymentV2Error(String message) {
         if (null != getViewContext()) {
-            new SweetAlertDialog(getViewContext())
-                    .setTitleText("Thông báo")
-                    .setContentText(message)
-                    .setConfirmText("Ok")
-                    .setConfirmClickListener(v -> {
-                        v.dismiss();
-                        mTypeTrangThai = 2; // bao phat that bai
-                        hideProgress();
-                        finishView();
-                    }).show();
+            new SweetAlertDialog(getViewContext()).setTitleText("Thông báo").setContentText(message).setConfirmText("Ok").setConfirmClickListener(v -> {
+                v.dismiss();
+                mTypeTrangThai = 2; // bao phat that bai
+                hideProgress();
+                finishView();
+            }).show();
         } else showSuccessToast(message);
     }
 
@@ -2722,14 +2642,13 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             }
         }
         if (pickerUIRoute == null) {
-            pickerUIRoute = new ItemBottomSheetPickerUIFragment(items, getViewContext().getString(R.string.pick_route),
-                    (item, position) -> {
-                        tv_route.setText(item.getText());
-                        mRouteInfo = mListRoute.get(position);
-                        mListPostman = null;
-                        tv_postman.setText("");
-                        mPresenter.getPostman(userInfo.getUnitCode(), Integer.parseInt(item.getValue()), "D");
-                    }, 0);
+            pickerUIRoute = new ItemBottomSheetPickerUIFragment(items, getViewContext().getString(R.string.pick_route), (item, position) -> {
+                tv_route.setText(item.getText());
+                mRouteInfo = mListRoute.get(position);
+                mListPostman = null;
+                tv_postman.setText("");
+                mPresenter.getPostman(userInfo.getUnitCode(), Integer.parseInt(item.getValue()), "D");
+            }, 0);
             pickerUIRoute.show(getActivity().getSupportFragmentManager(), pickerUIRoute.getTag());
         } else {
             pickerUIRoute.setData(items, 0);
@@ -2750,11 +2669,10 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 }
             }
             if (pickerUIPostman == null) {
-                pickerUIPostman = new ItemBottomSheetPickerUIFragment(items, getViewContext().getString(R.string.pick_postman),
-                        (item, position) -> {
-                            tv_postman.setText(item.getText());
-                            mPostmanInfo = mListPostman.get(position);
-                        }, 0);
+                pickerUIPostman = new ItemBottomSheetPickerUIFragment(items, getViewContext().getString(R.string.pick_postman), (item, position) -> {
+                    tv_postman.setText(item.getText());
+                    mPostmanInfo = mListPostman.get(position);
+                }, 0);
                 pickerUIPostman.show(getActivity().getSupportFragmentManager(), pickerUIPostman.getTag());
             } else {
                 pickerUIPostman.setData(items, 0);
@@ -2856,49 +2774,60 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     @Override
     public void showCheckAmountPaymentError(String message, String amountPP, String amountPNS) {
         if (null != getViewContext()) {
-            new SweetAlertDialog(getViewContext(), SweetAlertDialog.NORMAL_TYPE)
-                    .setTitleText(getString(R.string.notification))
-                    .setContentText(message + "\nTiền trên hệ thông Paypost: " + amountPP
-                            + "\nTiền trên hệ thông PNS: " + amountPNS
-                            + " \nBạn có muốn cập nhật theo số tiền trên PayPost không?")
-                    .setCancelText(getString(R.string.no))
-                    .setConfirmText(getString(R.string.yes))
-                    .setCancelClickListener(v -> {
-                        mPresenter.paymentV2(false);
-                        v.dismiss();
-                        hideProgress();
-                    })
-                    .setConfirmClickListener(v -> {
-                        mPresenter.paymentV2(true);
-                        v.dismiss();
-                        hideProgress();
-                    })
-                    .show();
+            new SweetAlertDialog(getViewContext(), SweetAlertDialog.NORMAL_TYPE).setTitleText(getString(R.string.notification)).setContentText(message + "\nTiền trên hệ thông Paypost: " + amountPP + "\nTiền trên hệ thông PNS: " + amountPNS + " \nBạn có muốn cập nhật theo số tiền trên PayPost không?").setCancelText(getString(R.string.no)).setConfirmText(getString(R.string.yes)).setCancelClickListener(v -> {
+                mPresenter.paymentV2(false);
+                v.dismiss();
+                hideProgress();
+            }).setConfirmClickListener(v -> {
+                mPresenter.paymentV2(true);
+                v.dismiss();
+                hideProgress();
+            }).show();
         }
     }
 
     @Override
-    public void showSuccess(String code, String id) {
-        if (null != getViewContext()) {
+    public void showSuccess(String code, String id, String mess) {
+        if (mBaoPhatBangke.size() > 1) {
+            if (null != getViewContext()) {
+                if (code.equals("00")) {
+                    mDeliverySuccess += 1;
+                    mDataList.add(id);
+                } else {
+                    mDeliveryError += 1;
+                }
+
+                int total = mDeliverySuccess + mDeliveryError;
+                if (total == getItemSelected().size()) {
+                    DataModel dataModel = new DataModel();
+                    dataModel.setSuccess(mDataList);
+                    dataModel.setError(new ArrayList<>());
+                    mData = NetWorkController.getGson().toJson(dataModel, DataModel.class);
+                    mTypeTrangThai = 1;// baso phat thanh cong
+                    Log.d("asdasda123khiem", mData + "");
+                    showFinish(mTypeTrangThai);
+                }
+            }
+        } else {
             if (code.equals("00")) {
-                mDeliverySuccess += 1;
-                mDataList.add(id);
+                new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE).setConfirmText("Đóng").setTitleText(getString(R.string.notification)).setContentText(mess).setConfirmClickListener(sweetAlertDialog -> {
+                    sweetAlertDialog.dismiss();
+                    DataModel dataModel = new DataModel();
+                    mDataList.add(id);
+                    dataModel.setSuccess(mDataList);
+                    dataModel.setError(new ArrayList<>());
+                    mData = NetWorkController.getGson().toJson(dataModel, DataModel.class);
+                    mTypeTrangThai = 1;// baso phat thanh cong
+                    finishView();
+//                    showFinish(mTypeTrangThai);
+                }).show();
             } else {
-                mDeliveryError += 1;
+                new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE).setConfirmText("Đóng").setTitleText(getString(R.string.notification)).setContentText(mess).setConfirmClickListener(sweetAlertDialog -> {
+                    sweetAlertDialog.dismiss();
+                }).show();
             }
 
-            int total = mDeliverySuccess + mDeliveryError;
-            if (total == getItemSelected().size()) {
-                DataModel dataModel = new DataModel();
-                dataModel.setSuccess(mDataList);
-                dataModel.setError(new ArrayList<>());
-                mData = NetWorkController.getGson().toJson(dataModel, DataModel.class);
-                mTypeTrangThai = 1;// baso phat thanh cong
-                Log.d("asdasda123khiem", mData + "");
 
-                showFinish(mTypeTrangThai);
-
-            }
         }
     }
 
@@ -2913,15 +2842,11 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     private void showFinish(int type) {
         hideProgress();
         if (getActivity() != null) {
-            new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
-                    .setConfirmText("OK")
-                    .setTitleText(getString(R.string.notification))
-                    .setContentText("Báo phát BD13 hoàn tất. Thành công [" + mDeliverySuccess + "] thất bại [" + mDeliveryError + "]")
-                    .setConfirmClickListener(sweetAlertDialog -> {
-                        sweetAlertDialog.dismiss();
-                        finishView();
+            new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE).setConfirmText("OK").setTitleText(getString(R.string.notification)).setContentText("Báo phát BD13 hoàn tất. Thành công [" + mDeliverySuccess + "] thất bại [" + mDeliveryError + "]").setConfirmClickListener(sweetAlertDialog -> {
+                sweetAlertDialog.dismiss();
+                finishView();
 
-                    }).show();
+            }).show();
         }
     }
 
@@ -2936,8 +2861,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
     @Override
     public List<DeliveryPostman> getItemSelected() {
-        if (null != adapter)
-            return adapter.getItemsSelected();
+        if (null != adapter) return adapter.getItemsSelected();
         else return new ArrayList<>();
     }
 
@@ -2956,12 +2880,10 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
     private boolean checkSameAddress() {
         List<DeliveryPostman> itemSelected = getItemSelected();
-        if (null == itemSelected || 0 == itemSelected.size())
-            return false;
+        if (null == itemSelected || 0 == itemSelected.size()) return false;
         DeliveryPostman firstItem = itemSelected.get(0);
         for (int i = 1; i < itemSelected.size(); i++) {
-            if (!firstItem.getReciverName().equals(itemSelected.get(i).getReciverName())
-                    || !firstItem.getReciverAddress().equals(itemSelected.get(i).getReciverAddress()))
+            if (!firstItem.getReciverName().equals(itemSelected.get(i).getReciverName()) || !firstItem.getReciverAddress().equals(itemSelected.get(i).getReciverAddress()))
                 return false;
         }
         return true;
@@ -2974,19 +2896,28 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             for (SolutionInfo item : mListSolution) {
                 items.add(new Item(item.getCode(), item.getName()));
             }
-            new PickerDialog(getViewContext(), getString(R.string.pick_solution)
-                    , items,
-                    item -> {
-                        for (SolutionInfo info : mListSolution) {
-                            if (item.getValue().equals(info.getCode())) {
-                                mSolutionInfo = info;
-                                break;
-                            }
-                        }
-                        if (mSolutionInfo != null) {
-                            tv_solution.setText(mSolutionInfo.getName());
-                        }
-                    }).show();
+            new PickerDialog(getViewContext(), getString(R.string.pick_solution), items, item -> {
+                for (SolutionInfo info : mListSolution) {
+                    if (item.getValue().equals(info.getCode())) {
+                        mSolutionInfo = info;
+                        break;
+                    }
+                }
+                if (mSolutionInfo != null) {
+                    tv_solution.setText(mSolutionInfo.getName());
+                }
+                if (mReasonInfo.getCode().equals("02")) {
+                    if (mSolutionInfo.getCode().equals("C") || mSolutionInfo.getCode().equals("I") || mSolutionInfo.getCode().equals("A") || mSolutionInfo.getCode().equals("R")) {
+                        tv_diachi_khac.setVisibility(View.VISIBLE);
+                    } else tv_diachi_khac.setVisibility(View.GONE);
+                }
+
+                if (mReasonInfo.getCode().equals("71")) {
+                    if (mSolutionInfo.getCode().equals("A") || mSolutionInfo.getCode().equals("I") || mSolutionInfo.getCode().equals("R")) {
+                        ll_thoi_gian_du_kien.setVisibility(View.VISIBLE);
+                    } else ll_thoi_gian_du_kien.setVisibility(View.GONE);
+                }
+            }).show();
         }
     }
 
@@ -3069,8 +3000,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     }
 
     private boolean canVerify() {
-        if (getAuthenType() == -1 || getAuthenType() == -2)
-            return false;
+        if (getAuthenType() == -1 || getAuthenType() == -2) return false;
         else return true;
     }
 
@@ -3198,9 +3128,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         this.phoneCodeEdit = phoneCodeEdit;
         Intent intent = new Intent(Intent.ACTION_CALL);
         intent.setData(Uri.parse("tel:" + phoneCodeEdit.getPhoneNumber()));
-        if (ContextCompat.checkSelfPermission(getActivity(),
-                Manifest.permission.CALL_PHONE)
-                != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(getActivity(), new String[]{CALL_PHONE}, REQUEST_CODE_ASK_PERMISSIONS);
         } else {
             startActivity(intent);
@@ -3210,9 +3138,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     private void callProvidertoCSKH(String phone) {
         Intent intent = new Intent(Intent.ACTION_CALL);
         intent.setData(Uri.parse("tel:" + phone));
-        if (ContextCompat.checkSelfPermission(getActivity(),
-                Manifest.permission.CALL_PHONE)
-                != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
 
             ActivityCompat.requestPermissions(getActivity(), new String[]{CALL_PHONE}, REQUEST_CODE_ASK_PERMISSIONS);
         } else {
@@ -3230,6 +3156,18 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     public void showQuanHuyen(List<DistrictModels> list) {
         mListQuanHuyen = new ArrayList<>();
         mListQuanHuyen = list;
+    }
+
+    @Override
+    public void showXaPhuongNew(List<WardModels> list) {
+        mListXaPhuongNew = new ArrayList<>();
+        mListXaPhuongNew = list;
+    }
+
+    @Override
+    public void showQuanHuyenNew(List<DistrictModels> list) {
+        mListQuanHuyenNew = new ArrayList<>();
+        mListQuanHuyenNew = list;
     }
 
     private void showXaPhuong() {
@@ -3265,4 +3203,78 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         }).show();
     }
 
+    List<ProvinceModels> mListTinhThanhPhoNew = new ArrayList<>();
+    List<DistrictModels> mListQuanHuyenNew = new ArrayList<>();
+    List<WardModels> mListXaPhuongNew = new ArrayList<>();
+    int idTinhnew, idQuanHuyenNew, idXaPhuongNew;
+
+    @Override
+    public void showTinhThanhPho(List<ProvinceModels> list) {
+        mListTinhThanhPhoNew = new ArrayList<>();
+        mListTinhThanhPhoNew = list;
+    }
+
+    private void showTinhThanhPho() {
+        ArrayList<Item> items = new ArrayList<>();
+        int i = 0;
+        for (ProvinceModels item : mListTinhThanhPhoNew) {
+            items.add(new Item(String.valueOf(item.getProvinceId()), item.getProvinceName()));
+            i++;
+        }
+        new DialogReason(getViewContext(), "Chọn Tỉnh/Thành Phố", items, new PickerCallback() {
+            @Override
+            public void onClickItem(Item item) {
+                tv_tinhtp_new.setText(item.getText().trim());
+                tv_tinhtp_new.setTextColor(getViewContext().getResources().getColor(R.color.black));
+                idTinhnew = Integer.parseInt(item.getValue());
+                idXaPhuongNew = 0;
+                tv_xaphuong_new.setText("");
+                idQuanHuyenNew = 0;
+                tv_quanhuyen_new.setText("");
+                mListQuanHuyenNew = new ArrayList<>();
+                mListXaPhuongNew = new ArrayList<>();
+                mPresenter.getQuanHuyenNew(idTinhnew);
+
+            }
+        }).show();
+    }
+
+    private void showXaPhuongNew() {
+        ArrayList<Item> items = new ArrayList<>();
+        int i = 0;
+        for (WardModels item : mListXaPhuongNew) {
+            items.add(new Item(String.valueOf(item.getWardsId()), item.getWardsName()));
+            i++;
+        }
+        new DialogReason(getViewContext(), "Chọn Xã/Phường", items, new PickerCallback() {
+            @Override
+            public void onClickItem(Item item) {
+                tv_xaphuong_new.setText(item.getText());
+                tv_xaphuong_new.setTextColor(getViewContext().getResources().getColor(R.color.black));
+                idXaPhuongNew = Integer.parseInt(item.getValue());
+            }
+        }).show();
+    }
+
+    private void showQuanHuyenNew() {
+        ArrayList<Item> items = new ArrayList<>();
+        int i = 0;
+        for (DistrictModels item : mListQuanHuyenNew) {
+            items.add(new Item(String.valueOf(item.getDistrictId()), item.getDistrictName()));
+            i++;
+        }
+        new DialogReason(getViewContext(), "Chọn Quận/Huyện", items, new PickerCallback() {
+            @Override
+            public void onClickItem(Item item) {
+                tv_quanhuyen_new.setText(item.getText());
+                tv_quanhuyen_new.setTextColor(getViewContext().getResources().getColor(R.color.black));
+                idQuanHuyenNew = Integer.parseInt(item.getValue());
+                idXaPhuongNew = 0;
+                tv_xaphuong_new.setText("");
+                mListXaPhuongNew = new ArrayList<>();
+                mPresenter.getQuanHuyenNew(idTinhnew);
+                mPresenter.getXaPhuongNew(idQuanHuyenNew);
+            }
+        }).show();
+    }
 }

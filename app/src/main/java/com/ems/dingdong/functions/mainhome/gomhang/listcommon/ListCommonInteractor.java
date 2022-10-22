@@ -11,6 +11,8 @@ import com.ems.dingdong.network.NetWorkControllerGateWay;
 
 import java.util.ArrayList;
 
+import io.reactivex.Single;
+
 /**
  * The CommonObject interactor
  */
@@ -34,5 +36,10 @@ class ListCommonInteractor extends Interactor<ListCommonContract.Presenter>
     @Override
     public void confirmAllOrderPostman(ArrayList<ConfirmOrderPostman> request, CommonCallback<SimpleResult> callback) {
         NetWorkControllerGateWay.confirmAllOrderPostman(request, callback);
+    }
+
+    @Override
+    public Single<SimpleResult> ddGetDichVuMpit() {
+        return NetWorkControllerGateWay.ddGetDichVuMpit();
     }
 }

@@ -4,6 +4,6 @@
 
     <corners android:radius="@dimen/dimen_5dp" />
     <stroke
-        android:width="1dip"
+        android:width=".05dip"
         android:color="@color/grey" />
 </shape>

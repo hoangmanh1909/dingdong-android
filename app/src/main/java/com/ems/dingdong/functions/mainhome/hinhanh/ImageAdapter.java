@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.blankj.utilcode.util.UriUtils;
+import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.R;
 import com.ems.dingdong.model.Item;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -74,7 +75,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.HolderView> 
             if (TextUtils.isEmpty(item.getValue())) {
                 ivPackage.getHierarchy().setPlaceholderImage(R.drawable.ic_add_plus);
             } else {
-                picUri = UriUtils.file2Uri(new File(item.getValue()));
+//                picUri = UriUtils.file2Uri(new File(item.getValue()));
                 ivPackage.setImageURI(item.getValue());
                 itemView.setOnClickListener(view -> {
                     File file = new File(item.getValue());

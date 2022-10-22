@@ -11,9 +11,9 @@ public class HoanTatTinRequest {
     @SerializedName("EmployeeID")
     String employeeID;
     @SerializedName("OrderID")
-    String orderID;
+    long orderID;
     @SerializedName("OrderPostmanID")
-    String orderPostmanID;
+    long orderPostmanID;
     @SerializedName("StatusCode")
     String statusCode;
     @SerializedName("Quantity")
@@ -57,9 +57,9 @@ public class HoanTatTinRequest {
     @SerializedName("CollectLon")
     private String CollectLon;
     @SerializedName("SenderLat")
-    private String SenderLat;
+    private double SenderLat;
     @SerializedName("SenderLon")
-    private String SenderLon;
+    private double SenderLon;
     @SerializedName("POCollectLat")
     private String POCollectLat;
     @SerializedName("POCollectLon")
@@ -120,6 +120,21 @@ public class HoanTatTinRequest {
         shipmentIdsV1List.add(code);
     }
 
+    public long getOrderID() {
+        return orderID;
+    }
+
+    public void setOrderID(long orderID) {
+        this.orderID = orderID;
+    }
+
+    public long getOrderPostmanID() {
+        return orderPostmanID;
+    }
+
+    public void setOrderPostmanID(long orderPostmanID) {
+        this.orderPostmanID = orderPostmanID;
+    }
 
 //    public void setShipmentCode(List<String> shipmentCode) {
 //        this.shipmentCode = shipmentCode;
@@ -129,13 +144,6 @@ public class HoanTatTinRequest {
         return employeeID;
     }
 
-    public String getOrderID() {
-        return orderID;
-    }
-
-    public String getOrderPostmanID() {
-        return orderPostmanID;
-    }
 
     public String getQuantity() {
         return quantity;
@@ -202,19 +210,19 @@ public class HoanTatTinRequest {
         CollectLon = collectLon;
     }
 
-    public String getSenderLat() {
+    public double getSenderLat() {
         return SenderLat;
     }
 
-    public void setSenderLat(String senderLat) {
+    public void setSenderLat(double senderLat) {
         SenderLat = senderLat;
     }
 
-    public String getSenderLon() {
+    public double getSenderLon() {
         return SenderLon;
     }
 
-    public void setSenderLon(String senderLon) {
+    public void setSenderLon(double senderLon) {
         SenderLon = senderLon;
     }
 
@@ -246,13 +254,6 @@ public class HoanTatTinRequest {
         this.employeeID = employeeID;
     }
 
-    public void setOrderID(String orderID) {
-        this.orderID = orderID;
-    }
-
-    public void setOrderPostmanID(String orderPostmanID) {
-        this.orderPostmanID = orderPostmanID;
-    }
 
     public void setStatusCode(String statusCode) {
         this.statusCode = statusCode;

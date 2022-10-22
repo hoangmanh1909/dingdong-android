@@ -15,6 +15,7 @@ import com.ems.dingdong.model.DingDongCancelDividedRequest;
 import com.ems.dingdong.model.DistrictModels;
 import com.ems.dingdong.model.InfoVerify;
 import com.ems.dingdong.model.PostOffice;
+import com.ems.dingdong.model.ProvinceModels;
 import com.ems.dingdong.model.ReasonInfo;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.RouteInfo;
@@ -229,7 +230,8 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
     @Override
     public void submitToPNS(String reason, String solution, String note, String deliveryImage,
                             String authenImage, String signCapture,
-                            String EstimateProcessTime, boolean ischeck, String lydo, int idXaPhuong, int idQuanhuyen) {
+                            String EstimateProcessTime, boolean ischeck, String lydo, int idXaPhuong, int idQuanhuyen, String diachinew,
+                            String hinhthucphat, String ghichu, String doituong, int ngaydukien) {
         mView.showProgress();
         Log.d("thanhkhieee", note);
         String postmanID = userInfo.getiD();
@@ -287,8 +289,8 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                     postManCode1,
                     item.getDeliveryLat(),
                     item.getDeliveryLon(),
-                    item.getReceiverLat() == null ||item.getReceiverLat().isEmpty() ? 0.0 : Double.parseDouble(item.getReceiverLat()),
-                    item.getReceiverLon() == null||item.getReceiverLon().isEmpty() ? 0.0 : Double.parseDouble(item.getReceiverLon()),
+                    item.getReceiverLat() == null || item.getReceiverLat().isEmpty() ? 0.0 : Double.parseDouble(item.getReceiverLat()),
+                    item.getReceiverLon() == null || item.getReceiverLon().isEmpty() ? 0.0 : Double.parseDouble(item.getReceiverLon()),
                     NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLat(),
                     NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLon(),
                     EstimateProcessTime, "DD_ANDROID", lydo);
@@ -296,6 +298,11 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             request.setDeliveryDistrictIdAdditional(idQuanhuyen);
             request.setCustomerCode(item.getCustomerCode());
             request.setVATCode(item.getVatCode());
+            request.setOtherAddress(diachinew);
+            request.setOtherNote(ghichu);
+            request.setOtherDeliveryForm(hinhthucphat);
+            request.setOtherRequestObject(doituong);
+            request.setOtherEstimateBackTime(ngaydukien);
 
             DeliveryUnSuccessRequest deliveryUnSuccessRequest = new DeliveryUnSuccessRequest();
             deliveryUnSuccessRequest.setData(request);
@@ -314,7 +321,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                 @Override
                 protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                     super.onSuccess(call, response);
-                    mView.showSuccess(response.body().getErrorCode(), deliveryUnSuccessRequest.getData().getLadingPostmanID());
+                    mView.showSuccess(response.body().getErrorCode(), deliveryUnSuccessRequest.getData().getLadingPostmanID(), response.body().getMessage());
                     mView.hideProgress();
                 }
 
@@ -338,8 +345,9 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                 super.onSuccess(call, response);
                 if (response.body().getErrorCode().equals("00")) {
                     mView.hideProgress();
-                    mView.showSuccess(response.body().getErrorCode(), "");
-                } else mView.showError(response.body().getMessage());
+                    mView.showSuccess(response.body().getErrorCode(), "", response.body().getMessage());
+                } else
+                    mView.showSuccess(response.body().getErrorCode(), "", response.body().getMessage());
             }
 
             @Override
@@ -384,8 +392,8 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             PaypostPaymentRequest request = new PaypostPaymentRequest();
             request.setDeliveryLat(item.getDeliveryLat());
             request.setDeliveryLon(item.getDeliveryLon());
-            request.setReceiverLat(item.getReceiverLat() == null|| item.getReceiverLat().isEmpty() ? 0.0 : Double.parseDouble(item.getReceiverLat()));
-            request.setReceiverLon(item.getReceiverLon() == null || item.getReceiverLon().isEmpty()? 0.0 : Double.parseDouble(item.getReceiverLon()));
+            request.setReceiverLat(item.getReceiverLat() == null || item.getReceiverLat().isEmpty() ? 0.0 : Double.parseDouble(item.getReceiverLat()));
+            request.setReceiverLon(item.getReceiverLon() == null || item.getReceiverLon().isEmpty() ? 0.0 : Double.parseDouble(item.getReceiverLon()));
             request.setPODeliveryLat(NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLat());
             request.setPODeliveryLon(NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLon());
             request.setPostmanID(postmanID);
@@ -559,7 +567,6 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
     @Override
     public void cancelDivided(String toPoCode, int toRouteId, int toPostmanId, String signCapture, String fileImg) {
         List<DingDongCancelDividedRequest> requests = new ArrayList<>();
-
         for (DeliveryPostman item : mView.getItemSelected()) {
             DingDongCancelDividedRequest request = new DingDongCancelDividedRequest();
             request.setAmndPOCode(userInfo.getUnitCode());
@@ -580,7 +587,9 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
-                mView.showCancelDivided(response.body().getMessage());
+                if (response.body().getErrorCode().equals("00"))
+                    mView.showCancelDivided(response.body().getMessage());
+                else Toast.showToast(getViewContext(), response.body().getMessage());
             }
 
             @Override
@@ -631,6 +640,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
 
     @Override
     public void start() {
+        getTinhThanhPho();
         for (int i = 0; i < mBaoPhatBangke.size(); i++) {
             if (!mBaoPhatBangke.get(i).getReceiverVpostcode().equals(""))
                 vietmapDecode(mBaoPhatBangke.get(i).getReceiverVpostcode(), i);
@@ -785,4 +795,75 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                     mView.hideProgress();
                 });
     }
+
+    @Override
+    public void getTinhThanhPho() {
+        mView.showProgress();
+        SharedPref sharedPref = new SharedPref(getViewContext());
+        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+        mInteractor.getTinhThanhPho(new BaseRequest(0, userInfo.getMobileNumber(), null, null))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    if (simpleResult != null && simpleResult.getErrorCode().equals("00")) {
+                        ProvinceModels[] list = NetWorkController.getGson().fromJson(simpleResult.getData(), ProvinceModels[].class);
+                        List<ProvinceModels> list1 = Arrays.asList(list);
+                        mView.showTinhThanhPho(list1);
+                        mView.hideProgress();
+                    }
+                    mView.hideProgress();
+                }, throwable -> {
+                    mView.showErrorToast(throwable.getMessage());
+                    mView.hideProgress();
+                });
+    }
+
+
+    @Override
+    public void getXaPhuongNew(int id) {
+        mView.showProgress();
+        SharedPref sharedPref = new SharedPref(getViewContext());
+        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+        mInteractor.getXaPhuong(new BaseRequest(id, userInfo.getMobileNumber(), null, null))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    if (simpleResult != null && simpleResult.getErrorCode().equals("00")) {
+                        WardModels[] list = NetWorkController.getGson().fromJson(simpleResult.getData(), WardModels[].class);
+                        List<WardModels> list1 = Arrays.asList(list);
+                        mView.showXaPhuongNew(list1);
+                        mView.hideProgress();
+                    }
+                    mView.hideProgress();
+                }, throwable -> {
+                    mView.showErrorToast(throwable.getMessage());
+                    mView.hideProgress();
+                });
+    }
+
+    @Override
+    public void getQuanHuyenNew(int id) {
+        mView.showProgress();
+        SharedPref sharedPref = new SharedPref(getViewContext());
+        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+        mInteractor.getQuanHuyen(new BaseRequest(id, userInfo.getMobileNumber(), null, null))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    if (simpleResult != null && simpleResult.getErrorCode().equals("00")) {
+                        DistrictModels[] list = NetWorkController.getGson().fromJson(simpleResult.getData(), DistrictModels[].class);
+                        List<DistrictModels> list1 = Arrays.asList(list);
+                        mView.showQuanHuyenNew(list1);
+                        mView.hideProgress();
+                    }
+                    mView.hideProgress();
+                }, throwable -> {
+                    mView.showErrorToast(throwable.getMessage());
+                    mView.hideProgress();
+                });
+    }
+
 }

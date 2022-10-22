@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@color/grey1"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/tv_dong"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:src="@drawable/ic_back_shadown_black" />
+
+                <EditText
+                    android:id="@+id/edt_picker_search"
+                    style="@style/textStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:drawablePadding="10dp"
+                    android:background="@drawable/bg_border_edittext"
+                    android:drawableLeft="@drawable/ic_search_black"
+                    android:hint="Tìm kiếm"
+                    android:textSize="16dp"
+                    android:inputType="textNoSuggestions"
+                    android:paddingLeft="10dp" />
+
+
+            </LinearLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    tools:ignore="MissingConstraints" />
+
+                <!--                <TextView-->
+                <!--                    android:id="@+id/tv_dong"-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="40dp"-->
+                <!--                    android:layout_below="@+id/recycler"-->
+                <!--                    android:gravity="center"-->
+                <!--                    android:padding="10dp"-->
+                <!--                    android:text="Đóng"-->
+                <!--                    android:textColor="@color/md_red_700"-->
+                <!--                    android:visibility="gone"-->
+                <!--                    app:layout_constraintTop_toBottomOf="@+id/recycler"-->
+                <!--                    tools:ignore="MissingConstraints" />-->
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

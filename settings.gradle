@@ -1,2 +1,24 @@
-include ':SdkSipCmc'
-include ':app', ':Libraries:VinattiCore', ':Libraries:libCamera' , ':Libraries:UtilCode'
+//include ':SdkSipCmc'
+//include ':app', ':Libraries:VinattiCore', ':Libraries:libCamera' , ':Libraries:UtilCode'
+//,':Libraries:ringmeottsdk'
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
+    repositories {
+        google()
+        mavenCentral()
+        jcenter() // Warning: this repository is going to shut down soon
+        maven { url 'https://maven.zohodl.com' }
+        maven { url 'https://jitpack.io' }
+        maven { url "https://maven.google.com" }
+    }
+}
+include ':app', ':Libraries:VinattiCore', ':Libraries:libCamera' , ':Libraries:UtilCode' ,':Libraries:ringmeottsdk'
+
+//

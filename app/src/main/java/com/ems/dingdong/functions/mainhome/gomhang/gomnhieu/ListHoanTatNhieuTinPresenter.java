@@ -59,7 +59,8 @@ public class ListHoanTatNhieuTinPresenter extends Presenter<ListHoanTatNhieuTinC
                     super.onSuccess(call, response);
                     mView.hideProgress();
                     if (response.body().getErrorCode().equals("00")) {
-                        ArrayList<CommonObject> arrayList  = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<CommonObject>>(){}.getType());
+                        ArrayList<CommonObject> arrayList = NetWorkController.getGson().fromJson(response.body().getData(), new TypeToken<List<CommonObject>>() {
+                        }.getType());
                         mView.showResponseSuccess(arrayList);
                     } else {
                         mView.showErrorToast(response.body().getMessage());
@@ -73,7 +74,7 @@ public class ListHoanTatNhieuTinPresenter extends Presenter<ListHoanTatNhieuTinC
                     mView.showErrorToast(message);
                 }
             });
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -85,7 +86,8 @@ public class ListHoanTatNhieuTinPresenter extends Presenter<ListHoanTatNhieuTinC
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
                 if (response.body().getErrorCode().equals("00")) {
-                    ArrayList<ReasonInfo> reasonInfos = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<ReasonInfo>>(){}.getType());
+                    ArrayList<ReasonInfo> reasonInfos = NetWorkController.getGson().fromJson(response.body().getData(), new TypeToken<List<ReasonInfo>>() {
+                    }.getType());
                     mView.getReasonsSuccess(reasonInfos);
                 }
             }
@@ -133,8 +135,8 @@ public class ListHoanTatNhieuTinPresenter extends Presenter<ListHoanTatNhieuTinC
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(simpleResult -> {
                     if (simpleResult.getErrorCode().equals("00")) {
-                        mView.showVitringuoinhan(String.valueOf(simpleResult.getObject().getResult().getLocation().getLatitude()),
-                                String.valueOf(simpleResult.getObject().getResult().getLocation().getLongitude()));
+                        mView.showVitringuoinhan(simpleResult.getObject().getResult().getLocation().getLatitude(),
+                                simpleResult.getObject().getResult().getLocation().getLongitude());
 //                        mBaoPhatBangke.get(posi).setReceiverLat(simpleResult.getObject().getResult().getLocation().getLatitude());
 //                        mBaoPhatBangke.get(posi).setReceiverLon(simpleResult.getObject().getResult().getLocation().getLongitude());
                     } else {

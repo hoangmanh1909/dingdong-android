@@ -53,7 +53,6 @@ import com.ems.dingdong.views.CustomTextView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import org.linphone.core.LinphoneCall;
 
 
 import java.util.List;

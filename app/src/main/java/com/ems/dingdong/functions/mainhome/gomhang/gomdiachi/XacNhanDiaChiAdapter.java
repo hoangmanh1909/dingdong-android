@@ -97,17 +97,27 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
                                 || row.getReceiverPhone().toLowerCase().contains(charString.toLowerCase())
                                 || row.getReceiverName().toLowerCase().contains(charString.toLowerCase())
                                 || row.getCode().toLowerCase().contains(charString.toLowerCase())
+                                || row.getListMpit().toLowerCase().contains(charString.toLowerCase())
                                 || row.getCustomerName().toLowerCase().contains(charString.toLowerCase())
+                                || row.getServiceNameMPITS().toLowerCase().contains(charString.toLowerCase())
                                 || row.getWeigh().toLowerCase().contains(charString.toLowerCase())
                                 || row.getOrderNumber().toLowerCase().contains(charString.toLowerCase())) {
                             filteredList.add(row);
-                        } else if (row.getListParcelCode().size() > 0)
-                            for (ParcelCodeInfo item : row.getListParcelCode()) {
-                                if (item.getTrackingCode().toLowerCase().contains(charString.toLowerCase()) ||
-                                        (item.getOrderNumber() != null && item.getOrderNumber().toLowerCase().contains(charString.toLowerCase()))) {
-                                    filteredList.add(row);
+                        } else {
+                            if (row.getListParcelCode().size() > 0)
+                                for (ParcelCodeInfo item : row.getListParcelCode()) {
+                                    if (item.getTrackingCode().toLowerCase().contains(charString.toLowerCase()) ||
+                                            (item.getOrderNumber() != null && item.getOrderNumber().toLowerCase().contains(charString.toLowerCase()))) {
+                                        filteredList.add(row);
+                                    }
                                 }
-                            }
+                        }
+//                        for (String item : row.getListMpit() ){
+//                            if (item.toLowerCase().contains(charString.toLowerCase())) {
+//                                filteredList.add(row);
+//                            }
+//                        }
+
                     }
                     mListFilter = filteredList;
                 }

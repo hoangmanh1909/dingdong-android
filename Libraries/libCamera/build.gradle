@@ -13,8 +13,6 @@ android {
         buildToolsVersion project.buildToolsVersion
         minSdkVersion project.minSdkVersion as int
         targetSdkVersion project.targetSdkVersion as int
-        versionCode project.publishVersionCode as int
-        versionName project.publishVersion
         vectorDrawables.useSupportLibrary = true
     }
     lintOptions {
@@ -35,9 +33,9 @@ repositories {
 }
 
 dependencies {
-    compile 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.0.0'
 //    compile "com.afollestad:easyvideoplayer:${easyVideoPlayer}"
-    compile "com.afollestad.material-dialogs:core:${materialDialogs}"
+    implementation "com.afollestad.material-dialogs:core:${materialDialogs}"
     implementation 'com.github.bumptech.glide:glide:4.8.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.8.0'
 }

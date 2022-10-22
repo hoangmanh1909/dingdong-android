@@ -114,7 +114,7 @@
                 android:layout_marginTop="@dimen/dimen_5dp"
                 android:gravity="center|left"
                 android:textColor="@color/red_light"
-                android:textSize="@dimen/text_size_12sp"
+                android:textSize="@dimen/text_size_14sp"
                 android:visibility="gone" />
 
             <TextView
@@ -135,7 +135,7 @@
                 android:layout_marginTop="@dimen/dimen_5dp"
                 android:gravity="center|left"
                 android:textColor="@color/black"
-                android:textSize="@dimen/text_size_12sp" />
+                android:textSize="@dimen/text_size_14sp" />
 
             <com.ems.dingdong.views.CustomTextView
                 android:id="@+id/tv_contactName"
@@ -144,7 +144,7 @@
                 android:layout_marginTop="@dimen/dimen_5dp"
                 android:gravity="center|left"
                 android:textColor="@color/black"
-                android:textSize="@dimen/text_size_12sp"
+                android:textSize="@dimen/text_size_14sp"
                 tools:text="Trần Văn Anh" />
 
             <RelativeLayout
@@ -160,7 +160,7 @@
                     android:paddingBottom="@dimen/dimen_5dp"
                     android:text="Số lượng bưu gửi: "
                     android:textColor="@color/tx_blue_link"
-                    android:textSize="@dimen/text_size_12sp"
+                    android:textSize="@dimen/text_size_14sp"
                     android:visibility="visible"
                     tools:visibility="visible" />
 
@@ -176,7 +176,7 @@
                     android:gravity="center"
                     android:padding="@dimen/_5sdp"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/text_size_12sp"
+                    android:textSize="@dimen/text_size_14sp"
                     tools:text="Chưa Xác nhận" />
             </RelativeLayout>
 

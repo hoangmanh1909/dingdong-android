@@ -23,6 +23,7 @@ import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -91,6 +92,8 @@ public class RouteManagerDialog extends Dialog implements com.tsongkha.spinnerda
         } else {
             tvRouteType.setText(context.getString(R.string.receive_route));
         }
+        Locale locale = getContext().getResources().getConfiguration().locale;
+        Locale.setDefault(locale);
     }
 
     @Override

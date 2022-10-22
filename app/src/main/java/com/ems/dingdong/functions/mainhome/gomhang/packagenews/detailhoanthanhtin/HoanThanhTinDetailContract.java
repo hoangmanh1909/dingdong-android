@@ -45,7 +45,7 @@ interface HoanThanhTinDetailContract {
 
         void deleteFile();
 
-        void showVitringuoinhan(String lat, String lon);
+        void showVitringuoinhan(double lat, double lon);
     }
 
     interface Presenter extends IPresenter<View, Interactor> {

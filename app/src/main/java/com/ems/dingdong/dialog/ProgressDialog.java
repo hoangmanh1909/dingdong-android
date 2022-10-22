@@ -13,7 +13,7 @@ public class ProgressDialog extends Dialog {
     boolean check = false;
 
     public ProgressDialog(Context context) {
-        super(context, android.R.style.Theme_Translucent_NoTitleBar);
+        super(context, R.style.AppBottomSheetDialog);
         setContentView(R.layout.dialog_progress);
 //        progressBar = findViewById(R.id.progress_bar);
     }

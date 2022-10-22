@@ -11,7 +11,11 @@ import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.SolutionResult;
 import com.ems.dingdong.model.request.LoginRequest;
+import com.ems.dingdong.model.response.GetVersionResponse;
 import com.ems.dingdong.model.response.ResponseObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.Single;
 
@@ -50,6 +54,8 @@ interface LoginContract {
         void gotoHome();
 
         void showThanhCong();
+
+        void showVersionV1(List<GetVersionResponse> list);
     }
 
     interface Presenter extends IPresenter<View, Interactor> {

@@ -5,6 +5,8 @@ import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
 import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.functions.mainhome.gomhang.listcommon.more.DichVuMode;
+import com.ems.dingdong.functions.mainhome.gomhang.listcommon.more.Mpit;
 import com.ems.dingdong.model.AddressModel;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.CommonObjectListResult;
@@ -30,12 +32,12 @@ import io.reactivex.Single;
 public interface XacNhanDiaChiContract {
 
     interface Interactor extends IInteractor<Presenter> {
-        void   searchOrderPostmanCollect(String orderPostmanID,
+        void searchOrderPostmanCollect(String orderPostmanID,
                                        String orderID,
                                        String postmanID,
                                        String status,
                                        String fromAssignDate,
-                                       String toAssignDate,CommonCallback<SimpleResult> callback);
+                                       String toAssignDate, CommonCallback<SimpleResult> callback);
 
         Single<VerifyAddressRespone> ddVerifyAddress(VerifyAddress verifyAddress);
 
@@ -44,6 +46,8 @@ public interface XacNhanDiaChiContract {
         Single<SimpleResult> ddSreachPhone(PhoneNumber dataRequestPayment);
 
         Single<XacMinhDiaChiResult> vietmapSearchViTri(Double longitude, Double latitude);
+
+        Single<SimpleResult> ddGetDichVuMpit();
     }
 
     interface View extends PresentView<Presenter> {
@@ -53,14 +57,21 @@ public interface XacNhanDiaChiContract {
 
         void showAddress(Values x);
 
-        void  shoSucces(String mess);
+        void shoSucces(String mess);
 
         void showDiachi(String x);
 
         void showList(VpostcodeModel getListVpostV1);
+
+        void showDichVuMPit(ArrayList<CommonObject> list);
+
+        void showDichVuMpit(List<DichVuMode> list);
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
+        void showDichVu(List<Mpit> list);
+
+        void ddgetDichVuMpit();
 
         void vietmapSearch(List<VpostcodeModel> vpostcodeModels);
 
@@ -77,6 +88,8 @@ public interface XacNhanDiaChiContract {
         int getType();
 
         void confirmAllOrderPostman(ArrayList<CommonObject> list, String tenkhachhang);
+
+        void confirmAllOrderPostmanMpit(ArrayList<CommonObject> list, String tenkhachhang,String code);
 
         void showBarcode(BarCodeCallback barCodeCallback);
 

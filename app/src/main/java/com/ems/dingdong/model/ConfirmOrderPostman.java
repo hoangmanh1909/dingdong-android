@@ -17,8 +17,28 @@ public class ConfirmOrderPostman {
     String weigh;
     @SerializedName("AssignDateTime")
     String assignDateTime;
+    @SerializedName("ServiceNameMPITS")
+    String ServiceNameMPITS;
+    @SerializedName("ServiceCodeMPITS")
+    String ServiceCodeMPITS;
     @SerializedName("SourceChanel")
     String SourceChanel = "DD_ANDROID";
+
+    public String getServiceNameMPITS() {
+        return ServiceNameMPITS;
+    }
+
+    public void setServiceNameMPITS(String serviceNameMPITS) {
+        ServiceNameMPITS = serviceNameMPITS;
+    }
+
+    public String getServiceCodeMPITS() {
+        return ServiceCodeMPITS;
+    }
+
+    public void setServiceCodeMPITS(String serviceCodeMPITS) {
+        ServiceCodeMPITS = serviceCodeMPITS;
+    }
 
     public String getSourceChanel() {
         return SourceChanel;

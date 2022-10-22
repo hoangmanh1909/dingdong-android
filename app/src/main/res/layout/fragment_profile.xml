@@ -285,7 +285,6 @@
             <View style="@style/Devider" />
 
             <RelativeLayout
-                android:id="@+id/rl_e_wallet"
                 style="@style/RelativeLayoutPersonal">
 
                 <LinearLayout

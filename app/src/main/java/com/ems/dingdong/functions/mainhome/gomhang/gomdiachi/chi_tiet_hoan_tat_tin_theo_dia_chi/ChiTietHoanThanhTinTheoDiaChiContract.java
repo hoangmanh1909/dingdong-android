@@ -56,7 +56,7 @@ public interface ChiTietHoanThanhTinTheoDiaChiContract {
 
         void getReasonFailure(ArrayList<ReasonInfo> reasonInfos);
 
-        void showVitringuoinhan(String lat, String lon);
+        void showVitringuoinhan(double lat, double lon);
 
     }
 

@@ -13,6 +13,7 @@ import com.ems.dingdong.views.form.FormItemTextView;
 import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
 
 import java.util.Calendar;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -52,6 +53,8 @@ public class StatictisSearchDialog extends Dialog implements com.tsongkha.spinne
         calToDate.setTime(DateTimeUtils.convertStringToDate(toDate, DateTimeUtils.SIMPLE_DATE_FORMAT5));
         tvFromDate.setText(TimeUtils.convertDateToString(DateTimeUtils.convertStringToDate(fromDate, DateTimeUtils.SIMPLE_DATE_FORMAT5), TimeUtils.DATE_FORMAT_5));
         tvToDate.setText(TimeUtils.convertDateToString(DateTimeUtils.convertStringToDate(toDate, DateTimeUtils.SIMPLE_DATE_FORMAT5), TimeUtils.DATE_FORMAT_5));
+        Locale locale = getContext().getResources().getConfiguration().locale;
+        Locale.setDefault(locale);
     }
 
     @Override

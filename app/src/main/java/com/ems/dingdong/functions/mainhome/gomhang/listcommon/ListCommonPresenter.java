@@ -6,6 +6,9 @@ import android.content.Context;
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.BarCodeCallback;
+import com.ems.dingdong.functions.mainhome.gomhang.listcommon.chitietdichvu.ChiTietDichVuPresenter;
+import com.ems.dingdong.functions.mainhome.gomhang.listcommon.more.DichVuMode;
+import com.ems.dingdong.functions.mainhome.gomhang.listcommon.more.Mpit;
 import com.ems.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanhtin.HoanThanhTinDetailPresenter;
 import com.ems.dingdong.functions.mainhome.gomhang.packagenews.detailxacnhantin.XacNhanTinDetailPresenter;
 import com.ems.dingdong.callback.CommonCallback;
@@ -26,12 +29,16 @@ import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.SharedPref;
+import com.ems.dingdong.utiles.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Response;
 
@@ -57,11 +64,38 @@ public class ListCommonPresenter extends Presenter<ListCommonContract.View, List
     @Override
     public void start() {
         // Start getting data here
+        ddgetDichVuMpit();
     }
 
     @Override
     public ListCommonContract.Interactor onCreateInteractor() {
         return new ListCommonInteractor(this);
+    }
+
+    @Override
+    public void showDichVu(List<Mpit> list) {
+        new ChiTietDichVuPresenter(mContainerView).setListCommonObject(list).pushView();
+    }
+
+
+    @Override
+    public void ddgetDichVuMpit() {
+        mView.showProgress();
+        mInteractor.ddGetDichVuMpit()
+                .subscribeOn(Schedulers.io())
+                .delay(1000, TimeUnit.MICROSECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    if (simpleResult.getErrorCode().equals("00")) {
+
+                        ArrayList<DichVuMode> list = NetWorkController.getGson().fromJson(simpleResult.getData(), new TypeToken<List<DichVuMode>>() {
+                        }.getType());
+                        mView.showDichVuMpit(list);
+                    } else {
+                        Toast.showToast(getViewContext(), simpleResult.getMessage());
+                    }
+                    mView.hideProgress();
+                });
     }
 
     @Override
@@ -73,8 +107,10 @@ public class ListCommonPresenter extends Presenter<ListCommonContract.View, List
                 super.onSuccess(call, response);
                 mView.hideProgress();
                 if (response.body().getErrorCode().equals("00")) {
-                    ArrayList<CommonObject> list = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<List<CommonObject>>(){}.getType());
+                    ArrayList<CommonObject> list = NetWorkController.getGson().fromJson(response.body().getData(), new TypeToken<List<CommonObject>>() {
+                    }.getType());
                     mView.showResponseSuccess(list);
+                    mView.showDichVuMPit(list);
                 } else {
                     if (type == 0)
                         mView.showError(response.body().getMessage());
@@ -102,6 +138,7 @@ public class ListCommonPresenter extends Presenter<ListCommonContract.View, List
                 mView.hideProgress();
                 if (response.body().getErrorCode().equals("00")) {
                     mView.showResponseSuccess(response.body().getList());
+                    mView.showDichVuMPit(response.body().getList());
                 } else {
                     mView.showError(response.body().getMessage());
                 }
@@ -118,7 +155,7 @@ public class ListCommonPresenter extends Presenter<ListCommonContract.View, List
 
     @Override
     public void showDetailView(CommonObject commonObject) {
-        Log.d ("thanhkeieme",new Gson().toJson(commonObject));
+        Log.d("thanhkeieme", new Gson().toJson(commonObject));
 
         if (mType == 1) {
             new XacNhanTinDetailPresenter(mContainerView).setCommonObject(commonObject).pushView();
@@ -169,7 +206,8 @@ public class ListCommonPresenter extends Presenter<ListCommonContract.View, List
                     super.onSuccess(call, response);
                     mView.hideProgress();
                     if (response.body().getErrorCode().equals("00")) {
-                        ConfirmAllOrderPostman confirmAllOrderPostman = NetWorkController.getGson().fromJson(response.body().getData(),new TypeToken<ConfirmAllOrderPostman>(){}.getType());
+                        ConfirmAllOrderPostman confirmAllOrderPostman = NetWorkController.getGson().fromJson(response.body().getData(), new TypeToken<ConfirmAllOrderPostman>() {
+                        }.getType());
                         mView.showResult(confirmAllOrderPostman);
                     } else {
                         mView.showError(response.body().getMessage());

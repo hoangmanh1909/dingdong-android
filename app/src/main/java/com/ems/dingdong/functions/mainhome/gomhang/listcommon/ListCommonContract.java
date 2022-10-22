@@ -5,6 +5,8 @@ import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
 import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.functions.mainhome.gomhang.listcommon.more.DichVuMode;
+import com.ems.dingdong.functions.mainhome.gomhang.listcommon.more.Mpit;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.ConfirmAllOrderPostman;
@@ -14,6 +16,9 @@ import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import io.reactivex.Single;
 
 /**
  * The CommonObject Contract
@@ -35,17 +40,28 @@ public interface ListCommonContract {
                                    String order, CommonCallback<CommonObjectListResult> callback);
 
         void confirmAllOrderPostman(ArrayList<ConfirmOrderPostman> request, CommonCallback<SimpleResult> callback);
+
+        Single<SimpleResult> ddGetDichVuMpit();
     }
 
     interface View extends PresentView<Presenter> {
         void showResponseSuccess(ArrayList<CommonObject> list);
 
+        void showDichVuMpit(List<DichVuMode> list);
+
         void showError(String message);
 
         void showResult(ConfirmAllOrderPostman allOrderPostman);
+
+        void showDichVuMPit(ArrayList<CommonObject> list);
+
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
+        void showDichVu(List<Mpit> list);
+
+        void ddgetDichVuMpit();
+
         void searchOrderPostmanCollect(String orderPostmanID,
                                        String orderID,
                                        String postmanID,

@@ -69,19 +69,17 @@ import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.MyViewPager;
-import com.google.android.exoplayer2.C;
+//import com.google.android.exoplayer2.C;
 import com.google.gson.Gson;
+//import com.ringme.ott.sdk.utils.RingmeOttSdk;
 import com.roughike.bottombar.BottomBar;
-import com.zoho.livechat.android.ZohoLiveChat;
-import com.zoho.salesiqembed.ZohoSalesIQ;
+//import com.zoho.livechat.android.ZohoLiveChat;
+//import com.zoho.salesiqembed.ZohoSalesIQ;
 //import com.sip.cmc.SipCmc;
 //import com.sip.cmc.callback.PhoneCallback;
 //import com.sip.cmc.callback.RegistrationCallback;
 
 import org.apache.poi.ss.formula.functions.T;
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.linphone.core.LinphoneCall;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -338,6 +336,7 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
         v.setPostmanId(userInfo.getiD());
         v.setRouteCode(routeInfo.getRouteCode());
         v.setRouteId(Long.parseLong(routeInfo.getRouteId()));
+        System.out.println("kgiem: " + new Gson().toJson(v));
         mPresenter.ddGetBalance(v);
     }
 
@@ -429,7 +428,12 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
 
     @Override
     public void showError() {
-        swSwitch.setChecked(isCheck);
+        swSwitch.setChecked(false);
+    }
+
+    @Override
+    public void showErrorRaCa() {
+        swSwitch.setChecked(true);
     }
 
     private Fragment getFragmentItem(int position) {

@@ -1,5 +1,6 @@
 package com.ems.dingdong.app;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -9,22 +10,28 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Build;
 import android.os.IBinder;
-import android.util.Log;
-
-import androidx.multidex.MultiDexApplication;
 
 import com.crashlytics.android.Crashlytics;
 import com.ems.dingdong.BuildConfig;
+import com.ems.dingdong.R;
 import com.ems.dingdong.app.realm.DingDongRealm;
 import com.ems.dingdong.services.PortSipService;
 import com.ems.dingdong.utiles.Logger;
 import com.facebook.drawee.backends.pipeline.Fresco;
+//import com.ringme.ott.sdk.utils.RingmeOttSdk;
+//import com.ringme.ott.sdk.utils.RingmeOttSdk;
+//import com.ringme.ott.sdk.utils.RingmeOttSdk;
+//import com.ringme.ott.sdk.utils.RingmeOttSdk;
+import com.ringme.ott.sdk.utils.RingmeOttSdk;
 import com.zoho.commons.LauncherProperties;
+import com.zoho.livechat.android.messaging.messenger.api.ZohoMessenger;
+import com.zoho.livechat.android.messaging.messenger.api.ZohoService;
+import com.zoho.livechat.android.provider.ZohoLDContract;
 import com.zoho.salesiqembed.ZohoSalesIQ;
-//import com.sip.cmc.SipCmc;
-//import com.sip.cmc.network.UserDataManager;
 
-import java.time.ZonedDateTime;
+
+import java.time.ZoneId;
+import java.util.Locale;
 
 import io.fabric.sdk.android.Fabric;
 import io.realm.Realm;
@@ -62,15 +69,25 @@ public class ApplicationController extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        if (!BuildConfig.DEBUG)
-            Fabric.with(this, new Crashlytics());
+//        if (!BuildConfig.DEBUG)
+//            Fabric.with(this, new Crashlytics());
         Fresco.initialize(this);
-        Realm.init(this);
-        RealmConfiguration config = new RealmConfiguration.Builder()
-                .schemaVersion(0)
-                .deleteRealmIfMigrationNeeded()
-                .migration(new DingDongRealm()).build();
-        Realm.setDefaultConfiguration(config);
+
+//        Realm.init(this);
+//        RealmConfiguration config = new RealmConfiguration.Builder()
+//                .schemaVersion(0)
+//                .deleteRealmIfMigrationNeeded()
+//                .migration(new DingDongRealm()).build();
+//
+
+//        RealmConfiguration config = new RealmConfiguration.Builder()
+//                .name("DINGDONGOFFLINE.realm")
+//                .schemaVersion(1)
+//                .deleteRealmIfMigrationNeeded()
+//                .build();
+//        Realm.setDefaultConfiguration(config);
+//        Realm.deleteRealm( config );
+        RingmeOttSdk.init(getApplicationContext());
         applicationController = this;
         Intent intent = new Intent(this, PortSipService.class);
         bindService(intent, connection, Context.BIND_AUTO_CREATE);
@@ -101,7 +118,7 @@ public class ApplicationController extends Application {
 
     private void createNotificationChannels() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel1 = new NotificationChannel(CHANNEL_1_ID, "Call ", NotificationManager.IMPORTANCE_HIGH);
+            @SuppressLint("WrongConstant") NotificationChannel channel1 = new NotificationChannel(CHANNEL_1_ID, "Call ", NotificationManager.IMPORTANCE_HIGH);
             channel1.setDescription("This is channel call");
 
             /*NotificationChannel channel2 = new NotificationChannel(CHANNEL_2_ID, "Channel 2", NotificationManager.IMPORTANCE_LOW);

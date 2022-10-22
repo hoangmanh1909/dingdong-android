@@ -184,8 +184,8 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
     private LocationManager mLocationManager;
     private Location mLocation;
     private static final int REQUEST_ID_IMAGE_CAPTURE = 100;
-    String senderLat = "";
-    String senderLon = "";
+    double senderLat = 0.0;
+    double senderLon = 0.0;
 
     public final String APP_TAG = "DingDong";
     public final static int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 1034;
@@ -710,8 +710,8 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
             UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
             HoanTatTinRequest hoanTatTinRequest = new HoanTatTinRequest();
             hoanTatTinRequest.setEmployeeID(userInfo.getiD());
-            hoanTatTinRequest.setOrderID(mHoanThanhTin.getiD());
-            hoanTatTinRequest.setOrderPostmanID(mHoanThanhTin.getOrderPostmanID());
+            hoanTatTinRequest.setOrderID(mHoanThanhTin.getiD().isEmpty() ? 0 : Long.parseLong(mHoanThanhTin.getiD()));
+            hoanTatTinRequest.setOrderPostmanID(mHoanThanhTin.getOrderPostmanID().isEmpty() ? 0 : Long.parseLong(mHoanThanhTin.getOrderPostmanID()));
             hoanTatTinRequest.setFile(mFile);
             hoanTatTinRequest.setConfirmSignature(mSign);
             if (radSuccess.isChecked()) {
@@ -769,8 +769,8 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
         for (ParcelCodeInfo info : parcelCodeInfoList) {
             HoanTatTinRequest hoanTatTinRequest = new HoanTatTinRequest();
             hoanTatTinRequest.setEmployeeID(mUserInfo.getiD());
-            hoanTatTinRequest.setOrderPostmanID(info.getOrderPostmanId());
-            hoanTatTinRequest.setOrderID(info.getOrderId());
+            hoanTatTinRequest.setOrderID(info.getOrderId().isEmpty() ? 0 : Long.parseLong(info.getOrderId()));
+            hoanTatTinRequest.setOrderPostmanID(info.getOrderPostmanId().isEmpty() ? 0 : Long.parseLong(info.getOrderPostmanId()));
             hoanTatTinRequest.setFile(mFile);
             hoanTatTinRequest.setOrderCode(info.getOrderCode());
             hoanTatTinRequest.setConfirmSignature(mSign);
@@ -778,14 +778,8 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
             //chua hieu///////////////
             List<Integer> tempShipmentIds = new ArrayList<>();
             int temp = info.getShipmentID();
+
             tempShipmentIds.add(temp);
-//            String tempShipmentCode = "";
-//            if (tempShipmentCode.equals("")) {
-//                tempShipmentCode = parcelCodeInfoList.get(i).getTrackingCode();
-//            } else {
-//                tempShipmentCode += ";";
-//                tempShipmentCode += parcelCodeInfoList.get(i).getTrackingCode();
-//            }
             hoanTatTinRequest.setShipmentCodev1(info.getTrackingCode());
             hoanTatTinRequest.setShipmentIds(tempShipmentIds);
             /////////////////////////
@@ -842,18 +836,6 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
             list.add(hoanTatTinRequest);
         }
 
-
-//        List<HoanTatTinRequest> listG = new ArrayList<>();
-//        for (HoanTatTinRequest item : list) {
-//            HoanTatTinRequest itemExists = Iterables.tryFind(listG,
-//                    input -> (item.getOrderCode().equals(input != null ? input.getOrderCode() : ""))
-//            ).orNull();
-//
-//            itemExists.addShipmentCodeV1(item.getShipmentCodev1());
-//            itemExists.addShipmentIdsV1(item.getShipmentIds().get(0));
-//        }
-//
-        Log.d("asdasdasd2qqweqwe", new Gson().toJson(list));
 
         int i = 1;
         while (i < list.size()) {
@@ -1158,7 +1140,7 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
 
 
     @Override
-    public void showVitringuoinhan(String lat, String lon) {
+    public void showVitringuoinhan(double lat, double lon) {
         senderLat = lat;
         senderLon = lon;
     }

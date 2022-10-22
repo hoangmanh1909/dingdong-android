@@ -3,10 +3,13 @@ package com.ems.dingdong.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
+import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
-public class ReasonInfo extends RealmObject{
+public class ReasonInfo  {
     @SerializedName("ID")
     @Expose
     @PrimaryKey
@@ -20,6 +23,18 @@ public class ReasonInfo extends RealmObject{
     @SerializedName("Solution")
     @Expose
     private String solution;
+
+    @SerializedName("Solutions")
+    @Expose
+    private List<SolutionInfo> solutionInfoList;
+
+    public List<SolutionInfo> getSolutionInfoList() {
+        return solutionInfoList;
+    }
+
+    public void setSolutionInfoList(List<SolutionInfo> solutionInfoList) {
+        this.solutionInfoList = solutionInfoList;
+    }
 
     public Integer getID() {
         return id;

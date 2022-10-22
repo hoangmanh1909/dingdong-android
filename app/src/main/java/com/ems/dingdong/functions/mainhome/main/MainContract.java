@@ -65,6 +65,8 @@ interface MainContract {
         void showCallLog(String data);
 
         void showError();
+
+        void showErrorRaCa();
     }
 
     interface Presenter extends IPresenter<View, Interactor> {

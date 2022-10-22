@@ -27,6 +27,7 @@ import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.form.FormItemTextView;
 import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
+import com.google.gson.Gson;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
 import java.util.ArrayList;
@@ -92,7 +93,7 @@ public class XacNhanConfirmFragment extends ViewFragment<XacNhanConfirmContract.
     public void initLayout() {
         super.initLayout();
         mListRequest = mPresenter.getList();
-
+        Log.d("THanhhiem",new Gson().toJson(mListRequest));
         SharedPref sharedPref = new SharedPref(getActivity());
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         String routeJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");

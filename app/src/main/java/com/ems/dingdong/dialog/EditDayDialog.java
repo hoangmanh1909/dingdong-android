@@ -1,5 +1,6 @@
 package com.ems.dingdong.dialog;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.view.View;
 import android.widget.TextView;
@@ -12,11 +13,15 @@ import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.TimeUtils;
 import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.CustomTextView;
+import com.ozcanalasalvar.library.utils.DateUtils;
+import com.ozcanalasalvar.library.view.datePicker.DatePicker;
+import com.ozcanalasalvar.library.view.popup.DatePickerPopup;
 import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -104,16 +109,52 @@ public class EditDayDialog extends BaseEditDayDialog implements View.OnClickList
             tvTitleNganhang.setText("Kênh nộp");
         }
         mType = type;
+
         setListener();
 
     }
 
     private void setListener() {
+        Locale locale = getContext().getResources().getConfiguration().locale;
+        Locale.setDefault(locale);
         btnBack.setOnClickListener(this);
         layoutDateStart.setOnClickListener(this);
         layoutDateEnd.setOnClickListener(this);
         tvShow.setOnClickListener(this);
+
+//        datePickerPopup = new DatePickerPopup.Builder()
+//                .from(getContext())
+//                .offset(3)
+//                .darkModeEnabled(true)
+//                .pickerMode(DatePicker.MONTH_ON_FIRST)
+//                .textSize(19)
+//                .endDate(DateUtils.getTimeMiles(2050, 10, 25))
+//                .currentDate(calFrom.getTimeInMillis())
+//                .startDate(DateUtils.getTimeMiles(1995, 0, 1))
+//                .listener(new DatePickerPopup.OnDateSelectListener() {
+//                    @Override
+//                    public void onDateSelected(DatePicker dp, long date, int dayOfMonth, int monthOfYear, int year) {
+////                                android.widget.Toast.makeText(getContext(), "" + day + "/" + (month + 1) + "/" + year, android.widget.Toast.LENGTH_SHORT).show();
+//                        if (typeDate != 0) {
+//                            calTo.set(year, monthOfYear, dayOfMonth);
+//                            if (calTo.before(calFrom)) {
+//                                calFrom.setTime(calTo.getTime());
+//                            }
+//                        } else {
+//                            calFrom.set(year, monthOfYear, dayOfMonth);
+//                            if (calFrom.after(calTo)) {
+//                                calTo.setTime(calFrom.getTime());
+//                            }
+//                        }
+//                        if (tvDateStart != null)
+//                            tvDateStart.setText(TimeUtils.convertDateToString(calFrom.getTime(), TimeUtils.DATE_FORMAT_5));
+//                        if (tvDateEnd != null)
+//                            tvDateEnd.setText(TimeUtils.convertDateToString(calTo.getTime(), TimeUtils.DATE_FORMAT_5));
+//                    }
+//                })
+//                .build();
     }
+    private DatePickerPopup datePickerPopup;
 
     @Override
     @OnClick({R.id.layout_date_start, R.id.layout_date_end, R.id.layout_trang_thai, R.id.tvShowChargre, R.id.btnBack})
@@ -124,6 +165,7 @@ public class EditDayDialog extends BaseEditDayDialog implements View.OnClickList
         switch (v.getId()) {
             case R.id.layout_date_start:
                 typeDate = 0;
+//                datePickerPopup.show();
                 new SpinnerDatePickerDialogBuilder()
                         .context(mActivity)
                         .callback(this)

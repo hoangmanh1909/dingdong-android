@@ -80,9 +80,60 @@ public class PushToPnsRequest {
     private String SourceChanel;
     @SerializedName("ReasonCancelOrder")
     private String ReasonCancelOrder;
+    @SerializedName("OtherAddress")
+    private String OtherAddress;
+    @SerializedName("OtherDeliveryForm")
+    private String OtherDeliveryForm;
+    @SerializedName("OtherNote")
+    private String OtherNote;
     @SerializedName("DeliveryWardIdAdditional")
-    private long DeliveryWardIdAdditional; @SerializedName("DeliveryDistrictIdAdditional")
-    private long DeliveryDistrictIdAdditional ;
+    private long DeliveryWardIdAdditional;
+    @SerializedName("DeliveryDistrictIdAdditional")
+    private long DeliveryDistrictIdAdditional;
+    @SerializedName("OtherRequestObject")
+    private String OtherRequestObject;
+    @SerializedName("OtherEstimateBackTime")
+    private int OtherEstimateBackTime;
+
+    public String getOtherRequestObject() {
+        return OtherRequestObject;
+    }
+
+    public void setOtherRequestObject(String otherRequestObject) {
+        OtherRequestObject = otherRequestObject;
+    }
+
+    public int getOtherEstimateBackTime() {
+        return OtherEstimateBackTime;
+    }
+
+    public void setOtherEstimateBackTime(int otherEstimateBackTime) {
+        OtherEstimateBackTime = otherEstimateBackTime;
+    }
+
+    public String getOtherAddress() {
+        return OtherAddress;
+    }
+
+    public void setOtherAddress(String otherAddress) {
+        OtherAddress = otherAddress;
+    }
+
+    public String getOtherDeliveryForm() {
+        return OtherDeliveryForm;
+    }
+
+    public void setOtherDeliveryForm(String otherDeliveryForm) {
+        OtherDeliveryForm = otherDeliveryForm;
+    }
+
+    public String getOtherNote() {
+        return OtherNote;
+    }
+
+    public void setOtherNote(String otherNote) {
+        OtherNote = otherNote;
+    }
 
     public long getDeliveryDistrictIdAdditional() {
         return DeliveryDistrictIdAdditional;
