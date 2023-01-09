@@ -85,6 +85,11 @@ public class HoanThanhTinDetailPresenter extends Presenter<HoanThanhTinDetailCon
     }
 
     @Override
+    public ContainerView getContainerView() {
+        return mContainerView;
+    }
+
+    @Override
     public void postImage(String pathMedia) {
         mView.showProgress();
         mInteractor.postImage(pathMedia, new CommonCallback<UploadSingleResult>((Context) mContainerView) {

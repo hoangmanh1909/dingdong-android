@@ -13,6 +13,7 @@ import com.core.utils.NetworkUtils;
 import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.calls.IncomingCallActivity;
+import com.ems.dingdong.functions.mainhome.address.danhbadichi.DanhBaDiaChiPresenter;
 import com.ems.dingdong.functions.mainhome.address.laydiachi.GetLocation;
 import com.ems.dingdong.functions.mainhome.address.xacminhdiachi.danhsachdiachi.AddressListPresenter;
 import com.ems.dingdong.functions.mainhome.address.xacminhdiachi.timduongdi.TimDuongDiPresenter;
@@ -20,6 +21,8 @@ import com.ems.dingdong.functions.mainhome.location.LocationPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.XacNhanBaoPhatPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.log.LogPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
+import com.ems.dingdong.functions.mainhome.profile.chat.menuchat.model.AccountChatInAppGetQueueResponse;
+import com.ems.dingdong.functions.mainhome.profile.chat.menuchat.model.RequestQueuChat;
 import com.ems.dingdong.model.AddressListModel;
 import com.ems.dingdong.model.CallLiveMode;
 import com.ems.dingdong.model.CreateVietMapRequest;
@@ -40,13 +43,16 @@ import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.ringme.ott.sdk.customer.vnpost.model.VnpostOrderInfo;
 //import com.sip.cmc.SipCmc;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -250,6 +256,36 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
 
     private PostOffice postOffice;
 
+
+    @Override
+    public void ddQueuChat(RequestQueuChat request  , VnpostOrderInfo vnpostOrderInfo, int type) {
+        mView.showProgress();
+        mInteractor.ddQueuChat(request)
+                .subscribeOn(Schedulers.io())
+                .delay(1000, TimeUnit.MICROSECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<SimpleResult>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mView.hideProgress();
+                    }
+
+                    @Override
+                    public void onSuccess(SimpleResult simpleResult) {
+                        mView.hideProgress();
+                        if (simpleResult.getErrorCode().equals("00")) {
+                            AccountChatInAppGetQueueResponse response = NetWorkController.getGson().fromJson(simpleResult.getData(), AccountChatInAppGetQueueResponse.class);
+                            mView.showAccountChatInAppGetQueueResponse(response,vnpostOrderInfo,type);
+                        } else mView.showLoi(simpleResult.getMessage());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        mView.hideProgress();
+                    }
+                });
+    }
+
     @Override
     public void callForward(String phone, String parcelCode) {
         SharedPref sharedPref = new SharedPref((Context) mContainerView);
@@ -413,6 +449,11 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
     @Override
     public void onSearched(String fromDate, String toDate, int currentPosition) {
         titleTabsListener.onSearchChange(fromDate, toDate, currentPosition);
+    }
+
+    @Override
+    public void showThemDanhBa(String diachi) {
+        new DanhBaDiaChiPresenter(mContainerView).setType(2).setAddress(diachi).pushView();
     }
 
     @Override

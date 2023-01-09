@@ -285,6 +285,7 @@
             <View style="@style/Devider" />
 
             <RelativeLayout
+                android:visibility="gone"
                 style="@style/RelativeLayoutPersonal">
 
                 <LinearLayout

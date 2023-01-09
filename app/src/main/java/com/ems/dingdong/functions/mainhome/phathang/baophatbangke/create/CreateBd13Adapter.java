@@ -236,7 +236,8 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
         @BindView(R.id.tv_tien_phathoan)
         public TextView tvTienPhathoan;
         @BindView(R.id.img_address)
-        public ImageView imgAddress;
+        public ImageView imgAddress; @BindView(R.id.img_chat)
+        public ImageView imgChat;
         @BindView(R.id.img_doitra)
         public ImageView imgDoitra;
         @BindView(R.id.tv_goiy)

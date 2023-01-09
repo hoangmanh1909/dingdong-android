@@ -5,6 +5,8 @@ import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
 import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.functions.mainhome.profile.chat.menuchat.model.AccountChatInAppGetQueueResponse;
+import com.ems.dingdong.functions.mainhome.profile.chat.menuchat.model.RequestQueuChat;
 import com.ems.dingdong.model.CallLiveMode;
 import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.CreateVietMapRequest;
@@ -20,6 +22,7 @@ import com.ems.dingdong.model.request.SMLRequest;
 import com.ems.dingdong.model.request.vietmap.TravelSales;
 import com.ems.dingdong.model.response.DeliveryPostmanResponse;
 import com.ems.dingdong.model.response.VerifyAddressRespone;
+import com.ringme.ott.sdk.customer.vnpost.model.VnpostOrderInfo;
 
 import java.util.List;
 
@@ -97,9 +100,15 @@ interface ListBaoPhatBangKeContract {
         Single<XacMinhDiaChiResult> vietmapSearchViTri(Double longitude, Double latitude);
 
         Single<SimpleResult> ddCall(CallLiveMode callLiveMode);
+
+        Single<SimpleResult> ddQueuChat(RequestQueuChat request);
     }
 
     interface View extends PresentView<Presenter> {
+        void showLoi(String mess);
+
+        void showAccountChatInAppGetQueueResponse(AccountChatInAppGetQueueResponse response,VnpostOrderInfo vnpostOrderInfo, int type);
+
         void showDiachi(String x);
 
         void showList(VpostcodeModel getListVpostV1);
@@ -153,6 +162,9 @@ interface ListBaoPhatBangKeContract {
                                        String status,
                                        String fromAssignDate,
                                        String toAssignDate);*/
+        void ddQueuChat(RequestQueuChat request,   VnpostOrderInfo vnpostOrderInfo, int type);
+
+        void showThemDanhBa(String diachi);
 
         void showLog(String maE);
 

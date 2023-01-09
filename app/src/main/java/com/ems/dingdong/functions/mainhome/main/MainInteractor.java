@@ -43,10 +43,10 @@ class MainInteractor extends Interactor<MainContract.Presenter>
 //        NetWorkControllerGateWay.statisticPayment(postmanID, poCode, phoneNumber, fromDate, toDate, callback);
 //    }
 
-    @Override
-    public Single<TokenMoveCropResult> getAccessToken(String mobileNumber) {
-        return NetWorkController.getAccessTokenAndroid(mobileNumber);
-    }
+//    @Override
+//    public Single<TokenMoveCropResult> getAccessToken(String mobileNumber) {
+//        return NetWorkController.getAccessTokenAndroid(mobileNumber);
+//    }
 
     @Override
     public Single<SimpleResult> getMap() {

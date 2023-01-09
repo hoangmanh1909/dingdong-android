@@ -2,6 +2,9 @@ package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Build;
+import android.text.Html;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -116,38 +119,11 @@ public class ListBaoPhatBD13Adapter extends RecyclerView.Adapter<ListBaoPhatBD13
                         String weightGr = row.getWeight() + " gr";
                         String weightGram = row.getWeight() + " gram";
                         if (mTypeBD13 == TypeBD13.LIST_BD13) {
-                            if (row.getMaE().toLowerCase().contains(charString.toLowerCase())
-                                    || row.getSenderName().toLowerCase().contains(charString.toLowerCase())
-                                    || row.getReferenceCode().toLowerCase().contains(charString.toLowerCase())
-                                    || row.getSenderMobile().toLowerCase().contains(charString.toLowerCase())
-                                    || row.getSenderAddress().toLowerCase().contains(charString.toLowerCase())
-                                    || row.getReciverName().toLowerCase().contains(charString.toLowerCase())
-                                    || row.getReciverMobile().toLowerCase().contains(charString.toLowerCase())
-                                    || row.getBatchCode().toLowerCase().contains(charString.toLowerCase())
-                                    || row.getVatCode().toLowerCase().contains(charString.toLowerCase())
-                                    || row.getbD13CreatedDate().toLowerCase().contains(charString.toLowerCase())
-                                    || String.valueOf(row.getTotalFee()).toLowerCase().contains(charString.toLowerCase())
-                                    || String.valueOf(row.getAmount()).toLowerCase().contains(charString.toLowerCase())
-                                    || weightG.toLowerCase().contains(charString.toLowerCase())
-                                    || weightGr.toLowerCase().contains(charString.toLowerCase())
-                                    || weightGram.toLowerCase().contains(charString.toLowerCase())
-                                    || row.getReciverAddress().toLowerCase().contains(charString.toLowerCase())) {
+                            if (row.getMaE().toLowerCase().contains(charString.toLowerCase()) || row.getSenderName().toLowerCase().contains(charString.toLowerCase()) || row.getReferenceCode().toLowerCase().contains(charString.toLowerCase()) || row.getSenderMobile().toLowerCase().contains(charString.toLowerCase()) || row.getSenderAddress().toLowerCase().contains(charString.toLowerCase()) || row.getReciverName().toLowerCase().contains(charString.toLowerCase()) || row.getReciverMobile().toLowerCase().contains(charString.toLowerCase()) || row.getBatchCode().toLowerCase().contains(charString.toLowerCase()) || row.getVatCode().toLowerCase().contains(charString.toLowerCase()) || row.getbD13CreatedDate().toLowerCase().contains(charString.toLowerCase()) || String.valueOf(row.getTotalFee()).toLowerCase().contains(charString.toLowerCase()) || String.valueOf(row.getAmount()).toLowerCase().contains(charString.toLowerCase()) || weightG.toLowerCase().contains(charString.toLowerCase()) || weightGr.toLowerCase().contains(charString.toLowerCase()) || weightGram.toLowerCase().contains(charString.toLowerCase()) || row.getReciverAddress().toLowerCase().contains(charString.toLowerCase())) {
                                 filteredList.add(row);
                             }
                         } else {
-                            if (row.getMaE().toLowerCase().contains(charString.toLowerCase())
-                                    || row.getSenderName().toLowerCase().contains(charString.toLowerCase())
-                                    || row.getReferenceCode().toLowerCase().contains(charString.toLowerCase())
-                                    || row.getSenderMobile().toLowerCase().contains(charString.toLowerCase())
-                                    || row.getSenderAddress().toLowerCase().contains(charString.toLowerCase())
-                                    || row.getReciverName().toLowerCase().contains(charString.toLowerCase())
-                                    || row.getReciverMobile().toLowerCase().contains(charString.toLowerCase())
-                                    || String.valueOf(row.getTotalFee()).toLowerCase().contains(charString.toLowerCase())
-                                    || String.valueOf(row.getAmount()).toLowerCase().contains(charString.toLowerCase())
-                                    || weightG.toLowerCase().contains(charString.toLowerCase())
-                                    || weightGr.toLowerCase().contains(charString.toLowerCase())
-                                    || weightGram.toLowerCase().contains(charString.toLowerCase())
-                                    || row.getReciverAddress().toLowerCase().contains(charString.toLowerCase())) {
+                            if (row.getMaE().toLowerCase().contains(charString.toLowerCase()) || row.getSenderName().toLowerCase().contains(charString.toLowerCase()) || row.getReferenceCode().toLowerCase().contains(charString.toLowerCase()) || row.getSenderMobile().toLowerCase().contains(charString.toLowerCase()) || row.getSenderAddress().toLowerCase().contains(charString.toLowerCase()) || row.getReciverName().toLowerCase().contains(charString.toLowerCase()) || row.getReciverMobile().toLowerCase().contains(charString.toLowerCase()) || String.valueOf(row.getTotalFee()).toLowerCase().contains(charString.toLowerCase()) || String.valueOf(row.getAmount()).toLowerCase().contains(charString.toLowerCase()) || weightG.toLowerCase().contains(charString.toLowerCase()) || weightGr.toLowerCase().contains(charString.toLowerCase()) || weightGram.toLowerCase().contains(charString.toLowerCase()) || row.getReciverAddress().toLowerCase().contains(charString.toLowerCase())) {
                                 filteredList.add(row);
                             }
                         }
@@ -234,10 +210,14 @@ public class ListBaoPhatBD13Adapter extends RecyclerView.Adapter<ListBaoPhatBD13
         public TextView tvTienPhathoan;
         @BindView(R.id.img_address)
         public ImageView imgAddress;
-//        @BindView(R.id.img_doitra)
+        @BindView(R.id.img_themdanhba)
+        public ImageView imgThemdanhba;
+        //        @BindView(R.id.img_doitra)
 //        public ImageView imgDoitra;
         @BindView(R.id.tv_goiy)
         public TextView tvGoiy;
+        @BindView(R.id.img_chat)
+        public ImageView imgChat;
 
         public HolderView(View itemView) {
             super(itemView);
@@ -305,9 +285,16 @@ public class ListBaoPhatBD13Adapter extends RecyclerView.Adapter<ListBaoPhatBD13
             if (!TextUtils.isEmpty(item.getSenderAddress())) {
                 senderAddress = item.getSenderAddress();
             }
-
+            int fee = (int) (item.getFeeShip() + item.getFeeCollectLater() + item.getFeePPA() + item.getFeeCOD() + item.getFeePA());
             if (!TextUtils.isEmpty(item.getBatchCode())) {
-                tvBatchCode.setText(String.format("%s: %s", mContext.getString(R.string.batch_code), item.getBatchCode()));
+                if (item.getAmountForBatch().equals("Y")) {
+                    Spanned spanned = Html.fromHtml("<font color=#1D2129>Mã lô: " + item.getBatchCode() + "</font><font color=#fd013c>( Tổng thu của lô - "
+                            + String.format("%s đ", NumberUtils.formatPriceNumber(item.getAmount()+fee)) + ")");
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                        tvBatchCode.setText(spanned);
+                    }
+                } else
+                    tvBatchCode.setText(String.format("%s: %s", mContext.getString(R.string.batch_code), item.getBatchCode()));
                 tvBatchCode.setVisibility(View.VISIBLE);
             } else {
                 tvBatchCode.setText(String.format("%s: %s", mContext.getString(R.string.batch_code), ""));
@@ -326,7 +313,7 @@ public class ListBaoPhatBD13Adapter extends RecyclerView.Adapter<ListBaoPhatBD13
 
             if (item.getWeight() != null)
                 tv_weight.setText("Khối lượng: " + String.format("%s gram", NumberUtils.formatPriceNumber(item.getWeight())));
-            int fee = (int) (item.getFeeShip() + item.getFeeCollectLater() + item.getFeePPA() + item.getFeeCOD() + item.getFeePA());
+
             if (item.getAmount() != null)
                 tv_COD.setText("Tổng thu (PTC):  " + String.format("%s đ", NumberUtils.formatPriceNumber(item.getAmount() + fee)));
 
@@ -354,8 +341,7 @@ public class ListBaoPhatBD13Adapter extends RecyclerView.Adapter<ListBaoPhatBD13
             }
             if (null != item.getDescription()) {
                 tvInfo.setText(String.format("Nội dung: %s", item.getDescription()));
-            } else
-                tvInfo.setText("Nội dung: ");
+            } else tvInfo.setText("Nội dung: ");
             tvIndex.setText(String.format("%s. ", mListFilter.indexOf(item) + 1));
             cb_selected.setOnCheckedChangeListener((v1, v2) -> {
                 if (v2) {
@@ -429,7 +415,7 @@ public class ListBaoPhatBD13Adapter extends RecyclerView.Adapter<ListBaoPhatBD13
             if (mTypeBD13 == TypeBD13.LIST_BD13) {
                 img_map.setVisibility(View.VISIBLE);
                 img_contact_phone.setVisibility(View.VISIBLE);
-                img_ContactPhone_extend.setVisibility(View.VISIBLE);
+                img_ContactPhone_extend.setVisibility(View.GONE);
             } else {
                 img_map.setVisibility(View.GONE);
                 imgSml.setVisibility(View.GONE);
@@ -459,7 +445,6 @@ public class ListBaoPhatBD13Adapter extends RecyclerView.Adapter<ListBaoPhatBD13
     }
 
     public enum TypeBD13 {
-        CREATE_BD13,
-        LIST_BD13
+        CREATE_BD13, LIST_BD13
     }
 }

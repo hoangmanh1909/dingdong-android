@@ -1,34 +1,50 @@
 package com.ems.dingdong.functions.mainhome.gomhang.listcommon;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.core.widget.PopupWindowCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.callback.BarCodeCallback;
+import com.ems.dingdong.callback.BuuCucCallback;
 import com.ems.dingdong.callback.PickerCallback;
 import com.ems.dingdong.functions.mainhome.gomhang.listcommon.more.DialoChonKhuVuc;
 import com.ems.dingdong.functions.mainhome.gomhang.listcommon.more.DialogItemDichvu;
 import com.ems.dingdong.functions.mainhome.gomhang.listcommon.more.DichVuMode;
 import com.ems.dingdong.functions.mainhome.gomhang.listcommon.more.Mpit;
+import com.ems.dingdong.functions.mainhome.profile.chat.menuchat.CheckDangKy;
+import com.ems.dingdong.functions.mainhome.profile.chat.menuchat.dialogchat.DialogChatButa;
+import com.ems.dingdong.functions.mainhome.profile.chat.menuchat.dialogchat.DilogCSKH;
+import com.ems.dingdong.functions.mainhome.profile.chat.menuchat.model.AccountChatInAppGetQueueResponse;
+import com.ems.dingdong.functions.mainhome.profile.chat.menuchat.model.RequestQueuChat;
 import com.ems.dingdong.model.ConfirmAllOrderPostman;
 import com.ems.dingdong.model.Item;
+import com.ems.dingdong.model.PostOffice;
+import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.SearchMode;
+import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.form.FormItemEditText;
 import com.google.common.collect.Lists;
@@ -44,6 +60,13 @@ import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.views.CustomBoldTextView;
+import com.ringme.ott.sdk.customer.vnpost.model.QueueInfo;
+import com.ringme.ott.sdk.customer.vnpost.model.VnpostOrderInfo;
+import com.ringme.ott.sdk.listener.OpenChatListener;
+import com.ringme.ott.sdk.RingmeOttSdk;
+//import com.ringme.ott.sdk.customer.vnpost.model.QueueInfo;
+//import com.ringme.ott.sdk.customer.vnpost.model.VnpostOrderInfo;
+//import com.ringme.ott.sdk.utils.RingmeOttSdk;
 //import com.ringme.ott.sdk.model.ChatData;
 //import com.ringme.ott.sdk.utils.RingmeOttSdk;
 
@@ -150,10 +173,38 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
                             mPresenter.showDetailView(itemAtPosition);
                         }
                     });
+//                    if (mPresenter.getType() == 2) {
+//                        holder.imgChat.setVisibility(View.VISIBLE);
+//                    } else holder.imgChat.setVisibility(View.GONE);
+
+                    holder.imgChat.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            //"Hoàn tất tin"
+                            if (RingmeOttSdk.isLoggedIn()) {
+                                displayPopupWindow(holder.imgChat, mListFilter.get(position));
+                            } else {
+                                new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
+                                        .setConfirmText("OK")
+                                        .setTitleText("Thông báo")
+                                        .setContentText("Kết nối hệ thống chat thất bại")
+                                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                            @Override
+                                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                                sweetAlertDialog.dismiss();
+                                            }
+                                        }).show();
+                            }
+                        }
+                    });
                 }
 
-            };
-            RecyclerUtils.setupVerticalRecyclerView(getViewContext(), recycler);
+            }
+
+            ;
+            RecyclerUtils.setupVerticalRecyclerView(
+
+                    getViewContext(), recycler);
             recycler.setAdapter(mAdapterChua);
         } else {
             mListDa = new ArrayList<>();
@@ -170,6 +221,40 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
                             actualPosition = mList.indexOf(itemAtPosition);
                             edtSearch.setText("");
                             mPresenter.showDetailView(itemAtPosition);
+                        }
+                    });
+                    holder.imgChat.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            //"Hoàn tất tin"
+                            if (!CheckDangKy.isCheckUserChat(getViewContext())) {
+                                new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
+                                        .setConfirmText("Đóng")
+                                        .setTitleText("Thông báo")
+                                        .setContentText("Tài khoản chưa đăng ký sử dụng dịch vụ chat.")
+                                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                            @Override
+                                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                                sweetAlertDialog.dismiss();
+                                            }
+                                        }).show();
+                                return;
+                            }
+                            if (RingmeOttSdk.isLoggedIn()) {
+                                displayPopupWindow(holder.imgChat, mListFilter.get(position));
+                            } else {
+                                new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
+                                        .setConfirmText("Đóng")
+                                        .setTitleText("Thông báo")
+                                        .setContentText("Kết nối hệ thống chat thất bại")
+                                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                            @Override
+                                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                                sweetAlertDialog.dismiss();
+                                            }
+                                        }).show();
+                            }
+
                         }
                     });
                 }
@@ -220,8 +305,7 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
                 if (mPresenter.getTab() == 0) {
                     if (isChecked) {
                         for (CommonObject item : mListChua) {
-                            if ("P0".equals(item.getStatusCode()))
-                                item.setSelected(true);
+                            if ("P0".equals(item.getStatusCode())) item.setSelected(true);
                         }
 
                     } else {
@@ -234,8 +318,7 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
                 } else {
                     if (isChecked) {
                         for (CommonObject item : mListDa) {
-                            if ("P0".equals(item.getStatusCode()))
-                                item.setSelected(true);
+                            if ("P0".equals(item.getStatusCode())) item.setSelected(true);
                         }
 
                     } else {
@@ -261,8 +344,7 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (mPresenter.getTab() == 0)
-                    mAdapterChua.getFilter().filter(s.toString());
+                if (mPresenter.getTab() == 0) mAdapterChua.getFilter().filter(s.toString());
                 else mAdapterDa.getFilter().filter(s.toString());
 
             }
@@ -408,6 +490,7 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
         if (list == null || list.isEmpty()) {
             showDialog();
         }
+
         ArrayList<CommonObject> mListChuatam = new ArrayList<>();
         ArrayList<CommonObject> mListDatam = new ArrayList<>();
         edtSearch.setText(edtSearch.getText().toString());
@@ -482,6 +565,10 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
     @Override
     public void showDichVuMpit(List<DichVuMode> list) {
         dichVuModeList = new ArrayList<>();
+        DichVuMode a = new DichVuMode();
+        a.setName("GTGT038 1");
+        a.setCode("GTGT038");
+        list.add(a);
         dichVuModeList.addAll(list);
     }
 
@@ -495,17 +582,13 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
     public void showResult(ConfirmAllOrderPostman allOrderPostman) {
 //        EventBus.getDefault().post(Constants.EVENTBUS_HOAN_THANH_TIN_THANH_CONG_NOTIFY_DATA);
         if (getActivity() != null) {
-            new SweetAlertDialog(getActivity(), SweetAlertDialog.NORMAL_TYPE)
-                    .setConfirmText("OK")
-                    .setTitleText("Thông báo")
-                    .setContentText("Có " + allOrderPostman.getSuccessRecord() + " Xác nhận thành công. Có " + allOrderPostman.getErrorRecord() + " xác nhận lỗi")
-                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-                            sweetAlertDialog.dismiss();
-                            mPresenter.onCanceled();
-                        }
-                    }).show();
+            new SweetAlertDialog(getActivity(), SweetAlertDialog.NORMAL_TYPE).setConfirmText("OK").setTitleText("Thông báo").setContentText("Có " + allOrderPostman.getSuccessRecord() + " Xác nhận thành công. Có " + allOrderPostman.getErrorRecord() + " xác nhận lỗi").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                @Override
+                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                    sweetAlertDialog.dismiss();
+                    mPresenter.onCanceled();
+                }
+            }).show();
         }
     }
 
@@ -557,8 +640,7 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
                     mpit.setServiceNameMPITS(dichVuModeList.get(i).getName());
                     list1.addAll(giongnhau(list, list.size(), "P0", dichVuModeList.get(i).getCode()));
                     mpit.setCommonObject(list1);
-                    if (list1.size() > 0)
-                        mpitList.add(mpit);
+                    if (list1.size() > 0) mpitList.add(mpit);
                 }
 
                 if (mpitList.size() > 0) {
@@ -596,8 +678,7 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
                     mpit.setServiceNameMPITS(dichVuModeList.get(i).getName());
                     list1.addAll(giongnhau(list, list.size(), "P1", dichVuModeList.get(i).getCode()));
                     mpit.setCommonObject(list1);
-                    if (list1.size() > 0)
-                        mpitList.add(mpit);
+                    if (list1.size() > 0) mpitList.add(mpit);
 
                 }
                 if (mpitList.size() > 0) {
@@ -623,7 +704,8 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
         return list1;
     }
 
-    ArrayList<CommonObject> giongnhau(ArrayList<CommonObject> list, int n, String code, String macode) {
+    ArrayList<CommonObject> giongnhau(ArrayList<CommonObject> list, int n, String
+            code, String macode) {
         int i, j;
         ArrayList<CommonObject> ketqua = new ArrayList<>();
         for (i = 0; i < n; i++) {
@@ -661,5 +743,185 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
                 edtSearch.setText(item.getText());
             }
         }).show();
+    }
+
+    private void displayPopupWindow(View anchorView, CommonObject list) {
+        PopupWindow popup = new PopupWindow(getViewContext());
+//        View layout = getLayoutInflater().inflate(R.layout.custom_marker_view, null);
+//        popup.setContentView(layout);
+//        // Set content width and height
+//        popup.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
+//        popup.setWidth(WindowManager.LayoutParams.WRAP_CONTENT);
+//        // Closes the popup window when touch outside of it - when looses focus
+        popup.setOutsideTouchable(true);
+        popup.setFocusable(true);
+        popup.setBackgroundDrawable(new BitmapDrawable());
+        popup.showAtLocation(anchorView, Gravity.RIGHT, (int) anchorView.getX(), (int) anchorView.getY());
+
+//        popup.showAsDropDown(anchorView);
+        popup.setInputMethodMode(PopupWindow.INPUT_METHOD_NEEDED);
+        View child = LayoutInflater.from(anchorView.getContext()).inflate(R.layout.topping_view_gom, null);
+        popup.setContentView(child);
+
+
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"}) TextView tvNguoigui = (TextView) child.findViewById(R.id.tv_nguoigui);
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"}) TextView tvNvtgkhac = (TextView) child.findViewById(R.id.tv_nvtgkhac);
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"}) TextView tvCskh = (TextView) child.findViewById(R.id.tv_cskh);
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"}) TextView tvBuucuc = (TextView) child.findViewById(R.id.tv_buucuc);
+        String code = "0";
+        String name = "";
+        if (mPresenter.getType() == 1) {
+            if (list.getStatusCode().equals("P0")) {
+                //chua
+                code = "2";
+                name = "Chuyển tin bưu tá";
+            } else if (list.getStatusCode().equals("P1")) {
+                //da
+                code = "4";
+                name = "Đang lấy hàng";
+            }
+        } else if (mPresenter.getType() == 2) {
+            if (list.getStatusCode().equals("P1") || list.getStatusCode().equals("P5")) {
+                //chua
+                code = "4";
+                name = "Đang lấy hàng";
+            } else if (list.getStatusCode().equals("P4") || list.getStatusCode().equals("P6")) {
+                //da
+                code = "6";
+                name = "Lấy hàng thành công";
+            }
+        } else {
+            code = "0";
+            name = "Không hỗ trợ";
+        }
+        String finalCode = code;
+        String finalName = name;
+        tvNguoigui.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                VnpostOrderInfo vnpostOrderInfo = new VnpostOrderInfo(
+                        list.getCode(),
+                        finalName, finalCode,
+                        "",
+                        String.format("%s đ", NumberUtils.formatPriceNumber(0)),
+                        String.format("%s đ", NumberUtils.formatPriceNumber(0)),
+                       2,
+                        "");
+                if (list.getReceiverPhone().length() > 11) {
+                    Toast.showToast(getViewContext(), "Số điện thoại không hợp lệ");
+                    return;
+                }
+                RingmeOttSdk.openChat(requireActivity(), list.getReceiverPhone(), vnpostOrderInfo, 1, new OpenChatListener() {
+                    @Override
+                    public void onSuccessful() {
+
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull String s) {
+                        Toast.showToast(getViewContext(), s);
+                    }
+                });
+                popup.dismiss();
+            }
+        });
+        tvNvtgkhac.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                VnpostOrderInfo vnpostOrderInfo = new VnpostOrderInfo(
+                        list.getCode(),
+                        finalName, finalCode,
+                        "",
+                        String.format("%s đ", NumberUtils.formatPriceNumber(0)),
+                        String.format("%s đ", NumberUtils.formatPriceNumber(0)),
+                        1,
+                        "");
+
+                new DialogChatButa(getViewContext(), "P", new BuuCucCallback() {
+                    @Override
+                    public void onResponse(String loaibc, String mabuucuc) {
+                        RingmeOttSdk.openChat(requireActivity(), loaibc, vnpostOrderInfo, 1, new OpenChatListener() {
+                            @Override
+                            public void onSuccessful() {
+
+                            }
+
+                            @Override
+                            public void onFailure(@NonNull String s) {
+                                Toast.showToast(getViewContext(), s);
+                            }
+                        });
+                    }
+                }).show();
+                popup.dismiss();
+            }
+        });
+        tvCskh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                VnpostOrderInfo vnpostOrderInfo = new VnpostOrderInfo(
+                        list.getCode(),
+                        finalName, finalCode,
+                        "",
+                        String.format("%s đ", NumberUtils.formatPriceNumber(0)),
+                        String.format("%s đ", NumberUtils.formatPriceNumber(0)),
+                        1,
+                        "");
+
+                new DilogCSKH(getViewContext(), 1, list.getPOProvinceCode(), new BuuCucCallback() {
+                    @Override
+                    public void onResponse(String loaibc, String mabuucuc) {
+                        RequestQueuChat q
+                                = new RequestQueuChat();
+                        q.setIdMission(5);
+                        q.setIdDepartment(mabuucuc);
+                        mPresenter.ddQueuChat(q, vnpostOrderInfo, 5);
+
+                    }
+                }).show();
+                popup.dismiss();
+            }
+        });
+        tvBuucuc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                VnpostOrderInfo vnpostOrderInfo = new VnpostOrderInfo(
+                        list.getCode(),
+                        finalName, finalCode,
+                        "",
+                        String.format("%s đ", NumberUtils.formatPriceNumber(0)),
+                        String.format("%s đ", NumberUtils.formatPriceNumber(0)),
+                        1,
+                        "");
+                SharedPref sharedPref = new SharedPref(getContext());
+                String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
+                PostOffice postOffice = NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class);
+                RequestQueuChat q = new RequestQueuChat();
+                q.setIdMission(1);
+                q.setIdDepartment(postOffice.getCode());
+                mPresenter.ddQueuChat(q, vnpostOrderInfo, 1);
+                popup.dismiss();
+            }
+        });
+
+        PopupWindowCompat.showAsDropDown(popup, anchorView, 0, 0, Gravity.RIGHT);
+    }
+
+
+    @Override
+    public void showLoi(String mess) {
+        Toast.showToast(getViewContext(), mess);
+    }
+
+    @Override
+    public void showAccountChatInAppGetQueueResponse(AccountChatInAppGetQueueResponse
+                                                             response, VnpostOrderInfo vnpostOrderInfo, int type) {
+        QueueInfo queueInfo = new QueueInfo();
+        queueInfo.setAvatarQueue(response.getAvatarQueue());
+        queueInfo.setIdQueue(response.getIdQueue());
+        queueInfo.setJidQueue(response.getJidQueue());
+        queueInfo.setDispName(response.getDispName());
+        RingmeOttSdk.openChatQueue(requireActivity(),
+                queueInfo, vnpostOrderInfo, type, false);
     }
 }

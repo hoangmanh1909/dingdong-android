@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="44dp">
+
+        <ImageView
+            android:id="@+id/img_clear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_icon_button__1_" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:padding="@dimen/dimen_10dp"
+            android:text="Thêm người sử dụng địa chỉ"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:weightSum="2">
+
+                <CheckBox
+                    android:id="@+id/cb_canhan"
+                    style="@style/CustomCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text=" Cá nhân"
+                    android:textColor="@color/black" />
+
+                <CheckBox
+                    android:id="@+id/cb_tochuc"
+                    style="@style/CustomCheck"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text=" Tổ chức "
+                    android:textColor="@color/black" />
+
+                <!--                <CheckBox-->
+                <!--                    android:id="@+id/cb_chusohu"-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="match_parent"-->
+                <!--                    android:layout_gravity="center"-->
+                <!--                    style="@style/CustomCheck"-->
+                <!--                    android:gravity="center"-->
+                <!--                    android:textColor="@color/black"-->
+                <!--                    android:text=" Chủ địa chỉ" />-->
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginBottom="5dp"
+                android:background="@color/gray" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:gravity="center|left">
+
+                <TextView
+                    android:id="@+id/tv_titlehoten"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:gravity="center|left"
+                    android:text="Họ tên"
+                    android:textColor="@color/black" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textColor="@color/red_light" />
+            </LinearLayout>
+
+            <EditText
+                android:id="@+id/edt_hovaten"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_border_edittext"
+                android:hint="Nhập Họ tên"
+                android:inputType="textCapSentences"
+                android:maxLines="1"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/tv_titlenguoiocung"
+                style="@style/textStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:inputType="textCapSentences"
+                android:text="Người ở cùng"
+                android:textSize="14dp" />
+
+            <EditText
+                android:id="@+id/edt_nguoiocung"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_border_edittext"
+                android:hint="Nhập Người ở cùng"
+                android:inputType="textCapSentences"
+                android:maxLines="1"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray"
+                android:textSize="14dp" />
+
+            <LinearLayout
+                android:id="@+id/ll_sw_switch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Chủ địa chỉ "
+                    android:layout_gravity="center"
+                    android:textColor="@color/black" />
+
+                <Switch
+                    android:id="@+id/sw_switch"
+                    style="@style/ImageViewArrowRightV1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:theme="@style/SCBSwitch" />
+
+
+            </LinearLayout>
+
+            <TextView
+                style="@style/textStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:inputType="textCapSentences"
+                android:text="Cánh/Sảnh tòa nhà"
+                android:textSize="14dp" />
+
+            <EditText
+                android:id="@+id/edt_canhsanh"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_border_edittext"
+                android:hint="Nhập Cánh/Sảnh tòa nhà"
+                android:inputType="textCapSentences"
+                android:maxLines="1"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray"
+                android:textSize="14dp" />
+
+            <TextView
+                style="@style/textStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:inputType="textCapSentences"
+                android:text="Số tầng"
+                android:textSize="14dp" />
+
+            <EditText
+                android:id="@+id/edt_sotang"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_border_edittext"
+                android:hint="Nhập Số tầng"
+                android:inputType="textCapSentences"
+                android:maxLines="1"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray"
+                android:textSize="14dp" />
+
+            <TextView
+                style="@style/textStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:inputType="textCapSentences"
+                android:text="Số phòng"
+                android:textSize="14dp" />
+
+            <EditText
+                android:id="@+id/edt_sophong"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_border_edittext"
+                android:hint="Nhập Số phòng"
+                android:inputType="textCapCharacters"
+                android:maxLines="1"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray"
+                android:textSize="14dp" />
+
+            <TextView
+                style="@style/textStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:inputType="textCapSentences"
+                android:text="Email"
+                android:textSize="14dp" />
+
+            <EditText
+                android:id="@+id/edt_email"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_border_edittext"
+                android:hint="Nhập Email"
+                android:inputType="textEmailAddress"
+                android:maxLines="1"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray"
+                android:textSize="14dp" />
+
+            <TextView
+                style="@style/textStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:inputType="textCapSentences"
+                android:text="SĐT"
+                android:textSize="14dp" />
+
+            <EditText
+                android:id="@+id/edt_phone"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_border_edittext"
+                android:hint="Nhập SĐT"
+                android:inputType="number"
+                android:maxLines="1"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray"
+                android:textSize="14dp" />
+
+            <TextView
+                style="@style/textStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:inputType="textCapSentences"
+                android:text="Lưu ý thông tin phục vụ"
+                android:textSize="14dp" />
+
+            <EditText
+                android:id="@+id/edt_thontinphuvu"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_border_edittext"
+                android:hint="Nhập Lưu ý thông tin phục vụ"
+                android:inputType="textCapSentences"
+                android:maxLines="1"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray"
+                android:textSize="14dp" />
+            <!--            <EditText-->
+            <!--                android:id="@+id/edt_thontinphuvu"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginTop="10dp"-->
+            <!--                android:background="@drawable/bg_border_edittext"-->
+            <!--                android:gravity="top"-->
+            <!--                android:hint="Nhập Lưu ý thông tin phục vụ"-->
+            <!--                android:lines="8"-->
+            <!--                android:maxLines="10"-->
+            <!--                android:minLines="3"-->
+            <!--                android:paddingLeft="10dp"-->
+            <!--                android:paddingTop="10dp"-->
+            <!--                android:paddingRight="10dp"-->
+            <!--                android:scrollbars="vertical"-->
+            <!--                android:textColor="@color/black"-->
+            <!--                android:textColorHint="@color/gray"-->
+            <!--                android:textSize="14dp" />-->
+
+            <TextView
+                style="@style/textStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:inputType="textCapSentences"
+                android:text="Thông tin lưu ý"
+                android:textSize="14dp" />
+
+            <EditText
+                android:id="@+id/edt_thongtinluuy"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_border_edittext"
+                android:hint="Nhập Thông tin lưu ý"
+                android:inputType="textCapSentences"
+                android:maxLines="1"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray"
+                android:textSize="14dp" />
+            <!--            <EditText-->
+            <!--                android:id="@+id/edt_thongtinluuy"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginTop="10dp"-->
+            <!--                android:background="@drawable/bg_border_edittext"-->
+            <!--                android:gravity="top"-->
+            <!--                android:hint="Nhập Thông tin lưu ý"-->
+            <!--                android:lines="8"-->
+            <!--                android:maxLines="10"-->
+            <!--                android:minLines="3"-->
+            <!--                android:paddingLeft="10dp"-->
+            <!--                android:paddingTop="10dp"-->
+            <!--                android:paddingRight="10dp"-->
+            <!--                android:textColor="@color/black"-->
+            <!--                android:textColorHint="@color/gray"-->
+            <!--                android:textSize="14dp" />-->
+
+            <TextView
+                android:id="@+id/tv_xacnhan"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_vang_luu"
+                android:gravity="center"
+                android:text="Thêm"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

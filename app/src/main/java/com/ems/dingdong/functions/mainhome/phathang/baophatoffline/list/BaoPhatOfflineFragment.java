@@ -4,6 +4,7 @@ import static android.content.Context.LOCATION_SERVICE;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -14,12 +15,17 @@ import android.widget.CheckBox;
 import android.widget.RelativeLayout;
 
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.core.base.BaseActivity;
 import com.core.base.viper.ViewFragment;
+import com.core.base.viper.interfaces.ContainerView;
+import com.core.base.viper.interfaces.IPresenter;
+import com.core.base.viper.interfaces.IView;
 import com.ems.dingdong.R;
 import com.ems.dingdong.dialog.ConfirmDialog;
 import com.ems.dingdong.dialog.DialogText;
@@ -350,7 +356,88 @@ public class BaoPhatOfflineFragment extends ViewFragment<BaoPhatOfflineContract.
         if (itemsSelected.size() > 0) {
             double finalSetDeliveryLat = setDeliveryLat;
             double finalSetDeliveryLon = setDeliveryLon;
-            new ConfirmDialog(getViewContext(), itemsSelected.size(), getTotalAmount(itemsSelected), 0)
+            new ConfirmDialog(getViewContext(), itemsSelected.size(), getTotalAmount(itemsSelected), 0,
+                    "", 0, 0, 0, 0, "", new ContainerView() {
+                @Override
+                public ViewFragment onCreateFirstFragment() {
+                    return null;
+                }
+
+                @Override
+                public void addView(IView view) {
+
+                }
+
+                @Override
+                public void pushView(IView view) {
+
+                }
+
+                @Override
+                public void popView(IView mView) {
+
+                }
+
+                @Override
+                public void pushView(IView view, int frameId) {
+
+                }
+
+                @Override
+                public void loadView(IView view, int frameId) {
+
+                }
+
+                @Override
+                public void replaceView(IView view) {
+
+                }
+
+                @Override
+                public void loadChildView(IView view, int frameId, FragmentManager childFragmentManager) {
+
+                }
+
+                @Override
+                public void pushChildView(IView view, int frameId, FragmentManager childFragmentManager) {
+
+                }
+
+                @Override
+                public void presentView(IView view) {
+
+                }
+
+                @Override
+                public void back() {
+
+                }
+
+                @Override
+                public void initLayout() {
+
+                }
+
+                @Override
+                public BaseActivity getBaseActivity() {
+                    return null;
+                }
+
+                @Override
+                public Activity getViewContext() {
+                    return null;
+                }
+
+                @Override
+                public void setPresenter(IPresenter presenter) {
+
+                }
+
+                @Override
+                public IPresenter getPresenter() {
+                    return null;
+                }
+            })
                     .setOnCancelListener(Dialog::dismiss)
                     .setOnOkListener(confirmDialog -> {
                         showProgress();

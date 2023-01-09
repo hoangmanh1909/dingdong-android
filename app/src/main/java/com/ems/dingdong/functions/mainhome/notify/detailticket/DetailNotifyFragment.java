@@ -56,8 +56,8 @@ public class DetailNotifyFragment extends ViewFragment<DetailNotifyContract.Pres
     @Override
     public void initLayout() {
         super.initLayout();
-
         if (!TextUtils.isEmpty(mPresenter.setCodeTicket())) {
+            mPresenter.isSeen(mPresenter.setCodeTicket());
             mPresenter.getDetail(mPresenter.setCodeTicket());
         }
     }

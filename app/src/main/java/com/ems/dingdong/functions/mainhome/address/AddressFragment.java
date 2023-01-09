@@ -51,7 +51,7 @@ public class AddressFragment extends ViewFragment<AddressContract.Presenter> imp
 
         ArrayList<HomeInfo> homeInfos = new ArrayList<>();
         homeInfos.add(new HomeInfo(1, R.drawable.ic_address, "Xác minh địa chỉ"));
-        homeInfos.add(new HomeInfo(2, R.drawable.ic_address, "Thêm danh bạn địa chỉ"));
+        homeInfos.add(new HomeInfo(2, R.drawable.ic_danhba, "Thêm danh bạ địa chỉ"));
         mList.addAll(homeInfos);
 
         adapter = new HomeAdapter(getViewContext(), mList) {

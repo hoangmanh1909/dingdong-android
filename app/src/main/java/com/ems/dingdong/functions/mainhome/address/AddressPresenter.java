@@ -3,6 +3,7 @@ package com.ems.dingdong.functions.mainhome.address;
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.functions.mainhome.address.danhbadichi.DanhBaDiaChiPresenter;
+import com.ems.dingdong.functions.mainhome.address.danhbadichi.danhsach.ListAddressPresenter;
 import com.ems.dingdong.functions.mainhome.address.xacminhdiachi.XacMinhDiaChiPresenter;
 
 public class AddressPresenter extends Presenter<AddressContract.View, AddressContract.Interactor>
@@ -19,7 +20,7 @@ public class AddressPresenter extends Presenter<AddressContract.View, AddressCon
 
     @Override
     public void showDanhBa() {
-        new DanhBaDiaChiPresenter(mContainerView).pushView();
+        new ListAddressPresenter(mContainerView).pushView();
     }
 
     @Override

@@ -16,5 +16,7 @@ interface ChatContract {
 
     interface Presenter extends IPresenter<View, Interactor> {
         Context getContext();
+
+        void showMenuChat();
     }
 }

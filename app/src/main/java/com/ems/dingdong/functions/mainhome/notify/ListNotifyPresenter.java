@@ -39,7 +39,7 @@ public class ListNotifyPresenter extends Presenter<ListNotifyContract.View, List
     public void start() {
         if (mess != null) {
             String k[] = mess.split(";");
-            Log.d("sadasdasdasda", k[0] + ";" + k[1]);
+            System.out.print("sadasdasdasda" + k[0] + ";" + k[1]);
             if (k.length == 2) {
                 List<String> ticketModes = new ArrayList<>();
                 ticketModes.add(k[1]);
@@ -124,7 +124,6 @@ public class ListNotifyPresenter extends Presenter<ListNotifyContract.View, List
 
     public ListNotifyPresenter setMess(String mess) {
         this.mess = mess;
-
         return this;
     }
 }

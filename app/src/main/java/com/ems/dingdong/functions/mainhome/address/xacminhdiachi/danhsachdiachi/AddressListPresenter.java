@@ -135,6 +135,7 @@ public class AddressListPresenter extends Presenter<AddressListContract.View, Ad
     @Override
     public void vietmapSearch() {
         mView.showProgress();
+        //21.02329497436884, 105.84425869560673
         mInteractor.vietmapSearchByPoint(longitude, latitude, new CommonCallback<XacMinhDiaChiResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<XacMinhDiaChiResult> call, Response<XacMinhDiaChiResult> response) {
@@ -155,6 +156,7 @@ public class AddressListPresenter extends Presenter<AddressListContract.View, Ad
             protected void onError(Call<XacMinhDiaChiResult> call, String message) {
                 super.onError(call, message);
                 mView.showError(message);
+                Log.d("KHIEMIT",message);
                 mView.hideProgress();
             }
         });

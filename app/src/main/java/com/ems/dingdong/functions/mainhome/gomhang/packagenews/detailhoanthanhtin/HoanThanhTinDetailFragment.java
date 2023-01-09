@@ -242,8 +242,7 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
                 mPresenter.postImage(path);
                 picUri = Uri.fromFile(new File(path));
                 ivPackage.setImageURI(picUri);
-                if (file.exists())
-                    file.delete();
+                if (file.exists()) file.delete();
             } else {
                 mPresenter.postImage(path_media);
             }
@@ -252,8 +251,7 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
         }
     }
 
-    public boolean saveImage(Bitmap bitmap, String filePath, String filename, Bitmap.CompressFormat format,
-                             int quality) {
+    public boolean saveImage(Bitmap bitmap, String filePath, String filename, Bitmap.CompressFormat format, int quality) {
         if (quality > 100) {
             Log.d("saveImage", "quality cannot be greater that 100");
             return false;
@@ -366,7 +364,6 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
     public void showVitringuoinhan(double lat, double lon) {
         senderLat = lat;
         senderLon = lon;
-
     }
 
     @OnClick({R.id.img_back, R.id.btn_confirm, R.id.iv_package, R.id.img_search, R.id.img_capture, R.id.btn_sign})
@@ -382,10 +379,13 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
                     scans.append(item.getCode()).append(";");
                 }
                 if (mHoanThanhTin != null) {
-                    new HoanTatTinDialog(getActivity(), mHoanThanhTin.getCode(), mPresenter.getList(), new HoanThanhTinCallback() {
+                    new HoanTatTinDialog(getActivity(), mHoanThanhTin.getCode(), mPresenter.getList(),
+                            mHoanThanhTin.getReciverAddress(),
+                            mLocation.getLatitude(), mLocation.getLongitude(),
+                            mHoanThanhTin.getSenderLat().isEmpty() ? 0.0 : Double.parseDouble(mHoanThanhTin.getSenderLat()),
+                            mHoanThanhTin.getSenderLon().isEmpty() ? 0.0 : Double.parseDouble(mHoanThanhTin.getSenderLon()), mHoanThanhTin.getSenderVpostcode(), mPresenter.getContainerView(), new HoanThanhTinCallback() {
                         @Override
-                        public void onResponse(String statusCode, ReasonInfo reasonInfo, String pickUpDate,
-                                               String pickUpTime, ArrayList<Integer> ShipmentID, String noidung) {
+                        public void onResponse(String statusCode, ReasonInfo reasonInfo, String pickUpDate, String pickUpTime, ArrayList<Integer> ShipmentID, String noidung) {
                             if (getActivity() != null) {
                                 SharedPref sharedPref = new SharedPref(getActivity());
                                 String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
@@ -478,8 +478,7 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
 
     public File makeTempFile(String saveDir, String prefix, String extension) {
         if (saveDir == null) saveDir = getActivity().getExternalCacheDir().getAbsolutePath();
-        final String timeStamp =
-                new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
+        final String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
         final File dir = new File(saveDir);
         dir.mkdirs();
         return new File(dir, prefix + timeStamp + extension);
@@ -525,8 +524,7 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
         if (getActivity() == null) {
             return;
         }
-        if (commonObject.getStatusCode().equals("P1") || commonObject.getStatusCode().equals("P5")
-                || commonObject.getStatusCode().equals("P7")) {
+        if (commonObject.getStatusCode().equals("P1") || commonObject.getStatusCode().equals("P5") || commonObject.getStatusCode().equals("P7")) {
             btnConfirm.setEnabled(true);
             list_ds.setVisibility(View.VISIBLE);
             chupanh.setVisibility(View.VISIBLE);
@@ -558,13 +556,7 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
 
         for (int i = 0; i < phones.length; i++) {
             if (!phones[i].isEmpty()) {
-                getChildFragmentManager().beginTransaction()
-                        .add(R.id.ll_contact,
-                                new PhonePresenter((ContainerView) getActivity())
-                                        .setPhone(phones[i].trim())
-                                        .setCode(mHoanThanhTin.getCode())
-                                        .getFragment(), TAG + i)
-                        .commit();
+                getChildFragmentManager().beginTransaction().add(R.id.ll_contact, new PhonePresenter((ContainerView) getActivity()).setPhone(phones[i].trim()).setCode(mHoanThanhTin.getCode()).getFragment(), TAG + i).commit();
             }
         }
         tvReceiverName.setText(commonObject.getReceiverName());
@@ -573,35 +565,26 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
     @Override
     public void showMessage(String message) {
         if (getActivity() != null)
-            new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
-                    .setConfirmText("OK")
-                    .setTitleText("Thông báo")
-                    .setContentText(message)
-                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-                            EventBus.getDefault().post(Constants.EVENTBUS_HOAN_THANH_TIN_THANH_CONG);
-                            sweetAlertDialog.dismiss();
-                            btnConfirm.setEnabled(false);
-                            if (mPresenter != null)
-                                mPresenter.back();
-                        }
-                    }).show();
+            new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE).setConfirmText("OK").setTitleText("Thông báo").setContentText(message).setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                @Override
+                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                    EventBus.getDefault().post(Constants.EVENTBUS_HOAN_THANH_TIN_THANH_CONG);
+                    sweetAlertDialog.dismiss();
+                    btnConfirm.setEnabled(false);
+                    if (mPresenter != null) mPresenter.back();
+                }
+            }).show();
     }
 
     @Override
     public void showError(String message) {
         if (getActivity() != null)
-            new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
-                    .setConfirmText("OK")
-                    .setTitleText("Thông báo")
-                    .setContentText(message)
-                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-                            sweetAlertDialog.dismiss();
-                        }
-                    }).show();
+            new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE).setConfirmText("OK").setTitleText("Thông báo").setContentText(message).setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                @Override
+                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                    sweetAlertDialog.dismiss();
+                }
+            }).show();
     }
 
     @Override

@@ -2,7 +2,7 @@
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
+    android:background="@color/colorNen"
     android:fillViewport="true"
     android:scrollbars="vertical">
 
@@ -46,7 +46,7 @@
                 <com.ems.dingdong.views.CustomBoldTextView
                     style="@style/HeaderNews"
                     android:layout_width="match_parent"
-                    android:background="@drawable/bg_header_common"
+                    android:background="@drawable/bg_header_common_copy"
                     android:padding="@dimen/dimen_10dp"
                     android:text="gom hàng"
                     android:textAlignment="center"
@@ -56,7 +56,7 @@
                     android:id="@+id/recycler_collect"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_white_v1"
+                    android:background="@drawable/bg_header_common_recy"
                     android:scrollbars="vertical" />
 
             </LinearLayout>
@@ -71,7 +71,7 @@
                 <com.ems.dingdong.views.CustomBoldTextView
                     style="@style/HeaderNews"
                     android:layout_width="match_parent"
-                    android:background="@drawable/bg_header_common"
+                    android:background="@drawable/bg_header_common_copy"
                     android:clickable="false"
                     android:padding="@dimen/dimen_10dp"
                     android:text="phát hàng (Thường)"
@@ -82,7 +82,7 @@
                     android:id="@+id/recycler_delivery"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_white_v1"
+                    android:background="@drawable/bg_header_common_recy"
                     android:scrollbars="vertical" />
             </LinearLayout>
 
@@ -96,7 +96,7 @@
                 <com.ems.dingdong.views.CustomBoldTextView
                     style="@style/HeaderNews"
                     android:layout_width="match_parent"
-                    android:background="@drawable/bg_header_common"
+                    android:background="@drawable/bg_header_common_copy"
                     android:clickable="false"
                     android:padding="@dimen/dimen_10dp"
                     android:text="phát hàng (COD)"
@@ -107,7 +107,7 @@
                     android:id="@+id/recycler_delivery_cod"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_white_v1"
+                    android:background="@drawable/bg_header_common_recy"
                     android:scrollbars="vertical" />
             </LinearLayout>
 
@@ -121,7 +121,7 @@
                 <com.ems.dingdong.views.CustomBoldTextView
                     style="@style/HeaderNews"
                     android:layout_width="match_parent"
-                    android:background="@drawable/bg_header_common"
+                    android:background="@drawable/bg_header_common_copy"
                     android:clickable="false"
                     android:padding="@dimen/dimen_10dp"
                     android:text="phát hàng (HCC)"
@@ -132,7 +132,7 @@
                     android:id="@+id/recycler_delivery_hcc"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_white_v1"
+                    android:background="@drawable/bg_header_common_recy"
                     android:scrollbars="vertical" />
             </LinearLayout>
 

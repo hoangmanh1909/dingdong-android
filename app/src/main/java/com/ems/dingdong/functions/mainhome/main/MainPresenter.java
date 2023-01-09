@@ -14,6 +14,8 @@ import com.ems.dingdong.functions.mainhome.main.data.CallLogMode;
 import com.ems.dingdong.functions.mainhome.main.data.MainMode;
 import com.ems.dingdong.functions.mainhome.notify.ListNotifyPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.PhatHangPresenter;
+import com.ems.dingdong.functions.mainhome.profile.chat.ChatPresenter;
+import com.ems.dingdong.functions.mainhome.profile.chat.menuchat.MenuChatPresenter;
 import com.ems.dingdong.functions.mainhome.setting.SettingPresenter;
 import com.ems.dingdong.model.BalanceModel;
 import com.ems.dingdong.model.MapMode;
@@ -92,6 +94,11 @@ public class MainPresenter extends Presenter<MainContract.View, MainContract.Int
                 }
             });
         }
+    }
+
+    @Override
+    public void showChat() {
+        new MenuChatPresenter(mContainerView).pushView();
     }
 
     @Override
@@ -199,7 +206,7 @@ public class MainPresenter extends Presenter<MainContract.View, MainContract.Int
                 .delay(1000, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(simpleResult -> {
-                    try{
+                    try {
                         if (simpleResult.getErrorCode().equals("00")) {
 //                            StatisticPaymentResponse paymentResponse = NetWorkController.getGson().fromJson(simpleResult.getValue(), new TypeToken<StatisticPaymentResponse>() {
 //                            }.getType());
@@ -208,7 +215,7 @@ public class MainPresenter extends Presenter<MainContract.View, MainContract.Int
                             Toast.showToast(getViewContext(), simpleResult.getMessage());
                             mView.hideProgress();
                         }
-                    }catch (Exception e){
+                    } catch (Exception e) {
                         Log.d("ASDASDASDw1e123", "ASDAsdq2");
 
                     }

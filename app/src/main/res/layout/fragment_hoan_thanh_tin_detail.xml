@@ -600,7 +600,8 @@
                             android:paddingTop="@dimen/dimen_10dp"
                             android:paddingBottom="@dimen/dimen_10dp"
                             android:textColor="@color/black"
-                            android:textSize="@dimen/text_size_14sp" />
+                            android:textSize="@dimen/text_size_14sp"
+                            tools:ignore="SpeakableTextPresentCheck" />
 
                     </LinearLayout>
 

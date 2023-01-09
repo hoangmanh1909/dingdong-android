@@ -4,8 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.collection.LruCache;
 import androidx.collection.SimpleArrayMap;
 
-import com.blankj.utilcode.constant.CacheConstants;
-
 /**
  * <pre>
  *     author: Blankj
@@ -14,7 +12,7 @@ import com.blankj.utilcode.constant.CacheConstants;
  *     desc  : utils about memory cache
  * </pre>
  */
-public final class CacheMemoryUtils implements CacheConstants {
+public final class CacheMemoryUtils {
 
     private static final int DEFAULT_MAX_COUNT = 256;
 

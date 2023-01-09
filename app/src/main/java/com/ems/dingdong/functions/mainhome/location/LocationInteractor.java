@@ -23,10 +23,11 @@ class LocationInteractor extends Interactor<LocationContract.Presenter>
     }
 
     @Override
-    public Observable<SimpleResult> findLocation(String ladingCode, String poCode) {
+    public Single<SimpleResult> findLocation(String ladingCode, String poCode) {
         return NetWorkControllerGateWay.findLocation(ladingCode, poCode);
-    }    @Override
+    }
 
+    @Override
     public Single<SimpleResult> ddCall(CallLiveMode callLiveMode) {
         return NetWorkControllerGateWay.ddCall(callLiveMode);
     }

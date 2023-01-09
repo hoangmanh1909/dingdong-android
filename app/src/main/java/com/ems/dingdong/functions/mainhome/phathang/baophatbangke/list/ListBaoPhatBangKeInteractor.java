@@ -2,6 +2,7 @@ package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list;
 
 import com.core.base.viper.Interactor;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.functions.mainhome.profile.chat.menuchat.model.RequestQueuChat;
 import com.ems.dingdong.model.CallLiveMode;
 import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.CreateVietMapRequest;
@@ -88,5 +89,10 @@ class ListBaoPhatBangKeInteractor extends Interactor<ListBaoPhatBangKeContract.P
     @Override
     public Single<SimpleResult> ddCall(CallLiveMode callLiveMode) {
         return NetWorkControllerGateWay.ddCall(callLiveMode);
+    }
+
+    @Override
+    public Single<SimpleResult> ddQueuChat(RequestQueuChat request) {
+        return NetWorkControllerGateWay.ddQueuChat(request);
     }
 }

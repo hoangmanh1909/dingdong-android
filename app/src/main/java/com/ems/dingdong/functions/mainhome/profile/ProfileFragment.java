@@ -2,12 +2,20 @@ package com.ems.dingdong.functions.mainhome.profile;
 
 import android.Manifest;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
+import android.os.Bundle;
+import android.provider.CallLog;
 import android.view.View;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.SwitchCompat;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
 
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.BuildConfig;
@@ -17,22 +25,33 @@ import com.ems.dingdong.dialog.DialoggoiLai;
 import com.ems.dingdong.dialog.PhoneDecisionDialog;
 import com.ems.dingdong.dialog.RouteDialog;
 import com.ems.dingdong.functions.login.LoginActivity;
+import com.ems.dingdong.functions.login.LoginFragment;
 import com.ems.dingdong.functions.mainhome.home.HomeV1Fragment;
+import com.ems.dingdong.functions.mainhome.main.data.CallLogMode;
+import com.ems.dingdong.functions.mainhome.main.data.ModeCA;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.DateTimeUtils;
+import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.views.CustomMediumTextView;
 //import com.zoho.livechat.android.ZohoLiveChat;
 //import com.zoho.livechat.android.utils.LiveChatUtil;
 //import com.zoho.livechat.android.utils.SalesIQCache;
+import com.google.gson.Gson;
 import com.zoho.salesiqembed.ZohoSalesIQ;
 //import com.sip.cmc.SipCmc;
 //import com.sip.cmc.callback.LogOutCallBack;
 //import com.sip.cmc.network.Account;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -41,7 +60,8 @@ import butterknife.OnClick;
 /**
  * The Profile Fragment
  */
-public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> implements ProfileContract.View {
+public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> implements ProfileContract.View
+        , LoaderManager.LoaderCallbacks<Cursor> {
     private static final int REQUEST_CODE_ASK_PERMISSIONS = 100;
 
     private static final String[] PERMISSIONS = new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION};
@@ -69,6 +89,15 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
     RouteInfo routeInfo;
     PostOffice postOffice;
     SharedPref sharedPref;
+
+
+    private Calendar mCalendarRaCa;
+    private Calendar mCalendarVaoCa;
+    private String mDateRaCa;
+    private String mDateVaoCa;
+    String mDataCA;
+    UserInfo userInfo1 = null;
+    List<CallLogMode> mList = new ArrayList<>();
 
     public static ProfileFragment getInstance() {
         return new ProfileFragment();
@@ -120,6 +149,11 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
             sharedPref.putBoolean(Constants.KEY_GACH_NO_PAYPOS, isChecked);
         });
 
+
+    }
+
+    @Override
+    public void showCallLog() {
 
     }
 
@@ -202,6 +236,80 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
 //            mPresenter.back();
             getViewContext().sendBroadcast(new Intent(HomeV1Fragment.ACTION_HOME_VIEW_CHANGE));
         }).show();
+    }
+
+    private static final int URL_LOADER = 1;
+
+    @NonNull
+    @Override
+    public Loader<Cursor> onCreateLoader(int loaderID, @Nullable Bundle args) {
+        android.util.Log.d("AAAAAAAA", "onCreateLoader() >> loaderID : " + loaderID);
+        switch (loaderID) {
+            case URL_LOADER:
+                // Returns a new CursorLoader
+                return new CursorLoader(
+                        getActivity(),   // Parent activity context
+                        CallLog.Calls.CONTENT_URI,        // Table to query
+                        null,     // Projection to return
+                        null,            // No selection clause
+                        null,            // No selection arguments
+                        null             // Default sort order
+                );
+            default:
+                return null;
+        }
+    }
+
+    @Override
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor managedCursor) {
+        mList = new ArrayList<>();
+        SharedPref sharedPref = new SharedPref(getActivity());
+        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        if (!userJson.isEmpty()) {
+            userInfo1 = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+        }
+        try {
+            int number = managedCursor.getColumnIndex(CallLog.Calls.NUMBER);
+            int type = managedCursor.getColumnIndex(CallLog.Calls.TYPE);
+            int date = managedCursor.getColumnIndex(CallLog.Calls.DATE);
+            int duration = managedCursor.getColumnIndex(CallLog.Calls.DURATION);
+            while (managedCursor.moveToNext()) {
+                String phNumber = managedCursor.getString(number);
+                String callType = managedCursor.getString(type);
+                String callDate = managedCursor.getString(date);
+                Date callDayTime = new Date(Long.valueOf(callDate));
+                String callDuration = "0";
+                callDuration = managedCursor.getString(duration);
+                String dir = null;
+                String datea = DateTimeUtils.convertDateToString(callDayTime, DateTimeUtils.DEFAULT_DATETIME_FORMAT);
+                int callTypeCode = Integer.parseInt(callType);
+
+                CallLogMode mode = new CallLogMode();
+                mode.setCallDate(datea);
+                mode.setPhNumber(phNumber);
+                mode.setCallDuration(callDuration);
+                mode.setCallType(callTypeCode);
+                mode.setDate(callDate);
+                mode.setFromNumber(userInfo1.getMobileNumber());
+                mList.add(mode);
+            }
+            Collections.sort(mList, new NameComparator());
+            Log.d("MEMIToi", new Gson().toJson(mList));
+            managedCursor.close();
+        } catch (Exception e) {
+            e.getMessage();
+        }
+    }
+
+    class NameComparator implements Comparator<CallLogMode> {
+        public int compare(CallLogMode s1, CallLogMode s2) {
+            return s2.getDate().compareTo(s1.getDate());
+        }
+    }
+
+    @Override
+    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
+
     }
 
 }

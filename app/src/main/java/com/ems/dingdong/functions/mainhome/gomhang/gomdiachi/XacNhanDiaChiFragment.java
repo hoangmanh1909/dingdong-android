@@ -1,29 +1,36 @@
 package com.ems.dingdong.functions.mainhome.gomhang.gomdiachi;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.SparseBooleanArray;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
+import androidx.core.widget.PopupWindowCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.R;
 import com.ems.dingdong.callback.AddressCallback;
+import com.ems.dingdong.callback.BuuCucCallback;
 import com.ems.dingdong.callback.OnChooseDay;
 import com.ems.dingdong.callback.PickerCallback;
 import com.ems.dingdong.callback.XacMinhCallback;
@@ -34,6 +41,11 @@ import com.ems.dingdong.functions.mainhome.address.laydiachi.GetLocation;
 import com.ems.dingdong.functions.mainhome.gomhang.listcommon.more.DialoChonKhuVuc;
 import com.ems.dingdong.functions.mainhome.gomhang.listcommon.more.DichVuMode;
 import com.ems.dingdong.functions.mainhome.gomhang.listcommon.more.Mpit;
+import com.ems.dingdong.functions.mainhome.profile.chat.menuchat.CheckDangKy;
+import com.ems.dingdong.functions.mainhome.profile.chat.menuchat.dialogchat.DialogChatButa;
+import com.ems.dingdong.functions.mainhome.profile.chat.menuchat.dialogchat.DilogCSKH;
+import com.ems.dingdong.functions.mainhome.profile.chat.menuchat.model.AccountChatInAppGetQueueResponse;
+import com.ems.dingdong.functions.mainhome.profile.chat.menuchat.model.RequestQueuChat;
 import com.ems.dingdong.functions.mainhome.xuatfile.XuatFileExcel;
 import com.ems.dingdong.model.AddressModel;
 import com.ems.dingdong.model.CommonObject;
@@ -54,6 +66,7 @@ import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.Log;
+import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.CustomBoldTextView;
@@ -61,6 +74,12 @@ import com.ems.dingdong.views.form.FormItemEditText;
 import com.google.common.collect.Iterables;
 import com.google.gson.Gson;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
+import com.ringme.ott.sdk.customer.vnpost.model.QueueInfo;
+import com.ringme.ott.sdk.customer.vnpost.model.VnpostOrderInfo;
+import com.ringme.ott.sdk.listener.OpenChatListener;
+import com.ringme.ott.sdk.RingmeOttSdk;
+//import com.ringme.ott.sdk.customer.vnpost.model.VnpostOrderInfo;
+//import com.ringme.ott.sdk.utils.RingmeOttSdk;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -126,7 +145,7 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
     String mPhoneS = "";
     ArrayList<Item> items = new ArrayList<>();
     int getmID = 0;
-    List<DichVuMode> dichVuModeList;
+    List<DichVuMode> dichVuModeList = new ArrayList<>();
     private static final String[] PERMISSIONS = new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION,
     };//, Manifest.permission.PROCESS_OUTGOING_CALLS
     private static final int REQUEST_CODE_ASK_PERMISSIONS = 98;
@@ -225,6 +244,39 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
                             mPresenter.ddSreachPhone(phoneNumber);
                         }
                     });
+                    holder.imgChat.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            //"Hoàn tất tin"
+                            if (!CheckDangKy.isCheckUserChat(getViewContext())) {
+                                new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
+                                        .setConfirmText("Đóng")
+                                        .setTitleText("Thông báo")
+                                        .setContentText("Tài khoản chưa đăng ký sử dụng dịch vụ chat.")
+                                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                            @Override
+                                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                                sweetAlertDialog.dismiss();
+                                            }
+                                        }).show();
+                                return;
+                            }
+                            if (RingmeOttSdk.isLoggedIn()) {
+                                displayPopupWindow(holder.imgChat, mListFilter.get(position));
+                            } else {
+                                new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
+                                        .setConfirmText("Đóng")
+                                        .setTitleText("Thông báo")
+                                        .setContentText("Kết nối hệ thống chat thất bại")
+                                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                            @Override
+                                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                                sweetAlertDialog.dismiss();
+                                            }
+                                        }).show();
+                            }
+                        }
+                    });
                 }
             };
         } else {
@@ -233,6 +285,39 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
                 @Override
                 public void onBindViewHolder(@NonNull HolderView holder, int position) {
                     super.onBindViewHolder(holder, position);
+                    holder.imgChat.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            //"Hoàn tất tin"
+                            if (!CheckDangKy.isCheckUserChat(getViewContext())) {
+                                new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
+                                        .setConfirmText("Đóng")
+                                        .setTitleText("Thông báo")
+                                        .setContentText("Tài khoản chưa đăng ký sử dụng dịch vụ chat.")
+                                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                            @Override
+                                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                                sweetAlertDialog.dismiss();
+                                            }
+                                        }).show();
+                                return;
+                            }
+                            if (RingmeOttSdk.isLoggedIn()) {
+                                displayPopupWindow(holder.imgChat, mListFilter.get(position));
+                            } else {
+                                new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
+                                        .setConfirmText("Đóng")
+                                        .setTitleText("Thông báo")
+                                        .setContentText("Kết nối hệ thống chat thất bại")
+                                        .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                            @Override
+                                            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                                sweetAlertDialog.dismiss();
+                                            }
+                                        }).show();
+                            }
+                        }
+                    });
                     holder.itemView.setOnClickListener(v -> {
                        /* holder.cbSelected.setChecked(!holder.getItem(position).isSelected());
                         holder.getItem(position).setSelected(!holder.getItem(position).isSelected());*/
@@ -310,7 +395,6 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
         Calendar cal = Calendar.getInstance();
         cal.setTime(today);
         cal.add(Calendar.DATE, -2);
-//        Log.d("asdasdasdsa",mPresenter.getType()+"");
         fromDate = DateTimeUtils.convertDateToString(cal.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
         toDate = DateTimeUtils.convertDateToString(Calendar.getInstance().getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
         if (mPresenter.getType() == 1) {
@@ -371,6 +455,7 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
     List<Mpit> mpitList = new ArrayList<>();
     List<CommonObject> listDichVu = new ArrayList<CommonObject>();
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void showDichVuMPit(ArrayList<CommonObject> list) {
         mpitList = new ArrayList<>();
@@ -429,8 +514,12 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
 
     @Override
     public void showDichVuMpit(List<DichVuMode> list) {
+//        try {
         dichVuModeList = new ArrayList<>();
         dichVuModeList.addAll(list);
+//        } catch (Exception e) {
+//        }
+
     }
 
     private void showDialog() {
@@ -963,5 +1052,169 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
     @Override
     public void showList(VpostcodeModel getListVpostV1) {
         vpostcodeModels = getListVpostV1;
+    }
+
+    private void displayPopupWindow(View anchorView, CommonObject list) {
+        PopupWindow popup = new PopupWindow(getViewContext());
+        popup.setOutsideTouchable(true);
+        popup.setFocusable(true);
+        popup.setBackgroundDrawable(new BitmapDrawable());
+        popup.showAtLocation(anchorView, Gravity.RIGHT, (int) anchorView.getX(), (int) anchorView.getY());
+        popup.setInputMethodMode(PopupWindow.INPUT_METHOD_NEEDED);
+        View child = LayoutInflater.from(anchorView.getContext()).inflate(R.layout.topping_view_gom, null);
+        popup.setContentView(child);
+
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"}) TextView tvNguoigui = (TextView) child.findViewById(R.id.tv_nguoigui);
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"}) TextView tvNvtgkhac = (TextView) child.findViewById(R.id.tv_nvtgkhac);
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"}) TextView tvCskh = (TextView) child.findViewById(R.id.tv_cskh);
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"}) TextView tvBuucuc = (TextView) child.findViewById(R.id.tv_buucuc);
+        String code = "0";
+        String name = "";
+        if (mPresenter.getType() == 1) {
+            if (list.getStatusCode().equals("P0")) {
+                //chua
+                code = "2";
+                name = "Chuyển tin bưu tá";
+
+            } else if (list.getStatusCode().equals("P1")) {
+                //da
+                code = "4";
+                name = "Đang lấy hàng";
+            }
+        } else if (mPresenter.getType() == 2) {
+            if (list.getStatusCode().equals("P1") || list.getStatusCode().equals("P5")) {
+                //chua
+                code = "4";
+            } else if (list.getStatusCode().equals("P4") || list.getStatusCode().equals("P6")) {
+                //da
+                code = "6";
+            }
+        } else code = "0";
+        String finalCode = code;
+        String finalName = name;
+        tvNguoigui.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                VnpostOrderInfo vnpostOrderInfo = new VnpostOrderInfo(
+                        list.getCode(),
+                        finalName, finalCode,
+                        "",
+                        String.format("%s đ", NumberUtils.formatPriceNumber(0)),
+                        String.format("%s đ", NumberUtils.formatPriceNumber(0)),
+                        2,
+                        "");
+                if (list.getReceiverPhone().length() > 11) {
+                    Toast.showToast(getViewContext(), "Số điện thoại không hợp lệ");
+                    return;
+                }
+                RingmeOttSdk.openChat(requireActivity(), list.getReceiverPhone(), vnpostOrderInfo, 1, new OpenChatListener() {
+                    @Override
+                    public void onSuccessful() {
+
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull String s) {
+                        Toast.showToast(getViewContext(), s);
+                    }
+                });
+                popup.dismiss();
+            }
+        });
+        tvNvtgkhac.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                VnpostOrderInfo vnpostOrderInfo = new VnpostOrderInfo(
+                        list.getCode(),
+                        finalName, finalCode,
+                        "",
+                        String.format("%s đ", NumberUtils.formatPriceNumber(0)),
+                        String.format("%s đ", NumberUtils.formatPriceNumber(0)),
+                        1,
+                        "");
+
+                new DialogChatButa(getViewContext(), "P", new BuuCucCallback() {
+                    @Override
+                    public void onResponse(String loaibc, String mabuucuc) {
+                        RingmeOttSdk.openChat(requireActivity(), loaibc, vnpostOrderInfo, 1, new OpenChatListener() {
+                            @Override
+                            public void onSuccessful() {
+
+                            }
+
+                            @Override
+                            public void onFailure(@NonNull String s) {
+                                Toast.showToast(getViewContext(), s);
+                            }
+                        });
+                    }
+                }).show();
+                popup.dismiss();
+            }
+        });
+        tvCskh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                VnpostOrderInfo vnpostOrderInfo = new VnpostOrderInfo(
+                        list.getCode(),
+                        finalName, finalCode,
+                        "",
+                        String.format("%s đ", NumberUtils.formatPriceNumber(0)),
+                        String.format("%s đ", NumberUtils.formatPriceNumber(0)),
+                        1,
+                        "");
+
+                new DilogCSKH(getViewContext(), 1, list.getPOProvinceCode(), new BuuCucCallback() {
+                    @Override
+                    public void onResponse(String loaibc, String mabuucuc) {
+                        RequestQueuChat q
+                                = new RequestQueuChat();
+                        q.setIdMission(5);
+                        q.setIdDepartment(mabuucuc);
+                        mPresenter.ddQueuChat(q, vnpostOrderInfo, 5);
+
+                    }
+                }).show();
+                popup.dismiss();
+            }
+        });
+        tvBuucuc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                VnpostOrderInfo vnpostOrderInfo = new VnpostOrderInfo(
+                        list.getCode(),
+                        finalName, finalCode,
+                        "",
+                        String.format("%s đ", NumberUtils.formatPriceNumber(0)),
+                        String.format("%s đ", NumberUtils.formatPriceNumber(0)),
+                        1,
+                        "");
+                SharedPref sharedPref = new SharedPref(getContext());
+                String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
+                PostOffice postOffice = NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class);
+                RequestQueuChat q = new RequestQueuChat();
+                q.setIdMission(1);
+                q.setIdDepartment(postOffice.getCode());
+                mPresenter.ddQueuChat(q, vnpostOrderInfo, 1);
+                popup.dismiss();
+            }
+        });
+        PopupWindowCompat.showAsDropDown(popup, anchorView, 0, 0, Gravity.RIGHT);
+    }
+
+    @Override
+    public void showLoi(String mess) {
+        Toast.showToast(getViewContext(), mess);
+    }
+
+    @Override
+    public void showAccountChatInAppGetQueueResponse(AccountChatInAppGetQueueResponse response, VnpostOrderInfo vnpostOrderInfo, int type) {
+        QueueInfo queueInfo = new QueueInfo();
+        queueInfo.setAvatarQueue(response.getAvatarQueue());
+        queueInfo.setIdQueue(response.getIdQueue());
+        queueInfo.setJidQueue(response.getJidQueue());
+        queueInfo.setDispName(response.getDispName());
+        RingmeOttSdk.openChatQueue(requireActivity(),
+                queueInfo, vnpostOrderInfo, type, false);
     }
 }

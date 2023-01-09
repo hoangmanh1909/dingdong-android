@@ -13,7 +13,14 @@ import androidx.annotation.Nullable;
 
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
+import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.functions.mainhome.address.xacminhdiachi.chitietdiachi.ChiTietDiaChiActivity;
+import com.ems.dingdong.model.SimpleResult;
+import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.network.NetWorkControllerGateWay;
+import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.views.CustomTextView;
 import com.mapbox.android.core.location.LocationEngine;
 import com.mapbox.android.core.location.LocationEngineCallback;
@@ -37,6 +44,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Response;
 
 public class XacMinhDiaChiFragment extends ViewFragment<XacMinhDiaChiContract.Presenter>
         implements XacMinhDiaChiContract.View, OnMapReadyCallback, PermissionsListener {
@@ -96,6 +105,25 @@ public class XacMinhDiaChiFragment extends ViewFragment<XacMinhDiaChiContract.Pr
                     intent.putExtra("lad", mLocation.getLatitude());
 //                    mPresenter.getLocationAddress(mLocation.getLongitude(), mLocation.getLatitude());
                     startActivity(intent);
+//                    SharedPref sharedPref = new SharedPref(getViewContext());
+//                    String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+//                    UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+//                    final String postmanID = userInfo.getiD();
+//                    NetWorkControllerGateWay.locationAddNew(postmanID, String.valueOf(mLocation.getLatitude()), String.valueOf(mLocation.getLongitude())
+//                            , new CommonCallback<SimpleResult>(getViewContext()) {
+//                                @Override
+//                                protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
+//                                    super.onSuccess(call, response);
+//                                    if (response.body().getErrorCode().equals("00")) {
+//                                        Toast.makeText(getViewContext(), response.body().getMessage(), Toast.LENGTH_LONG).show();
+//                                    }
+//                                }
+//
+//                                @Override
+//                                protected void onError(Call<SimpleResult> call, String message) {
+//                                    super.onError(call, message);
+//                                }
+//                            });
                 }
                 break;
         }
@@ -186,7 +214,6 @@ public class XacMinhDiaChiFragment extends ViewFragment<XacMinhDiaChiContract.Pr
         @Override
         public void onSuccess(LocationEngineResult result) {
             XacMinhDiaChiFragment activity = activityWeakReference.get();
-
             if (activity != null) {
                 Location location = result.getLastLocation();
 

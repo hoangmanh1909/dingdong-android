@@ -50,7 +50,7 @@ public class CreatedBd13Dialog extends Dialog {
     private ItemBottomSheetPickerUIFragment lydo;
     ArrayList<Item> items = new ArrayList<>();
     private Item mItem;
-   ArrayList<Item> itemsLydo = new ArrayList<>();
+    ArrayList<Item> itemsLydo = new ArrayList<>();
     private Item mItemLydo;
 
     public CreatedBd13Dialog(Context context, int type, long quantity, long totalAmount, CreatedBD13Callback confirmCallback) {
@@ -84,8 +84,6 @@ public class CreatedBd13Dialog extends Dialog {
         list.add(cancelTypeBD13Info);
 
 
-
-
         for (CancelTypeBD13Info item : list) {
             items.add(new Item(item.getId(), item.getName()));
         }
@@ -93,6 +91,8 @@ public class CreatedBd13Dialog extends Dialog {
 
         mItem = items.get(0);
     }
+
+
 
     @Override
     public void show() {

@@ -117,8 +117,7 @@ public class TaoTInFragment extends ViewFragment<TaoTinContract.Presenter> imple
     String phone = "";
     String nguoilienhe = "";
 
-    int idTinh = 0;
-    int idQuuanhuyen = 0;
+
     private Calendar calendar;
     int mHour = 0;
     int mMinute = 0;
@@ -129,7 +128,8 @@ public class TaoTInFragment extends ViewFragment<TaoTinContract.Presenter> imple
     List<DistrictModels> mListQuanHuyen = new ArrayList<>();
     List<WardModels> mListXaPhuong = new ArrayList<>();
     int idXaphuong = 0;
-
+    int idTinh = 0;
+    int idQuuanhuyen = 0;
     String postmanCode;
     String poCode;
     String routeCode;
@@ -257,7 +257,8 @@ public class TaoTInFragment extends ViewFragment<TaoTinContract.Presenter> imple
 
         if (!NumberUtils.isNumber(phone)) {
             Toast.showToast(getViewContext(), "Vui lòng kiểm tra số điện thoại đã nhập");
-            edt_phone.requestFocus();;
+            edt_phone.requestFocus();
+            ;
             return;
         }
         if (TextUtils.isEmpty(nguoilienhe)) {
@@ -304,9 +305,8 @@ public class TaoTInFragment extends ViewFragment<TaoTinContract.Presenter> imple
         createOrderRequest.setPickupDistrictId(idQuuanhuyen);
         createOrderRequest.setPickupWardId(idXaphuong);
         createOrderRequest.setContactName(nguoilienhe);
-        createOrderRequest.setPickupStreet(edt_sonha.getText().toString());
+        createOrderRequest.setPickupStreet(edt_sonha.getText().toString() + ", " + edt_xaphuong.getText().toString() + ", " + edt_quanhuyen.getText() + "," + edt_tinhthanhpho.getText());
         createOrderRequest.setContactPhone(phone);
-
 
         mPresenter.themTinPresenter(createOrderRequest);
 
@@ -337,7 +337,7 @@ public class TaoTInFragment extends ViewFragment<TaoTinContract.Presenter> imple
                         .show();
                 break;
             case R.id.ll_scan_qr:
-                mPresenter.search(new PUGetBusinessProfileRequest("BSP007",edt_search.getText()));
+                mPresenter.search(new PUGetBusinessProfileRequest("BSP007", edt_search.getText()));
                 break;
             case R.id.edt_tinhthanhpho:
                 showTinhThanhPho();
@@ -404,7 +404,7 @@ public class TaoTInFragment extends ViewFragment<TaoTinContract.Presenter> imple
         new DialogTaoTin(getViewContext(), "Danh sách khách hàng", list, new IdCallback() {
             @Override
             public void onResponse(String id) {
-                mPresenter.searchDiachi(new PUGetBusinessProfileRequest(id,"BSP006"));
+                mPresenter.searchDiachi(new PUGetBusinessProfileRequest(id, "BSP006"));
             }
         }).show();
     }

@@ -58,7 +58,7 @@ public class DiaChiAdapter extends RecyclerView.Adapter<DiaChiAdapter.HolderView
         @BindView(R.id.tv_phonekhachhang)
         TextView tv_phonekhachhang;
         @BindView(R.id.btn_chon)
-        public Button btn_chon;
+        public TextView btn_chon;
 
         public HolderView(View itemView) {
             super(itemView);

@@ -6,8 +6,6 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 import androidx.collection.SimpleArrayMap;
 
-import com.blankj.utilcode.constant.CacheConstants;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -21,7 +19,7 @@ import java.io.Serializable;
  *     desc  : utils about double cache
  * </pre>
  */
-public final class CacheDoubleUtils implements CacheConstants {
+public final class CacheDoubleUtils {
 
     private static final SimpleArrayMap<String, CacheDoubleUtils> CACHE_MAP = new SimpleArrayMap<>();
     private CacheMemoryUtils mCacheMemoryUtils;

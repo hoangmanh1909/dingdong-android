@@ -19,6 +19,14 @@
         android:textSize="14dp"
         android:textStyle="bold" />
 
+    <CheckBox
+        android:id="@+id/cb_hangdoitra"
+        style="@style/CustomCheck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:text="Không thu hồi được hàng đổi trả" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

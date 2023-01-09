@@ -32,6 +32,7 @@ public class Item {
         this.text = text;
     }
 
+
     public Item(String value, String text, List<SolutionInfo> solutionInfos) {
         this.value = value;
         this.text = text;

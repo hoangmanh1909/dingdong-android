@@ -15,6 +15,16 @@ public class CallLogMode {
     private String phNumber;
     @SerializedName("fromNumber")
     private String fromNumber;
+    @SerializedName("PostmanCode")
+    private String PostmanCode;
+
+    public String getPostmanCode() {
+        return PostmanCode;
+    }
+
+    public void setPostmanCode(String postmanCode) {
+        PostmanCode = postmanCode;
+    }
 
     public int getCallType() {
         return callType;

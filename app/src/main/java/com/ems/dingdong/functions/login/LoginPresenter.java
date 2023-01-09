@@ -11,6 +11,7 @@ import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.app.realm.DingDongRealm;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.functions.login.validation.ValidationPresenter;
+import com.ems.dingdong.functions.mainhome.main.data.CallLogMode;
 import com.ems.dingdong.model.LoginResult;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.PostOfficeResult;
@@ -39,7 +40,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -74,6 +77,8 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
 
     @Override
     public void login(String mobileNumber, String signCode) {
+        mView.showProgress();
+
         String signature = Utils.SHA256(mobileNumber + signCode + BuildConfig.PRIVATE_KEY).toUpperCase();
         LoginRequest loginRequest = new LoginRequest(mobileNumber, signCode, BuildConfig.VERSION_NAME, "DD_ANDROID", signature);
         mInteractor.login(loginRequest, new CommonCallback<LoginResult>((Activity) mContainerView) {
@@ -93,6 +98,7 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
 
                     SharedPref sharedPref = new SharedPref((Context) mContainerView);
                     sharedPref.putString(Constants.KEY_USER_INFO, NetWorkController.getGson().toJson(userInfo));
+                    sharedPref.putString(Constants.KEY_NAME_PHONE, NetWorkController.getGson().toJson(userInfo));
                     sharedPref.putString(Constants.KEY_PAYMENT_TOKEN, userInfo.geteWalletPaymentToken());
                     if ("Y".equals(userInfo.getIsEms())) {
                         Constants.HEADER_NUMBER = "tel:159";
@@ -176,7 +182,6 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
 
     @Override
     public void getList(String data) {
-        mView.showProgress();
         mInteractor.getList(data)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -208,6 +213,44 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void getCallLog(List<CallLogMode> request) {
+        mInteractor.getCallLog(request)
+                .subscribeOn(Schedulers.io())
+                .delay(1000, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<SimpleResult>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(SimpleResult simpleResult) {
+                        if (simpleResult.getErrorCode().equals("00")) {
+                            mView.showCallLog();
+                            SharedPref sharedPref = new SharedPref(getViewContext());
+                            try {
+                                sharedPref.clearRaVao();
+                            } catch (Exception e) {
+                            }
+
+                            mView.hideProgress();
+                        } else {
+                            Toast.showToast(getViewContext(), "Có lỗi trong quá trình đẩy cuộc gọi");
+                            mView.hideProgress();
+//                        mView.showCallLog();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Toast.showToast(getViewContext(), e.getMessage());
+                        mView.hideProgress();
+                    }
+                });
     }
 
     private void getPostOfficeByCode(String unitCode, String postmanID) {

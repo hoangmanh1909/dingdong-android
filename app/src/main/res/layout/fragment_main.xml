@@ -9,7 +9,7 @@
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:background="@drawable/bg_gradient_top"
         android:orientation="vertical"
         android:paddingLeft="@dimen/dimen_10dp"
@@ -18,7 +18,8 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -26,7 +27,6 @@
                 android:id="@+id/img_logo_top"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
                 android:layout_gravity="left"
                 android:src="@drawable/ic_logo_ding_dong" />
 
@@ -40,7 +40,8 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
                     <Switch
                         android:id="@+id/sw_switch"
@@ -57,6 +58,14 @@
                         android:text="Ra/Vào ca"
                         android:textColor="@color/white" />
                 </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/img_chat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginRight="@dimen/dimen_10dp"
+                    android:src="@drawable/chatbubbles_v1" />
 
                 <FrameLayout
                     android:id="@+id/fr_thongbao"

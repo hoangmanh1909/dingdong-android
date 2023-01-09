@@ -65,11 +65,11 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    app:layout_constraintBottom_toBottomOf="@+id/img_address"
-                    app:layout_constraintEnd_toStartOf="@+id/img_address"
+                    app:layout_constraintBottom_toBottomOf="@+id/img_chat"
+                    app:layout_constraintEnd_toStartOf="@+id/img_chat"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toEndOf="@+id/tv_index"
-                    app:layout_constraintTop_toTopOf="@+id/img_address"
+                    app:layout_constraintTop_toTopOf="@+id/img_chat"
                     tools:ignore="MissingConstraints">
 
                     <com.ems.dingdong.views.CustomBoldTextView
@@ -80,7 +80,7 @@
                         android:layout_toRightOf="@+id/tv_index"
                         android:text="COD2018041"
                         android:textColor="@color/blue"
-                        android:textSize="15dp" />
+                        android:textSize="16dp" />
 
                     <TextView
                         android:id="@+id/tv_xacminhdiachi"
@@ -132,6 +132,21 @@
                     app:layout_constraintEnd_toEndOf="@+id/ll_code"
                     app:layout_constraintEnd_toStartOf="@+id/img_sml"
                     app:layout_constraintTop_toTopOf="@+id/img_sml" />
+
+                <ImageView
+                    android:id="@+id/img_chat"
+
+                    android:layout_width="@dimen/_27sdp"
+                    android:layout_height="@dimen/_27sdp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="2dp"
+                    android:padding="3dp"
+                    android:src="@drawable/chatbubbles"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="@+id/img_address"
+                    app:layout_constraintEnd_toEndOf="@+id/ll_code"
+                    app:layout_constraintEnd_toStartOf="@+id/img_address"
+                    app:layout_constraintTop_toTopOf="@+id/img_address" />
 
 
                 <!--temporary gone-->

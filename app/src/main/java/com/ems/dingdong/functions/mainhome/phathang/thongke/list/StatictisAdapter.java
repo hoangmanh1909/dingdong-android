@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.core.base.adapter.RecyclerBaseAdapter;
 import com.core.widget.BaseViewHolder;
 import com.ems.dingdong.R;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.parital.ModeFee;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.utiles.NumberUtils;
 
@@ -139,6 +140,19 @@ public class StatictisAdapter extends RecyclerBaseAdapter {
             if (item.getFeeShip() > 0) {
                 tienCuoc += item.getFeeShip();
             }
+
+//            if (mBaoPhatBangke.get(0).getFeeCOD() != 0)
+//                cList.add(new ModeFee("Cước COD: ", mBaoPhatBangke.get(0).getFeeCOD()));
+//            if (mBaoPhatBangke.get(0).getFeeC() != 0)
+//                cList.add(new ModeFee("Phí C: ", mBaoPhatBangke.get(0).getFeeC()));
+//            if (mBaoPhatBangke.get(0).getFeePPA() != 0)
+//                cList.add(new ModeFee("Cước PPA: ", mBaoPhatBangke.get(0).getFeePPA()));
+//            if (mBaoPhatBangke.get(0).getFeeCollectLater() != 0)
+//                cList.add(new ModeFee("Lệ phí HCC: ", mBaoPhatBangke.get(0).getFeeCollectLater()));
+//            if (mBaoPhatBangke.get(0).getFeeShip() != 0)
+//                cList.add(new ModeFee("Phí ship: ", mBaoPhatBangke.get(0).getFeeShip()));
+//            if (mBaoPhatBangke.get(0).getFeePA() != 0)
+//                cList.add(new ModeFee("Cước thu hộ HCC: ", mBaoPhatBangke.get(0).getFeePA()));
 
             if (mtype.equals("C14") || mtype.equals("C44")) {
                 tvAmount.setText(String.format("%s VNĐ", NumberUtils.formatPriceNumber(tienCuoc)));

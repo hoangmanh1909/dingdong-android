@@ -7,6 +7,8 @@ import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.functions.mainhome.gomhang.listcommon.more.DichVuMode;
 import com.ems.dingdong.functions.mainhome.gomhang.listcommon.more.Mpit;
+import com.ems.dingdong.functions.mainhome.profile.chat.menuchat.model.AccountChatInAppGetQueueResponse;
+import com.ems.dingdong.functions.mainhome.profile.chat.menuchat.model.RequestQueuChat;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.ConfirmAllOrderPostman;
@@ -14,6 +16,7 @@ import com.ems.dingdong.model.ConfirmAllOrderPostmanResult;
 import com.ems.dingdong.model.ConfirmOrderPostman;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
+import com.ringme.ott.sdk.customer.vnpost.model.VnpostOrderInfo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +45,8 @@ public interface ListCommonContract {
         void confirmAllOrderPostman(ArrayList<ConfirmOrderPostman> request, CommonCallback<SimpleResult> callback);
 
         Single<SimpleResult> ddGetDichVuMpit();
+
+        Single<SimpleResult> ddQueuChat(RequestQueuChat request);
     }
 
     interface View extends PresentView<Presenter> {
@@ -55,9 +60,14 @@ public interface ListCommonContract {
 
         void showDichVuMPit(ArrayList<CommonObject> list);
 
+        void showLoi(String mess);
+
+        void showAccountChatInAppGetQueueResponse(AccountChatInAppGetQueueResponse response , VnpostOrderInfo vnpostOrderInfo,int type);
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
+        void ddQueuChat(RequestQueuChat request , VnpostOrderInfo vnpostOrderInfo,int type);
+
         void showDichVu(List<Mpit> list);
 
         void ddgetDichVuMpit();

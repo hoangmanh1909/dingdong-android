@@ -3,10 +3,15 @@ package com.ems.dingdong.functions.mainhome.profile;
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.functions.mainhome.lichsucuocgoi.tabcall.TabCallPresenter;
+import com.ems.dingdong.functions.mainhome.main.data.CallLogMode;
 import com.ems.dingdong.functions.mainhome.profile.chat.ChatPresenter;
 import com.ems.dingdong.functions.mainhome.profile.ewallet.EWalletPresenter;
 import com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.ListBankPresenter;
 import com.ems.dingdong.functions.mainhome.profile.tienluong.SalaryPresenter;
+import com.ems.dingdong.utiles.Toast;
+
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -55,6 +60,24 @@ public class ProfilePresenter extends Presenter<ProfileContract.View, ProfileCon
 
     @Override
     public void showChat() {
-       new ChatPresenter(mContainerView).pushView();
+        new ChatPresenter(mContainerView).pushView();
+    }
+
+    @Override
+    public void getCallLog(List<CallLogMode> request) {
+        mInteractor.getCallLog(request)
+                .subscribeOn(Schedulers.io())
+                .delay(1000, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    if (simpleResult.getErrorCode().equals("00")) {
+                        mView.showCallLog();
+                        mView.hideProgress();
+                    } else {
+                        Toast.showToast(getViewContext(), "Có lỗi trong quá trình đẩy cuộc gọi");
+                        mView.hideProgress();
+                        mView.showCallLog();
+                    }
+                });
     }
 }

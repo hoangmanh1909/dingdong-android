@@ -103,7 +103,6 @@ public class TimDuongDiPresenter extends Presenter<TimDuongDiContract.View, TimD
             @Override
             protected void onError(Call<XacMinhDiaChiResult> call, String message) {
                 super.onError(call, message);
-
                 mView.showError(message);
             }
         });

@@ -18,7 +18,7 @@ public class ListNotifyActivity extends DingDongActivity {
         String value1 = intent.getStringExtra("ticketCode");
         if (value2 != null)
             value2 = value2 + ";" + value1;
-        Log.d("thahkhiem1123127361",  value2);
+        System.out.print("thahkhiem1123127361" +  value2);
         return (ViewFragment) new ListNotifyPresenter(this).setMess(value2).getFragment();
     }
 }

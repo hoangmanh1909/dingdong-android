@@ -54,16 +54,6 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
 
-                    <!--                    <CheckBox-->
-                    <!--                        android:id="@+id/cb_selected"-->
-                    <!--                        android:layout_width="wrap_content"-->
-                    <!--                        android:layout_height="wrap_content"-->
-                    <!--                        android:layout_gravity="center"-->
-                    <!--                        android:layout_marginLeft="2dp"-->
-                    <!--                        android:button="@drawable/custom_btn_check"-->
-                    <!--                        android:clickable="false"-->
-                    <!--                        android:gravity="left"-->
-                    <!--                        android:paddingRight="@dimen/_5sdp" />-->
 
                     <com.ems.dingdong.views.CustomBoldTextView
                         android:id="@+id/tv_index"
@@ -85,17 +75,25 @@
                         android:orientation="vertical"
                         tools:ignore="MissingConstraints">
 
-                        <com.ems.dingdong.views.CustomBoldTextView
-                            android:id="@+id/tv_code"
+                        <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="40dp"
-                            android:layout_centerVertical="true"
-                            android:layout_gravity="center|left"
-                            android:layout_toRightOf="@+id/tv_index"
-                            android:gravity="center|left"
-                            android:text="COD2018041"
-                            android:textColor="@color/md_blue_700"
-                            android:textSize="14dp" />
+                            android:layout_height="wrap_content">
+
+                            <com.ems.dingdong.views.CustomBoldTextView
+                                android:id="@+id/tv_code"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:layout_centerVertical="true"
+                                android:layout_gravity="center|left"
+                                android:layout_toLeftOf="@+id/img_chat"
+                                android:gravity="center|left"
+                                android:text="COD2018041"
+                                android:textColor="@color/md_blue_700"
+                                android:textSize="14dp" />
+
+
+                        </RelativeLayout>
+
 
                         <TextView
                             android:id="@+id/tv_xacminhdiachi"
@@ -133,7 +131,7 @@
 
                     <ImageView
                         android:id="@+id/img_address"
-                        android:layout_width="@dimen/_27sdp"
+                        android:layout_width="28dp"
                         android:layout_height="@dimen/_27sdp"
                         android:layout_gravity="center"
                         android:layout_marginEnd="2dp"
@@ -178,9 +176,31 @@
                         android:layout_marginEnd="2dp"
                         android:padding="3dp"
                         android:src="@drawable/icon_extend_menu"
+                        android:visibility="gone"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/img_themdanhba"
+                        android:layout_width="27dp"
+                        android:layout_height="@dimen/_27sdp"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="2dp"
+                        android:padding="3dp"
+                        android:src="@drawable/ic_location"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/img_chat"
+                        android:layout_width="28dp"
+                        android:layout_height="@dimen/_27sdp"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="2dp"
+                        android:padding="3dp"
+                        android:src="@drawable/chatbubbles" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -206,8 +226,8 @@
                     android:id="@+id/tv_tien_phathoan"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text=""
                     android:layout_marginTop="5dp"
+                    android:text=""
                     android:textColor="@color/red_light"
                     android:textSize="14dp" />
 
@@ -223,17 +243,17 @@
                 <com.ems.dingdong.views.CustomTextView
                     android:id="@+id/tv_batch_code"
                     android:layout_width="match_parent"
-                    android:layout_marginTop="5dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:text=""
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_size_14sp" />
 
                 <com.ems.dingdong.views.CustomTextView
                     android:id="@+id/tv_new_instruction"
-                    android:layout_marginTop="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:text=""
                     android:textColor="@color/red_light"
                     android:textSize="@dimen/text_size_14sp" />
@@ -241,8 +261,8 @@
                 <com.ems.dingdong.views.CustomTextView
                     android:id="@+id/tv_new_receiver_address"
                     android:layout_width="match_parent"
-                    android:layout_marginTop="5dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:text=""
                     android:textColor="@color/red_light"
                     android:textSize="@dimen/text_size_14sp" />
@@ -255,10 +275,10 @@
 
                     <com.ems.dingdong.views.CustomBoldTextView
                         android:id="@+id/tv_receiver"
-                        android:layout_marginTop="5dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
+                        android:layout_marginTop="5dp"
                         android:layout_weight="1"
                         android:gravity="center|left"
                         android:text=""
@@ -291,8 +311,8 @@
                     android:id="@+id/tv_sender"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text=""
                     android:layout_marginTop="5dp"
+                    android:text=""
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_size_14sp" />
 
@@ -300,17 +320,17 @@
                     android:id="@+id/tv_info"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:text=""
                     android:textColor="@color/black"
-                    android:layout_marginTop="5dp"
                     android:textSize="@dimen/text_size_14sp" />
 
                 <com.ems.dingdong.views.CustomTextView
                     android:id="@+id/tv_instruction"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text=""
                     android:layout_marginTop="5dp"
+                    android:text=""
                     android:textColor="@color/red_light"
                     android:textSize="@dimen/text_size_14sp" />
 
@@ -328,8 +348,8 @@
                     android:id="@+id/tv_COD"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text=""
                     android:layout_marginTop="5dp"
+                    android:text=""
                     android:textColor="@color/red_light"
                     android:textSize="@dimen/text_size_14sp" />
 
@@ -337,8 +357,8 @@
                     android:id="@+id/tv_fee"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text=""
                     android:layout_marginTop="5dp"
+                    android:text=""
                     android:textColor="@color/red_light"
                     android:textSize="@dimen/text_size_14sp" />
 
@@ -352,15 +372,16 @@
                     android:text=""
                     android:textColor="@color/red_light"
                     android:textSize="@dimen/text_size_14sp" />
+
                 <com.ems.dingdong.views.CustomTextView
                     android:id="@+id/tv_sml_status"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:text=""
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_size_14sp"
                     android:textStyle="bold"
-                    android:layout_marginTop="5dp"
                     android:visibility="gone" />
 
                 <com.ems.dingdong.views.CustomTextView

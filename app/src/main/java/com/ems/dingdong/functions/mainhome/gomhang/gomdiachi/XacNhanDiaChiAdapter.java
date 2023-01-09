@@ -185,6 +185,8 @@ public class XacNhanDiaChiAdapter extends RecyclerView.Adapter<XacNhanDiaChiAdap
         public TextView tvXacminhdiachi;
         @BindView(R.id.img_address)
         public ImageView imgDddress;
+        @BindView(R.id.img_chat)
+        public ImageView imgChat;
         @BindView(R.id.tv_customName)
         CustomTextView tvCustomName;
         @BindView(R.id.tv_Description)

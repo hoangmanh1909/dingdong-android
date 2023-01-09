@@ -8,6 +8,9 @@ import com.ems.dingdong.model.response.EWalletDataResponse;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
@@ -50,7 +53,24 @@ public class DetailNotifyPresenter extends Presenter<DetailNotifyContract.View, 
                         mView.showInfo(NetWorkController.getGson().fromJson(simpleResult.getData(), DetailNotifyMode.class));
                         mView.hideProgress();
                     } else {
-                        Toast.showToast(getViewContext(),simpleResult.getMessage());
+                        Toast.showToast(getViewContext(), simpleResult.getMessage());
+                        mView.hideProgress();
+                    }
+                });
+    }
+
+    @Override
+    public void isSeen(String ticket) {
+        mView.hideProgress();
+        List<String> requetst = new ArrayList<>();
+        requetst.add(ticket);
+        mInteractor.isSeen(requetst)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    if (simpleResult.getErrorCode().equals("00")) {
+                        mView.hideProgress();
+                    } else {
                         mView.hideProgress();
                     }
                 });

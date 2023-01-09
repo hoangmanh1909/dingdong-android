@@ -17,6 +17,8 @@ import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.detail.BaoPhat
 import com.ems.dingdong.functions.mainhome.phathang.noptien.PaymentContract;
 import com.ems.dingdong.functions.mainhome.phathang.noptien.PaymentPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
+import com.ems.dingdong.functions.mainhome.profile.chat.menuchat.model.AccountChatInAppGetQueueResponse;
+import com.ems.dingdong.functions.mainhome.profile.chat.menuchat.model.RequestQueuChat;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.ConfirmAllOrderPostman;
@@ -32,12 +34,15 @@ import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.ringme.ott.sdk.customer.vnpost.model.VnpostOrderInfo;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -268,5 +273,33 @@ public class ListCommonPresenter extends Presenter<ListCommonContract.View, List
     public ListCommonPresenter setOnTabListener(ListCommonContract.OnTabListener listener) {
         this.tabListener = listener;
         return this;
+    }
+    @Override
+    public void ddQueuChat(RequestQueuChat request , VnpostOrderInfo vnpostOrderInfo,int type) {
+        mView.showProgress();
+        mInteractor.ddQueuChat(request)
+                .subscribeOn(Schedulers.io())
+                .delay(1000, TimeUnit.MICROSECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<SimpleResult>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mView.hideProgress();
+                    }
+
+                    @Override
+                    public void onSuccess(SimpleResult simpleResult) {
+                        mView.hideProgress();
+                        if (simpleResult.getErrorCode().equals("00")) {
+                            AccountChatInAppGetQueueResponse response = NetWorkController.getGson().fromJson(simpleResult.getData(), AccountChatInAppGetQueueResponse.class);
+                            mView.showAccountChatInAppGetQueueResponse(response,vnpostOrderInfo,type);
+                        } else mView.showLoi(simpleResult.getMessage());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        mView.hideProgress();
+                    }
+                });
     }
 }

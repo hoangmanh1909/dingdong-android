@@ -8,11 +8,15 @@ import com.ems.dingdong.model.TicketMode;
 import com.ems.dingdong.model.request.TicketNotifyRequest;
 import com.ems.dingdong.model.response.TicketNotifyRespone;
 
+import java.util.List;
+
 import io.reactivex.Single;
 
 public interface DetailNotifyContract {
     interface Interactor extends IInteractor<Presenter> {
         Single<SimpleResult> getListTicket(String ticketMode);
+
+        Single<SimpleResult> isSeen(List<String> list);
     }
 
     interface View extends PresentView<Presenter> {
@@ -27,6 +31,7 @@ public interface DetailNotifyContract {
 
         void getDetail(String ticket);
 
+        void isSeen(String ticket);
     }
 
 }

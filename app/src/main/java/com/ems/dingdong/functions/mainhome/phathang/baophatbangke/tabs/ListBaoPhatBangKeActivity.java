@@ -13,6 +13,7 @@ public class ListBaoPhatBangKeActivity extends DingDongActivity {
     @Override
     public ViewFragment onCreateFirstFragment() {
         String ladingCode = "";
+        int deliveryListType = 0;
         Intent intent = getIntent();
         if (intent.getExtras() != null) {
             for (String key : getIntent().getExtras().keySet()) {
@@ -20,14 +21,14 @@ public class ListBaoPhatBangKeActivity extends DingDongActivity {
                     ladingCode = StringUtils.getLadingCode(getIntent().getExtras().getString(key), getViewContext());
                 }
             }
+            deliveryListType = intent.getIntExtra(Constants.DELIVERY_LIST_TYPE, 0);
         }
 
-        int deliveryListType = intent.getIntExtra(Constants.DELIVERY_LIST_TYPE, 0);
-        ListDeliveryTabFragment diPhatFragment = (ListDeliveryTabFragment) new ListDeliveryPresenter(this)
+        return (ListDeliveryTabFragment) new ListDeliveryPresenter(this)
                 .setLadingCode(ladingCode)
                 .setDeliveryListType(deliveryListType)
                 .getFragment();
-        return diPhatFragment;
+//        return diPhatFragment;
     }
 
     @Override

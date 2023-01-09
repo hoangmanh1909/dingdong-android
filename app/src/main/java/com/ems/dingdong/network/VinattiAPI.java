@@ -731,7 +731,7 @@ public interface VinattiAPI {
     Single<StatisticPaymentResult> getBalance(@Body RequestObject requestObject);
 
     @POST("Gateway/Execute")
-    Observable<SimpleResult> findLocation(@Body RequestObject requestObject);
+    Single<SimpleResult> findLocation(@Body RequestObject requestObject);
 
     @POST("Gateway/Execute")
     Single<LinkEWalletResult> linkEWallet(@Body RequestObject request);

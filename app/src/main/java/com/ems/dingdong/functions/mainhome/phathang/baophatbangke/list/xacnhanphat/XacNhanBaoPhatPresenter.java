@@ -316,7 +316,6 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                     }
                 }
             deliveryUnSuccessRequest.setPaymentBankCode(bankCode);
-
             mInteractor.pushToDeliveryUnSuccess(deliveryUnSuccessRequest, new CommonCallback<SimpleResult>((Activity) mContainerView) {
                 @Override
                 protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
@@ -794,6 +793,11 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                     mView.showErrorToast(throwable.getMessage());
                     mView.hideProgress();
                 });
+    }
+
+    @Override
+    public ContainerView getContainerView() {
+        return mContainerView;
     }
 
     @Override

@@ -88,7 +88,7 @@ public class DialogSML extends Dialog {
                      long feeShip,
                      long feePPA,
                      long feeCollectLater,
-                     long feeCOD,
+                     long feeCOD, long feePA,
                      SmlCallback smlCallback) {
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
         View view = View.inflate(getContext(), R.layout.dialog_phat_sml, null);
@@ -101,11 +101,11 @@ public class DialogSML extends Dialog {
         _tvNguoinhan.setText(nguoinhan);
         _tvDiachi.setText(diachi);
         _tvTienCOD.setText(String.format("%s đ", NumberUtils.formatPriceNumber(amountCOD)));
-        _tvCuocPhi.setText(String.format("%s đ", NumberUtils.formatPriceNumber(feeShip + feePPA + feeCollectLater + feeCOD)));
+        _tvCuocPhi.setText(String.format("%s đ", NumberUtils.formatPriceNumber(feeShip + feePPA + feeCollectLater + feeCOD+feePA)));
         mActivity = (BaseActivity) context;
 
-        String tam[] = {"", "", "", ""};
-        int typeTam[] = {0, 0, 0, 0};
+        String tam[] = {"", "", "", "", ""};
+        int typeTam[] = {0, 0, 0, 0, 0};
         if (feeShip != 0) {
             typeTam[0] = 1;
             tam[0] = "Phí ship: " + String.format("%s đ", NumberUtils.formatPriceNumber(feeShip));
@@ -120,17 +120,20 @@ public class DialogSML extends Dialog {
         }
         if (feeCollectLater != 0) {
             typeTam[3] = 1;
-            tam[3] = "\nLệ phí thu sau (HCC): " + String.format("%s đ", NumberUtils.formatPriceNumber(feeCOD));
+            tam[3] = "\nLệ phí thu sau (HCC): " + String.format("%s đ", NumberUtils.formatPriceNumber(feeCollectLater));
+        }
+        if (feePA != 0) {
+            typeTam[4] = 1;
+            tam[4] = "\nCước thu hộ HCC: " + String.format("%s đ", NumberUtils.formatPriceNumber(feePA));
         }
         String detail = "";
-         for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 5; i++) {
             if (typeTam[i] == 1) {
                 detail = detail + tam[i];
             }
         }
 
         _tvDeatil.setText(detail);
-
         _tvDiachitu.setText(hubAdress);
         _tvIDtu.setText(idHub);
         if (type == 0) {

@@ -1,24 +1,20 @@
 package com.ems.dingdong.functions.mainhome.address.xacminhdiachi.timduongdi;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.View;
-import android.widget.GridLayout;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.LongDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,27 +25,14 @@ import com.ems.dingdong.callback.DialogCallback;
 import com.ems.dingdong.callback.VposcodeCallback;
 import com.ems.dingdong.dialog.DialogTextThanhConhg;
 import com.ems.dingdong.dialog.TimDuongDiDialog;
-import com.ems.dingdong.functions.mainhome.address.xacminhdiachi.danhsachdiachi.AddressListPresenter;
-import com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.XacNhanDiaChiActivity;
-import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.tabs.ListBaoPhatBangKeActivity;
 import com.ems.dingdong.model.AddressListModel;
 import com.ems.dingdong.model.ReceiverVpostcodeMode;
 import com.ems.dingdong.model.SenderVpostcodeMode;
 import com.ems.dingdong.model.VpostcodeModel;
 import com.ems.dingdong.model.request.vietmap.Geometry;
 import com.ems.dingdong.model.request.vietmap.MathchedRoute;
-import com.ems.dingdong.model.request.vietmap.RouteRequest;
 import com.ems.dingdong.model.request.vietmap.TravelSales;
-import com.ems.dingdong.model.response.EWalletDataResponse;
-import com.ems.dingdong.network.NetWorkController;
-import com.ems.dingdong.utiles.Constants;
-import com.ems.dingdong.utiles.NumberUtils;
-import com.ems.dingdong.views.CustomTextView;
-import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonParser;
 import com.mapbox.android.core.location.LocationEngine;
 import com.mapbox.android.core.location.LocationEngineCallback;
 import com.mapbox.android.core.location.LocationEngineProvider;
@@ -84,10 +67,8 @@ import org.json.JSONObject;
 
 import java.io.InputStream;
 import java.lang.ref.WeakReference;
-import java.lang.reflect.Type;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -98,7 +79,6 @@ import java.util.Scanner;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-import static com.google.android.gms.maps.model.BitmapDescriptorFactory.*;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineColor;
 import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.lineWidth;
 
@@ -112,6 +92,8 @@ public class TimDuongDiFragment extends ViewFragment<TimDuongDiContract.Presente
     TextView tvKm;
     @BindView(R.id.tv_time)
     TextView tvTime;
+    @BindView(R.id.btn_luutoado)
+    Button btnLuutoado;
 
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
@@ -150,6 +132,8 @@ public class TimDuongDiFragment extends ViewFragment<TimDuongDiContract.Presente
         mList = new ArrayList<>();
         mList = mPresenter.getListVpostcodeModell();
         mApiTravel = mPresenter.getApiTravel();
+        if (mPresenter.getType() == 100 || mPresenter.getType() == 101)
+            btnLuutoado.setVisibility(View.GONE);
         mAdapter = new TimDuongDiAdapter(getViewContext(), mList) {
             @Override
             public void onBindViewHolder(@NonNull @NotNull HolderView holder, int position) {
@@ -333,7 +317,7 @@ public class TimDuongDiFragment extends ViewFragment<TimDuongDiContract.Presente
                     @Override
                     public void onVposcodeResponse(VpostcodeModel reason) {
                         VpostcodeModel vpostcodeModel = new VpostcodeModel();
-                        if (mPresenter.getType() == 99)
+                        if (mPresenter.getType() == 99 || mPresenter.getType() == 100)
                             vpostcodeModel.setReceiverVpostcode(reason.getSmartCode());
                         else {
                             vpostcodeModel.setSenderVpostcode(reason.getSmartCode());
@@ -376,7 +360,7 @@ public class TimDuongDiFragment extends ViewFragment<TimDuongDiContract.Presente
                 Double minute = (Double.parseDouble(time) / (1000 * 60)) % 60;
                 Double hour = (Double.parseDouble(time) / (1000 * 60 * 60)) % 24;
 
-                tvKm.setText("Số km: " + f.format(Double.parseDouble(path.getString("distance")) / 1000));
+                tvKm.setText("Số km: " + (Math.ceil((Double.parseDouble(path.getString("distance")) / 1000) * 100) / 100));
 //                String.format("%s đ", NumberUtils.formatPriceNumber(amountCOD))
                 tvTime.setText("Thời gian: " + f1.format(hour) + "h" + f1.format(minute) + "p");
                 JSONArray coordinates = points.getJSONArray("coordinates");
@@ -436,10 +420,10 @@ public class TimDuongDiFragment extends ViewFragment<TimDuongDiContract.Presente
             mList = mPresenter.getListVpostcodeModell();
             Log.d("ThKhiem6", new Gson().toJson(mPresenter.getListVpostcodeModell()));
             for (int i = 0; i < mList.size(); i++) {
-                if (mPresenter.getType() == 99) requests.add(mList.get(i).getReceiverVpostcode());
+                if (mPresenter.getType() == 99 || mPresenter.getType() == 100)
+                    requests.add(mList.get(i).getReceiverVpostcode());
                 else requests.add(mList.get(i).getSenderVpostcode());
             }
-
             if (mPresenter.getApiTravel() != null)
                 mPresenter.vietmapTravelSalesmanProblem(mApiTravel);
             else mPresenter.getPoint(requests);

@@ -27,11 +27,15 @@ android {
         //minSdkVersion 16
         minSdkVersion project.minSdkVersion as int
         targetSdkVersion project.targetSdkVersion as int
-        versionCode 56
-        //1.4.0
-        versionName "1.4.0"
+        versionCode 60
+        //1.4.4
+        versionName "1.4.4"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
+        ndk {
+            moduleName "LibSignData"
+            abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
+        }
     }
 
     signingConfigs {
@@ -227,6 +231,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation files('libs\\poi-3.17.jar')
     implementation 'com.google.firebase:firebase-crashlytics-buildtools:2.9.0'
+    implementation 'com.google.firebase:firebase-auth:21.1.0'
     configurations {
         all*.exclude group: 'com.android.support', module: 'support-v13'
     }
@@ -281,7 +286,7 @@ dependencies {
     implementation 'com.rengwuxian.materialedittext:library:2.1.4'
     implementation 'com.roughike:bottom-bar:2.3.1'
     implementation project(':Libraries:libCamera')
-    implementation project(':Libraries:UtilCode')
+//    implementation project(':Libraries:UtilCode')
     implementation("com.google.guava:guava:28.1-jre")
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
@@ -320,12 +325,19 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
     // sdk ott
+
     implementation project(':Libraries:ringmeottsdk')
+    implementation 'org.minidns:minidns-android21:1.0.4'
+    implementation 'org.jxmpp:jxmpp-core:1.0.3'
+    implementation 'org.jxmpp:jxmpp-jid:1.0.3'
+    implementation 'org.minidns:minidns-core:1.0.4'
+    implementation 'org.minidns:minidns-hla:1.0.4'
     api "org.igniterealtime.smack:smack-android-extensions:4.4.6"
     api "org.igniterealtime.smack:smack-tcp:4.4.6"
     configurations {
         all*.exclude group: 'xpp3', module: 'xpp3'
     }
+
     implementation 'com.github.zladnrms:RoundableLayout:1.1.4'
     implementation 'com.blankj:utilcodex:1.31.0'
     implementation 'com.jakewharton.rxbinding4:rxbinding:4.0.0'
@@ -355,10 +367,23 @@ dependencies {
     implementation 'com.arthenica:ffmpeg-kit-full-gpl:4.5.LTS'
     implementation "androidx.tonyodev.fetch2:xfetch2:3.1.6"
     implementation 'com.googlecode.libphonenumber:libphonenumber:8.2.0'
-
+    implementation 'org.minidns:minidns-android21:1.0.4'
+    implementation 'org.jxmpp:jxmpp-core:1.0.3'
+    implementation 'org.jxmpp:jxmpp-jid:1.0.3'
+    implementation 'org.minidns:minidns-core:1.0.4'
+    implementation 'org.minidns:minidns-hla:1.0.4'
+    implementation "androidx.work:work-runtime:2.7.1"
+    implementation "androidx.work:work-runtime-ktx:2.7.1"
+    implementation "com.github.skydoves:balloon:1.4.7"
+    //13/12
+    implementation "androidx.lifecycle:lifecycle-viewmodel:2.5.1"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1"
+    implementation "androidx.tonyodev.fetch2okhttp:xfetch2okhttp:3.1.6"
+    implementation 'com.github.bumptech.glide:okhttp3-integration:4.12.0'
+    implementation 'com.github.bumptech.glide:annotations:4.13.2'
+    kapt 'com.github.bumptech.glide:compiler:4.13.0'
 
     implementation 'com.zoho.salesiq:mobilisten:4.2.9'
-
 
 }
 apply plugin: 'com.google.gms.google-services'

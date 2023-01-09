@@ -12,7 +12,7 @@ import io.realm.RealmObject;
 import io.realm.annotations.Ignore;
 import io.realm.annotations.PrimaryKey;
 
-public class CommonObject  {
+public class CommonObject {
 
 
     String mType = "";
@@ -29,6 +29,8 @@ public class CommonObject  {
     String customerName = "";
     @SerializedName("SenderVpostcode")
     String SenderVpostcode;
+    @SerializedName("POProvinceCode")
+    String POProvinceCode;
     @SerializedName("ReferenceCode")
     @Expose
     private String ReferenceCode;
@@ -41,6 +43,14 @@ public class CommonObject  {
     @SerializedName("ServiceNameMPITS")
     @Expose
     private String ServiceNameMPITS;
+
+    public String getPOProvinceCode() {
+        return POProvinceCode;
+    }
+
+    public void setPOProvinceCode(String POProvinceCode) {
+        this.POProvinceCode = POProvinceCode;
+    }
 
     public String getServiceCodeMPITS() {
         return ServiceCodeMPITS;
@@ -128,7 +138,25 @@ public class CommonObject  {
 
     String DivideByName;
     @SerializedName("TypeWarehouse")
-    String TypeWarehouse;
+    String TypeWarehouse; @SerializedName("SenderLat")
+    String SenderLat;@SerializedName("SenderLon")
+    String SenderLon;
+
+    public String getSenderLat() {
+        return SenderLat;
+    }
+
+    public void setSenderLat(String senderLat) {
+        SenderLat = senderLat;
+    }
+
+    public String getSenderLon() {
+        return SenderLon;
+    }
+
+    public void setSenderLon(String senderLon) {
+        SenderLon = senderLon;
+    }
 
     public String getTypeWarehouse() {
         return TypeWarehouse;

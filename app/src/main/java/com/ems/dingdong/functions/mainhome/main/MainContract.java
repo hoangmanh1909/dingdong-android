@@ -35,8 +35,6 @@ interface MainContract {
 
         Single<StatisticPaymentResult> getBalance(String postmanID, String poCode, String phoneNumber, String fromDate, String toDate);
 
-        Single<TokenMoveCropResult> getAccessToken(String mobileNumber);
-
         Single<SimpleResult> getMap();
 
         void ddGetBalance(BalanceModel requset, CommonCallback<SimpleResult> callback);
@@ -70,6 +68,8 @@ interface MainContract {
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
+        void showChat();
+
         void getListTicket(TicketNotifyRequest request);
 
         void getVaoCa(MainMode request);

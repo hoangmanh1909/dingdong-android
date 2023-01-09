@@ -275,7 +275,6 @@
 
     <style name="AppBottomSheetDialog" parent="Theme.Design.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/AppModeStyle</item>
-        <item name="behavior_draggable">false</item>
     </style>
 
     <style name="AppModeStyle" parent="Widget.Design.BottomSheet.Modal"></style>
@@ -364,6 +363,7 @@
         <item name="siq_toolbar_backgroundcolor">@color/colorPrimary</item>
         <item name="siq_statusbar_color">@color/colorPrimary</item>
     </style>
+
     <style name="dialog_blue_button" parent="android:Widget.Button">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">42dp</item>
@@ -373,4 +373,24 @@
         <item name="android:paddingRight">21dp</item>
         <item name="android:textColor">@color/button_text_color</item>
     </style>
+
+    <style name="EditTextStyle">
+        <!-- Card background color -->
+        <!-- Ripple for API 21 of android, and regular selector on older -->
+        <!--<item name="android:foreground">?android:selectableItemBackground</item>-->
+        <!-- Resting Elevation from Material guidelines -->
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:background">@drawable/bg_border_edittext</item>
+        <!-- Add corner Radius -->
+        <!--<item name="android:clickable">true</item>-->
+        <!--<item name="android:layout_margin">8dp</item>-->
+    </style>
+
+    <style name="CustomCheck" parent="@android:style/Widget.CompoundButton.RadioButton">
+        <item name="android:button">@drawable/custom_check_radio</item>
+    </style>
+
+
 </resources>

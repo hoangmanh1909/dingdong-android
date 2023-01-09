@@ -1,6 +1,7 @@
 package com.ems.dingdong.functions.mainhome.location;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -241,7 +242,10 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
         RecyclerUtils.setupVerticalRecyclerView(getViewContext(), recyclerView_cuoc);
         recyclerView_cuoc.setAdapter(mAdapterCuoc);
         edtLadingCode.setText(mPresenter.getCode());
+        if (!mPresenter.getCode().equals("")) {
+            mPresenter.findLocation(mPresenter.getCode());
 
+        }
     }
 
 
@@ -342,63 +346,67 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
     public void getQuery() {
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     public void showFindLocationSuccess(CommonObject commonObject) {
-        llDetail.setVisibility(View.VISIBLE);
-        tvParcelCode.setText(commonObject.getCode());
-        tvSenderName.setText("Người gửi: " + commonObject.getSenderName());
-        tvSenderAddress.setText("Địa chỉ: " + commonObject.getSenderAddress());
-        tvReceiverName.setText("Người nhận: " + commonObject.getReciverName());
-        tvReceiverAddress.setText("Địa chỉ: " + commonObject.getReceiverAddress());
+        try {
+            llDetail.setVisibility(View.VISIBLE);
+            tvParcelCode.setText(commonObject.getCode());
+            tvSenderName.setText("Người gửi: " + commonObject.getSenderName());
+            tvSenderAddress.setText("Địa chỉ: " + commonObject.getSenderAddress());
+            tvReceiverName.setText("Người nhận: " + commonObject.getReciverName());
+            tvReceiverAddress.setText("Địa chỉ: " + commonObject.getReceiverAddress());
 
-        _tvSenderPhone.setText(commonObject.getSenderPhone());
-        _tvReceiverPhone.setText(commonObject.getReceiverMobile());
-        Typewarhouse.setText(commonObject.getTypeWarehouse());
+            _tvSenderPhone.setText(commonObject.getSenderPhone());
+            _tvReceiverPhone.setText(commonObject.getReceiverMobile());
+            Typewarhouse.setText(commonObject.getTypeWarehouse());
 
 //        if (commonObject.getFee() != null) {
 //            tvFee.setText(String.format("%s đ", NumberUtils.formatPriceNumber(commonObject.getFee())));
 //        }
 
-        mListCuoc.clear();
+            mListCuoc.clear();
 
-        if (commonObject.getFeePPA() > 0) {
-            mListCuoc.add(new Item("Phí PPA", String.format("%s đ", NumberUtils.formatPriceNumber(Long.parseLong(String.valueOf(commonObject.getFeePPA()))))));
-        }
-        if (commonObject.getFeeCollectLater() > 0) {
-            mListCuoc.add(new Item("Lệ phí HCC", String.format("%s đ", NumberUtils.formatPriceNumber(Long.parseLong(String.valueOf(commonObject.getFeeCollectLater()))))));
-        }
-        if (commonObject.getFeePA() > 0) {
-            mListCuoc.add(new Item("Cước thu hộ HCC", String.format("%s đ", NumberUtils.formatPriceNumber(Long.parseLong(String.valueOf(commonObject.getFeePA()))))));
-        }
-        if (commonObject.getFeeShip() > 0) {
-            mListCuoc.add(new Item("Phí ship", String.format("%s đ", NumberUtils.formatPriceNumber(Long.parseLong(String.valueOf(commonObject.getFeeShip()))))));
-        }
-        if (commonObject.getFeeCancelOrder() > 0) {
-            mListCuoc.add(new Item("Phí hủy đơn hàng", String.format("%s đ", NumberUtils.formatPriceNumber(Long.parseLong(String.valueOf(commonObject.getFeeCancelOrder()))))));
-        }
-        if (commonObject.getReceiveCollectFee() != null) {
-            mListCuoc.add(new Item("Cước COD thu người nhận", String.format("%s đ", NumberUtils.formatPriceNumber(Long.parseLong(String.valueOf(commonObject.getReceiveCollectFee()))))));
-        }
+            if (commonObject.getFeePPA() > 0) {
+                mListCuoc.add(new Item("Phí PPA", String.format("%s đ", NumberUtils.formatPriceNumber(Long.parseLong(String.valueOf(commonObject.getFeePPA()))))));
+            }
+            if (commonObject.getFeeCollectLater() > 0) {
+                mListCuoc.add(new Item("Lệ phí HCC", String.format("%s đ", NumberUtils.formatPriceNumber(Long.parseLong(String.valueOf(commonObject.getFeeCollectLater()))))));
+            }
+            if (commonObject.getFeePA() > 0) {
+                mListCuoc.add(new Item("Cước thu hộ HCC", String.format("%s đ", NumberUtils.formatPriceNumber(Long.parseLong(String.valueOf(commonObject.getFeePA()))))));
+            }
+            if (commonObject.getFeeShip() > 0) {
+                mListCuoc.add(new Item("Phí ship", String.format("%s đ", NumberUtils.formatPriceNumber(Long.parseLong(String.valueOf(commonObject.getFeeShip()))))));
+            }
+            if (commonObject.getFeeCancelOrder() > 0) {
+                mListCuoc.add(new Item("Phí hủy đơn hàng", String.format("%s đ", NumberUtils.formatPriceNumber(Long.parseLong(String.valueOf(commonObject.getFeeCancelOrder()))))));
+            }
+            if (commonObject.getReceiveCollectFee() != null) {
+                mListCuoc.add(new Item("Cước COD thu người nhận", String.format("%s đ", NumberUtils.formatPriceNumber(Long.parseLong(String.valueOf(commonObject.getReceiveCollectFee()))))));
+            }
 
-        mAdapterCuoc.notifyDataSetChanged();
-
-        if (commonObject.getCod() != null) {
-            tvCOD.setText(String.format("%s đ", NumberUtils.formatPriceNumber(commonObject.getCod())));
-        }
-        if (commonObject.getStatusInfoArrayList() == null || commonObject.getStatusInfoArrayList().isEmpty()) {
-            llStatus.setVisibility(View.GONE);
-        } else {
-            mList.clear();
-            mList.addAll(commonObject.getStatusInfoArrayList());
+            if (commonObject.getCod() != null) {
+                tvCOD.setText(String.format("%s đ", NumberUtils.formatPriceNumber(commonObject.getCod())));
+            }
+            if (commonObject.getStatusInfoArrayList() == null || commonObject.getStatusInfoArrayList().isEmpty()) {
+                llStatus.setVisibility(View.GONE);
+            } else {
+                mList.clear();
+                mList.addAll(commonObject.getStatusInfoArrayList());
+                llStatus.setVisibility(View.VISIBLE);
+            }
+            if (!TextUtils.isEmpty(commonObject.getSignatureCapture())) {
+                Uri imageUri = Uri.parse(commonObject.getSignatureCapture());
+                imgSign.setImageURI(imageUri);
+            } else {
+                imgSign.setVisibility(View.GONE);
+            }
             mAdapter.notifyDataSetChanged();
-            llStatus.setVisibility(View.VISIBLE);
+        } catch (Exception e) {
+            e.getMessage();
         }
-        if (!TextUtils.isEmpty(commonObject.getSignatureCapture())) {
-            Uri imageUri = Uri.parse(commonObject.getSignatureCapture());
-            imgSign.setImageURI(imageUri);
-        } else {
-            imgSign.setVisibility(View.GONE);
-        }
+
 //        tvRealReceiverName.setText(commonObject.getRealReceiverName());
     }
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#80000000">
@@ -7,124 +8,192 @@
     <androidx.cardview.widget.CardView
         style="@style/MyCardViewStyle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="500dp"
         android:layout_centerInParent="true"
         android:layout_margin="@dimen/size_16dp">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:paddingBottom="10dp">
 
-            <LinearLayout
-                android:id="@+id/layout_date_start"
+            <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="@dimen/size_16dp">
+                android:layout_above="@+id/ll_btoom"
+                android:layout_alignParentTop="true">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <com.ems.dingdong.views.CustomTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:padding="@dimen/_5sdp"
-                        android:text="@string/notification"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/text_size_18sp" />
-                </RelativeLayout>
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginLeft="@dimen/size_16dp"
-                android:layout_marginRight="@dimen/size_16dp"
-                android:background="@color/gray" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="@dimen/size_16dp">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <com.ems.dingdong.views.CustomTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/_5sdp"
-                        android:id="@+id/confirm_content"
-                        android:textColor="@color/black"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
-                        android:textSize="@dimen/text_size_18sp" />
-                </RelativeLayout>
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <com.ems.dingdong.views.CustomTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/_5sdp"
-                        android:textColor="@color/black"
-                        android:text="@string/lading_code"
-                        android:textSize="@dimen/text_size_18sp" />
+                    android:orientation="vertical">
 
-                    <com.ems.dingdong.views.CustomBoldTextView
-                        android:id="@+id/total_record"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:id="@+id/layout_date_start"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="@dimen/_5sdp"
-                        android:textColor="@color/red_light"
-                        android:textSize="@dimen/text_size_18sp" />
+                        android:orientation="vertical"
+                        android:padding="@dimen/size_16dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <com.ems.dingdong.views.CustomTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:padding="@dimen/_5sdp"
+                                android:text="@string/notification"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/text_size_18sp" />
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_marginLeft="@dimen/size_16dp"
+                        android:layout_marginRight="@dimen/size_16dp"
+                        android:background="@color/gray" />
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="@dimen/size_16dp">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <com.ems.dingdong.views.CustomTextView
+                                android:id="@+id/confirm_content"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:layout_centerVertical="true"
+                                android:padding="@dimen/_5sdp"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/text_size_18sp" />
+                        </RelativeLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <com.ems.dingdong.views.CustomTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="@dimen/_5sdp"
+                                android:text="@string/lading_code"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/text_size_18sp" />
+
+                            <com.ems.dingdong.views.CustomBoldTextView
+                                android:id="@+id/total_record"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="@dimen/_5sdp"
+                                android:textColor="@color/red_light"
+                                android:textSize="@dimen/text_size_18sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/ll_thongtin"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <com.ems.dingdong.views.CustomTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="@dimen/_5sdp"
+                                android:text="@string/total_amount"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/text_size_18sp" />
+
+                            <com.ems.dingdong.views.CustomBoldTextView
+                                android:id="@+id/total_amount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="@dimen/_5sdp"
+                                android:textColor="@color/red_light"
+                                android:textSize="@dimen/text_size_18sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/ll_vitri"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <com.ems.dingdong.views.CustomTextView
+                                android:id="@+id/tv_vitri"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="@dimen/_5sdp"
+                                android:textColor="@color/red_light"
+                                android:textSize="@dimen/text_size_18sp" />
+
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <com.ems.dingdong.views.CustomTextView
+                                    android:id="@+id/tv_khoancach"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_toLeftOf="@+id/img_vitri"
+                                    android:padding="@dimen/_5sdp"
+                                    android:text="Đang tính khoảng cách...."
+                                    android:textColor="@color/red_light"
+                                    android:textSize="@dimen/text_size_18sp" />
+
+
+                                <ImageView
+                                    android:id="@+id/img_vitri"
+                                    style="@style/textStyle"
+                                    android:layout_width="30dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_centerInParent="true"
+                                    android:layout_gravity="center"
+                                    android:drawablePadding="10dp"
+                                    android:gravity="center"
+                                    android:maxLines="1"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp"
+                                    android:src="@drawable/navigate_io" />
+                            </RelativeLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
                 </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/ll_thongtin"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-                    <com.ems.dingdong.views.CustomTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/_5sdp"
-                        android:textColor="@color/black"
-                        android:text="@string/total_amount"
-                        android:textSize="@dimen/text_size_18sp" />
-                    <com.ems.dingdong.views.CustomBoldTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="@dimen/_5sdp"
-                        android:id="@+id/total_amount"
-                        android:textColor="@color/red_light"
-                        android:textSize="@dimen/text_size_18sp" />
-                </LinearLayout>
-            </LinearLayout>
-
+            </androidx.core.widget.NestedScrollView>
 
             <LinearLayout
+                android:id="@+id/ll_btoom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
                 android:gravity="right"
-                android:weightSum="2"
                 android:orientation="horizontal"
-                android:padding="@dimen/dimen_10dp">
+                android:padding="@dimen/dimen_10dp"
+                android:weightSum="2">
 
 
                 <com.ems.dingdong.views.CustomMediumTextView
                     android:id="@+id/tv_cancel_dialog"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     android:layout_marginLeft="@dimen/dimen_10dp"
                     android:layout_marginTop="@dimen/dimen_10dp"
                     android:layout_weight="1"
-                    android:background="	#9C9B0F"
+                    android:background="@drawable/bg_border_botton_xanh_xam"
                     android:gravity="center"
                     android:paddingLeft="@dimen/dimen_10dp"
                     android:paddingTop="@dimen/dimen_10dp"
@@ -138,11 +207,11 @@
                 <com.ems.dingdong.views.CustomMediumTextView
                     android:id="@+id/tv_ok_dialog"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     android:layout_marginLeft="@dimen/dimen_10dp"
                     android:layout_marginTop="@dimen/dimen_10dp"
                     android:layout_weight="1"
-                    android:background="#81A4C5"
+                    android:background="@drawable/bg_border_botton_xanh_troi"
                     android:gravity="center"
                     android:paddingLeft="@dimen/dimen_10dp"
                     android:paddingTop="@dimen/dimen_10dp"
@@ -153,6 +222,7 @@
                     android:textColor="@color/white"
                     android:textSize="16sp" />
             </LinearLayout>
-        </LinearLayout>
+
+        </RelativeLayout>
     </androidx.cardview.widget.CardView>
 </RelativeLayout>

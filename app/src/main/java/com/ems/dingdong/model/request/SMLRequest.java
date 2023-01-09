@@ -15,12 +15,10 @@ public class SMLRequest {
     private String HubCode;
     @SerializedName("PostmanId")
     private String PostmanId;
-
-
     @SerializedName("FeeCOD")
     private long feeCOD;
     @SerializedName("FeeShip")
-    private long feeShip ;
+    private long feeShip;
     @SerializedName("FeePPA")
     private long feePPA;
     @SerializedName("FeeCollectLater")

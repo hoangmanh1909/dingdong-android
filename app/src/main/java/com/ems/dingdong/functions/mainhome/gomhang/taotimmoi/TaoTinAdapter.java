@@ -56,7 +56,7 @@ public class TaoTinAdapter extends RecyclerView.Adapter<TaoTinAdapter.HolderView
         @BindView(R.id.tv_phonekhachhang)
         TextView tv_phonekhachhang;
         @BindView(R.id.btn_chon)
-        public Button btn_chon;
+        public TextView btn_chon;
 
         public HolderView(View itemView) {
             super(itemView);

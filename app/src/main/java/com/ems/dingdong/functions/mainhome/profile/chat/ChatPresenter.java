@@ -7,7 +7,8 @@ import com.airbnb.lottie.animation.content.Content;
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.functions.mainhome.address.xacminhdiachi.danhsachdiachi.AddressListPresenter;
-import com.ringme.ott.sdk.utils.RingmeOttSdk;
+import com.ems.dingdong.functions.mainhome.profile.chat.menuchat.MenuChatPresenter;
+//import com.ringme.ott.sdk.utils.RingmeOttSdk;
 
 public class ChatPresenter extends Presenter<ChatContract.View, ChatContract.Interactor> implements ChatContract.Presenter {
 
@@ -40,5 +41,10 @@ public class ChatPresenter extends Presenter<ChatContract.View, ChatContract.Int
     @Override
     public Context getContext() {
         return content;
+    }
+
+    @Override
+    public void showMenuChat() {
+        new MenuChatPresenter(mContainerView).pushView();
     }
 }

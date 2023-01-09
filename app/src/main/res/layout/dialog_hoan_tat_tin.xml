@@ -151,7 +151,7 @@
                         android:scrollbars="vertical"
                         android:textColor="@color/black"
                         android:textSize="@dimen/text_size_14sp"
-                        android:visibility="gone"/>
+                        android:visibility="gone" />
 
                     <LinearLayout
                         android:id="@+id/ll_date_time"
@@ -230,6 +230,53 @@
                         android:layout_height="wrap_content" />
                 </LinearLayout>
 
+                <LinearLayout
+                    android:id="@+id/ll_vitri"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/size_16dp"
+                    android:orientation="vertical">
+
+                    <com.ems.dingdong.views.CustomTextView
+                        android:id="@+id/tv_vitri"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="@dimen/_5sdp"
+                        android:textColor="@color/red_light"
+                        android:textSize="@dimen/text_size_18sp" />
+
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.ems.dingdong.views.CustomTextView
+                            android:id="@+id/tv_khoancach"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_toLeftOf="@+id/img_vitri"
+                            android:padding="@dimen/_5sdp"
+                            android:text="Đang tính khoảng cách...."
+                            android:textColor="@color/red_light"
+                            android:textSize="@dimen/text_size_18sp" />
+
+
+                        <ImageView
+                            android:id="@+id/img_vitri"
+                            style="@style/textStyle"
+                            android:layout_width="30dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerInParent="true"
+                            android:layout_gravity="center"
+                            android:drawablePadding="10dp"
+                            android:gravity="center"
+                            android:maxLines="1"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+                            android:src="@drawable/navigate_io" />
+                    </RelativeLayout>
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"

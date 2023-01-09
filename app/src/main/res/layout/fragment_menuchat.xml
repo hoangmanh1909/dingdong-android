@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F2F3F5"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        tools:ignore="MissingConstraints">
+
+        <include layout="@layout/item_head_bg_common" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/img_back"
+                android:layout_width="@dimen/dimen_56dp"
+                android:layout_height="@dimen/dimen_56dp"
+                android:layout_centerVertical="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:padding="@dimen/dimen_10dp"
+                android:src="@drawable/ic_back_shadown" />
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Chọn đối tượng Chat"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <FrameLayout
+                style="?attr/actionButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:clipToPadding="false"
+                android:focusable="true"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/img_notification"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:src="@drawable/ic_notification" />
+
+                <TextView
+                    android:id="@+id/notification_badge"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="3dp"
+                    android:background="@drawable/badge_background"
+                    android:gravity="center"
+                    android:text="9"
+                    android:textColor="@android:color/white"
+                    android:textSize="10sp" />
+            </FrameLayout>
+        </RelativeLayout>
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <RelativeLayout
+            android:id="@+id/rl_thugom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+            <TextView
+                style="@style/textStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_toLeftOf="@+id/img_thugom"
+                android:drawablePadding="10dp"
+                android:gravity="center|left"
+                android:padding="5dp"
+                android:text="Nhân viên thu gom"
+                android:textStyle="bold" />
+
+
+            <ImageView
+                android:id="@+id/img_thugom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:background="?android:attr/actionBarItemBackground"
+                android:padding="5dp"
+                android:src="@drawable/ic_arrow_drop_down_v1" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_thugom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_chatvoibc"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:background="@drawable/bg_border_khung_vang"
+                android:gravity="center"
+                android:text="Chat với bưu cục"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/tv_nvtgkhac"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_border_khung_vang"
+                android:gravity="center"
+                android:text="Chat với nhân viên thu gom khác"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/tv_butakhac"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_border_khung_vang"
+                android:gravity="center"
+                android:text="Chat với bưu tá khác"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/tv_cskh"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_border_khung_vang"
+                android:gravity="center"
+                android:text="Chat với CSKH"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/tv_lichsu"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_border_khung_vang"
+                android:gravity="center"
+                android:text="Lịch sử chat"
+                android:textColor="@color/black" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_phat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:visibility="gone">
+
+            <TextView
+                style="@style/textStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_toLeftOf="@+id/img_phat"
+                android:drawablePadding="10dp"
+                android:gravity="center|left"
+                android:padding="5dp"
+                android:text="Bưu tá phát"
+                android:textStyle="bold" />
+
+
+            <ImageView
+                android:id="@+id/img_phat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:background="?android:attr/actionBarItemBackground"
+                android:padding="5dp"
+                android:src="@drawable/ic_arrow_drop_down_v1" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_phat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/tv_buutaphat"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_border_khung_vang"
+                android:gravity="center"
+                android:text="Chat Với Bưu tá phát khác"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/tv_nhanviennghiepvuphat"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_border_khung_vang"
+                android:gravity="center"
+                android:text="Chat Với Nhân viên nghiệp vụ của Bưu cục phát"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/tv_cskhtinh"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_border_khung_vang"
+                android:gravity="center"
+                android:text="Chat Với Chăm sóc khách hàng của Tỉnh phát"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/tv_cskhtinhgui"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_border_khung_vang"
+                android:gravity="center"
+                android:text="Chat Với Chăm sóc khách hàng của Tỉnh gửi"
+                android:textColor="@color/black" />
+
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/btn_chat"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_vang_luu"
+            android:gravity="center"
+            android:text="Bắt đầu chat"
+            android:textColor="@color/white"
+            android:visibility="gone" />
+    </LinearLayout>
+
+</LinearLayout>

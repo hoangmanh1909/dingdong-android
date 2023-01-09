@@ -6,6 +6,7 @@ import android.net.Network;
 import com.core.base.viper.Interactor;
 import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.functions.mainhome.main.data.CallLogMode;
 import com.ems.dingdong.model.LoginResult;
 import com.ems.dingdong.model.PostOfficeResult;
 import com.ems.dingdong.model.ReasonResult;
@@ -15,6 +16,8 @@ import com.ems.dingdong.model.request.LoginRequest;
 import com.ems.dingdong.model.response.ResponseObject;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.network.NetWorkControllerGateWay;
+
+import java.util.List;
 
 import io.reactivex.Single;
 
@@ -67,6 +70,11 @@ class LoginInteractor extends Interactor<LoginContract.Presenter>
     @Override
     public Single<SimpleResult> getDanhSachNganHang() {
         return NetWorkControllerGateWay.getDanhSachNganHang();
+    }
+
+    @Override
+    public Single<SimpleResult> getCallLog(List<CallLogMode> request) {
+        return NetWorkControllerGateWay.getCallLog(request);
     }
 
     @Override

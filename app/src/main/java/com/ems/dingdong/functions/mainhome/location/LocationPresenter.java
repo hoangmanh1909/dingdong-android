@@ -30,7 +30,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Observer;
+import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -59,10 +62,6 @@ public class LocationPresenter extends Presenter<LocationContract.View, Location
         // Start getting data here
         initPocode();
 
-        if (!code.equals("")) {
-            findLocation(code);
-
-        }
     }
 
     @Override
@@ -85,21 +84,33 @@ public class LocationPresenter extends Presenter<LocationContract.View, Location
         mView.showProgress();
         mInteractor.ddCall(r)
                 .subscribeOn(Schedulers.io())
-                .delay(1000, TimeUnit.MICROSECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(simpleResult -> {
-                    if (simpleResult.getErrorCode().equals("00")) {
-                        mView.showCallLive(r.getToNumber());
-                    } else {
-                        Toast.showToast(getViewContext(), simpleResult.getMessage());
+                .subscribe(new SingleObserver<SimpleResult>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
                     }
-                    mView.hideProgress();
+
+                    @Override
+                    public void onSuccess(SimpleResult simpleResult) {
+                        if (simpleResult.getErrorCode().equals("00")) {
+                            mView.showCallLive(r.getToNumber());
+                        } else {
+                            Toast.showToast(getViewContext(), simpleResult.getMessage());
+                        }
+                        mView.hideProgress();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Toast.showToast(getViewContext(), e.getMessage());
+                        mView.hideProgress();
+                    }
                 });
     }
 
     @Override
     public void getHistoryCall(HistoryRequest request) {
-        mView.showProgress();
         SharedPref sharedPref = new SharedPref((Context) mContainerView);
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         UserInfo userInfo = null;
@@ -114,15 +125,30 @@ public class LocationPresenter extends Presenter<LocationContract.View, Location
         mInteractor.getHistoryCall(request)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(simpleResult -> {
-                    if (simpleResult.getErrorCode().equals("00")) {
-                        HistoryRespone[] j = NetWorkController.getGson().fromJson(simpleResult.getData(), HistoryRespone[].class);
-                        List<HistoryRespone> l = Arrays.asList(j);
-                        mView.showLog(l);
-                    } else {
-                        mView.showError();
+                .subscribe(new SingleObserver<SimpleResult>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
                     }
-                    mView.hideProgress();
+
+                    @Override
+                    public void onSuccess(SimpleResult simpleResult) {
+                        if (simpleResult.getErrorCode().equals("00")) {
+                            HistoryRespone[] j = NetWorkController.getGson().fromJson(simpleResult.getData(), HistoryRespone[].class);
+                            List<HistoryRespone> l = Arrays.asList(j);
+                            mView.showLog(l);
+                        } else {
+                            mView.showError();
+                        }
+                        mView.hideProgress();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        mView.hideProgress();
+                    }
+
+
                 });
     }
 
@@ -133,28 +159,37 @@ public class LocationPresenter extends Presenter<LocationContract.View, Location
         }
         mView.showProgress();
         mInteractor.findLocation(code, poCode)
-                .delay(500, TimeUnit.MILLISECONDS)
+                .delay(1500,TimeUnit.MICROSECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(commonObjectResult -> {
-                            CommonObject commonObject = NetWorkControllerGateWay.getGson().fromJson(commonObjectResult.getData(),new TypeToken<CommonObject>(){}.getType());
-                            mView.hideProgress();
-                            mView.showSuccessToast(commonObjectResult.getMessage());
-                            if (commonObjectResult.getErrorCode().equals("00")) {
-                                mView.showFindLocationSuccess(commonObject);
-                                HistoryRequest request = new HistoryRequest();
-                                request.setLadingCode(code);
-                                getHistoryCall(request);
-                            } else {
-                                mView.showErrorToast(commonObjectResult.getMessage());
-                                mView.showEmpty();
-                                mView.hideProgress();
-                            }
-                        },
-                        throwable -> {
+                .subscribe(new SingleObserver<SimpleResult>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(SimpleResult commonObjectResult) {
+                        CommonObject commonObject = NetWorkControllerGateWay.getGson().fromJson(commonObjectResult.getData(), new TypeToken<CommonObject>() {
+                        }.getType());
+                        mView.showSuccessToast(commonObjectResult.getMessage());
+                        if (commonObjectResult.getErrorCode().equals("00")) {
+                            mView.showFindLocationSuccess(commonObject);
+                            HistoryRequest request = new HistoryRequest();
+                            request.setLadingCode(code);
+                            getHistoryCall(request);
+                        } else {
+                            mView.showErrorToast(commonObjectResult.getMessage());
+                            mView.showEmpty();
                             mView.hideProgress();
                         }
-                );
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        mView.hideProgress();
+                    }
+                });
     }
 
     @Override

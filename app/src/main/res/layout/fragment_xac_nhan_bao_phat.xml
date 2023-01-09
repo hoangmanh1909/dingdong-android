@@ -36,12 +36,12 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_16sp" />
 
-            <Button
+            <ImageView
                 android:id="@+id/img_send"
                 android:layout_width="@dimen/dimen_56dp"
                 android:layout_height="@dimen/dimen_56dp"
                 android:layout_alignParentRight="true"
-                android:background="@drawable/ic_send_telegram"
+                android:src="@drawable/ic_send_telegram"
                 android:padding="@dimen/dimen_5dp" />
         </RelativeLayout>
     </FrameLayout>

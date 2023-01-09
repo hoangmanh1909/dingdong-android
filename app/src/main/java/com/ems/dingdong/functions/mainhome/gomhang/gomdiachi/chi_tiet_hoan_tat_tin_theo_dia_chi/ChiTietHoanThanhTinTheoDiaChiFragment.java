@@ -12,6 +12,7 @@ import android.hardware.Camera;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.text.Editable;
@@ -661,6 +662,10 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
         mListReason = reasonInfos;
     }
 
+    private static final String[] PERMISSIONS = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_EXTERNAL_STORAGE,};//, Manifest.permission.PROCESS_OUTGOING_CALLS
+    private static final int REQUEST_CODE_ASK_PERMISSIONS = 98;
+
     @Override
     public void getReasonFailure(ArrayList<ReasonInfo> reasonInfos) {
         mListReasons = reasonInfos;
@@ -685,7 +690,16 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
             Toast.showToast(getViewContext(), "Vui lòng chọn bưu gửi");
             return;
         }
+        if (radSuccess.isChecked() && radioExcel.isChecked())
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                int hasPermission10 = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                int hasPermission12 = getActivity().checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE);
 
+                if (hasPermission12 != PackageManager.PERMISSION_GRANTED || hasPermission10 != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(getActivity(), PERMISSIONS, REQUEST_CODE_ASK_PERMISSIONS);
+                }
+
+            }
         new SweetAlertDialog(getActivity(), SweetAlertDialog.NORMAL_TYPE)
                 .setConfirmText("Hoàn tất")
                 .setCancelText("Từ chối")
@@ -921,8 +935,6 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
         if (getActivity() != null) {
             String timeStamp = new SimpleDateFormat("ddMMyyyy_HHmmss").format(Calendar.getInstance().getTime());
             String ten = "/VNP_" + mListCommonObject.getReceiverPhone() + "_" + timeStamp + ".xls";
-
-
 //
 //                new DialogExcel(getViewContext(), ten, new ChonAnhCallback() {
 //                    @Override
@@ -1113,29 +1125,29 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
         File file = new File(path_media);
         Log.d("thanhhkiqw1231231", path_media);
         Observable.fromCallable(() -> {
-            Uri uri = Uri.fromFile(new File(path_media));
-            return BitmapUtils.processingBitmap(uri, getViewContext());
-        }).subscribeOn(Schedulers.computation())
+                    Uri uri = Uri.fromFile(new File(path_media));
+                    return BitmapUtils.processingBitmap(uri, getViewContext());
+                }).subscribeOn(Schedulers.computation())
                 .observeOn(Schedulers.io())
                 .map(bitmap -> BitmapUtils.saveImage(bitmap, file.getParent(), "Process_" + file.getName(), Bitmap.CompressFormat.JPEG, 50))
                 .observeOn(AndroidSchedulers.mainThread()).subscribe(
-                isSavedImage -> {
-                    if (isSavedImage) {
-                        String path = file.getParent() + File.separator + "Process_" + file.getName();
-                        mPresenter.postImage(path);
-                        if (isImage) {
-                            mPresenter.postImage(path);
-                            imageAdapter.getListFilter().add(new Item(path, ""));
-                            imageAdapter.notifyDataSetChanged();
-                        }
-                        if (file.exists())
-                            file.delete();
-                    } else {
-                        mPresenter.postImage(path_media);
-                    }
-                },
-                onError -> Logger.e("error save image")
-        );
+                        isSavedImage -> {
+                            if (isSavedImage) {
+                                String path = file.getParent() + File.separator + "Process_" + file.getName();
+                                mPresenter.postImage(path);
+                                if (isImage) {
+                                    mPresenter.postImage(path);
+                                    imageAdapter.getListFilter().add(new Item(path, ""));
+                                    imageAdapter.notifyDataSetChanged();
+                                }
+                                if (file.exists())
+                                    file.delete();
+                            } else {
+                                mPresenter.postImage(path_media);
+                            }
+                        },
+                        onError -> Logger.e("error save image")
+                );
     }
 
 

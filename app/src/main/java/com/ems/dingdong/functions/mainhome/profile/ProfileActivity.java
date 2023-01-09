@@ -8,7 +8,7 @@ import com.ems.dingdong.callback.DialogCallback;
 import com.ems.dingdong.dialog.DialogTextThanhConhg;
 import com.ems.dingdong.functions.login.LoginActivity;
 import com.ems.dingdong.utiles.Log;
-import com.ringme.ott.sdk.utils.RingmeOttSdk;
+//import com.ringme.ott.sdk.utils.RingmeOttSdk;
 
 
 /**

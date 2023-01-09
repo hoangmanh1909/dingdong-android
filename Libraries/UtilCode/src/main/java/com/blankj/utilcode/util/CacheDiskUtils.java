@@ -11,7 +11,6 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 import androidx.collection.SimpleArrayMap;
 
-import com.blankj.utilcode.constant.CacheConstants;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -44,7 +43,7 @@ import java.util.concurrent.atomic.AtomicLong;
  *     desc  : utils about disk cache
  * </pre>
  */
-public final class CacheDiskUtils implements CacheConstants {
+public final class CacheDiskUtils {
 
     private static final long DEFAULT_MAX_SIZE  = Long.MAX_VALUE;
     private static final int  DEFAULT_MAX_COUNT = Integer.MAX_VALUE;

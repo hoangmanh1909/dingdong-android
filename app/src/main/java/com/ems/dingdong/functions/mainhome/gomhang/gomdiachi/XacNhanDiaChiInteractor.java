@@ -2,6 +2,7 @@ package com.ems.dingdong.functions.mainhome.gomhang.gomdiachi;
 
 import com.core.base.viper.Interactor;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.functions.mainhome.profile.chat.menuchat.model.RequestQueuChat;
 import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.CreateVietMapRequest;
 import com.ems.dingdong.model.DataRequestPayment;
@@ -26,7 +27,10 @@ class XacNhanDiaChiInteractor extends Interactor<XacNhanDiaChiContract.Presenter
     public void searchOrderPostmanCollect(String orderPostmanID, String orderID, String postmanID, String status, String fromAssignDate, String toAssignDate, CommonCallback<SimpleResult> callback) {
         NetWorkControllerGateWay.searchOrderPostmanCollect(orderPostmanID, orderID, postmanID, status, fromAssignDate, toAssignDate, callback);
     }
-
+    @Override
+    public Single<SimpleResult> ddQueuChat(RequestQueuChat request) {
+        return NetWorkControllerGateWay.ddQueuChat(request);
+    }
     @Override
     public Single<SimpleResult> ddGetDichVuMpit() {
         return NetWorkControllerGateWay.ddGetDichVuMpit();

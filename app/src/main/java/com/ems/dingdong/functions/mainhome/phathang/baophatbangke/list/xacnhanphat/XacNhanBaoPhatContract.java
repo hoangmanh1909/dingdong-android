@@ -1,5 +1,6 @@
 package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat;
 
+import com.core.base.viper.interfaces.ContainerView;
 import com.core.base.viper.interfaces.IInteractor;
 import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
@@ -219,6 +220,8 @@ public interface XacNhanBaoPhatContract {
 
 
     interface Presenter extends IPresenter<View, Interactor> {
+        ContainerView getContainerView();
+
         void getTinhThanhPho();
 
         void getXaPhuong(int id);

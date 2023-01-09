@@ -7,100 +7,144 @@
     <androidx.cardview.widget.CardView
         style="@style/MyCardViewStyle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="500dp"
         android:layout_centerInParent="true"
         android:layout_margin="@dimen/size_16dp">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:paddingBottom="10dp">
 
-            <LinearLayout
-                android:id="@+id/layout_date_start"
+            <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="@dimen/size_16dp">
+                android:layout_above="@+id/ll_btoom"
+                android:layout_alignParentTop="true">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-                    <com.ems.dingdong.views.CustomTextView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:id="@+id/layout_date_start"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:padding="@dimen/_5sdp"
-                        android:text="@string/notification"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/text_size_18sp" />
-                </RelativeLayout>
-            </LinearLayout>
+                        android:orientation="vertical"
+                        android:padding="@dimen/size_16dp">
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:layout_marginLeft="@dimen/size_16dp"
-                android:layout_marginRight="@dimen/size_16dp"
-                android:background="@color/gray" />
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="@dimen/size_16dp">
+                            <com.ems.dingdong.views.CustomTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:padding="@dimen/_5sdp"
+                                android:text="@string/notification"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/text_size_18sp" />
+                        </RelativeLayout>
+                    </LinearLayout>
 
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:layout_marginLeft="@dimen/size_16dp"
+                        android:layout_marginRight="@dimen/size_16dp"
+                        android:background="@color/gray" />
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <com.ems.dingdong.views.CustomTextView
-                        android:id="@+id/confirm_content"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:padding="@dimen/_5sdp"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/text_size_18sp" />
-                </RelativeLayout>
-            </LinearLayout>
+                        android:orientation="vertical"
+                        android:padding="@dimen/size_16dp">
 
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <com.ems.dingdong.views.CustomTextView
+                                android:id="@+id/confirm_content"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="@dimen/_5sdp"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/text_size_18sp" />
+                        </RelativeLayout>
+
+                        <LinearLayout
+                            android:id="@+id/ll_vitri"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <com.ems.dingdong.views.CustomTextView
+                                android:id="@+id/tv_vitri"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="@dimen/_5sdp"
+                                android:textColor="@color/red_light"
+                                android:textSize="@dimen/text_size_18sp" />
+
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <com.ems.dingdong.views.CustomTextView
+                                    android:id="@+id/tv_khoancach"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_toLeftOf="@+id/img_vitri"
+                                    android:padding="@dimen/_5sdp"
+                                    android:text="Đang tính khoảng cách...."
+                                    android:textColor="@color/red_light"
+                                    android:textSize="@dimen/text_size_18sp" />
+
+
+                                <ImageView
+                                    android:id="@+id/img_vitri"
+                                    style="@style/textStyle"
+                                    android:layout_width="30dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_centerInParent="true"
+                                    android:layout_gravity="center"
+                                    android:drawablePadding="10dp"
+                                    android:gravity="center"
+                                    android:maxLines="1"
+                                    android:paddingTop="5dp"
+                                    android:paddingBottom="5dp"
+                                    android:src="@drawable/navigate_io" />
+                            </RelativeLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.core.widget.NestedScrollView>
 
             <LinearLayout
+                android:id="@+id/ll_btoom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
                 android:gravity="right"
                 android:orientation="horizontal"
                 android:padding="@dimen/dimen_10dp"
                 android:weightSum="2">
 
                 <com.ems.dingdong.views.CustomMediumTextView
-                    android:id="@+id/tv_ok_dialog"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dimen_10dp"
-                    android:layout_marginTop="@dimen/dimen_10dp"
-                    android:layout_weight="1"
-                    android:background="@color/color_rad_success"
-                    android:gravity="center"
-                    android:paddingLeft="@dimen/dimen_10dp"
-                    android:paddingTop="@dimen/dimen_10dp"
-                    android:paddingRight="@dimen/dimen_10dp"
-                    android:paddingBottom="@dimen/dimen_10dp"
-                    android:text="Có"
-                    android:textAllCaps="true"
-                    android:textColor="@color/white"
-                    android:textSize="16sp" />
-
-                <com.ems.dingdong.views.CustomMediumTextView
                     android:id="@+id/tv_cancel_dialog"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     android:layout_marginLeft="@dimen/dimen_10dp"
                     android:layout_marginTop="@dimen/dimen_10dp"
                     android:layout_weight="1"
-                    android:background="@color/red_light"
+                    android:background="@drawable/bg_border_botton_xam"
+
                     android:gravity="center"
                     android:paddingLeft="@dimen/dimen_10dp"
                     android:paddingTop="@dimen/dimen_10dp"
@@ -111,8 +155,28 @@
                     android:textColor="@color/white"
                     android:textSize="16sp" />
 
+                <com.ems.dingdong.views.CustomMediumTextView
+                    android:id="@+id/tv_ok_dialog"
+                    android:layout_width="0dp"
+                    android:layout_height="48dp"
+                    android:layout_marginLeft="@dimen/dimen_10dp"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:layout_weight="1"
+
+                    android:background="@drawable/bg_border_botton_xacnhan"
+                    android:gravity="center"
+                    android:paddingLeft="@dimen/dimen_10dp"
+                    android:paddingTop="@dimen/dimen_10dp"
+                    android:paddingRight="@dimen/dimen_10dp"
+                    android:paddingBottom="@dimen/dimen_10dp"
+                    android:text="Có"
+                    android:textAllCaps="true"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
+
 
             </LinearLayout>
-        </LinearLayout>
+
+        </RelativeLayout>
     </androidx.cardview.widget.CardView>
 </RelativeLayout>

@@ -22,4 +22,16 @@ public class Point {
     public String getLatitude() {
         return latitude;
     }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
 }

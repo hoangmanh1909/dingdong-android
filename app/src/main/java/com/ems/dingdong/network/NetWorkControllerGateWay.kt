@@ -3,9 +3,14 @@ package com.ems.dingdong.network
 import android.util.Log
 import com.ems.dingdong.BuildConfig
 import com.ems.dingdong.callback.CommonCallback
+import com.ems.dingdong.functions.mainhome.address.danhbadichi.model.DICRouteAddressBookCreateRequest
+import com.ems.dingdong.functions.mainhome.address.danhbadichi.model.TimDiachiModel
+import com.ems.dingdong.functions.mainhome.address.danhbadichi.model.XoaDiaChiModel
 import com.ems.dingdong.functions.mainhome.main.data.CallLogMode
 import com.ems.dingdong.functions.mainhome.main.data.MainMode
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.modedata.OrderCreateBD13Mode
+import com.ems.dingdong.functions.mainhome.profile.chat.menuchat.model.RequestQueuChat
+import com.ems.dingdong.functions.mainhome.profile.chat.menuchat.model.RouteTypeRequest
 import com.ems.dingdong.model.*
 import com.ems.dingdong.model.request.*
 import com.ems.dingdong.model.request.vietmap.TravelSales
@@ -375,7 +380,7 @@ object NetWorkControllerGateWay {
     //end thống kê
 
     @JvmStatic
-    fun findLocation(ladingCode: String, poCode: String): Observable<SimpleResult> {
+    fun findLocation(ladingCode: String, poCode: String): Single<SimpleResult> {
         val trackTraceLadingRequest = TrackTraceLadingRequest(
             ladingCode,
             poCode,
@@ -1056,6 +1061,134 @@ object NetWorkControllerGateWay {
             "ANDROID",
             "",
             Constants.PU_DIC_GET_WARDS,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
+        return getApiRxBuilderVer().commonServiceRx(requestObject)
+    }
+
+    @JvmStatic
+    fun getVMSEARCHV2(request: TimDiachiModel): Single<SimpleResult> {
+        val data = NetWorkController.getGson().toJson(request)
+        val signature = signature(data)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.VM_SEARCH_V2,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
+        return getApiRxBuilderVer().commonServiceRx(requestObject)
+    }
+
+    @JvmStatic
+    fun getListContractAdress(request: String): Single<SimpleResult> {
+        val data = request
+        val signature = signature(data)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.PU_ROUTE_ADDRESS_BOOK_GET_BY_ROUTE_ID,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
+        return getApiRxBuilderVer().commonServiceRx(requestObject)
+    }
+
+    @JvmStatic
+    fun getDetail(request: String): Single<SimpleResult> {
+        val data = request
+        val signature = signature(data)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.PU_ROUTE_ADDRESS_BOOK_GET_BY_ID,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
+        return getApiRxBuilderVer().commonServiceRx(requestObject)
+    }
+
+    @JvmStatic
+    fun getVMPLACE(request: String): Single<SimpleResult> {
+        val data = request
+        val signature = signature(data)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.VM_PLACE,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
+        return getApiRxBuilderVer().commonServiceRx(requestObject)
+    }
+
+    @JvmStatic
+    fun getStresss(request: String): Single<SimpleResult> {
+        val data = request
+        val signature = signature(data)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.PU_DIC_GET_WARD_BY_PORTAL_CODE,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
+        return getApiRxBuilderVer().commonServiceRx(requestObject)
+    }
+
+    @JvmStatic
+    fun getThemDiaChi(request: DICRouteAddressBookCreateRequest): Single<SimpleResult> {
+        val data = NetWorkController.getGson().toJson(request)
+        val signature = signature(data)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.PU_ROUTE_ADDRESS_BOOK_CREATE,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
+        return getApiRxBuilderVer().commonServiceRx(requestObject)
+    }
+
+    @JvmStatic
+    fun getCapNhatDiachi(request: DICRouteAddressBookCreateRequest): Single<SimpleResult> {
+        val data = NetWorkController.getGson().toJson(request)
+        val signature = signature(data)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.PU_ROUTE_ADDRESS_BOOK_UPDATE,
+            data,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
+        return getApiRxBuilderVer().commonServiceRx(requestObject)
+    }
+
+    @JvmStatic
+    fun getXoaDiaChi(request: XoaDiaChiModel): Single<SimpleResult> {
+        val data = NetWorkController.getGson().toJson(request)
+        val signature = signature(data)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.PU_ROUTE_ADDRESS_BOOK_DELETE,
             data,
             Utils.getLocalTime(Constants.DATE_FORMAT),
             "",
@@ -1991,6 +2124,17 @@ object NetWorkControllerGateWay {
     }
 
     @JvmStatic
+    fun vietmapKhoangCach(request: DLVGetDistanceRequest): Single<SimpleResult> {
+        val data = getGson().toJson(request)
+        val signature = signature(data)
+        val requestObject = RequestObject(
+            "ANDROID", "", Constants.DLV_GET_DISTANCE, data,
+            Utils.getLocalTime(Constants.DATE_FORMAT), "", signature
+        )
+        return getApiRxBuilderVer().commonServiceRx(requestObject)
+    }
+
+    @JvmStatic
     fun vietmapSearchDecode(decode: String): Single<DecodeDiaChiResult> {
         val vietMapSearchDecodeRequest = VietMapSearchDecodeRequest(decode)
         val data = getGson().toJson(vietMapSearchDecodeRequest)
@@ -2339,5 +2483,51 @@ object NetWorkControllerGateWay {
         )
         return getApiRxBuilderVer().commonServiceRx(requestObject)
     }
+
+    // start chat
+    @JvmStatic
+    fun getDanhmuccaccap(request: String): Single<SimpleResult> {
+        val data = request
+        val signature = signature(data)
+        val requestObject = RequestObject(
+            "ANDROID", "", Constants.AUTH_DIC_GET_PO_BY_PARENT_CODE, data,
+            Utils.getLocalTime(Constants.DATE_FORMAT), "", signature
+        )
+        return getApiRxBuilderVer().commonServiceRx(requestObject)
+    }
+
+    @JvmStatic
+    fun ddQueuChat(request: RequestQueuChat): Single<SimpleResult> {
+        val data = getGson().toJson(request)
+        val signature = signature(data)
+        val requestObject = RequestObject(
+            "ANDROID", "", Constants.PARTNER_CHAT_GET_QUEUE_CHAT, data,
+            Utils.getLocalTime(Constants.DATE_FORMAT), "", signature
+        )
+        return getApiRxBuilderVer().commonServiceRx(requestObject)
+    }
+
+    @JvmStatic
+    fun ddGetPhoneBuuta(request: String): Single<SimpleResult> {
+        val data = request
+        val signature = signature(data)
+        val requestObject = RequestObject(
+            "ANDROID", "", Constants.AUTH_GET_POSTMAN_BY_MOBILE_NUMBER, data,
+            Utils.getLocalTime(Constants.DATE_FORMAT), "", signature
+        )
+        return getApiRxBuilderVer().commonServiceRx(requestObject)
+    }
+
+    @JvmStatic
+    fun ddGetTenBuuTa(request: RouteTypeRequest): Single<SimpleResult> {
+        val data = getGson().toJson(request)
+        val signature = signature(data)
+        val requestObject = RequestObject(
+            "ANDROID", "", Constants.AUTH_GET_POSTMAN_IN_PO_BY_ROUTE_TYPE, data,
+            Utils.getLocalTime(Constants.DATE_FORMAT), "", signature
+        )
+        return getApiRxBuilderVer().commonServiceRx(requestObject)
+    }
+    // end chat
 
 }

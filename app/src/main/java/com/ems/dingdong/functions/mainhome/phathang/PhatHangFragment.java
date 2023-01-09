@@ -130,23 +130,25 @@ public class PhatHangFragment extends ViewFragment<PhatHangContract.Presenter> i
                             mPresenter.showViewStatisticPtc(StatisticType.ERROR_DELIVERY);
                         } else if (homeInfo.getId() == 7) {
                             //asdasd
-                            String key = sharedPref.getString(Constants.KEY_RA_VAO, "");
-                            if (!TextUtils.isEmpty(key)) {
-                                Intent intent = new Intent(getActivity(), CreateBd13Activity.class);
-                                startActivity(intent);
-                            } else {
-                                AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
-                                builder1.setMessage("Bạn chưa thiết lập vào ca làm việc. Vui lòng thiết lập để thực hiện lập bản kê BD13!");
-                                builder1.setCancelable(false);
-                                builder1.setNegativeButton("Đóng", new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        dialog.cancel();
-                                    }
-                                });
-                                AlertDialog alert11 = builder1.create();
-                                alert11.show();
-//                                Toast.showToast(getViewContext(), "Bạn chưa thiết lập vào ca làm việc. Vui lòng thiết lập để thực hiện lập bản kê BD13!");
-                            }
+//                            String key = sharedPref.getString(Constants.KEY_RA_VAO, "");
+//                            if (!TextUtils.isEmpty(key)) {
+//                                Intent intent = new Intent(getActivity(), CreateBd13Activity.class);
+//                                startActivity(intent);
+//                            } else {
+//                                AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
+//                                builder1.setMessage("Bạn chưa thiết lập vào ca làm việc. Vui lòng thiết lập để thực hiện lập bản kê BD13!");
+//                                builder1.setCancelable(false);
+//                                builder1.setNegativeButton("Đóng", new DialogInterface.OnClickListener() {
+//                                    public void onClick(DialogInterface dialog, int id) {
+//                                        dialog.cancel();
+//                                    }
+//                                });
+//                                AlertDialog alert11 = builder1.create();
+//                                alert11.show();
+////                                Toast.showToast(getViewContext(), "Bạn chưa thiết lập vào ca làm việc. Vui lòng thiết lập để thực hiện lập bản kê BD13!");
+//                            }
+                            Intent intent = new Intent(getActivity(), CreateBd13Activity.class);
+                            startActivity(intent);
                         } else if (homeInfo.getId() == 8) {
                             mPresenter.showNhapBaoPhatOffline();
                         } else if (homeInfo.getId() == 9) {

@@ -24,7 +24,7 @@ import retrofit2.Call;
 interface LocationContract {
 
     interface Interactor extends IInteractor<Presenter> {
-        Observable<SimpleResult> findLocation(String ladingCode, String poCode);
+        Single<SimpleResult> findLocation(String ladingCode, String poCode);
 
         Call<SimpleResult> callForwardCallCenter(String callerNumber, String calleeNumber,
                                                  String callForwardType, String hotlineNumber,

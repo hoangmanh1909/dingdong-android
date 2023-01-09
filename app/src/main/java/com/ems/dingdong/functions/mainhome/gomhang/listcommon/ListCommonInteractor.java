@@ -2,6 +2,7 @@ package com.ems.dingdong.functions.mainhome.gomhang.listcommon;
 
 import com.core.base.viper.Interactor;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.functions.mainhome.profile.chat.menuchat.model.RequestQueuChat;
 import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.ConfirmAllOrderPostmanResult;
 import com.ems.dingdong.model.ConfirmOrderPostman;
@@ -41,5 +42,10 @@ class ListCommonInteractor extends Interactor<ListCommonContract.Presenter>
     @Override
     public Single<SimpleResult> ddGetDichVuMpit() {
         return NetWorkControllerGateWay.ddGetDichVuMpit();
+    }
+
+    @Override
+    public Single<SimpleResult> ddQueuChat(RequestQueuChat request) {
+        return NetWorkControllerGateWay.ddQueuChat(request);
     }
 }

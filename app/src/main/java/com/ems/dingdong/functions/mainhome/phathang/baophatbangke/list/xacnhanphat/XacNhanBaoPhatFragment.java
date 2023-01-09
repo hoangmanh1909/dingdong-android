@@ -54,6 +54,7 @@ import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.R;
 import com.ems.dingdong.callback.ChonAnhCallback;
+import com.ems.dingdong.callback.DialogCallback;
 import com.ems.dingdong.callback.IdCallback;
 import com.ems.dingdong.callback.PickerCallback;
 import com.ems.dingdong.dialog.ConfirmDialog;
@@ -71,6 +72,7 @@ import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanph
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.loadhinhanh.JavaImageResizer;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.loadhinhanh.ScalingUtilities;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.more.AddHangDoiTraDialog;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.more.DiaLogThongbao;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.more.HangDoiTraAdapter;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.more.HangDoiTraCallback;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.more.LadingProduct;
@@ -81,10 +83,12 @@ import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanph
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.parital.ModeFee;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.parital.PhiThuHoAdapter;
 import com.ems.dingdong.model.BuuCucHuyenMode;
+import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.model.DistrictModels;
 import com.ems.dingdong.model.InfoVerify;
 import com.ems.dingdong.model.Item;
+import com.ems.dingdong.model.ParcelCodeInfo;
 import com.ems.dingdong.model.PhithuhoModel;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.ProductModel;
@@ -116,6 +120,7 @@ import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
 import com.google.android.gms.common.util.DataUtils;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.common.collect.Iterables;
 import com.google.gson.Gson;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 //import com.sip.cmc.SipCmc;
@@ -132,7 +137,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 
 import butterknife.BindView;
@@ -155,8 +163,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     ImageView img_back;
     @BindView(R.id.tv_title)
     CustomBoldTextView tv_title;
-    @BindView(R.id.img_send)
-    Button img_send;
     @BindView(R.id.tv_quantity)
     CustomBoldTextView tv_quantity;
     @BindView(R.id.tv_total_amount)
@@ -197,6 +203,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     EditText tvGTTT;
     @BindView(R.id.edt_relationship)
     TextView edtRelationship;
+    @BindView(R.id.cb_hangdoitra)
+    CheckBox cbHangdoitra;
     @BindView(R.id.tv_receiver_name)
     TextView tvRealReceiverName;
     @BindView(R.id.tv_address_user)
@@ -548,6 +556,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     @Override
     public void initLayout() {
         super.initLayout();
+        Locale locale = getContext().getResources().getConfiguration().locale;
+        Locale.setDefault(locale);
         if (ContextCompat.checkSelfPermission(getActivity(), READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(getActivity(), WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_PHONE_STATE, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_ASK_PERMISSIONS);
         }
@@ -1115,8 +1125,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                                                         }
                                                     });
         recyclerds.setVisibility(View.GONE);
-        for (
-                int i = 0; i < mBaoPhatBangke.size(); i++) {
+        for (int i = 0; i < mBaoPhatBangke.size(); i++) {
             if (mBaoPhatBangke.get(i).getFeeCancelOrder() == 0) {
                 mBaoPhatBangke.get(i).setCheck(false);
                 mBaoPhatBangke.get(i).setAnItem(false);
@@ -1131,8 +1140,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             }
 
         }
-        for (
-                int i = 0; i < mBaoPhatBangke.size(); i++) {
+        for (int i = 0; i < mBaoPhatBangke.size(); i++) {
             if (mBaoPhatBangke.get(i).getFeeCancelOrder() == 0) {
                 mBaoPhatBangke.get(i).setAnItem(false);
             } else {
@@ -1140,8 +1148,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             }
         }
 
-        if (mBaoPhatBangke.size() > 1) for (
-                int i = 0; i < mBaoPhatBangke.size(); i++)
+        if (mBaoPhatBangke.size() > 1) for (int i = 0; i < mBaoPhatBangke.size(); i++)
             if (mBaoPhatBangke.get(i).
 
                     getFeeCancelOrder() > 0) mBaoPhatBangke.get(i).
@@ -1413,6 +1420,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 rad_fail.setTextColor(getResources().getColor(R.color.color_yellow));
                 rad_change_route.setTextColor(getResources().getColor(R.color.white));
                 rad_partial.setTextColor(getResources().getColor(R.color.white));
+
                 break;
             case R.id.rad_change_route:
                 rbVerifyInfo.setChecked(false);
@@ -1458,11 +1466,20 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 rad_fail.setBackgroundResource(R.color.color_rad_fail);
                 rad_change_route.setBackgroundResource(R.color.color_rad_change_route);
                 rad_partial.setBackgroundResource(R.drawable.bg_form_parital);
-
                 rad_success.setTextColor(getResources().getColor(R.color.white));
                 rad_fail.setTextColor(getResources().getColor(R.color.white));
                 rad_change_route.setTextColor(getResources().getColor(R.color.white));
                 rad_partial.setTextColor(getResources().getColor(R.color.color_yellow));
+//                String gtgt[] = mBaoPhatBangke.get(0).getVatCode().split(",");
+//                for (int i = 0; i < gtgt.length; i++) {
+//                    if (gtgt[i].equals("RT")) {
+//                        llDoitra.setVisibility(View.VISIBLE);
+//                    } else {
+//                        llDoitra.setVisibility(View.GONE);
+//                    }
+//                }
+                IsExchange = false;
+                llDoitra.setVisibility(View.GONE);
                 break;
             case R.id.img_back:
                 finishView();
@@ -1931,11 +1948,11 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         }
 
         if (mDeliveryType == 2 || mDeliveryType == 4) {
-            boolean isCanVerify = canVerify();
-            if (!isCanVerify) {
-                showErrorToast(getViewContext().getString(R.string.there_is_one_package_needed_to_particular_delivered));
-                return;
-            }
+//            boolean isCanVerify = canVerify();
+//            if (!isCanVerify) {
+//                showErrorToast(getViewContext().getString(R.string.there_is_one_package_needed_to_particular_delivered));
+//                return;
+//            }
 
 
             if (!tvGTTT.getText().toString().equals("") && tvGTTT.getText().toString().length() < 8) {
@@ -2010,9 +2027,23 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             } else tiem_tam = 0;
 
             if (IsExchange) {
-                if (!TextUtils.isEmpty(edtMaBuuGui.getText().toString().trim()) && !edtMaBuuGui.getText().toString().trim().matches("[\\w-]+")) {
-                    Toast.showToast(getContext(), "Vui lòng kiểm tra mã bưu gửi");
-                    return;
+                if (cbHangdoitra.isChecked()) {
+                    if (listImages.size() == 0) {
+                        Toast.showToast(getViewContext(), "Vui lòng tải ảnh tin nhắn của KH vào mục ảnh báo phát");
+                        return;
+                    }
+                } else {
+
+
+                    if (!TextUtils.isEmpty(edtMaBuuGui.getText().toString().trim()) && !edtMaBuuGui.getText().toString().trim().matches("[\\w-]+")) {
+                        Toast.showToast(getContext(), "Vui lòng kiểm tra mã bưu gửi");
+                        return;
+                    }
+
+                    if (mHoanDoiTra.size() == 0) {
+                        Toast.showToast(getContext(), "Vui lòng nhập thông tin sản phẩm thu hồi.");
+                        return;
+                    }
                 }
 
                 mExchangeLadingCode = edtMaBuuGui.getText().toString().trim();
@@ -2026,16 +2057,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 mExchangeDeliveryTime = Integer.parseInt(String.format("%s%s00", mHours, mMinutes));
                 mExchangeDetails.clear();
                 mExchangeDetails.addAll(mHoanDoiTra);
-//                if (listImageHangDoiTra.size() > 0) {
-//                    if (mHoanDoiTra.size() == 0) {
-//                        Toast.showToast(getViewContext(), "Vui lòng nhập sản phẩm hàng hóa");
-//                        return;
-//                    }
-//                }
-//                if (mHoanDoiTra.size() == 0) {
-//                    Toast.showToast(getViewContext(), "Vui lòng nhập sản phẩm hàng hóa");
-//                    return;
-//                }
+
                 if (listImageHangDoiTra.size() > 0) {
                     String[] arrImg = new String[listImageHangDoiTra.size()];
                     for (int i = 0; i < listImageHangDoiTra.size(); i++) {
@@ -2044,40 +2066,118 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                     }
                     imgAnhHoanTra = TextUtils.join(";", arrImg);
                 }
+
             }
             long final_amountShow = _amountShow;
 
-
-            new ConfirmDialog(getViewContext(), listSelected.size(), final_amountShow, totalFee).setOnCancelListener(Dialog::dismiss).setOnOkListener(confirmDialog -> {
-                confirmDialog.dismiss();
-                InfoVerify infoVerify = new InfoVerify();//llVerifyImage.setVisibility(View.VISIBLE);
-                if (llVerifyInfo.getVisibility() == View.VISIBLE || llVerifyImage.getVisibility() == View.VISIBLE) {//llCaptureVerify -> llVerifyImage
-                    infoVerify.setReceiverPIDWhere(edtGTTTLocatedAccepted.getText().toString());
-                    infoVerify.setReceiverAddressDetail(edtUserAddress.getText().toString());
-                    infoVerify.setReceiverPIDDate(edtGTTTDateAccepted.getText().toString());
-                    infoVerify.setReceiverBirthday(edtDateOfBirth.getText().toString());
-                    infoVerify.setGtgt(tvGTTT.getText().toString());
-                    if (authenType == 0) infoVerify.setAuthenType(3);
-                    else infoVerify.setAuthenType(authenType);
-                }
-                // baophat thanh cong
-                if (mDeliveryType == 2) {
-                    if (!TextUtils.isEmpty(edtOtherRelationship.getText())) {
-                        mPresenter.paymentDelivery(mFile, mFileAvatar + ";" + mFileVerify + ";" + mFileOther, mSign, edtReceiverName.getText().toString(), edtOtherRelationship.getText().toString(), infoVerify, checkBoxedtCod.isChecked(), tiem_tam, edtNote.getText().toString(), IsExchange, mBuuCuc, mTuyen, mExchangeLadingCode, mExchangeDeliveryDate, mExchangeDeliveryTime, mExchangeDetails, imgAnhHoanTra, idXaphuong, idQuanhuyen, phoneCodeEdit.getId());
-                    } else {
-                        mPresenter.paymentDelivery(mFile, mFileAvatar + ";" + mFileVerify + ";" + mFileOther, mSign, edtReceiverName.getText().toString(), edtRelationship.getText().toString(), infoVerify, checkBoxedtCod.isChecked(), tiem_tam, edtNote.getText().toString(), IsExchange, mBuuCuc, mTuyen, mExchangeLadingCode, mExchangeDeliveryDate, mExchangeDeliveryTime, mExchangeDetails, imgAnhHoanTra, idXaphuong, idQuanhuyen, phoneCodeEdit.getId());
+//            mBaoPhatBangke.get(0).setItemTypeCode("E5");
+            if (mDeliveryType == 2) {
+                //Báo phát Các bưu gửi có dịch vụ ETN034,ETN035,ETN036, bổ sung: phải tải ảnh hoặc ký nhận mới được cập nhật báo phát (thành công và Không thành công)
+                for (int i = 0; i < mBaoPhatBangke.size(); i++) {
+                    //E5;E6;E7
+                    if ((mBaoPhatBangke.get(i).getItemTypeCode().equals("E5") ||
+                            mBaoPhatBangke.get(i).getItemTypeCode().equals("E6") ||
+                            mBaoPhatBangke.get(i).getItemTypeCode().equals("E7")) &&
+                            mBaoPhatBangke.get(i).getIsItemReturn().equals("N")) {
+                        if (arrImages.length == 0 && mSign.isEmpty()) {
+                            showErrorToast("Các bưu gửi có dịch vụ ETN034, ETN035, ETN036 phải chụp/tải ảnh hoặc ký nhận để báo phát");
+                            return;
+                        }
                     }
-                } else {
-                    if (totalAmount > 0) {
-                        int amount = Integer.parseInt(et_pt_amount.getText().toString().replaceAll("\\.", ""));
-                        if (!TextUtils.isEmpty(et_pt_amount.getText())) {
-                            if (amount <= totalAmount) deliveryPartial(infoVerify, amount);
-                            else
-                                Toast.showToast(getContext(), "Số tiền COD phát lớn hơn tổng tiền COD");
-                        } else Toast.showToast(getContext(), "Bạn chưa nhập số tiền COD phát");
-                    } else deliveryPartial(infoVerify, 0);
+
                 }
-            }).setWarning(getViewContext().getString(R.string.are_you_sure_deliver_successfully)).show();
+            }
+            if (mDeliveryType == 4) {
+                //Báo phát Các bưu gửi có dịch vụ ETN034,ETN035,ETN036, bổ sung: phải tải ảnh hoặc ký nhận mới được cập nhật báo phát (thành công và Không thành công)
+                for (int i = 0; i < mBaoPhatBangke.size(); i++) {
+                    //E5;E6;E7
+                    if ((mBaoPhatBangke.get(i).getItemTypeCode().equals("E5") ||
+                            mBaoPhatBangke.get(i).getItemTypeCode().equals("E6")
+                            || mBaoPhatBangke.get(i).getItemTypeCode().equals("E7"))
+                            && mBaoPhatBangke.get(i).getIsItemReturn().equals("N")) {
+
+                        if (listImageDelivery.size() == 0 && mSign.isEmpty()) {
+                            showErrorToast("Các bưu gửi có dịch vụ ETN034, ETN035, ETN036 phải chụp/tải ảnh hoặc ký nhận để báo phát");
+                            return;
+                        }
+
+                    }
+
+                }
+            }
+            if (mCount == 0) {
+                new ConfirmDialog(getViewContext(), listSelected.size(), final_amountShow, totalFee,
+                        listSelected.get(0).getReciverAddress(), mLocation.getLatitude(),
+                        mLocation.getLongitude(),
+                        listSelected.get(0).getReceiverLat().isEmpty() ? 0.0: Double.parseDouble(listSelected.get(0).getReceiverLat()),
+                        listSelected.get(0).getReceiverLon().isEmpty() ? 0.0: Double.parseDouble(listSelected.get(0).getReceiverLon()),
+                        listSelected.get(0).getReceiverVpostcode(),
+                        mPresenter.getContainerView()).setOnCancelListener(Dialog::dismiss).setOnOkListener(confirmDialog -> {
+                    confirmDialog.dismiss();
+                    InfoVerify infoVerify = new InfoVerify();//llVerifyImage.setVisibility(View.VISIBLE);
+                    if (llVerifyInfo.getVisibility() == View.VISIBLE || llVerifyImage.getVisibility() == View.VISIBLE) {//llCaptureVerify -> llVerifyImage
+                        infoVerify.setReceiverPIDWhere(edtGTTTLocatedAccepted.getText().toString());
+                        infoVerify.setReceiverAddressDetail(edtUserAddress.getText().toString());
+                        infoVerify.setReceiverPIDDate(edtGTTTDateAccepted.getText().toString());
+                        infoVerify.setReceiverBirthday(edtDateOfBirth.getText().toString());
+                        infoVerify.setGtgt(tvGTTT.getText().toString());
+                        if (authenType == 0) infoVerify.setAuthenType(3);
+                        else infoVerify.setAuthenType(authenType);
+                    }
+                    // baophat thanh cong
+                    if (mDeliveryType == 2) {
+                        if (!TextUtils.isEmpty(edtOtherRelationship.getText())) {
+                            mPresenter.paymentDelivery(mFile, mFileAvatar + ";" + mFileVerify + ";" + mFileOther, mSign, edtReceiverName.getText().toString(), edtOtherRelationship.getText().toString(), infoVerify, checkBoxedtCod.isChecked(), tiem_tam, edtNote.getText().toString(), IsExchange, mBuuCuc, mTuyen, mExchangeLadingCode, mExchangeDeliveryDate, mExchangeDeliveryTime, mExchangeDetails, imgAnhHoanTra, idXaphuong, idQuanhuyen, phoneCodeEdit.getId());
+                        } else {
+                            mPresenter.paymentDelivery(mFile, mFileAvatar + ";" + mFileVerify + ";" + mFileOther, mSign, edtReceiverName.getText().toString(), edtRelationship.getText().toString(), infoVerify, checkBoxedtCod.isChecked(), tiem_tam, edtNote.getText().toString(), IsExchange, mBuuCuc, mTuyen, mExchangeLadingCode, mExchangeDeliveryDate, mExchangeDeliveryTime, mExchangeDetails, imgAnhHoanTra, idXaphuong, idQuanhuyen, phoneCodeEdit.getId());
+                        }
+                    } else {
+                        if (totalAmount > 0) {
+                            int amount = Integer.parseInt(et_pt_amount.getText().toString().replaceAll("\\.", ""));
+                            if (!TextUtils.isEmpty(et_pt_amount.getText())) {
+                                if (amount <= totalAmount) deliveryPartial(infoVerify, amount);
+                                else
+                                    Toast.showToast(getContext(), "Số tiền COD phát lớn hơn tổng tiền COD");
+                            } else Toast.showToast(getContext(), "Bạn chưa nhập số tiền COD phát");
+                        } else deliveryPartial(infoVerify, 0);
+                    }
+                }).setWarning(getViewContext().getString(R.string.are_you_sure_deliver_successfully)).show();
+            } else {
+                new DiaLogThongbao(getViewContext(), thongbaoBaoPhat()
+                        , new DialogCallback() {
+                    @Override
+                    public void onResponse(String loginRespone) {
+                        InfoVerify infoVerify = new InfoVerify();//llVerifyImage.setVisibility(View.VISIBLE);
+                        if (llVerifyInfo.getVisibility() == View.VISIBLE || llVerifyImage.getVisibility() == View.VISIBLE) {//llCaptureVerify -> llVerifyImage
+                            infoVerify.setReceiverPIDWhere(edtGTTTLocatedAccepted.getText().toString());
+                            infoVerify.setReceiverAddressDetail(edtUserAddress.getText().toString());
+                            infoVerify.setReceiverPIDDate(edtGTTTDateAccepted.getText().toString());
+                            infoVerify.setReceiverBirthday(edtDateOfBirth.getText().toString());
+                            infoVerify.setGtgt(tvGTTT.getText().toString());
+                            if (authenType == 0) infoVerify.setAuthenType(3);
+                            else infoVerify.setAuthenType(authenType);
+                        }
+                        // baophat thanh cong
+                        if (mDeliveryType == 2) {
+                            if (!TextUtils.isEmpty(edtOtherRelationship.getText())) {
+                                mPresenter.paymentDelivery(mFile, mFileAvatar + ";" + mFileVerify + ";" + mFileOther, mSign, edtReceiverName.getText().toString(), edtOtherRelationship.getText().toString(), infoVerify, checkBoxedtCod.isChecked(), tiem_tam, edtNote.getText().toString(), IsExchange, mBuuCuc, mTuyen, mExchangeLadingCode, mExchangeDeliveryDate, mExchangeDeliveryTime, mExchangeDetails, imgAnhHoanTra, idXaphuong, idQuanhuyen, phoneCodeEdit.getId());
+                            } else {
+                                mPresenter.paymentDelivery(mFile, mFileAvatar + ";" + mFileVerify + ";" + mFileOther, mSign, edtReceiverName.getText().toString(), edtRelationship.getText().toString(), infoVerify, checkBoxedtCod.isChecked(), tiem_tam, edtNote.getText().toString(), IsExchange, mBuuCuc, mTuyen, mExchangeLadingCode, mExchangeDeliveryDate, mExchangeDeliveryTime, mExchangeDetails, imgAnhHoanTra, idXaphuong, idQuanhuyen, phoneCodeEdit.getId());
+                            }
+                        } else {
+                            if (totalAmount > 0) {
+                                int amount = Integer.parseInt(et_pt_amount.getText().toString().replaceAll("\\.", ""));
+                                if (!TextUtils.isEmpty(et_pt_amount.getText())) {
+                                    if (amount <= totalAmount) deliveryPartial(infoVerify, amount);
+                                    else
+                                        Toast.showToast(getContext(), "Số tiền COD phát lớn hơn tổng tiền COD");
+                                } else
+                                    Toast.showToast(getContext(), "Bạn chưa nhập số tiền COD phát");
+                            } else deliveryPartial(infoVerify, 0);
+                        }
+                    }
+                }).show();
+            }
         } else if (mDeliveryType == 1) {
             if (TextUtils.isEmpty(tv_reason.getText())) {
                 Toast.showToast(tv_reason.getContext(), getViewContext().getString(R.string.please_pick_reason));
@@ -2091,6 +2191,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 Toast.showToast(tvTime.getContext(), getViewContext().getString(R.string.you_have_not_time));
                 return;
             }
+
             List<DeliveryPostman> deliveryPostmen = getItemSelected();
             if (cbSelected.isChecked()) {
                 if (deliveryPostmen.size() > 1) {
@@ -2117,7 +2218,19 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                     if (deliveryPostmen.get(i).getFeeCancelOrder() > 0)
                         t += deliveryPostmen.get(i).getFeeCancelOrder();
             }
+            for (int i = 0; i < mBaoPhatBangke.size(); i++) {
+                //E5;E6;E7
+                if ((mBaoPhatBangke.get(i).getItemTypeCode().equals("E5") || mBaoPhatBangke.get(i).getItemTypeCode().equals("E6") || mBaoPhatBangke.get(i).getItemTypeCode().equals("E7"))
 
+                        && mBaoPhatBangke.get(i).getIsItemReturn().equals("N")) {
+                    if (arrImages.length == 0 && mSign.isEmpty()) {
+                        showErrorToast("Các bưu gửi có dịch vụ ETN034, ETN035, ETN036 phải chụp/tải ảnh hoặc ký nhận để báo phát");
+                        return;
+                    }
+
+                }
+
+            }
             String mess = null;
 
             mess = "Danh sách bưu gửi có Tổng phí hủy đơn hàng: " + "<font color=\"red\">" + String.format("%s", NumberUtils.formatPriceNumber(t)) + "</font>" + " VNĐ, bạn có thu đủ tiền hay không?";
@@ -2157,38 +2270,80 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                     doiTuong = "";
                 }
             }
-            if (mReasonInfo.getCode().equals("71")) {
-                if (mSolutionInfo.getCode().equals("A") || mSolutionInfo.getCode().equals("I") || mSolutionInfo.getCode().equals("R")) {
+            if (mReasonInfo.getCode().equals("71") || mReasonInfo.getCode().equals("66")
+                    || mReasonInfo.getCode().equals("23") || mReasonInfo.getCode().equals("95")
+                    || mReasonInfo.getCode().equals("21") || mReasonInfo.getCode().equals("12")
+                    || mReasonInfo.getCode().equals("99")) {
+                if (mSolutionInfo.getCode().equals("A")
+                        || mSolutionInfo.getCode().equals("I") || mSolutionInfo.getCode().equals("R") || mSolutionInfo.getCode().equals("J")) {
                     diachiNew = "";
                     ghichunew = "";
                     hinhthucPhat = "";
                 }
             }
+            if (mCount == 0) {
+                if (cbSelected.isChecked()) {
+                    String finalTimeDukien = timeDukien;
+                    String finalTimeDukien1 = timeDukien;
+                    new ConfirmPhiHuyDonHangDialog(getViewContext(), listSelected.size(), t).setOnCallBacklClickListener(confirmDialog -> {
+                        confirmDialog.dismiss();
+                    }).setOnCancelListener((ConfirmPhiHuyDonHangDialog.OnCancelClickListener) confirmDialog1 -> {
+                        confirmDialog1.dismiss();
+                        new DialogNhapKhongThanhCong(getViewContext(), new IdCallback() {
+                            @Override
+                            public void onResponse(String id) {
+                                mPresenter.submitToPNS(mReasonInfo.getCode(), mSolutionInfo.getCode(), tv_Description.getText().toString(), mFile, mFileAvatar + ";" + mFileVerify + ";" + mFileOther, mSign, time, false, id, idXaphuong, idQuanhuyen, diachiNew, hinhthucPhat, ghichunew, doiTuong, Integer.parseInt(finalTimeDukien));
+                            }
+                        }).show();
+                    }).setOnOkListener(confirmDialog -> {
+                        confirmDialog.dismiss();
+                        mPresenter.submitToPNS(mReasonInfo.getCode(), mSolutionInfo.getCode(), tv_Description.getText().toString(), mFile, mFileAvatar + ";" + mFileVerify + ";" + mFileOther, mSign, time, true, "", idXaphuong, idQuanhuyen, diachiNew, hinhthucPhat, ghichunew, doiTuong, Integer.parseInt(finalTimeDukien1));
+                    }).setWarning(mess).show();
 
-            if (cbSelected.isChecked()) {
-                String finalTimeDukien = timeDukien;
-                String finalTimeDukien1 = timeDukien;
-                new ConfirmPhiHuyDonHangDialog(getViewContext(), listSelected.size(), t).setOnCallBacklClickListener(confirmDialog -> {
-                    confirmDialog.dismiss();
-                }).setOnCancelListener((ConfirmPhiHuyDonHangDialog.OnCancelClickListener) confirmDialog1 -> {
-                    confirmDialog1.dismiss();
-                    new DialogNhapKhongThanhCong(getViewContext(), new IdCallback() {
+                } else {
+                    String finalTimeDukien2 = timeDukien;
+                    new ConfirmPKTCDialog(getViewContext(), listSelected.size(), listSelected.get(0).getReciverAddress(), mLocation.getLatitude(),
+                            mLocation.getLongitude(),
+                            listSelected.get(0).getReceiverLat().isEmpty() ? 0.0:  Double.parseDouble(listSelected.get(0).getReceiverLat()),
+                            listSelected.get(0).getReceiverLon().isEmpty() ? 0.0:   Double.parseDouble(listSelected.get(0).getReceiverLon()), listSelected.get(0).getReceiverVpostcode(), mPresenter.getContainerView()).setOnCancelListener(Dialog::dismiss).setOnOkListener(confirmDialog -> {
+                        confirmDialog.dismiss();
+                        mPresenter.submitToPNS(mReasonInfo.getCode(), mSolutionInfo.getCode(), tv_Description.getText().toString(), mFile, mFileAvatar + ";" + mFileVerify + ";" + mFileOther, mSign, time, false, "", idXaphuong, idQuanhuyen, diachiNew, hinhthucPhat, ghichunew, doiTuong, Integer.parseInt(finalTimeDukien2));
+                    }).setWarning(getViewContext().getString(R.string.are_you_sure_deliver_un_successfully)).show();
+                }
+            } else {
+                if (cbSelected.isChecked()) {
+                    String finalTimeDukien = timeDukien;
+                    String finalTimeDukien1 = timeDukien;
+                    new ConfirmPhiHuyDonHangDialog(getViewContext(), listSelected.size(), t).setOnCallBacklClickListener(confirmDialog -> {
+                        confirmDialog.dismiss();
+                    }).setOnCancelListener((ConfirmPhiHuyDonHangDialog.OnCancelClickListener) confirmDialog1 -> {
+                        confirmDialog1.dismiss();
+                        new DialogNhapKhongThanhCong(getViewContext(), new IdCallback() {
+                            @Override
+                            public void onResponse(String id) {
+                                mPresenter.submitToPNS(mReasonInfo.getCode(), mSolutionInfo.getCode(), tv_Description.getText().toString(), mFile, mFileAvatar + ";" + mFileVerify + ";" + mFileOther, mSign, time, false, id, idXaphuong, idQuanhuyen, diachiNew, hinhthucPhat, ghichunew, doiTuong, Integer.parseInt(finalTimeDukien));
+                            }
+                        }).show();
+                    }).setOnOkListener(confirmDialog -> {
+                        confirmDialog.dismiss();
+                        mPresenter.submitToPNS(mReasonInfo.getCode(), mSolutionInfo.getCode(), tv_Description.getText().toString(), mFile, mFileAvatar + ";" + mFileVerify + ";" + mFileOther, mSign, time, true, "", idXaphuong, idQuanhuyen, diachiNew, hinhthucPhat, ghichunew, doiTuong, Integer.parseInt(finalTimeDukien1));
+                    }).setWarning(thongbaoBaoPhat()).show();
+
+                } else {
+                    String finalTimeDukien2 = timeDukien;
+                    new DiaLogThongbao(getViewContext(), thongbaoBaoPhat()
+                            , new DialogCallback() {
                         @Override
-                        public void onResponse(String id) {
-                            mPresenter.submitToPNS(mReasonInfo.getCode(), mSolutionInfo.getCode(), tv_Description.getText().toString(), mFile, mFileAvatar + ";" + mFileVerify + ";" + mFileOther, mSign, time, false, id, idXaphuong, idQuanhuyen, diachiNew, hinhthucPhat, ghichunew, doiTuong, Integer.parseInt(finalTimeDukien));
+                        public void onResponse(String loginRespone) {
+                            mPresenter.submitToPNS(mReasonInfo.getCode(), mSolutionInfo.getCode(), tv_Description.getText().toString(), mFile, mFileAvatar + ";" + mFileVerify + ";" + mFileOther, mSign, time, false, "", idXaphuong, idQuanhuyen, diachiNew, hinhthucPhat, ghichunew, doiTuong, Integer.parseInt(finalTimeDukien2));
                         }
                     }).show();
-                }).setOnOkListener(confirmDialog -> {
-                    confirmDialog.dismiss();
-                    mPresenter.submitToPNS(mReasonInfo.getCode(), mSolutionInfo.getCode(), tv_Description.getText().toString(), mFile, mFileAvatar + ";" + mFileVerify + ";" + mFileOther, mSign, time, true, "", idXaphuong, idQuanhuyen, diachiNew, hinhthucPhat, ghichunew, doiTuong, Integer.parseInt(finalTimeDukien1));
-                }).setWarning(mess).show();
+//                    new ConfirmPKTCDialog(getViewContext(), listSelected.size()).setOnCancelListener(Dialog::dismiss).setOnOkListener(confirmDialog -> {
+//                        confirmDialog.dismiss();
+//                        mPresenter.submitToPNS(mReasonInfo.getCode(), mSolutionInfo.getCode(), tv_Description.getText().toString(), mFile, mFileAvatar + ";" + mFileVerify + ";" + mFileOther, mSign, time, false, "", idXaphuong, idQuanhuyen, diachiNew, hinhthucPhat, ghichunew, doiTuong, Integer.parseInt(finalTimeDukien2));
+//                    }).setWarning(getViewContext().getString(R.string.are_you_sure_deliver_un_successfully)).show();
+                }
 
-            } else {
-                String finalTimeDukien2 = timeDukien;
-                new ConfirmPKTCDialog(getViewContext(), listSelected.size()).setOnCancelListener(Dialog::dismiss).setOnOkListener(confirmDialog -> {
-                    confirmDialog.dismiss();
-                    mPresenter.submitToPNS(mReasonInfo.getCode(), mSolutionInfo.getCode(), tv_Description.getText().toString(), mFile, mFileAvatar + ";" + mFileVerify + ";" + mFileOther, mSign, time, false, "", idXaphuong, idQuanhuyen, diachiNew, hinhthucPhat, ghichunew, doiTuong, Integer.parseInt(finalTimeDukien2));
-                }).setWarning(getViewContext().getString(R.string.are_you_sure_deliver_un_successfully)).show();
             }
 //            }
         } else if (mDeliveryType == 3) {
@@ -2311,12 +2466,12 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         request.setReceiverIDNumber(infoVerify.getGtgt());
         request.setVATCode(item.getVatCode());
         request.setIsDOP(item.getIsDOP());
+        request.setSourceChanel("DD_ANDROID");
 
         request.setDeliveryLat(item.getDeliveryLat());
         request.setDeliveryLon(item.getDeliveryLon());
         request.setReceiverLat(item.getReceiverLat() == null || item.getReceiverLat().isEmpty() ? 0.0 : Double.parseDouble(item.getReceiverLat()));
         request.setReceiverLon(item.getReceiverLon() == null || item.getReceiverLon().isEmpty() ? 0.0 : Double.parseDouble(item.getReceiverLon()));
-        request.setSourceChanel("DD_ANDROID");
 
         request.setPODeliveryLat(NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLat());
         request.setPODeliveryLon(NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLon());
@@ -2866,12 +3021,80 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     }
 
     private void updateTotalPackage() {
+
+        take_duplicate_element();
+
+    }
+
+    ArrayList<DeliveryPostman> listG = new ArrayList<>();
+    ArrayList<DeliveryPostman> list123 = new ArrayList<>();
+    int sttLo = 0;
+
+    String thongbaoBaoPhat() {
+        String text = "";
+        for (DeliveryPostman item : getItemSelected()) {
+            DeliveryPostman itemExists = Iterables.tryFind(list123, input -> (item.getBatchCode().equals(input.getBatchCode()))).orNull();
+            if (itemExists == null) {
+                list123.add(item);
+            }
+
+        }
+        ArrayList<DeliveryPostman> deliveryPostmen = new ArrayList<>();
+        for (DeliveryPostman item : list123)
+            if (!item.getBatchCode().isEmpty())
+                deliveryPostmen.add(item);
+
+        Log.d("MEMITKHUNG", deliveryPostmen.size() + "");
+        for (int i = 0; i < deliveryPostmen.size(); i++) {
+            int count = 0;
+            for (int j = 0; j < getItemSelected().size(); j++) {
+                if (deliveryPostmen.get(i).getBatchCode().equals(getItemSelected().get(j).getBatchCode())) {
+                    count++;
+                }
+            }
+            if (text.isEmpty()) {
+                if (deliveryPostmen.size() > 1)
+                    text += "Lô " + deliveryPostmen.get(i).getBatchCode() + " có " + count + "/" + deliveryPostmen.get(i).getItemsInBatch() +
+                            " bưu gửi";
+                else
+                    text += "Lô " + deliveryPostmen.get(i).getBatchCode() + " có " + count + "/" + deliveryPostmen.get(i).getItemsInBatch() +
+                            " bưu gửi";
+            } else {
+                text += ",\n";
+                text += "Lô " + deliveryPostmen.get(i).getBatchCode() + " có " + count + "/" + deliveryPostmen.get(i).getItemsInBatch() +
+                        " bưu gửi";
+            }
+
+
+            if (i == 2)
+                break;
+        }
+        if (deliveryPostmen.size() > 2)
+            text += "\n......\nBạn có muốn báo phát ko ?\n";
+        else
+            text += "\nBạn có muốn báo phát ko ?\n";
+        return text;
+    }
+
+    int mCount = 0;
+
+    void take_duplicate_element() {
+        listG = new ArrayList<>();
         totalAmount = 0;
         totalFee = 0;
-        for (DeliveryPostman i : getItemSelected()) {
-            totalAmount += i.getAmount();
-            totalFee += i.getFeeShip() + i.getFeeCollectLater() + i.getFeePPA() + i.getFeeCOD() + i.getFeePA();
+        for (DeliveryPostman item : getItemSelected()) {
+            DeliveryPostman itemExists = Iterables.tryFind(listG, input -> (item.getBatchCode().equals(input.getBatchCode()) && item.getAmountForBatch().equals("Y"))).orNull();
+            if (itemExists == null) {
+                listG.add(item);
+            }
+
         }
+        for (DeliveryPostman item : listG) {
+            if (!item.getBatchCode().isEmpty()) mCount++;
+            totalAmount += item.getAmount();
+            totalFee += item.getFeeShip() + item.getFeeCollectLater() + item.getFeePPA() + item.getFeeCOD() + item.getFeePA();
+        }
+        Log.d("MEMITOI", new Gson().toJson(listG));
         tv_quantity.setText(String.format(" %s", getItemSelected().size()));
         tv_total_amount.setText(String.format(" %s đ", NumberUtils.formatPriceNumber(totalAmount)));
         tvTotalFee.setText(String.format(" %s đ", NumberUtils.formatPriceNumber(totalFee)));
@@ -2907,13 +3130,25 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                     tv_solution.setText(mSolutionInfo.getName());
                 }
                 if (mReasonInfo.getCode().equals("02")) {
-                    if (mSolutionInfo.getCode().equals("C") || mSolutionInfo.getCode().equals("I") || mSolutionInfo.getCode().equals("A") || mSolutionInfo.getCode().equals("R")) {
+                    if (mSolutionInfo.getCode().equals("C")
+                            || mSolutionInfo.getCode().equals("I")
+                            || mSolutionInfo.getCode().equals("A")
+                            || mSolutionInfo.getCode().equals("R")) {
                         tv_diachi_khac.setVisibility(View.VISIBLE);
                     } else tv_diachi_khac.setVisibility(View.GONE);
                 }
 
-                if (mReasonInfo.getCode().equals("71")) {
-                    if (mSolutionInfo.getCode().equals("A") || mSolutionInfo.getCode().equals("I") || mSolutionInfo.getCode().equals("R")) {
+                if (mReasonInfo.getCode().equals("71")
+                        || mReasonInfo.getCode().equals("66")
+                        || mReasonInfo.getCode().equals("23")
+                        || mReasonInfo.getCode().equals("95")
+                        || mReasonInfo.getCode().equals("21")
+                        || mReasonInfo.getCode().equals("12")
+                        || mReasonInfo.getCode().equals("99")) {
+                    if (mSolutionInfo.getCode().equals("A")
+                            || mSolutionInfo.getCode().equals("I")
+                            || mSolutionInfo.getCode().equals("R")
+                            || mSolutionInfo.getCode().equals("J")) {
                         ll_thoi_gian_du_kien.setVisibility(View.VISIBLE);
                     } else ll_thoi_gian_du_kien.setVisibility(View.GONE);
                 }

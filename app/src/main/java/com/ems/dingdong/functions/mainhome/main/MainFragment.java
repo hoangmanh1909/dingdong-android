@@ -220,7 +220,6 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
                 removeHeader();
             }
         });
-
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(4);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -302,10 +301,8 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
         mCalendarRaCa = Calendar.getInstance();
         mDateRaCa = DateTimeUtils.convertDateToString(mCalendarRaCa.getTime(), DateTimeUtils.DEFAULT_DATETIME_FORMAT);
         String toDay = DateTimeUtils.convertDateToString(mCalendarRaCa.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT);
-//        String toDay = "05/08/2022";
         if (!TextUtils.isEmpty(mDataCA)) {
             ModeCA modeCA = NetWorkController.getGson().fromJson(mDataCA, ModeCA.class);
-            Log.d("AAAASDASDSAD", new Gson().toJson(modeCA));
             mDateVaoCa = DateTimeUtils.convertStringToDatToString(modeCA.getNgaygio(), DateTimeUtils.SIMPLE_DATE_FORMAT);
             Date mToday = DateTimeUtils.convertStringToDate(toDay, DateTimeUtils.SIMPLE_DATE_FORMAT);
             Date mDayVaota = DateTimeUtils.convertStringToDate(mDateVaoCa, DateTimeUtils.SIMPLE_DATE_FORMAT);
@@ -316,28 +313,32 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
                         modeList.add(mList.get(i));
                     }
                 }
-                Log.d("AAAASDASDSAD", toDay + " " + mDateVaoCa);
-                mPresenter.getCallLog(modeList);
-                sharedPref.clearRaVao();
+//                mPresenter.getCallLog(modeList);
+//                sharedPref.clearRaVao();
             }
         }
     }
 
     private void getBalance() {
-        String fromDate = DateTimeUtils.convertDateToString(Calendar.getInstance().getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
-        String toDate = DateTimeUtils.convertDateToString(Calendar.getInstance().getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
-        BalanceModel v = new BalanceModel();
-        v.setToDate(Integer.parseInt(toDate));
-        v.setFromDate(Integer.parseInt(fromDate));
-        v.setPOProvinceCode(userInfo.getPOProvinceCode());
-        v.setPODistrictCode(userInfo.getPODistrictCode());
-        v.setPOCode(postOffice.getCode());
-        v.setPostmanCode(userInfo.getUserName());
-        v.setPostmanId(userInfo.getiD());
-        v.setRouteCode(routeInfo.getRouteCode());
-        v.setRouteId(Long.parseLong(routeInfo.getRouteId()));
-        System.out.println("kgiem: " + new Gson().toJson(v));
-        mPresenter.ddGetBalance(v);
+
+        try {
+            String fromDate = DateTimeUtils.convertDateToString(Calendar.getInstance().getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+            String toDate = DateTimeUtils.convertDateToString(Calendar.getInstance().getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5);
+            BalanceModel v = new BalanceModel();
+            v.setToDate(Integer.parseInt(toDate));
+            v.setFromDate(Integer.parseInt(fromDate));
+            v.setPOProvinceCode(userInfo.getPOProvinceCode());
+            v.setPODistrictCode(userInfo.getPODistrictCode());
+            v.setPOCode(postOffice.getCode());
+            v.setPostmanCode(userInfo.getUserName());
+            v.setPostmanId(userInfo.getiD());
+            v.setRouteCode(routeInfo.getRouteCode());
+            v.setRouteId(Long.parseLong(routeInfo.getRouteId()));
+            System.out.println("kgiem: " + new Gson().toJson(v));
+            mPresenter.ddGetBalance(v);
+
+        } catch (Exception e) {
+        }
     }
 
     private void eventLoginAndCallCtel() {
@@ -397,7 +398,7 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
         ModeCA modeCA = new ModeCA();
         modeCA.setData(data);
         modeCA.setNgaygio(DateTimeUtils.convertDateToString(mCalendarVaoCa.getTime(), DateTimeUtils.DEFAULT_DATETIME_FORMAT));
-        sharedPref.putString(Constants.KEY_RA_VAO, NetWorkController.getGson().toJson(modeCA));
+//        sharedPref.putString(Constants.KEY_RA_VAO, NetWorkController.getGson().toJson(modeCA));
         Toast.showToast(getViewContext(), "Bạn đã vào ca làm việc");
     }
 
@@ -415,8 +416,8 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
                 modeList.add(mList.get(i));
             }
         }
-        mPresenter.getCallLog(modeList);
-        sharedPref.clearRaVao();
+//        mPresenter.getCallLog(modeList);
+//        sharedPref.clearRaVao();
     }
 
     @Override
@@ -466,10 +467,9 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
 
     private long lastClickTime = 0;
 
-    @OnClick({R.id.img_call, R.id.img_top_person, R.id.img_top_setting, R.id.fr_thongbao, R.id.sw_switch})
+    @OnClick({R.id.img_call, R.id.img_top_person, R.id.img_top_setting, R.id.fr_thongbao, R.id.sw_switch, R.id.img_chat})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-
             case R.id.sw_switch:
                 getLoaderManager().restartLoader(URL_LOADER, null, this);
                 if (isCheck) {
@@ -477,7 +477,6 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
                     ModeCA modeCA = NetWorkController.getGson().fromJson(data, ModeCA.class);
                     if (!data.isEmpty())
                         mPresenter.getRaCa(modeCA.getData());
-//                    else Toast.showToast(getViewContext(), "");
                 } else {
                     MainMode mode = new MainMode();
                     mode.setPostmanTel(userInfo.getMobileNumber());
@@ -488,6 +487,9 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
                 break;
             case R.id.fr_thongbao:
                 mPresenter.showNitify();
+                break;
+            case R.id.img_chat:
+                mPresenter.showChat();
                 break;
             case R.id.img_call: {
                 Intent intent = new Intent(getActivity(), CallActivity.class);
@@ -671,7 +673,7 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
                 mList.add(mode);
             }
             Collections.sort(mList, new NameComparator());
-            Log.d("MEMIT", mList.size() + "");
+//            Log.d("MEMIT1", mList.size() + "");
             managedCursor.close();
         } catch (Exception e) {
             e.getMessage();

@@ -344,3 +344,46 @@
  -keep class cn.pedant.SweetAlert.Rotate3dAnimation {
     public <init>(...);
  }
+ -keep class org.jivesoftware.smack.** { *; }
+ -keep class org.jivesoftware.smackx.** { *; }
+ -keep class org.jivesoftware.smack.initializer.VmArgInitializer
+ -keep class org.jivesoftware.** { *;}
+ -keep class org.bouncycastle.jcajce.provider.** { *; }
+ -keepattributes *Annotation*
+ -keepclassmembers class * {
+    @org.greenrobot.eventbus.Subscribe <methods>;
+ }
+ -keep enum org.greenrobot.eventbus.ThreadMode { *; }
+ -keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent {
+    <init>(java.lang.Throwable);
+ }
+# Update 20/12/22
+# Libs have been using by SDK
+-keep class io.realm.** { *; }
+-dontwarn io.realm.**
+-keep class org.jivesoftware.smack.** { *; }
+-keep class org.jivesoftware.smackx.** { *; }
+-keep class org.jivesoftware.smack.initializer.VmArgInitializer
+-keep class org.jivesoftware.** { *;}
+-keep class org.bouncycastle.jcajce.provider.** { *; }
+-keepattributes *Annotation*
+-keepclassmembers class * {
+  @org.greenrobot.eventbus.Subscribe <methods>;
+}
+-keep enum org.greenrobot.eventbus.ThreadMode { *; }
+-keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent {
+  <init>(java.lang.Throwable);
+}
+-keep class org.greenrobot.eventbus.android.AndroidComponentsImpl
+# SDK classes
+-keep class com.ringme.ott.sdk.customer.vnpost.model.** { *; }
+-keep class com.ringme.ott.sdk.model.** { *; }
+-keep class com.ringme.ott.sdk.model.api.** { *; }
+-keep class com.ringme.ott.sdk.model.eventbus.** { *; }
+-keep,allowoptimization,allowshrinking public class com.ringme.ott.sdk.utils.MobileNumberValidation { *; }
+-keep enum com.ringme.ott.sdk.values.Environment { *; }
+-keep public interface com.ringme.ott.sdk.listener.OpenChatListener { *; }
+-keep public interface com.ringme.ott.sdk.listener.RingmeChatLoginListener { *; }
+-keep public interface com.ringme.ott.sdk.listener.UpdateUserInfoListener { *; }
+-keep public interface com.ringme.ott.sdk.listener.ChooseSingleContactListener { *; }
+

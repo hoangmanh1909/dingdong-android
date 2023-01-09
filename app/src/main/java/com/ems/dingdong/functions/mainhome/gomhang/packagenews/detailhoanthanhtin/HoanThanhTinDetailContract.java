@@ -1,5 +1,6 @@
 package com.ems.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanhtin;
 
+import com.core.base.viper.interfaces.ContainerView;
 import com.core.base.viper.interfaces.IInteractor;
 import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
@@ -23,7 +24,7 @@ import io.reactivex.Single;
 interface HoanThanhTinDetailContract {
 
     interface Interactor extends IInteractor<Presenter> {
-      //  void searchOrderPostmanCollect(String orderPostmanID, String orderID, String postmanID, String status, String fromAssignDate, String toAssignDate, CommonCallback<CommonObjectListResult> commonCallback);
+        //  void searchOrderPostmanCollect(String orderPostmanID, String orderID, String postmanID, String status, String fromAssignDate, String toAssignDate, CommonCallback<CommonObjectListResult> commonCallback);
 
         void postImage(String pathMedia, CommonCallback<UploadSingleResult> commonCallback);
 
@@ -33,7 +34,7 @@ interface HoanThanhTinDetailContract {
     }
 
     interface View extends PresentView<Presenter> {
-     //   void showErrorAndBack(String message);
+        //   void showErrorAndBack(String message);
 
         void showMessage(String message);
 
@@ -55,6 +56,8 @@ interface HoanThanhTinDetailContract {
 
 
         CommonObject getCommonObject();
+
+        ContainerView getContainerView();
 
         void postImage(String path_media);
 

@@ -13,6 +13,12 @@ public class DeliveryPostman implements Comparable {
     @SerializedName("CuocCH")
     @Expose
     private String CuocCH;
+    @SerializedName("POProvinceCode")
+    @Expose
+    private String POProvinceCode;
+    @SerializedName("ItemTypeCode")
+    @Expose
+    private String ItemTypeCode;
     @SerializedName("Type")
     @Expose
     private Integer Type;
@@ -189,7 +195,7 @@ public class DeliveryPostman implements Comparable {
     @SerializedName("ReceiverLat")
     private String ReceiverLat;
     @SerializedName("ReceiverLon")
-    private String ReceiverLon ;
+    private String ReceiverLon;
     @SerializedName("PODeliveryLat")
     private String PODeliveryLat;
     @SerializedName("PODeliveryLon")
@@ -203,7 +209,8 @@ public class DeliveryPostman implements Comparable {
     @SerializedName("ReceiverBookingPhone")
     private String ReceiverBookingPhone;
     @SerializedName("DeliveryDistrictId")
-    private long DeliveryDistrictId; @SerializedName("DeliveryProvinceId")
+    private long DeliveryDistrictId;
+    @SerializedName("DeliveryProvinceId")
     private long DeliveryProvinceId;
     @SerializedName("DeliveryWardName")
     private String DeliveryWardName;
@@ -211,6 +218,14 @@ public class DeliveryPostman implements Comparable {
     private String DeliveryProvinceName;
     @SerializedName("DeliveryDistrictName")
     private String DeliveryDistrictName;
+
+    public String getItemTypeCode() {
+        return ItemTypeCode;
+    }
+
+    public void setItemTypeCode(String itemTypeCode) {
+        ItemTypeCode = itemTypeCode;
+    }
 
     public long getDeliveryProvinceId() {
         return DeliveryProvinceId;
@@ -269,6 +284,14 @@ public class DeliveryPostman implements Comparable {
 
     public void setReceiverBookingPhone(String receiverBookingPhone) {
         ReceiverBookingPhone = receiverBookingPhone;
+    }
+
+    public String getPOProvinceCode() {
+        return POProvinceCode;
+    }
+
+    public void setPOProvinceCode(String POProvinceCode) {
+        this.POProvinceCode = POProvinceCode;
     }
 
     public int getSTT() {

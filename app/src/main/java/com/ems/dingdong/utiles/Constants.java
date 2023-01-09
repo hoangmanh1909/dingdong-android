@@ -7,7 +7,8 @@ package com.ems.dingdong.utiles;
 public class Constants {
     public static final String KEY_SHARE_PREFERENCES = "KEY_SHARE_PREFERENCES";
     public static final String KEY_LOG_CALL = "KEY_LOG_CALL";
-    public static final String KEY_RA_VAO = "";
+    public static final String KEY_RA_VAO = "KEY_RA_VAO";
+    public static final String KEY_LIST_PHONE = "KEY_LIST_PHONE";
     public static final String KEY_MOBILE_NUMBER_SIGN_CODE = "MOBILE_NUMBER_SIGN_CODE";
     public static final String KEY_HOTLINE_NUMBER = "HOTLINE_NUMBER";
     public static final String KEY_BUU_CUC_HUYEN = "KEY_BUU_CUC_HUYEN";
@@ -18,6 +19,7 @@ public class Constants {
     public static final String KEY_CALL_PROVIDER = "KEY_CALL_PROVIDER";
     public static final String KEY_CALL_PROVIDER_HOME = "KEY_CALL_PROVIDER_HOME";
     public static final String KEY_USER_INFO = "user_info";
+    public static final String KEY_NAME_PHONE = "KEY_NAME_PHONE";
     public static final String KEY_GG_MAP = "KEY_GG_MAP";
     public static final String KEY_UPLOAD_IMAGE = "upload_image";
     public static final String KEY_LIST_BANK = "list_bank";
@@ -44,7 +46,7 @@ public class Constants {
     public static final String GOM_HANG_THANH_CONG = "P4";
     public static final String GOM_HANG_KHONG_THANH_CONG = "P5";
     public static final String GOM_HANG_THAT_BAI = "P6";
-    public static String HEADER_NUMBER = "tel:159";
+    public static String HEADER_NUMBER = "tel:18002009";
     public static final String HEADER_NUMBER_LOG = "159";
     public static final String MANUFACTURE_XIAOMI = "Xiaomi";
 
@@ -155,8 +157,8 @@ public class Constants {
     public static final String AUTH_VALIDATION = "AUTH_VALIDATION";
     public static final String AUTH_ACTIVE = "AUTH_ACTIVE";
     public static final String AUTH_GET_BANK_LINK = "AUTH_GET_BANK_LINK";
-    public static final String AUTH_GET_POST_OFFICE_BY_CODE  = "AUTH_GET_POST_OFFICE_BY_CODE";
-    public static final String AUTH_GET_VERSION  = "AUTH_GET_VERSION";
+    public static final String AUTH_GET_POST_OFFICE_BY_CODE = "AUTH_GET_POST_OFFICE_BY_CODE";
+    public static final String AUTH_GET_VERSION = "AUTH_GET_VERSION";
 
     // Phát hàng
     public static final String DLV_TRACK_TRACE_LADING = "DLV_TRACK_TRACE_LADING";
@@ -182,38 +184,37 @@ public class Constants {
     public static final String DLV_SML_GET_HUB_BY_POCODE = "DLV_SML_GET_HUB_BY_POCODE";
     public static final String DLV_SML_DELIVERY = "DLV_SML_DELIVERY";
     public static final String DLV_SML_DELIVERY_CANCEL = "DLV_SML_DELIVERY_CANCEL";
-    public static final String DLV_SML_DELIVERY_STATISTIC  = "DLV_SML_DELIVERY_STATISTIC";
-    public static final String DLV_DIC_GET_POSTMAN_SHIFT  = "DLV_DIC_GET_POSTMAN_SHIFT";
-    public static final String DLV_CHANGE_ROUTE_APPROVE  = "DLV_CHANGE_ROUTE_APPROVE";
-    public static final String DLV_CHANGE_ROUTE_DISAGREE  = "DLV_CHANGE_ROUTE_DISAGREE";
-    public static final String DLV_RECEIVER_VPOST_CODE  = "DLV_RECEIVER_VPOST_CODE";
-    public static final String DLV_SENDER_VPOST_CODE  = "DLV_SENDER_VPOST_CODE";
-    public static final String DLV_LADDING_JOURNEY  = "DLV_LADDING_JOURNEY";
-    public static final String DLV_PUSH_TO_PNS  = "DLV_PUSH_TO_PNS";
-    public static final String DLV_CALL_CENTER_FORWARD  = "DLV_CALL_CENTER_FORWARD";
-    public static final String DLV_CALL_CENTER_SEARCH  = "DLV_CALL_CENTER_SEARCH";
-    public static final String DLV_LOCATION_ADD_NEW  = "DLV_LOCATION_ADD_NEW";
-    public static final String DLV_CALL_FORWARD_EDIT_COD  = "DLV_CALL_FORWARD_EDIT_COD";
-    public static final String DLV_INQUIRY  = "DLV_INQUIRY";
-    public static final String DLV_CHECK_LADING_CODE  = "DLV_CHECK_LADING_CODE";
-    public static final String DLV_INQUIRY_AMOUNT  = "DLV_INQUIRY_AMOUNT";
-    public static final String DLV_PAYMENT_PAYPOST  = "DLV_PAYMENT_PAYPOST";
-    public static final String DLV_GET_PAYPOST_ERROR  = "DLV_GET_PAYPOST_ERROR";
-    public static final String DLV_CHANGE_ROUTE_CANCEL  = "DLV_CHANGE_ROUTE_CANCEL";
-    public static final String DLV_CALL_DIRECT  = "DLV_CALL_DIRECT";
-    public static final String DLV_POSTMAN_SHIFT_INPUT  = "DLV_POSTMAN_SHIFT_INPUT";
-    public static final String DLV_POSTMAN_SHIFT_OUTPUT  = "DLV_POSTMAN_SHIFT_OUTPUT";
-    public static final String DLV_CALL_LOG  = "DLV_CALL_LOG";
-    public static final String DLV_CALL_HISTORY  = "DLV_CALL_HISTORY";
-    public static final String DLV_CALL_HISTORY_TOTAL  = "DLV_CALL_HISTORY_TOTAL";
-    public static final String DLV_ROUTE_ADDRESS_SEARCH_ADDRESS  = "DLV_ROUTE_ADDRESS_SEARCH_ADDRESS";
-    public static final String PU_DIC_GET_SERVICE_CODE_MPITS  = "PU_DIC_GET_SERVICE_CODE_MPITS";
-
+    public static final String DLV_SML_DELIVERY_STATISTIC = "DLV_SML_DELIVERY_STATISTIC";
+    public static final String DLV_DIC_GET_POSTMAN_SHIFT = "DLV_DIC_GET_POSTMAN_SHIFT";
+    public static final String DLV_CHANGE_ROUTE_APPROVE = "DLV_CHANGE_ROUTE_APPROVE";
+    public static final String DLV_CHANGE_ROUTE_DISAGREE = "DLV_CHANGE_ROUTE_DISAGREE";
+    public static final String DLV_RECEIVER_VPOST_CODE = "DLV_RECEIVER_VPOST_CODE";
+    public static final String DLV_SENDER_VPOST_CODE = "DLV_SENDER_VPOST_CODE";
+    public static final String DLV_LADDING_JOURNEY = "DLV_LADDING_JOURNEY";
+    public static final String DLV_PUSH_TO_PNS = "DLV_PUSH_TO_PNS";
+    public static final String DLV_CALL_CENTER_FORWARD = "DLV_CALL_CENTER_FORWARD";
+    public static final String DLV_CALL_CENTER_SEARCH = "DLV_CALL_CENTER_SEARCH";
+    public static final String DLV_LOCATION_ADD_NEW = "DLV_LOCATION_ADD_NEW";
+    public static final String DLV_CALL_FORWARD_EDIT_COD = "DLV_CALL_FORWARD_EDIT_COD";
+    public static final String DLV_INQUIRY = "DLV_INQUIRY";
+    public static final String DLV_CHECK_LADING_CODE = "DLV_CHECK_LADING_CODE";
+    public static final String DLV_INQUIRY_AMOUNT = "DLV_INQUIRY_AMOUNT";
+    public static final String DLV_PAYMENT_PAYPOST = "DLV_PAYMENT_PAYPOST";
+    public static final String DLV_GET_PAYPOST_ERROR = "DLV_GET_PAYPOST_ERROR";
+    public static final String DLV_CHANGE_ROUTE_CANCEL = "DLV_CHANGE_ROUTE_CANCEL";
+    public static final String DLV_CALL_DIRECT = "DLV_CALL_DIRECT";
+    public static final String DLV_POSTMAN_SHIFT_INPUT = "DLV_POSTMAN_SHIFT_INPUT";
+    public static final String DLV_POSTMAN_SHIFT_OUTPUT = "DLV_POSTMAN_SHIFT_OUTPUT";
+    public static final String DLV_CALL_LOG = "DLV_CALL_LOG";
+    public static final String DLV_CALL_HISTORY = "DLV_CALL_HISTORY";
+    public static final String DLV_CALL_HISTORY_TOTAL = "DLV_CALL_HISTORY_TOTAL";
+    public static final String DLV_ROUTE_ADDRESS_SEARCH_ADDRESS = "DLV_ROUTE_ADDRESS_SEARCH_ADDRESS";
+    public static final String PU_DIC_GET_SERVICE_CODE_MPITS = "PU_DIC_GET_SERVICE_CODE_MPITS";
 
 
     // thống
 
-    public static final String STT_POSTMAN_GET_BALANCE  = "STT_POSTMAN_GET_BALANCE";
+    public static final String STT_POSTMAN_GET_BALANCE = "STT_POSTMAN_GET_BALANCE";
     public static final String STT_GET_DELIVERY_MAIN_VIEW = "STT_GET_DELIVERY_MAIN_VIEW";
     public static final String STT_GET_PICKUP_MAIN_VIEW = "STT_GET_PICKUP_MAIN_VIEW";
     public static final String STT_GET_TICKET_NOTIFY = "STT_GET_TICKET_NOTIFY";
@@ -278,10 +279,10 @@ public class Constants {
     public static final String PU_ORDER_CHANGE_ROUTE_REJECT = "PU_ORDER_CHANGE_ROUTE_REJECT";
     public static final String PU_COLLECT_ALL_ORDER_POSTMAN = "PU_COLLECT_ALL_ORDER_POSTMAN";
     public static final String PU_GET_CANCEL_ORDER_REASON = "PU_GET_CANCEL_ORDER_REASON";
-    public static final String PU_OCR_SEARCH_FOR_CANCEL  = "PU_OCR_SEARCH_FOR_CANCEL";
-    public static final String PU_OCR_GET_DETAIL_BY_LADDING_CODE  = "PU_OCR_GET_DETAIL_BY_LADDING_CODE";
-    public static final String PU_DIC_GET_POS_IN_DISTRICT  = "PU_DIC_GET_POS_IN_DISTRICT";
-    public static final String PU_OCR_SEARCH_FOR_APPROVE  = "PU_OCR_SEARCH_FOR_APPROVE";
+    public static final String PU_OCR_SEARCH_FOR_CANCEL = "PU_OCR_SEARCH_FOR_CANCEL";
+    public static final String PU_OCR_GET_DETAIL_BY_LADDING_CODE = "PU_OCR_GET_DETAIL_BY_LADDING_CODE";
+    public static final String PU_DIC_GET_POS_IN_DISTRICT = "PU_DIC_GET_POS_IN_DISTRICT";
+    public static final String PU_OCR_SEARCH_FOR_APPROVE = "PU_OCR_SEARCH_FOR_APPROVE";
 
 
     //viet map
@@ -292,12 +293,27 @@ public class Constants {
     public static final String VM_ROUTE = "VM_ROUTE";
     public static final String VM_ROUTE_V2 = "VM_ROUTE_V2";
     public static final String VM_ENCODE = "VM_ENCODE";
+    public static final String DLV_GET_DISTANCE = "DLV_GET_DISTANCE";
     public static final String VM_DECODE = "VM_DECODE";
     public static final String VM_TRAVEL_SALESMAN_PROBLEM = "VM_TRAVEL_SALESMAN_PROBLEM";
     public static final String VM_VERIFY_ADDRESS = "VM_VERIFY_ADDRESS";
     public static final String VM_CREATE = "VM_CREATE";
     public static final String VM_ORDER_BD13 = "VM_ORDER_BD13";
     public static final String AUTH_GET_PARAMS = "AUTH_GET_PARAMS";
+    public static final String VM_SEARCH_V2 = "VM_SEARCH_V2";
+    public static final String VM_PLACE = "VM_PLACE";
+    public static final String PU_DIC_GET_WARD_BY_PORTAL_CODE = "PU_DIC_GET_WARD_BY_PORTAL_CODE";
+    public static final String PU_ROUTE_ADDRESS_BOOK_GET_BY_ROUTE_ID = "PU_ROUTE_ADDRESS_BOOK_GET_BY_ROUTE_ID";
+    public static final String PU_ROUTE_ADDRESS_BOOK_GET_BY_ID = "PU_ROUTE_ADDRESS_BOOK_GET_BY_ID";
+    public static final String PU_ROUTE_ADDRESS_BOOK_CREATE = "PU_ROUTE_ADDRESS_BOOK_CREATE";
+    public static final String PU_ROUTE_ADDRESS_BOOK_UPDATE = "PU_ROUTE_ADDRESS_BOOK_UPDATE";
+    public static final String PU_ROUTE_ADDRESS_BOOK_DELETE = "PU_ROUTE_ADDRESS_BOOK_DELETE";
+
+    // chat
+    public static final String AUTH_DIC_GET_PO_BY_PARENT_CODE = "AUTH_DIC_GET_PO_BY_PARENT_CODE";
+    public static final String PARTNER_CHAT_GET_QUEUE_CHAT = "PARTNER_CHAT_GET_QUEUE_CHAT";
+    public static final String AUTH_GET_POSTMAN_BY_MOBILE_NUMBER = "AUTH_GET_POSTMAN_BY_MOBILE_NUMBER";
+    public static final String AUTH_GET_POSTMAN_IN_PO_BY_ROUTE_TYPE = "AUTH_GET_POSTMAN_IN_PO_BY_ROUTE_TYPE";
 
     /*
      * key_share_pref
@@ -305,4 +321,10 @@ public class Constants {
     public static final String KEY_BALANCE = "KEY_BALANCE";
 
 
+    public static final int KHONG_HIEN_THI = 0;
+    public static final int THU_GOM = 1;
+    public static final int PHAT = 2;
+    public static final int DOI_SOAT = 3;
+    public static final int THANH_TOAN = 4;
+    public static final int CSKH = 5;
 }

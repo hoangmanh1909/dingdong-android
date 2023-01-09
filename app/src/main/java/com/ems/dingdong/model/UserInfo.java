@@ -55,6 +55,20 @@ public class UserInfo {
     private String PIDType;
     @SerializedName("PIDNumber")
     private String PIDNumber;
+    @SerializedName("ChatUserName")
+    private String ChatUserName;
+    @SerializedName("ChatPassword")
+    private String ChatPassword;
+    @SerializedName("UnitName")
+    private String UnitName;
+
+    public String getUnitName() {
+        return UnitName;
+    }
+
+    public void setUnitName(String unitName) {
+        UnitName = unitName;
+    }
 
     public List<SmartBankLink> getSmartBankLink() {
         return smartBankLink;
@@ -62,6 +76,22 @@ public class UserInfo {
 
     public void setSmartBankLink(List<SmartBankLink> smartBankLink) {
         this.smartBankLink = smartBankLink;
+    }
+
+    public String getChatUserName() {
+        return ChatUserName;
+    }
+
+    public void setChatUserName(String chatUserName) {
+        ChatUserName = chatUserName;
+    }
+
+    public String getChatPassword() {
+        return ChatPassword;
+    }
+
+    public void setChatPassword(String chatPassword) {
+        ChatPassword = chatPassword;
     }
 
     public String getPIDType() {

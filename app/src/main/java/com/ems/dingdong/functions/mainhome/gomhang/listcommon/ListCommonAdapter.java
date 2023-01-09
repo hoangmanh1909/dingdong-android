@@ -149,6 +149,8 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
         public ImageView ivStatus;
         @BindView(R.id.img_logo)
         public ImageView imgLogo;
+        @BindView(R.id.img_chat)
+        public ImageView imgChat;
 
         public HolderView(View itemView) {
             super(itemView);
