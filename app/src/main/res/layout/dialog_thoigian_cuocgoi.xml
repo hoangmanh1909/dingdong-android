@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#80000000">
+
+    <androidx.cardview.widget.CardView
+        style="@style/MyCardViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="20dp">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="Thời gian đẩy log"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/grey" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        style="@style/textStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginRight="10dp"
+                        android:layout_toLeftOf="@+id/cb_check"
+                        android:layout_weight="1.8"
+                        android:drawablePadding="10dp"
+                        android:gravity="center|left"
+                        android:text="Thời gian bắt đầu"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/edt_tu_ngay"
+                        style="@style/textStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_border_edittext"
+                        android:drawableEnd="@drawable/ic_arrow_drop_down_v1"
+                        android:drawablePadding="10dp"
+                        android:gravity="center|left"
+                        android:hint="Vui lòng chọn"
+                        android:paddingLeft="10dp"
+                        android:textColor="@color/black"
+                        android:textColorHint="#86909C" />
+
+                    <TextView
+                        style="@style/textStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_toLeftOf="@+id/cb_check"
+                        android:layout_weight="1.8"
+                        android:drawablePadding="10dp"
+                        android:gravity="center|left"
+                        android:text="Thời gian kết thúc(mặt định)"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/edt_den_ngay"
+                        style="@style/textStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="48dp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_border_edittext"
+                        android:drawableEnd="@drawable/ic_arrow_drop_down_v1"
+                        android:drawablePadding="10dp"
+                        android:gravity="center|left"
+                        android:hint="Vui lòng chọn"
+                        android:paddingLeft="10dp"
+                        android:textColor="@color/black"
+                        android:textColorHint="#86909C" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/grey" />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_gravity="right"
+                    android:layout_margin="10dp"
+                    android:gravity="right"
+                    android:weightSum="2">
+
+                    <TextView
+                        android:id="@+id/btn_khong"
+                        style="@style/textStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_border_botton_red"
+                        android:gravity="center"
+                        android:text="Đóng"
+                        android:textAllCaps="false"
+                        android:textColor="#4E5969" />
+
+
+                    <TextView
+                        android:id="@+id/btn_co"
+                        style="@style/textStyle"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="10dp"
+                        android:layout_weight="1"
+                        android:background="@drawable/bg_confirm_continue"
+                        android:gravity="center"
+                        android:text="Xác nhận"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>

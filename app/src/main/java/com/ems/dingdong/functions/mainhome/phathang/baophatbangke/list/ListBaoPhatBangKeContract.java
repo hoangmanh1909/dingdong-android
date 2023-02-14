@@ -1,5 +1,6 @@
 package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list;
 
+import com.core.base.viper.interfaces.ContainerView;
 import com.core.base.viper.interfaces.IInteractor;
 import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
@@ -156,6 +157,8 @@ interface ListBaoPhatBangKeContract {
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
+
+        void showAddTicket(String code);
         /*void searchStatisticCollect(String orderPostmanID,
                                        String orderID,
                                        String postmanID,
@@ -314,6 +317,8 @@ interface ListBaoPhatBangKeContract {
         void showLoci(String mess);
 
         void ddCall(CallLiveMode r);
+
+        ContainerView getContraiView();
     }
 
 }

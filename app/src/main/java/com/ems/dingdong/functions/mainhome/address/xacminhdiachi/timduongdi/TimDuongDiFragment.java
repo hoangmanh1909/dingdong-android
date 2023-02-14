@@ -570,7 +570,8 @@ public class TimDuongDiFragment extends ViewFragment<TimDuongDiContract.Presente
         mapboxMap.getStyle(style -> {
             try {
                 style.addSource(new GeoJsonSource(layerId, feature));
-                style.addLayer(new LineLayer(layerId, layerId).withProperties(lineColor(ColorUtils.colorToRgbaString(Color.parseColor(lineColorHex))), lineWidth(4f)));
+                style.addLayer(new LineLayer(layerId, layerId).
+                        withProperties(lineColor(ColorUtils.colorToRgbaString(Color.parseColor(lineColorHex))), lineWidth(4f)));
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -1451,6 +1451,22 @@ object NetWorkControllerGateWay {
     //start  phát hàng
 
     @JvmStatic
+    fun ddGetDanhSachBapPhat(
+        postmanID: String?, fromDate: String?, toDate: String?, routeCode: String?,
+        searchTpe: Int?
+    ): Single<SimpleResult> {
+        val deliveryPostmanRequest =
+            DeliveryPostmanRequest(postmanID, fromDate, toDate, routeCode, searchTpe)
+        val data = getGson().toJson(deliveryPostmanRequest)
+        val signature = signature(data)
+        val requestObject = RequestObject(
+            "ANDROID", "", Constants.DLV_DELIVERY_POSTMAN, data,
+            Utils.getLocalTime(Constants.DATE_FORMAT), "", signature
+        )
+        return getApiRxBuilderVer().commonServiceRx(requestObject)
+    }
+
+    @JvmStatic
     fun searchDeliveryPostman(
         postmanID: String?, fromDate: String?, toDate: String?, routeCode: String?,
         searchTpe: Int?, callback: CommonCallback<DeliveryPostmanResponse>
@@ -2529,5 +2545,51 @@ object NetWorkControllerGateWay {
         return getApiRxBuilderVer().commonServiceRx(requestObject)
     }
     // end chat
+
+    // start add ticket phat
+    @JvmStatic
+    fun ddGetSubSolution(request: String): Single<SimpleResult> {
+        val data = getGson().toJson(request)
+        val signature = signature(request)
+        val requestObject = RequestObject(
+            "ANDROID", "", Constants.DIC_GET_SUB_SOLUTION, request,
+            Utils.getLocalTime(Constants.DATE_FORMAT), "", signature
+        )
+        return getApiRxBuilderVer().commonServiceRx(requestObject)
+    }
+
+    @JvmStatic
+    fun ddStatisticTicket(request: STTTicketManagementTotalRequest): Single<SimpleResult> {
+        val data = getGson().toJson(request)
+        val signature = signature(data)
+        val requestObject = RequestObject(
+            "ANDROID", "", Constants.STT_TICKET_MANAGEMENT_TOTAL, data,
+            Utils.getLocalTime(Constants.DATE_FORMAT), "", signature
+        )
+        return getApiRxBuilderVer().commonServiceRx(requestObject)
+    }
+
+    @JvmStatic
+    fun ddStatisticTicketDetail(request: STTTicketManagementTotalRequest): Single<SimpleResult> {
+        val data = getGson().toJson(request)
+        val signature = signature(data)
+        val requestObject = RequestObject(
+            "ANDROID", "", Constants.STT_TICKET_MANAGEMENT_DETAIL, data,
+            Utils.getLocalTime(Constants.DATE_FORMAT), "", signature
+        )
+        return getApiRxBuilderVer().commonServiceRx(requestObject)
+    }
+
+    @JvmStatic
+    fun ddDivCreateTicket(request: DivCreateTicketMode): Single<SimpleResult> {
+        val data = getGson().toJson(request)
+        val signature = signature(data)
+        val requestObject = RequestObject(
+            "ANDROID", "", Constants.DLV_TICKET_CREATE_TICKET, data,
+            Utils.getLocalTime(Constants.DATE_FORMAT), "", signature
+        )
+        return getApiRxBuilderVer().commonServiceRx(requestObject)
+    }
+    //end addticket phat
 
 }

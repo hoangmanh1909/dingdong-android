@@ -15,6 +15,10 @@ public class UserInfo {
     private String fullName;
     @SerializedName("UserName")
     private String userName;
+    @SerializedName("HRMCode")
+    private String HRMCode;
+    @SerializedName("IsLearning")
+    private boolean IsLearning ;
     @SerializedName("EmpGroupID")
     private String empGroupID;
     @SerializedName("UnitLink")
@@ -61,6 +65,22 @@ public class UserInfo {
     private String ChatPassword;
     @SerializedName("UnitName")
     private String UnitName;
+
+    public String getHRMCode() {
+        return HRMCode;
+    }
+
+    public void setHRMCode(String HRMCode) {
+        this.HRMCode = HRMCode;
+    }
+
+    public boolean isLearning() {
+        return IsLearning;
+    }
+
+    public void setLearning(boolean learning) {
+        IsLearning = learning;
+    }
 
     public String getUnitName() {
         return UnitName;

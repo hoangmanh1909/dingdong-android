@@ -382,8 +382,8 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
                     new HoanTatTinDialog(getActivity(), mHoanThanhTin.getCode(), mPresenter.getList(),
                             mHoanThanhTin.getReciverAddress(),
                             mLocation.getLatitude(), mLocation.getLongitude(),
-                            mHoanThanhTin.getSenderLat().isEmpty() ? 0.0 : Double.parseDouble(mHoanThanhTin.getSenderLat()),
-                            mHoanThanhTin.getSenderLon().isEmpty() ? 0.0 : Double.parseDouble(mHoanThanhTin.getSenderLon()), mHoanThanhTin.getSenderVpostcode(), mPresenter.getContainerView(), new HoanThanhTinCallback() {
+                            (mHoanThanhTin.getSenderLat() != null && !mHoanThanhTin.getSenderLat().isEmpty()) ? Double.parseDouble(mHoanThanhTin.getSenderLat()) : 0.0,
+                            (mHoanThanhTin.getSenderLon() != null && !mHoanThanhTin.getSenderLon().isEmpty()) ? Double.parseDouble(mHoanThanhTin.getSenderLon()) : 0.0, mHoanThanhTin.getSenderVpostcode(), mPresenter.getContainerView(), new HoanThanhTinCallback() {
                         @Override
                         public void onResponse(String statusCode, ReasonInfo reasonInfo, String pickUpDate, String pickUpTime, ArrayList<Integer> ShipmentID, String noidung) {
                             if (getActivity() != null) {

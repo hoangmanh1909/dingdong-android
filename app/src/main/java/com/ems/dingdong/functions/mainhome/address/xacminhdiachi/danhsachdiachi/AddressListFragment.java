@@ -379,12 +379,12 @@ public class AddressListFragment extends ViewFragment<AddressListContract.Presen
 
     private void checkSelfPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            int hasReadExternalPermissionLocation = Objects.requireNonNull(getActivity()).checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
+            int hasReadExternalPermissionLocation = requireActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
             if (hasReadExternalPermissionLocation != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(getActivity(), new String[]{ACCESS_FINE_LOCATION}, REQUEST_CODE_ASK_PERMISSIONS);
             }
 
-            int hasReadExternalPermission = Objects.requireNonNull(getActivity()).checkSelfPermission(ACCESS_COARSE_LOCATION);
+            int hasReadExternalPermission = requireActivity().checkSelfPermission(ACCESS_COARSE_LOCATION);
             if (hasReadExternalPermission != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(getActivity(), new String[]{ACCESS_COARSE_LOCATION}, REQUEST_CODE_ASK_PERMISSIONS);
             }

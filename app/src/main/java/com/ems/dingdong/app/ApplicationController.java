@@ -25,6 +25,7 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 //import com.ringme.ott.sdk.utils.RingmeOttSdk;
 //import com.ringme.ott.sdk.RingmeOttSdk;
 import com.ringme.ott.sdk.RingmeOttSdk;
+import com.ringme.ott.sdk.values.Environment;
 import com.zoho.commons.LauncherProperties;
 import com.zoho.livechat.android.messaging.messenger.api.ZohoMessenger;
 import com.zoho.livechat.android.messaging.messenger.api.ZohoService;
@@ -89,7 +90,7 @@ public class ApplicationController extends Application {
 //                .build();
 //        Realm.setDefaultConfiguration(config);
 //        Realm.deleteRealm( config );
-        RingmeOttSdk.init(getApplicationContext());
+        RingmeOttSdk.init(getApplicationContext(), Environment.Production);
         applicationController = this;
         Intent intent = new Intent(this, PortSipService.class);
         bindService(intent, connection, Context.BIND_AUTO_CREATE);
@@ -105,7 +106,7 @@ public class ApplicationController extends Application {
             Logger.d(TAG, "1" + Thread.currentThread().getName());
             portSipService.registerToServer();
         } else {
-            Intent intent = new Intent(this, PortSipService.class);
+            Intent intent          = new Intent(this, PortSipService.class);
             bindService(intent, connection, Context.BIND_AUTO_CREATE);
         }
     }

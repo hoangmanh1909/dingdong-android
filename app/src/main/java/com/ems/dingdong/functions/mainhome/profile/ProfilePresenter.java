@@ -71,12 +71,11 @@ public class ProfilePresenter extends Presenter<ProfileContract.View, ProfileCon
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(simpleResult -> {
                     if (simpleResult.getErrorCode().equals("00")) {
-                        mView.showCallLog();
+                        mView.showCallLog(request.size());
                         mView.hideProgress();
                     } else {
                         Toast.showToast(getViewContext(), "Có lỗi trong quá trình đẩy cuộc gọi");
                         mView.hideProgress();
-                        mView.showCallLog();
                     }
                 });
     }

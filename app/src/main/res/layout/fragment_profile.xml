@@ -46,11 +46,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#fafafa"
+            android:layout_marginBottom="5dp"
+
             tools:ignore="MissingConstraints">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="160dp"
+                android:layout_height="180dp"
                 android:layout_alignParentTop="true"
                 android:weightSum="12">
 
@@ -76,8 +78,8 @@
 
                 <ImageView
                     android:id="@+id/img_logo_persion"
-                    android:layout_width="@dimen/_56sdp"
-                    android:layout_height="@dimen/_56sdp"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="5dp"
 
@@ -126,17 +128,71 @@
                         android:textSize="@dimen/text_size_14sp"
                         android:visibility="gone" />
 
+                    <com.ems.dingdong.views.CustomMediumTextView
+                        android:id="@+id/ma_hrm"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_14sp" />
+
+                    <com.ems.dingdong.views.CustomMediumTextView
+                        android:id="@+id/tv_IsLearning"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_size_14sp" />
+
 
                 </LinearLayout>
             </RelativeLayout>
         </RelativeLayout>
 
         <!--        <View style="@style/Devider" />-->
+        <LinearLayout
+            android:id="@+id/ll_log_cuoc_goi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <RelativeLayout
+                android:id="@+id/rl_log_cuoc_goi"
+                style="@style/RelativeLayoutPersonal">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        style="@style/ImageViewPersonal"
+                        android:background="@drawable/bg_persion_red"
+                        android:src="@drawable/ic_outline_phone_in_talk_24_with" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Đẩy log cuộc gọi"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12sdp" />
+                </LinearLayout>
+
+                <ImageView style="@style/ImageViewArrowRight" />
+            </RelativeLayout>
+
+            <View style="@style/Devider" />
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
             android:background="@color/white"
             android:orientation="vertical">
 
@@ -171,7 +227,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
             android:background="@color/white"
             android:orientation="vertical">
 
@@ -285,8 +340,8 @@
             <View style="@style/Devider" />
 
             <RelativeLayout
-                android:visibility="gone"
-                style="@style/RelativeLayoutPersonal">
+                style="@style/RelativeLayoutPersonal"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -414,8 +469,8 @@
 
             <RelativeLayout
                 android:id="@+id/rl_capnhat"
-                android:layout_width="match_parent"
-                style="@style/RelativeLayoutPersonal">
+                style="@style/RelativeLayoutPersonal"
+                android:layout_width="match_parent">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -435,15 +490,15 @@
                         android:textSize="@dimen/_12sdp" />
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/tv_version"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:gravity="end"
-                    android:text="V1.1"
-                    android:visibility="gone" />
+                <!--                <TextView-->
+                <!--                    android:id="@+id/tv_version"-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_alignParentEnd="true"-->
+                <!--                    android:layout_centerVertical="true"-->
+                <!--                    android:gravity="end"-->
+                <!--                    android:text="V1.1"-->
+                <!--                    android:visibility="gone" />-->
             </RelativeLayout>
 
             <View style="@style/Devider" />

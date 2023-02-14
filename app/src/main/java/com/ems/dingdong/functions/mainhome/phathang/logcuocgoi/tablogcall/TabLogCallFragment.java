@@ -1,15 +1,31 @@
 package com.ems.dingdong.functions.mainhome.phathang.logcuocgoi.tablogcall;
 
+import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.SearchView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.loader.app.LoaderManager;
+import androidx.loader.content.AsyncTaskLoader;
+import androidx.loader.content.CursorLoader;
+import androidx.loader.content.Loader;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.core.base.viper.ViewFragment;
 import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.R;
+import com.ems.dingdong.app.logcall.CallLogUtils;
 import com.ems.dingdong.dialog.EditDayDialog;
 import com.ems.dingdong.functions.mainhome.phathang.logcuocgoi.LogCallAdapter;
 import com.ems.dingdong.functions.mainhome.phathang.logcuocgoi.LogCallPresenter;
@@ -21,7 +37,14 @@ import com.ems.dingdong.notification.cuocgoictel.data.HistoryRespone;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.SharedPref;
+import com.google.gson.Gson;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -50,6 +73,8 @@ public class TabLogCallFragment extends ViewFragment<TabLogCallContract.Presente
     LinearLayout ll_success;
     @BindView(R.id.tv_error)
     TextView tvError;
+    @BindView(R.id.tv_json_result)
+    TextView tvJsonResult;
     TabLogCallRespone tabLogCallRespone;
 
     @Override
@@ -70,12 +95,13 @@ public class TabLogCallFragment extends ViewFragment<TabLogCallContract.Presente
         mPresenter.getHistoryCall(historyRequest);
     }
 
+
     public static TabLogCallFragment getInstance() {
         return new TabLogCallFragment();
     }
 
 
-    @OnClick({R.id.img_back, R .id.tv_search, R.id.tv_goidi_success, R.id.tv_goiden_success, R.id.tv_goidi_error, R.id.tv_goiden_error})
+    @OnClick({R.id.img_back, R.id.tv_search, R.id.tv_goidi_success, R.id.tv_goiden_success, R.id.tv_goidi_error, R.id.tv_goiden_error})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_goidi_success:
@@ -138,4 +164,19 @@ public class TabLogCallFragment extends ViewFragment<TabLogCallContract.Presente
         ll_error.setVisibility(View.VISIBLE);
         tvError.setText(mess);
     }
+
+
+    static final String[] CONTACTS_SUMMARY_PROJECTION = new String[]{
+            ContactsContract.Contacts._ID,
+            ContactsContract.Contacts.DISPLAY_NAME,
+            ContactsContract.Contacts.CONTACT_STATUS,
+            ContactsContract.Contacts.CONTACT_PRESENCE,
+            ContactsContract.Contacts.PHOTO_ID,
+            ContactsContract.Contacts.LOOKUP_KEY,
+    };
+    String mCurFilter;
+    SimpleCursorAdapter mAdapter;
+    SearchView mSearchView;
+
+
 }

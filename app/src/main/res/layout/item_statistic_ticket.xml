@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:layout_marginBottom="8dp"
+    android:background="@drawable/bg_border"
+    app:cardCornerRadius="5dp">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="2.5"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_mabg"
+                    style="@style/textStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center|left"
+                    android:paddingLeft="5dp"
+                    android:text="EG680005116VN"
+                    android:layout_toLeftOf="@+id/tv_trangthai"
+                    android:textStyle="bold" />
+
+
+                <TextView
+                    android:id="@+id/tv_trangthai"
+                    style="@style/textStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.2"
+                    android:background="@drawable/bg_border_blue_v1"
+                    android:gravity="center"
+                    android:paddingLeft="20dp"
+                    android:paddingTop="5dp"
+                    android:paddingRight="20dp"
+                    android:paddingBottom="5dp"
+                    android:text="Hủy"
+                    android:textColor="@color/white" />
+            </RelativeLayout>
+
+
+            <TextView
+                android:id="@+id/tv_ticket"
+                style="@style/textStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_toLeftOf="@+id/img_matdinh"
+                android:drawablePadding="10dp"
+                android:gravity="center|left"
+                android:paddingLeft="5dp"
+                android:text="Nhóm quyền:" />
+
+            <TextView
+                android:id="@+id/tv_thoi_gian"
+                style="@style/textStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_toLeftOf="@+id/img_matdinh"
+                android:drawablePadding="10dp"
+                android:gravity="center|left"
+                android:paddingLeft="5dp"
+                android:textColor="#86909C"
+                android:text="noinhan" />
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+</LinearLayout>

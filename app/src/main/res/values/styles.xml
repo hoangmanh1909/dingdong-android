@@ -9,7 +9,19 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
-
+    <style name="textStyleTitle">
+        <!-- Card background color -->
+        <!-- Ripple for API 21 of android, and regular selector on older -->
+        <!--<item name="android:foreground">?android:selectableItemBackground</item>-->
+        <!-- Resting Elevation from Material guidelines -->
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="textAllCaps">false</item>
+        <!--        <item name="android:fontFamily"></item>-->
+        <!-- Add corner Radius -->
+        <!--<item name="android:clickable">true</item>-->
+        <!--<item name="android:layout_margin">8dp</item>-->
+    </style>
     <style name="textStyle">
         <!-- Card background color -->
         <!-- Ripple for API 21 of android, and regular selector on older -->
@@ -21,7 +33,10 @@
         <!--<item name="android:clickable">true</item>-->
         <!--<item name="android:layout_margin">8dp</item>-->
     </style>
-
+    <style name="AppBottomSheetDialog123" parent="Theme.Design.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppModeStyle</item>
+        <item name="behavior_draggable">false</item>
+    </style>
     <style name="AppTheme_Actionbar" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -392,5 +407,11 @@
         <item name="android:button">@drawable/custom_check_radio</item>
     </style>
 
+    <style name="textStyleButton">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:stateListAnimator">@null</item>
+        <item name="android:textAllCaps">false</item>
 
+    </style>
 </resources>

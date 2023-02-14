@@ -71,7 +71,6 @@ import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.MyViewPager;
 //import com.google.android.exoplayer2.C;
 import com.google.gson.Gson;
-//import com.ringme.ott.sdk.utils.RingmeOttSdk;
 import com.roughike.bottombar.BottomBar;
 //import com.zoho.livechat.android.ZohoLiveChat;
 //import com.zoho.salesiqembed.ZohoSalesIQ;
@@ -160,10 +159,10 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
     public void initLayout() {
         super.initLayout();
         checkSelfPermission();
-        getLoaderManager().initLoader(URL_LOADER, null, this);
+//        getLoaderManager().initLoader(URL_LOADER, null, this);
 
         sharedPref = new SharedPref(getActivity());
-        checkDate();
+//        checkDate();
         String callProvider = sharedPref.getString(Constants.KEY_CALL_PROVIDER_HOME, callProviderHome);
         userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
@@ -289,7 +288,7 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
     void checkDate() {
         isCheck = false;
         swSwitch.setChecked(false);
-        mDataCA = sharedPref.getString(Constants.KEY_RA_VAO, "");
+        mDataCA = sharedPref.getString(Constants.KEY_RA_VAOV1, "");
         if (!TextUtils.isEmpty(mDataCA)) {
             isCheck = true;
             swSwitch.setChecked(true);
@@ -407,7 +406,7 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
         Toast.showToast(getViewContext(), "Bạn đã rời khỏi ca làm việc");
         mCalendarRaCa = Calendar.getInstance();
         mDateRaCa = DateTimeUtils.convertDateToString(mCalendarRaCa.getTime(), DateTimeUtils.DEFAULT_DATETIME_FORMAT);
-        mDataCA = sharedPref.getString(Constants.KEY_RA_VAO, "");
+        mDataCA = sharedPref.getString(Constants.KEY_RA_VAOV1, "");
         ModeCA modeCA = NetWorkController.getGson().fromJson(mDataCA, ModeCA.class);
         mDateVaoCa = modeCA.getNgaygio();
         List<CallLogMode> modeList = new ArrayList<>();
@@ -473,7 +472,7 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
             case R.id.sw_switch:
                 getLoaderManager().restartLoader(URL_LOADER, null, this);
                 if (isCheck) {
-                    String data = sharedPref.getString(Constants.KEY_RA_VAO, "");
+                    String data = sharedPref.getString(Constants.KEY_RA_VAOV1, "");
                     ModeCA modeCA = NetWorkController.getGson().fromJson(data, ModeCA.class);
                     if (!data.isEmpty())
                         mPresenter.getRaCa(modeCA.getData());
@@ -512,13 +511,13 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
     @Override
     public void onDisplay() {
         super.onDisplay();
-        UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
-        TicketNotifyRequest ticketNotifyRequest = new TicketNotifyRequest();
-        ticketNotifyRequest.setMobileNumber(userInfo.getMobileNumber());
-        ticketNotifyRequest.setFromDate(Integer.parseInt(mFromDate));
-        ticketNotifyRequest.setToDate(Integer.parseInt(mToDate));
-        mobilenumber = userInfo.getMobileNumber();
-        mPresenter.getListTicket(ticketNotifyRequest);
+//        UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+//        TicketNotifyRequest ticketNotifyRequest = new TicketNotifyRequest();
+//        ticketNotifyRequest.setMobileNumber(userInfo.getMobileNumber());
+//        ticketNotifyRequest.setFromDate(Integer.parseInt(mFromDate));
+//        ticketNotifyRequest.setToDate(Integer.parseInt(mToDate));
+//        mobilenumber = userInfo.getMobileNumber();
+//        mPresenter.getListTicket(ticketNotifyRequest);
 
     }
 

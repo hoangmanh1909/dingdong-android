@@ -218,6 +218,8 @@ public class ListBaoPhatBD13Adapter extends RecyclerView.Adapter<ListBaoPhatBD13
         public TextView tvGoiy;
         @BindView(R.id.img_chat)
         public ImageView imgChat;
+        @BindView(R.id.img_taoticket)
+        public ImageView imgTaoticket;
 
         public HolderView(View itemView) {
             super(itemView);
@@ -289,7 +291,7 @@ public class ListBaoPhatBD13Adapter extends RecyclerView.Adapter<ListBaoPhatBD13
             if (!TextUtils.isEmpty(item.getBatchCode())) {
                 if (item.getAmountForBatch().equals("Y")) {
                     Spanned spanned = Html.fromHtml("<font color=#1D2129>Mã lô: " + item.getBatchCode() + "</font><font color=#fd013c>( Tổng thu của lô - "
-                            + String.format("%s đ", NumberUtils.formatPriceNumber(item.getAmount()+fee)) + ")");
+                            + String.format("%s đ", NumberUtils.formatPriceNumber(item.getAmount() + fee)) + ")");
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                         tvBatchCode.setText(spanned);
                     }
@@ -379,21 +381,21 @@ public class ListBaoPhatBD13Adapter extends RecyclerView.Adapter<ListBaoPhatBD13
 //            } else
 //                imgDoitra.setVisibility(View.GONE);
 
-            if (!TextUtils.isEmpty(item.getVatCode())) {
-                String tam[] = item.getVatCode().split(",");
-                for (int i = 0; i < tam.length; i++)
-                    if (tam[i].equals("PHS")) {
-                        imgSml.setVisibility(View.VISIBLE);
-                        imgSml.setImageResource(R.drawable.ic_huy_sml);
-                        break;
-                    } else if (!tam[i].equals("PHS")) {
-                        imgSml.setImageResource(R.drawable.ic_sml);
-                        imgSml.setVisibility(View.VISIBLE);
-                    } else imgSml.setVisibility(View.GONE);
-            } else {
-                imgSml.setImageResource(R.drawable.ic_sml);
-                imgSml.setVisibility(View.VISIBLE);
-            }
+//            if (!TextUtils.isEmpty(item.getVatCode())) {
+//                String tam[] = item.getVatCode().split(",");
+//                for (int i = 0; i < tam.length; i++)
+//                    if (tam[i].equals("PHS")) {
+//                        imgSml.setVisibility(View.VISIBLE);
+//                        imgSml.setImageResource(R.drawable.ic_huy_sml);
+//                        break;
+//                    } else if (!tam[i].equals("PHS")) {
+//                        imgSml.setImageResource(R.drawable.ic_sml);
+//                        imgSml.setVisibility(View.VISIBLE);
+//                    } else imgSml.setVisibility(View.GONE);
+//            } else {
+//                imgSml.setImageResource(R.drawable.ic_sml);
+//                imgSml.setVisibility(View.VISIBLE);
+//            }
 
 
             if (!TextUtils.isEmpty(item.getNewInstruction())) {

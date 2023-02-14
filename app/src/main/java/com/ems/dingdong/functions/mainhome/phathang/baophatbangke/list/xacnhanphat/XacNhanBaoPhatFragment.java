@@ -708,7 +708,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         }
 
         if (mBaoPhatBangke.get(0).
-
                 getIsDOP() == 1) {
             rad_dop1.setChecked(true);
             rad_dop2.setChecked(false);
@@ -719,28 +718,26 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             rad_dop1.setChecked(false);
         }
 
-        adapter = new
-
-                XacNhanBaoPhatAdapter(getViewContext(), mBaoPhatBangke) {
-                    @Override
-                    public void onBindViewHolder(@NonNull HolderView holder, int position) {
-                        super.onBindViewHolder(holder, position);
-                        holder.itemView.setOnClickListener(v -> {
-                            mBaoPhatBangke.get(position).setSelected(!mBaoPhatBangke.get(position).isSelected());
-                            if (getItemsSelected().size() == 1 || checkSameAddress()) {
-                                edtReceiverName.setText(getItemsSelected().get(0).getReciverName());
-                                tvGTTT.setText("");
-                            } else {
-                                edtReceiverName.setText("");
-                            }
-                            checkVerify();
-                            adapter.notifyDataSetChanged();
-                            final Handler handler = new Handler();
-
-                            updateTotalPackage();
-                        });
+        adapter = new XacNhanBaoPhatAdapter(getViewContext(), mBaoPhatBangke) {
+            @Override
+            public void onBindViewHolder(@NonNull HolderView holder, int position) {
+                super.onBindViewHolder(holder, position);
+                holder.itemView.setOnClickListener(v -> {
+                    mBaoPhatBangke.get(position).setSelected(!mBaoPhatBangke.get(position).isSelected());
+                    if (getItemsSelected().size() == 1 || checkSameAddress()) {
+                        edtReceiverName.setText(getItemsSelected().get(0).getReciverName());
+                        tvGTTT.setText("");
+                    } else {
+                        edtReceiverName.setText("");
                     }
-                }
+                    checkVerify();
+                    adapter.notifyDataSetChanged();
+                    final Handler handler = new Handler();
+
+                    updateTotalPackage();
+                });
+            }
+        }
 
         ;
         RecyclerUtils.setupVerticalRecyclerView(
@@ -748,13 +745,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 getViewContext(), recycler);
         recycler.setAdapter(adapter);
 
-        if (
-
-                getItemSelected().
-
-                        size() == 1 ||
-
-                        checkSameAddress()) {
+        if (getItemSelected().size() == 1 || checkSameAddress()) {
             edtReceiverName.setText(getItemSelected().get(0).getReciverName());
             tvGTTT.setText("");
         }
@@ -2109,8 +2100,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 new ConfirmDialog(getViewContext(), listSelected.size(), final_amountShow, totalFee,
                         listSelected.get(0).getReciverAddress(), mLocation.getLatitude(),
                         mLocation.getLongitude(),
-                        listSelected.get(0).getReceiverLat().isEmpty() ? 0.0: Double.parseDouble(listSelected.get(0).getReceiverLat()),
-                        listSelected.get(0).getReceiverLon().isEmpty() ? 0.0: Double.parseDouble(listSelected.get(0).getReceiverLon()),
+                        (listSelected.get(0).getReceiverLat() != null && !listSelected.get(0).getReceiverLat().isEmpty()) ? Double.parseDouble(listSelected.get(0).getReceiverLat()) : 0.0,
+                        (listSelected.get(0).getReceiverLon() != null && !listSelected.get(0).getReceiverLon().isEmpty()) ? Double.parseDouble(listSelected.get(0).getReceiverLon()) : 0.0,
                         listSelected.get(0).getReceiverVpostcode(),
                         mPresenter.getContainerView()).setOnCancelListener(Dialog::dismiss).setOnOkListener(confirmDialog -> {
                     confirmDialog.dismiss();
@@ -2304,8 +2295,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                     String finalTimeDukien2 = timeDukien;
                     new ConfirmPKTCDialog(getViewContext(), listSelected.size(), listSelected.get(0).getReciverAddress(), mLocation.getLatitude(),
                             mLocation.getLongitude(),
-                            listSelected.get(0).getReceiverLat().isEmpty() ? 0.0:  Double.parseDouble(listSelected.get(0).getReceiverLat()),
-                            listSelected.get(0).getReceiverLon().isEmpty() ? 0.0:   Double.parseDouble(listSelected.get(0).getReceiverLon()), listSelected.get(0).getReceiverVpostcode(), mPresenter.getContainerView()).setOnCancelListener(Dialog::dismiss).setOnOkListener(confirmDialog -> {
+                            (listSelected.get(0).getReceiverLat() != null && !listSelected.get(0).getReceiverLat().isEmpty()) ? Double.parseDouble(listSelected.get(0).getReceiverLat()) : 0.0,
+                            (listSelected.get(0).getReceiverLon() != null && !listSelected.get(0).getReceiverLon().isEmpty()) ? Double.parseDouble(listSelected.get(0).getReceiverLon()) : 0.0, listSelected.get(0).getReceiverVpostcode(), mPresenter.getContainerView()).setOnCancelListener(Dialog::dismiss).setOnOkListener(confirmDialog -> {
                         confirmDialog.dismiss();
                         mPresenter.submitToPNS(mReasonInfo.getCode(), mSolutionInfo.getCode(), tv_Description.getText().toString(), mFile, mFileAvatar + ";" + mFileVerify + ";" + mFileOther, mSign, time, false, "", idXaphuong, idQuanhuyen, diachiNew, hinhthucPhat, ghichunew, doiTuong, Integer.parseInt(finalTimeDukien2));
                     }).setWarning(getViewContext().getString(R.string.are_you_sure_deliver_un_successfully)).show();
@@ -2941,6 +2932,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         }
     }
 
+    String codeMess = "\n";
+
     @Override
     public void showSuccess(String code, String id, String mess) {
         if (mBaoPhatBangke.size() > 1) {
@@ -2952,6 +2945,9 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                     mDeliveryError += 1;
                 }
 
+                if (code.equals("400"))
+                    codeMess += mess;
+
                 int total = mDeliverySuccess + mDeliveryError;
                 if (total == getItemSelected().size()) {
                     DataModel dataModel = new DataModel();
@@ -2960,7 +2956,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                     mData = NetWorkController.getGson().toJson(dataModel, DataModel.class);
                     mTypeTrangThai = 1;// baso phat thanh cong
                     Log.d("asdasda123khiem", mData + "");
-                    showFinish(mTypeTrangThai);
+                    showFinishPKTC(codeMess);
                 }
             }
         } else {
@@ -2977,9 +2973,12 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 //                    showFinish(mTypeTrangThai);
                 }).show();
             } else {
-                new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE).setConfirmText("Đóng").setTitleText(getString(R.string.notification)).setContentText(mess).setConfirmClickListener(sweetAlertDialog -> {
-                    sweetAlertDialog.dismiss();
-                }).show();
+                new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE).setConfirmText("Đóng").
+                        setTitleText(getString(R.string.notification)).
+                        setContentText(mess).
+                        setConfirmClickListener(sweetAlertDialog -> {
+                            sweetAlertDialog.dismiss();
+                        }).show();
             }
 
 
@@ -2997,11 +2996,27 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     private void showFinish(int type) {
         hideProgress();
         if (getActivity() != null) {
-            new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE).setConfirmText("OK").setTitleText(getString(R.string.notification)).setContentText("Báo phát BD13 hoàn tất. Thành công [" + mDeliverySuccess + "] thất bại [" + mDeliveryError + "]").setConfirmClickListener(sweetAlertDialog -> {
-                sweetAlertDialog.dismiss();
-                finishView();
+            new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE).
+                    setConfirmText("OK").setTitleText(getString(R.string.notification)).
+                    setContentText("Báo phát BD13 hoàn tất. Thành công [" + mDeliverySuccess + "] thất bại [" + mDeliveryError + "]").
+                    setConfirmClickListener(sweetAlertDialog -> {
+                        sweetAlertDialog.dismiss();
+                        finishView();
 
-            }).show();
+                    }).show();
+        }
+    }
+
+    private void showFinishPKTC(String text) {
+        hideProgress();
+        if (getActivity() != null) {
+            new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE).
+                    setConfirmText("OK").setTitleText(getString(R.string.notification)).
+                    setContentText("Báo phát BD13 hoàn tất. Thành công [" + mDeliverySuccess + "] thất bại [" + mDeliveryError + "]" + text).
+                    setConfirmClickListener(sweetAlertDialog -> {
+                        sweetAlertDialog.dismiss();
+                        finishView();
+                    }).show();
         }
     }
 
@@ -3009,6 +3024,10 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     public void finishView() {
         try {
             mPresenter.back();
+            if (mSolutionInfo.getCode().equals("D")
+                    || mSolutionInfo.getID() == 57) {
+                mDeliveryType = 4; // mat bg
+            }
             mPresenter.onTabRefresh(mData, mDeliveryType);
         } catch (NullPointerException nullPointerException) {
         }
@@ -3137,6 +3156,10 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                         tv_diachi_khac.setVisibility(View.VISIBLE);
                     } else tv_diachi_khac.setVisibility(View.GONE);
                 }
+//                if (mSolutionInfo.getCode().equals("D")
+//                        || mSolutionInfo.getID() == 57) {
+//                    mTypeTrangThai = 0; // mat bg
+//                }
 
                 if (mReasonInfo.getCode().equals("71")
                         || mReasonInfo.getCode().equals("66")
@@ -3179,7 +3202,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
     private void checkVerify() {
         authenType = getAuthenType();
-        Log.d("MEMIT", authenType + "");
+        System.out.println("MEMIT123" + authenType + "");
         if (authenType == 0) {
             rbVerifyInfo.setVisibility(View.VISIBLE);
             rbVerifyImage.setVisibility(View.VISIBLE);
@@ -3216,7 +3239,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             verifyImage();
             //llCaptureVerify.setVisibility(View.VISIBLE);
             llVerifyImage.setVisibility(View.VISIBLE);
-        } else if (authenType == 3) {
+        } else if (authenType == 3 || authenType == -1) {
             llVerifyInfo.setVisibility(View.VISIBLE);
             llVerify.setVisibility(View.VISIBLE);
             rbVerifyInfo.setVisibility(View.VISIBLE);

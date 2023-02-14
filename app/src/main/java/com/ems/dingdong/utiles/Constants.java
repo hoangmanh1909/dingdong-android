@@ -7,7 +7,8 @@ package com.ems.dingdong.utiles;
 public class Constants {
     public static final String KEY_SHARE_PREFERENCES = "KEY_SHARE_PREFERENCES";
     public static final String KEY_LOG_CALL = "KEY_LOG_CALL";
-    public static final String KEY_RA_VAO = "KEY_RA_VAO";
+    public static final String KEY_RA_VAOV1 = "KEY_RA_VAOV1";
+    public static final String KEY_TRANG_THAI_LOG_CALL = "KEY_TRANG_THAI_LOG_CALL";
     public static final String KEY_LIST_PHONE = "KEY_LIST_PHONE";
     public static final String KEY_MOBILE_NUMBER_SIGN_CODE = "MOBILE_NUMBER_SIGN_CODE";
     public static final String KEY_HOTLINE_NUMBER = "HOTLINE_NUMBER";
@@ -314,6 +315,11 @@ public class Constants {
     public static final String PARTNER_CHAT_GET_QUEUE_CHAT = "PARTNER_CHAT_GET_QUEUE_CHAT";
     public static final String AUTH_GET_POSTMAN_BY_MOBILE_NUMBER = "AUTH_GET_POSTMAN_BY_MOBILE_NUMBER";
     public static final String AUTH_GET_POSTMAN_IN_PO_BY_ROUTE_TYPE = "AUTH_GET_POSTMAN_IN_PO_BY_ROUTE_TYPE";
+
+    public static final String DIC_GET_SUB_SOLUTION = "DIC_GET_SUB_SOLUTION";
+    public static final String DLV_TICKET_CREATE_TICKET = "DLV_TICKET_CREATE_TICKET";
+    public static final String STT_TICKET_MANAGEMENT_TOTAL = "STT_TICKET_MANAGEMENT_TOTAL";
+    public static final String STT_TICKET_MANAGEMENT_DETAIL = "STT_TICKET_MANAGEMENT_DETAIL";
 
     /*
      * key_share_pref

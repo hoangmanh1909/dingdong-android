@@ -18,6 +18,7 @@ import com.ems.dingdong.functions.mainhome.address.laydiachi.GetLocation;
 import com.ems.dingdong.functions.mainhome.address.xacminhdiachi.danhsachdiachi.AddressListPresenter;
 import com.ems.dingdong.functions.mainhome.address.xacminhdiachi.timduongdi.TimDuongDiPresenter;
 import com.ems.dingdong.functions.mainhome.location.LocationPresenter;
+import com.ems.dingdong.functions.mainhome.phathang.addticket.AddTicketPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.XacNhanBaoPhatPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.log.LogPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
@@ -153,7 +154,7 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
     public void searchDeliveryPostman(String postmanID, String fromDate, String toDate, String routeCode, Integer deliveryType) {
         if ((getType() == Constants.NOT_YET_DELIVERY_TAB && deliveryNotSuccessfulChange.getCurrentTab() == 0)
                 || (getType() == Constants.NOT_SUCCESSFULLY_DELIVERY_TAB && deliveryNotSuccessfulChange.getCurrentTab() == 1)) {
-            mView.showProgress();
+//            mView.showProgress();
             if (deliveryType != Constants.ALL_SEARCH_TYPE) {
                 switch (deliveryType) {
                     case Constants.DELIVERY_LIST_TYPE_COD_NEW:
@@ -258,7 +259,12 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
 
 
     @Override
-    public void ddQueuChat(RequestQueuChat request  , VnpostOrderInfo vnpostOrderInfo, int type) {
+    public void showAddTicket(String code) {
+        new AddTicketPresenter(mContainerView).setCode(code).pushView();
+    }
+
+    @Override
+    public void ddQueuChat(RequestQueuChat request, VnpostOrderInfo vnpostOrderInfo, int type) {
         mView.showProgress();
         mInteractor.ddQueuChat(request)
                 .subscribeOn(Schedulers.io())
@@ -275,7 +281,7 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                         mView.hideProgress();
                         if (simpleResult.getErrorCode().equals("00")) {
                             AccountChatInAppGetQueueResponse response = NetWorkController.getGson().fromJson(simpleResult.getData(), AccountChatInAppGetQueueResponse.class);
-                            mView.showAccountChatInAppGetQueueResponse(response,vnpostOrderInfo,type);
+                            mView.showAccountChatInAppGetQueueResponse(response, vnpostOrderInfo, type);
                         } else mView.showLoi(simpleResult.getMessage());
                     }
 
@@ -506,6 +512,11 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                 }, throwable -> {
                     mView.hideProgress();
                 });
+    }
+
+    @Override
+    public ContainerView getContraiView() {
+        return mContainerView;
     }
 
 

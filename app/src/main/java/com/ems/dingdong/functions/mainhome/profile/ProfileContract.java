@@ -21,7 +21,7 @@ interface ProfileContract {
 
     interface View extends PresentView<Presenter> {
 
-        void showCallLog();
+        void showCallLog(int size);
     }
 
     interface Presenter extends IPresenter<View, Interactor> {

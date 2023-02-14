@@ -7,6 +7,7 @@ import android.widget.EditText;
 
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
+import com.ems.dingdong.dialog.DialogLogin;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.views.CustomEditText;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
@@ -80,15 +81,16 @@ public class ValidationFragment extends ViewFragment<ValidationContract.Presente
 
     @Override
     public void showError(String message) {
-        new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
-                .setConfirmText("OK")
-                .setTitleText("Thông báo")
-                .setContentText(message)
-                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                    @Override
-                    public void onClick(SweetAlertDialog sweetAlertDialog) {
-                        sweetAlertDialog.dismiss();
-                    }
-                }).show();
+//        new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
+//                .setConfirmText("OK")
+//                .setTitleText("Thông báo")
+//                .setContentText(message)
+//                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+//                    @Override
+//                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+//                        sweetAlertDialog.dismiss();
+//                    }
+//                }).show();
+        new DialogLogin(getViewContext(), message).show();
     }
 }

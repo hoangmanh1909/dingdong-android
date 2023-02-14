@@ -44,6 +44,7 @@ import com.ems.dingdong.callback.DismissDialogCallback;
 import com.ems.dingdong.callback.PhoneKhiem;
 import com.ems.dingdong.callback.SmlCallback;
 import com.ems.dingdong.callback.XacMinhCallback;
+import com.ems.dingdong.dialog.ConfirmDialog;
 import com.ems.dingdong.dialog.DialogAddress;
 import com.ems.dingdong.dialog.DialogCuocgoiNew;
 import com.ems.dingdong.dialog.DialogSML;
@@ -121,8 +122,7 @@ import butterknife.OnClick;
 
 import static android.Manifest.permission.CALL_PHONE;
 
-public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeContract.Presenter>
-        implements ListBaoPhatBangKeContract.View {
+public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeContract.Presenter> implements ListBaoPhatBangKeContract.View {
 
     @BindView(R.id.recycler)
     RecyclerView recycler;
@@ -177,10 +177,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     String PostmanId;
     String POCode;
 
-    private static final String[] PERMISSIONS = new String[]{Manifest.permission.READ_CALL_LOG, Manifest.permission.CAMERA,
-            Manifest.permission.READ_PHONE_STATE, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_WIFI_STATE, Manifest.permission.ACCESS_NETWORK_STATE, Manifest.permission.INTERNET,
-            Manifest.permission.RECORD_AUDIO, Manifest.permission.MODIFY_AUDIO_SETTINGS, Manifest.permission.WRITE_EXTERNAL_STORAGE};//, Manifest.permission.PROCESS_OUTGOING_CALLS
+    private static final String[] PERMISSIONS = new String[]{Manifest.permission.READ_CALL_LOG, Manifest.permission.CAMERA, Manifest.permission.READ_PHONE_STATE, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_WIFI_STATE, Manifest.permission.ACCESS_NETWORK_STATE, Manifest.permission.INTERNET, Manifest.permission.RECORD_AUDIO, Manifest.permission.MODIFY_AUDIO_SETTINGS, Manifest.permission.WRITE_EXTERNAL_STORAGE};//, Manifest.permission.PROCESS_OUTGOING_CALLS
     private static final int READ_STORAGE_PERMISSION_REQUEST_CODE = 41;
 
     private int positionItem = 0;
@@ -295,11 +292,9 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                     e.printStackTrace();
                 }
             }
-            if (mAdapter.getItemsFilterSelected().size() < mAdapter.getListFilter().size() ||
-                    mAdapter.getListFilter().size() == 0)
+            if (mAdapter.getItemsFilterSelected().size() < mAdapter.getListFilter().size() || mAdapter.getListFilter().size() == 0)
                 cbPickAll.setChecked(false);
-            else
-                cbPickAll.setChecked(true);
+            else cbPickAll.setChecked(true);
             tvAmount.setText(String.format(getResources().getString(R.string.total_amount) + " %s đ", NumberUtils.formatPriceNumber(amount)));
             mPresenter.setTitleTab(count);
         }, 1000)) {
@@ -312,40 +307,39 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                     public void onClick(View view) {
                         //"Hoàn tất tin"
                         if (!CheckDangKy.isCheckUserChat(getViewContext())) {
-                            new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
-                                    .setConfirmText("Đóng")
-                                    .setTitleText("Thông báo")
-                                    .setContentText("Tài khoản chưa đăng ký sử dụng dịch vụ chat.")
-                                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                        @Override
-                                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                            sweetAlertDialog.dismiss();
-                                        }
-                                    }).show();
+                            new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE).setConfirmText("Đóng").setTitleText("Thông báo").setContentText("Tài khoản chưa đăng ký sử dụng dịch vụ chat.").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                    sweetAlertDialog.dismiss();
+                                }
+                            }).show();
                             return;
                         }
                         if (RingmeOttSdk.isLoggedIn()) {
                             displayPopupWindow(holder.imgChat, holder.getItem(position));
                         } else {
-                            new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
-                                    .setConfirmText("OK")
-                                    .setTitleText("Thông báo")
-                                    .setContentText("Kết nối hệ thống chat thất bại")
-                                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                        @Override
-                                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                            sweetAlertDialog.dismiss();
-                                        }
-                                    }).show();
+                            new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE).setConfirmText("OK").setTitleText("Thông báo").setContentText("Kết nối hệ thống chat thất bại").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                @Override
+                                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                    sweetAlertDialog.dismiss();
+                                }
+                            }).show();
                         }
 
                     }
                 });
-                holder.imgThemdanhba.setOnClickListener(new View.OnClickListener() {
+//                holder.imgThemdanhba.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        //"Hoàn tất tin"
+//                        mPresenter.showThemDanhBa(holder.getItem(position).getReciverAddress());
+//                    }
+//                });
+                holder.imgTaoticket.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         //"Hoàn tất tin"
-                        mPresenter.showThemDanhBa(holder.getItem(position).getReciverAddress());
+                        mPresenter.showAddTicket(holder.getItem(position).getMaE());
                     }
                 });
                 holder.itemView.setOnClickListener(v -> {
@@ -384,8 +378,78 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                     }
                 });
 
+//                holder.imgSml.setOnClickListener(v -> {
+//                    positionItem = position;
+//                    if (!TextUtils.isEmpty(mAdapter.getListFilter().get(position).getVatCode())) {
+//                        int j = 0;
+//                        String tam[] = mAdapter.getListFilter().get(position).getVatCode().split(",");
+//                        for (int i = 0; i < tam.length; i++)
+//                            if (tam[i].equals("PHS")) {
+//                                j++;
+//                            }
+//                        if (j > 0) {
+//                            new DialogSML(getViewContext(), "HỦY PHÁT TẠI SMART LOCKER", mAdapter.getListFilter().get(position).getMaE(), mAdapter.getListFilter().get(position).getReciverName(), mAdapter.getListFilter().get(position).getReciverAddress(), 0, mAdapter.getListFilter().get(position).getiDHub(), mAdapter.getListFilter().get(position).getHubAddress(), 0, 0, 0, 0, 0, 0, new SmlCallback() {
+//                                @Override
+//                                public void onResponse(String HubCode) {
+//                                    SMLRequest smlRequest = new SMLRequest();
+//                                    smlRequest.setLadingCode(mAdapter.getListFilter().get(position).getMaE());
+//                                    smlRequest.setPostmanId(PostmanId);
+//                                    smlRequest.setPOCode(POCode);
+//                                    mPresenter._huySml(smlRequest);
+//                                }
+//                            }).show();
+//                        } else {
+//                            new DialogSML(getViewContext(), "PHÁT TẠI SMART LOCKER", mAdapter.getListFilter().get(position).getMaE(), mAdapter.getListFilter().get(position).getReciverName(), mAdapter.getListFilter().get(position).getReciverAddress(), 1, "", "", mAdapter.getListFilter().get(position).getAmount(), mAdapter.getListFilter().get(position).getFeeShip(), mAdapter.getListFilter().get(position).getFeePPA(), mAdapter.getListFilter().get(position).getFeeCollectLater(), mAdapter.getListFilter().get(position).getFeeCOD(), mAdapter.getListFilter().get(position).getFeePA(), new SmlCallback() {
+//                                @Override
+//                                public void onResponse(String HubCode) {
+//                                    SMLRequest smlRequest = new SMLRequest();
+//                                    smlRequest.setLadingCode(mAdapter.getListFilter().get(position).getMaE());
+//                                    smlRequest.setHubCode(HubCode);
+//                                    smlRequest.setPostmanId(PostmanId);
+//                                    smlRequest.setPOCode(POCode);
+//                                    smlRequest.setReceiverEmail(mAdapter.getListFilter().get(position).getReceiverEmail());
+//                                    smlRequest.setReceiverMobileNumber(mAdapter.getListFilter().get(position).getReciverMobile());
+//                                    smlRequest.setFeePPA(mAdapter.getListFilter().get(position).getFeePPA());
+//                                    smlRequest.setFeeCollectLater(mAdapter.getListFilter().get(position).getFeeCollectLater());
+//                                    smlRequest.setFeeShip(mAdapter.getListFilter().get(position).getFeeC());
+//                                    smlRequest.setFeeCOD(mAdapter.getListFilter().get(position).getFeeCOD());
+//                                    smlRequest.setAmountCOD(mAdapter.getListFilter().get(position).getAmount());
+//                                    mPresenter._phatSml(smlRequest);
+//                                }
+//                            }).show();
+//                        }
+//                    } else {
+//                        new DialogSML(getViewContext(), "PHÁT TẠI SMART LOCKER", mAdapter.getListFilter().get(position).getMaE(), mAdapter.getListFilter().get(position).getReciverName(), mAdapter.getListFilter().get(position).getReciverAddress(), 1, "", "", mAdapter.getListFilter().get(position).getAmount(), mAdapter.getListFilter().get(position).getFeeShip(), mAdapter.getListFilter().get(position).getFeePPA(), mAdapter.getListFilter().get(position).getFeeCollectLater(), mAdapter.getListFilter().get(position).getFeeCOD(), mAdapter.getListFilter().get(position).getFeePA(), new SmlCallback() {
+//                            @Override
+//                            public void onResponse(String HubCode) {
+//                                SMLRequest smlRequest = new SMLRequest();
+//                                smlRequest.setLadingCode(mAdapter.getListFilter().get(position).getMaE());
+//                                smlRequest.setHubCode(HubCode);
+//                                smlRequest.setPostmanId(PostmanId);
+//                                smlRequest.setPOCode(POCode);
+//                                smlRequest.setReceiverEmail(mAdapter.getListFilter().get(position).getReceiverEmail());
+//                                smlRequest.setReceiverMobileNumber(mAdapter.getListFilter().get(position).getReciverMobile());
+//
+//                                smlRequest.setFeePPA(mAdapter.getListFilter().get(position).getFeePPA());
+//                                smlRequest.setFeeCollectLater(mAdapter.getListFilter().get(position).getFeeCollectLater());
+//                                smlRequest.setFeeShip(mAdapter.getListFilter().get(position).getFeeC());
+//                                smlRequest.setFeeCOD(mAdapter.getListFilter().get(position).getFeeCOD());
+//                                smlRequest.setAmountCOD(mAdapter.getListFilter().get(position).getAmount());
+//                                mPresenter._phatSml(smlRequest);
+//                            }
+//                        }).show();
+//                    }
+//                });
+
+                //Button ...
+                // goi cho nguoi gui
+//                holder.img_ContactPhone_extend.setOnClickListener(v -> {
+//
+//                });
                 holder.imgSml.setOnClickListener(v -> {
-                    positionItem = position;
+                    PopupMenu popupMenu = new PopupMenu(requireContext(), holder.imgSml);
+                    popupMenu.getMenu().add(0, 1, 1, "Danh bạ địa chỉ ");
+                    String code = "";
                     if (!TextUtils.isEmpty(mAdapter.getListFilter().get(position).getVatCode())) {
                         int j = 0;
                         String tam[] = mAdapter.getListFilter().get(position).getVatCode().split(",");
@@ -394,88 +458,87 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                                 j++;
                             }
                         if (j > 0) {
-                            new DialogSML(getViewContext(), "HỦY PHÁT TẠI SMART LOCKER", mAdapter.getListFilter().get(position).getMaE(),
-                                    mAdapter.getListFilter().get(position).getReciverName(),
-                                    mAdapter.getListFilter().get(position).getReciverAddress(), 0,
-                                    mAdapter.getListFilter().get(position).getiDHub(),
-                                    mAdapter.getListFilter().get(position).getHubAddress(),
-                                    0, 0, 0, 0, 0, 0, new SmlCallback() {
-                                @Override
-                                public void onResponse(String HubCode) {
-                                    SMLRequest smlRequest = new SMLRequest();
-                                    smlRequest.setLadingCode(mAdapter.getListFilter().get(position).getMaE());
-                                    smlRequest.setPostmanId(PostmanId);
-                                    smlRequest.setPOCode(POCode);
-                                    mPresenter._huySml(smlRequest);
-                                }
-                            }).show();
+                            code = "Hủy phát SMART LOCKER";
+
                         } else {
-                            new DialogSML(getViewContext(), "PHÁT TẠI SMART LOCKER", mAdapter.getListFilter().get(position).getMaE(),
-                                    mAdapter.getListFilter().get(position).getReciverName(),
-                                    mAdapter.getListFilter().get(position).getReciverAddress(), 1, "", "",
-                                    mAdapter.getListFilter().get(position).getAmount(),
-                                    mAdapter.getListFilter().get(position).getFeeShip(),
-                                    mAdapter.getListFilter().get(position).getFeePPA(),
-                                    mAdapter.getListFilter().get(position).getFeeCollectLater(),
-                                    mAdapter.getListFilter().get(position).getFeeCOD(), mAdapter.getListFilter().get(position).getFeePA(), new SmlCallback() {
-                                @Override
-                                public void onResponse(String HubCode) {
-                                    SMLRequest smlRequest = new SMLRequest();
-                                    smlRequest.setLadingCode(mAdapter.getListFilter().get(position).getMaE());
-                                    smlRequest.setHubCode(HubCode);
-                                    smlRequest.setPostmanId(PostmanId);
-                                    smlRequest.setPOCode(POCode);
-                                    smlRequest.setReceiverEmail(mAdapter.getListFilter().get(position).getReceiverEmail());
-                                    smlRequest.setReceiverMobileNumber(mAdapter.getListFilter().get(position).getReciverMobile());
-                                    smlRequest.setFeePPA(mAdapter.getListFilter().get(position).getFeePPA());
-                                    smlRequest.setFeeCollectLater(mAdapter.getListFilter().get(position).getFeeCollectLater());
-                                    smlRequest.setFeeShip(mAdapter.getListFilter().get(position).getFeeC());
-                                    smlRequest.setFeeCOD(mAdapter.getListFilter().get(position).getFeeCOD());
-                                    smlRequest.setAmountCOD(mAdapter.getListFilter().get(position).getAmount());
-                                    mPresenter._phatSml(smlRequest);
-                                }
-                            }).show();
+                            code = "Phát SMART LOCKER";
                         }
                     } else {
-                        new DialogSML(getViewContext(), "PHÁT TẠI SMART LOCKER", mAdapter.getListFilter().get(position).getMaE(),
-                                mAdapter.getListFilter().get(position).getReciverName(),
-                                mAdapter.getListFilter().get(position).getReciverAddress(), 1, "", "",
-                                mAdapter.getListFilter().get(position).getAmount(),
-                                mAdapter.getListFilter().get(position).getFeeShip(),
-                                mAdapter.getListFilter().get(position).getFeePPA(),
-                                mAdapter.getListFilter().get(position).getFeeCollectLater(),
-                                mAdapter.getListFilter().get(position).getFeeCOD(), mAdapter.getListFilter().get(position).getFeePA(), new SmlCallback() {
-                            @Override
-                            public void onResponse(String HubCode) {
-                                SMLRequest smlRequest = new SMLRequest();
-                                smlRequest.setLadingCode(mAdapter.getListFilter().get(position).getMaE());
-                                smlRequest.setHubCode(HubCode);
-                                smlRequest.setPostmanId(PostmanId);
-                                smlRequest.setPOCode(POCode);
-                                smlRequest.setReceiverEmail(mAdapter.getListFilter().get(position).getReceiverEmail());
-                                smlRequest.setReceiverMobileNumber(mAdapter.getListFilter().get(position).getReciverMobile());
-
-                                smlRequest.setFeePPA(mAdapter.getListFilter().get(position).getFeePPA());
-                                smlRequest.setFeeCollectLater(mAdapter.getListFilter().get(position).getFeeCollectLater());
-                                smlRequest.setFeeShip(mAdapter.getListFilter().get(position).getFeeC());
-                                smlRequest.setFeeCOD(mAdapter.getListFilter().get(position).getFeeCOD());
-                                smlRequest.setAmountCOD(mAdapter.getListFilter().get(position).getAmount());
-                                mPresenter._phatSml(smlRequest);
-                            }
-                        }).show();
+                        code = "Phát SMART LOCKER";
                     }
+                    popupMenu.getMenu().add(0, 2, 2, code);
+
+                    popupMenu.setOnMenuItemClickListener(item -> {
+                        if (item.getItemId() == 1) {
+                            mPresenter.showThemDanhBa(holder.getItem(position).getReciverAddress());
+                        } else {
+                            positionItem = position;
+                            if (!TextUtils.isEmpty(mAdapter.getListFilter().get(position).getVatCode())) {
+                                int j = 0;
+                                String tam[] = mAdapter.getListFilter().get(position).getVatCode().split(",");
+                                for (int i = 0; i < tam.length; i++)
+                                    if (tam[i].equals("PHS")) {
+                                        j++;
+                                    }
+                                if (j > 0) {
+                                    new DialogSML(getViewContext(), "HỦY PHÁT TẠI SMART LOCKER", mAdapter.getListFilter().get(position).getMaE(), mAdapter.getListFilter().get(position).getReciverName(), mAdapter.getListFilter().get(position).getReciverAddress(), 0, mAdapter.getListFilter().get(position).getiDHub(), mAdapter.getListFilter().get(position).getHubAddress(), 0, 0, 0, 0, 0, 0, new SmlCallback() {
+                                        @Override
+                                        public void onResponse(String HubCode) {
+                                            SMLRequest smlRequest = new SMLRequest();
+                                            smlRequest.setLadingCode(mAdapter.getListFilter().get(position).getMaE());
+                                            smlRequest.setPostmanId(PostmanId);
+                                            smlRequest.setPOCode(POCode);
+                                            mPresenter._huySml(smlRequest);
+                                        }
+                                    }).show();
+                                } else {
+                                    new DialogSML(getViewContext(), "PHÁT TẠI SMART LOCKER", mAdapter.getListFilter().get(position).getMaE(), mAdapter.getListFilter().get(position).getReciverName(), mAdapter.getListFilter().get(position).getReciverAddress(), 1, "", "", mAdapter.getListFilter().get(position).getAmount(), mAdapter.getListFilter().get(position).getFeeShip(), mAdapter.getListFilter().get(position).getFeePPA(), mAdapter.getListFilter().get(position).getFeeCollectLater(), mAdapter.getListFilter().get(position).getFeeCOD(), mAdapter.getListFilter().get(position).getFeePA(), new SmlCallback() {
+                                        @Override
+                                        public void onResponse(String HubCode) {
+                                            SMLRequest smlRequest = new SMLRequest();
+                                            smlRequest.setLadingCode(mAdapter.getListFilter().get(position).getMaE());
+                                            smlRequest.setHubCode(HubCode);
+                                            smlRequest.setPostmanId(PostmanId);
+                                            smlRequest.setPOCode(POCode);
+                                            smlRequest.setReceiverEmail(mAdapter.getListFilter().get(position).getReceiverEmail());
+                                            smlRequest.setReceiverMobileNumber(mAdapter.getListFilter().get(position).getReciverMobile());
+                                            smlRequest.setFeePPA(mAdapter.getListFilter().get(position).getFeePPA());
+                                            smlRequest.setFeeCollectLater(mAdapter.getListFilter().get(position).getFeeCollectLater());
+                                            smlRequest.setFeeShip(mAdapter.getListFilter().get(position).getFeeC());
+                                            smlRequest.setFeeCOD(mAdapter.getListFilter().get(position).getFeeCOD());
+                                            smlRequest.setAmountCOD(mAdapter.getListFilter().get(position).getAmount());
+                                            mPresenter._phatSml(smlRequest);
+                                        }
+                                    }).show();
+                                }
+                            } else {
+                                new DialogSML(getViewContext(), "PHÁT TẠI SMART LOCKER", mAdapter.getListFilter().get(position).getMaE(), mAdapter.getListFilter().get(position).getReciverName(), mAdapter.getListFilter().get(position).getReciverAddress(), 1, "", "", mAdapter.getListFilter().get(position).getAmount(), mAdapter.getListFilter().get(position).getFeeShip(), mAdapter.getListFilter().get(position).getFeePPA(), mAdapter.getListFilter().get(position).getFeeCollectLater(), mAdapter.getListFilter().get(position).getFeeCOD(), mAdapter.getListFilter().get(position).getFeePA(), new SmlCallback() {
+                                    @Override
+                                    public void onResponse(String HubCode) {
+                                        SMLRequest smlRequest = new SMLRequest();
+                                        smlRequest.setLadingCode(mAdapter.getListFilter().get(position).getMaE());
+                                        smlRequest.setHubCode(HubCode);
+                                        smlRequest.setPostmanId(PostmanId);
+                                        smlRequest.setPOCode(POCode);
+                                        smlRequest.setReceiverEmail(mAdapter.getListFilter().get(position).getReceiverEmail());
+                                        smlRequest.setReceiverMobileNumber(mAdapter.getListFilter().get(position).getReciverMobile());
+
+                                        smlRequest.setFeePPA(mAdapter.getListFilter().get(position).getFeePPA());
+                                        smlRequest.setFeeCollectLater(mAdapter.getListFilter().get(position).getFeeCollectLater());
+                                        smlRequest.setFeeShip(mAdapter.getListFilter().get(position).getFeeC());
+                                        smlRequest.setFeeCOD(mAdapter.getListFilter().get(position).getFeeCOD());
+                                        smlRequest.setAmountCOD(mAdapter.getListFilter().get(position).getAmount());
+                                        mPresenter._phatSml(smlRequest);
+                                    }
+                                }).show();
+                            }
+                        }
+                        return true;
+                    });
+                    popupMenu.show();
                 });
-
-                //Button ...
-                // goi cho nguoi gui
-//                holder.img_ContactPhone_extend.setOnClickListener(v -> {
-//
-//                });
-
                 // goi cho nguoi nhan
                 holder.img_contact_phone.setOnClickListener(v -> {
-
-
                     PopupMenu popupMenu = new PopupMenu(requireContext(), holder.img_contact_phone);
                     try {
                         popupMenu.getMenu().add(0, 1, 1, "Gọi cho người gửi");
@@ -510,16 +573,13 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 //                                    } else
                                                 mPresenter.callForward(phone, mAdapter.getListFilter().get(position).getMaE());
                                             } else {
-                                                if (mAdapter.getListFilter().get(position).getSenderBookingPhone() == null ||
-                                                        TextUtils.isEmpty(mAdapter.getListFilter().get(position).getSenderBookingPhone())) {
+                                                if (mAdapter.getListFilter().get(position).getSenderBookingPhone() == null || TextUtils.isEmpty(mAdapter.getListFilter().get(position).getSenderBookingPhone())) {
                                                     Toast.showToast(getViewContext(), "Bưu gửi chưa được booking thành công. Vui lòng gọi điện thoại qua sim của bưu tá");
                                                     return;
                                                 }
                                                 Intent intent = new Intent(Intent.ACTION_CALL);
                                                 intent.setData(Uri.parse("tel:" + mAdapter.getListFilter().get(position).getSenderBookingPhone()));
-                                                if (ContextCompat.checkSelfPermission(getActivity(),
-                                                        Manifest.permission.CALL_PHONE)
-                                                        != PackageManager.PERMISSION_GRANTED) {
+                                                if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                                                     ActivityCompat.requestPermissions(getActivity(), new String[]{CALL_PHONE}, REQUEST_CODE_ASK_PERMISSIONS);
                                                 } else {
                                                     startActivity(intent);
@@ -613,16 +673,13 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 //                                    } else
                                                 mPresenter.callForward(phone, mAdapter.getListFilter().get(position).getMaE());
                                             } else {
-                                                if (mAdapter.getListFilter().get(position).getReceiverBookingPhone() == null ||
-                                                        TextUtils.isEmpty(mAdapter.getListFilter().get(position).getReceiverBookingPhone())) {
+                                                if (mAdapter.getListFilter().get(position).getReceiverBookingPhone() == null || TextUtils.isEmpty(mAdapter.getListFilter().get(position).getReceiverBookingPhone())) {
                                                     Toast.showToast(getViewContext(), "Bưu gửi chưa được booking thành công. Vui lòng gọi điện thoại qua sim của bưu tá");
                                                     return;
                                                 }
                                                 Intent intent = new Intent(Intent.ACTION_CALL);
                                                 intent.setData(Uri.parse("tel:" + mAdapter.getListFilter().get(position).getReceiverBookingPhone()));
-                                                if (ContextCompat.checkSelfPermission(getActivity(),
-                                                        Manifest.permission.CALL_PHONE)
-                                                        != PackageManager.PERMISSION_GRANTED) {
+                                                if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                                                     ActivityCompat.requestPermissions(getActivity(), new String[]{CALL_PHONE}, REQUEST_CODE_ASK_PERMISSIONS);
                                                 } else {
                                                     startActivity(intent);
@@ -753,10 +810,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         }
         try {
             mPresenter.getMapVitri(new GetLocation().getLastKnownLocation(getViewContext()).getLongitude(), new GetLocation().getLastKnownLocation(getViewContext()).getLatitude());
-            Log.d("ASDSADSADASDSAD",
-                    new GetLocation().getLastKnownLocation(getViewContext()).getLongitude() +
-                            "," +
-                            new GetLocation().getLastKnownLocation(getViewContext()).getLatitude());
+            Log.d("ASDSADSADASDSAD", new GetLocation().getLastKnownLocation(getViewContext()).getLongitude() + "," + new GetLocation().getLastKnownLocation(getViewContext()).getLatitude());
         } catch (Exception e) {
         }
     }
@@ -771,8 +825,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
     public void requestPermissionForReadExtertalStorage() throws Exception {
         try {
-            ActivityCompat.requestPermissions(getViewContext(), new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE},
-                    READ_STORAGE_PERMISSION_REQUEST_CODE);
+            ActivityCompat.requestPermissions(getViewContext(), new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE}, READ_STORAGE_PERMISSION_REQUEST_CODE);
         } catch (Exception e) {
             e.printStackTrace();
             throw e;
@@ -792,18 +845,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             int hasPermission9 = getActivity().checkSelfPermission(Manifest.permission.RECORD_AUDIO);
             int hasPermission10 = getActivity().checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
             int hasPermission11 = getActivity().checkSelfPermission(Manifest.permission.CALL_PHONE);
-            if (hasPermission1 != PackageManager.PERMISSION_GRANTED
-                    || hasPermission2 != PackageManager.PERMISSION_GRANTED
-                    || hasPermission3 != PackageManager.PERMISSION_GRANTED
-                    || hasPermission4 != PackageManager.PERMISSION_GRANTED
-                    || hasPermission5 != PackageManager.PERMISSION_GRANTED
-                    || hasPermission6 != PackageManager.PERMISSION_GRANTED
-                    || hasPermission7 != PackageManager.PERMISSION_GRANTED
-                    || hasPermission8 != PackageManager.PERMISSION_GRANTED
-                    || hasPermission9 != PackageManager.PERMISSION_GRANTED
-                    || hasPermission10 != PackageManager.PERMISSION_GRANTED
-                    || hasPermission11 != PackageManager.PERMISSION_GRANTED
-            ) {
+            if (hasPermission1 != PackageManager.PERMISSION_GRANTED || hasPermission2 != PackageManager.PERMISSION_GRANTED || hasPermission3 != PackageManager.PERMISSION_GRANTED || hasPermission4 != PackageManager.PERMISSION_GRANTED || hasPermission5 != PackageManager.PERMISSION_GRANTED || hasPermission6 != PackageManager.PERMISSION_GRANTED || hasPermission7 != PackageManager.PERMISSION_GRANTED || hasPermission8 != PackageManager.PERMISSION_GRANTED || hasPermission9 != PackageManager.PERMISSION_GRANTED || hasPermission10 != PackageManager.PERMISSION_GRANTED || hasPermission11 != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(getActivity(), PERMISSIONS, REQUEST_CODE_ASK_PERMISSIONS);
             }
         }
@@ -921,8 +963,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     @Override
     public void shoSucces(String mess) {
         for (int i = 0; i < mList.size(); i++)
-            if (mList.get(i).getId() == mID)
-                mList.get(i).setReceiverVpostcode(mess);
+            if (mList.get(i).getId() == mID) mList.get(i).setReceiverVpostcode(mess);
         mAdapter.notifyDataSetChanged();
     }
 
@@ -961,17 +1002,16 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     public void onDisplay() {
         super.onDisplay();
         if (!NetworkUtils.isNoNetworkAvailable(getViewContext())) {
-            if (cbPickAll != null)
-                cbPickAll.setChecked(false);
+            if (cbPickAll != null) cbPickAll.setChecked(false);
             if (isReturnedFromXacNhanBaoPhat) {
                 isReturnedFromXacNhanBaoPhat = false;
                 edtSearch.removeTextChangedListener(textWatcher);
                 edtSearch.setText("");
                 edtSearch.addTextChangedListener(textWatcher);
             }
-        } else
-            Toast.showToast(getViewContext(), "Thiết bị chưa kết nối internet");
+        } else Toast.showToast(getViewContext(), "Thiết bị chưa kết nối internet");
 //        showListSuccessFromTab(mList);
+        initSearch();
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -985,13 +1025,9 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             Log.d("THanhkhiem", deliveryType + "");
             if (!TextUtils.isEmpty(mFromDate) && !TextUtils.isEmpty(mToDate)) {
                 mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mFromDate, mToDate, routeInfo.getRouteCode(), Constants.ALL_SEARCH_TYPE);
-            } else if (deliveryType == Constants.DELIVERY_LIST_TYPE_COD_NEW ||
-                    deliveryType == Constants.DELIVERY_LIST_TYPE_NORMAL_NEW ||
-                    deliveryType == Constants.DELIVERY_LIST_TYPE_PA_NEW) {
+            } else if (deliveryType == Constants.DELIVERY_LIST_TYPE_COD_NEW || deliveryType == Constants.DELIVERY_LIST_TYPE_NORMAL_NEW || deliveryType == Constants.DELIVERY_LIST_TYPE_PA_NEW) {
                 mPresenter.searchDeliveryPostman(mUserInfo.getiD(), mDate, mDate, routeInfo.getRouteCode(), deliveryType);
-            } else if (deliveryType == Constants.DELIVERY_LIST_TYPE_NORMAL ||
-                    deliveryType == Constants.DELIVERY_LIST_TYPE_COD ||
-                    deliveryType == Constants.DELIVERY_LIST_TYPE_PA) {
+            } else if (deliveryType == Constants.DELIVERY_LIST_TYPE_NORMAL || deliveryType == Constants.DELIVERY_LIST_TYPE_COD || deliveryType == Constants.DELIVERY_LIST_TYPE_PA) {
                 String toDate = DateTimeUtils.calculateDay(-10);
                 String fromDate = DateTimeUtils.calculateDay(-1);
                 mPresenter.searchDeliveryPostman(mUserInfo.getiD(), toDate, fromDate, routeInfo.getRouteCode(), deliveryType);
@@ -1013,11 +1049,9 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         if (mAdapter != null) {
             mAdapter.notifyDataSetChanged();
             if (mAdapter.getItemsSelected().size() != 0) {
-                if (mAdapter.getItemsFilterSelected().size() < mAdapter.getListFilter().size()
-                        || mAdapter.getListFilter().size() == 0)
+                if (mAdapter.getItemsFilterSelected().size() < mAdapter.getListFilter().size() || mAdapter.getListFilter().size() == 0)
                     cbPickAll.setChecked(false);
-                else
-                    cbPickAll.setChecked(true);
+                else cbPickAll.setChecked(true);
                 tvItemSelected.setText(String.valueOf(mAdapter.getItemsSelected().size()));
             } else {
                 tvItemSelected.setText("0");
@@ -1057,8 +1091,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                     }
                 }
             }
-            if (mtype != 1)
-                mList.removeAll(deliveryPostmanArrayList);
+            if (mtype != 1) mList.removeAll(deliveryPostmanArrayList);
             else {
                 for (int j = 0; j < dataSuccess.size(); j++) {
                     int t = Integer.parseInt(dataSuccess.get(j));
@@ -1084,7 +1117,6 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                             deliveryPostmen.get(i).setStatus("Y");
                             deliveryPostmen.get(i).setCheck(false);
                             deliveryPKTC.add(deliveryPostmen.get(i));
-//                    Log.d("nguyenthi", new Gson().toJson(mList.get(i)));
                         }
                     }
                 }
@@ -1096,8 +1128,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     }
 
     @SuppressLint("NonConstantResourceId")
-    @OnClick({R.id.ll_scan_qr, R.id.tv_search, R.id.layout_item_pick_all,
-            R.id.tv_additional_barcode, R.id.rl_count_item_selected, R.id.img_map, R.id.img_refesh})
+    @OnClick({R.id.ll_scan_qr, R.id.tv_search, R.id.layout_item_pick_all, R.id.tv_additional_barcode, R.id.rl_count_item_selected, R.id.img_map, R.id.img_refesh})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_refesh:
@@ -1106,6 +1137,19 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                 cbPickAll.setChecked(false);
                 relativeLayout.setVisibility(View.GONE);
                 initSearch();
+//                if (mAdapter.getItemsSelected().size() != 0) {
+//                    List<DeliveryPostman> list = mAdapter.getItemsSelected();
+//                    StringBuilder codeText = new StringBuilder();
+//                    for (DeliveryPostman deliveryPostman : list) {
+//                        if (codeText.length() == 0)
+//                            codeText.append(deliveryPostman.getMaE());
+//                        else {
+//                            codeText.append(";");
+//                            codeText.append(deliveryPostman.getMaE());
+//                        }
+//                    }
+//                    mPresenter.showAddTicket(codeText.toString());
+//                } else Toast.showToast(getViewContext(), "Bạn chưa chọn bưu gửi nào.");
                 break;
             case R.id.img_map:
                 List<DeliveryPostman> commonObjects = mAdapter.getItemsSelected();
@@ -1173,6 +1217,8 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             isReturnedFromXacNhanBaoPhat = true;
             mPresenter.showConfirmDelivery(commonObjects);
         }
+
+
     }
 
     @Override
@@ -1216,8 +1262,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                 if (isFromNotification) {
                     isFromNotification = false;
                     int position = getFocusPosition();
-                    if (position != 0)
-                        recycler.scrollToPosition(position);
+                    if (position != 0) recycler.scrollToPosition(position);
                 }
                 if (mTotalScrolled != 0) {
                     recycler.scrollToPosition(mTotalScrolled);
@@ -1283,8 +1328,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                 if (isFromNotification) {
                     isFromNotification = false;
                     int position = getFocusPosition();
-                    if (position != 0)
-                        recycler.scrollToPosition(position);
+                    if (position != 0) recycler.scrollToPosition(position);
                 }
                 if (mTotalScrolled != 0) {
                     recycler.scrollToPosition(mTotalScrolled);
@@ -1349,8 +1393,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         if (getListVpostV1 == null) {
             vpostcodeModels.setLatitude(new GetLocation().getLastKnownLocation(getViewContext()).getLongitude());
             vpostcodeModels.setLongitude(new GetLocation().getLastKnownLocation(getViewContext()).getLatitude());
-        } else
-            vpostcodeModels = getListVpostV1;
+        } else vpostcodeModels = getListVpostV1;
     }
 
     @Override
@@ -1399,10 +1442,8 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             }
             cbPickAll.setChecked(true);
         }
-        if (mAdapter.getItemsSelected().size() == 0)
-            relativeLayout.setVisibility(View.GONE);
-        else
-            relativeLayout.setVisibility(View.VISIBLE);
+        if (mAdapter.getItemsSelected().size() == 0) relativeLayout.setVisibility(View.GONE);
+        else relativeLayout.setVisibility(View.VISIBLE);
         tvItemSelected.setText(String.valueOf(mAdapter.getItemsSelected().size()));
         mAdapter.notifyDataSetChanged();
     }
@@ -1483,9 +1524,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
     private void callProvidertoCSKH(String phone) {
         Intent intent = new Intent(Intent.ACTION_CALL);
         intent.setData(Uri.parse("tel:" + phone));
-        if (ContextCompat.checkSelfPermission(getActivity(),
-                Manifest.permission.CALL_PHONE)
-                != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
 
             ActivityCompat.requestPermissions(getActivity(), new String[]{CALL_PHONE}, REQUEST_CODE_ASK_PERMISSIONS);
         } else {
@@ -1548,14 +1587,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                     code = "15";
                     name = "Giao hàng không thành công";
                 }
-                VnpostOrderInfo vnpostOrderInfo = new VnpostOrderInfo(
-                        list.getMaE(),
-                        name, code,
-                        "",
-                        String.format("%s đ", NumberUtils.formatPriceNumber(amount)),
-                        String.format("%s đ", NumberUtils.formatPriceNumber(fee)),
-                        1,
-                        "");
+                VnpostOrderInfo vnpostOrderInfo = new VnpostOrderInfo(list.getMaE(), name, code, "", String.format("%s đ", NumberUtils.formatPriceNumber(amount)), String.format("%s đ", NumberUtils.formatPriceNumber(fee)), 1, "");
 
                 if (!list.getReciverMobile().isEmpty())
                     RingmeOttSdk.openChat(requireActivity(), list.getReciverMobile(), vnpostOrderInfo, 2, new OpenChatListener() {
@@ -1565,8 +1597,8 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                         }
 
                         @Override
-                        public void onFailure(@NonNull String s) {
-                            Toast.showToast(getViewContext(), s);
+                        public void onFailure(int i) {
+
                         }
                     });
                 popup.dismiss();
@@ -1586,14 +1618,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                     code = "15";
                     name = "Giao hàng không thành công";
                 }
-                VnpostOrderInfo vnpostOrderInfo = new VnpostOrderInfo(
-                        list.getMaE(),
-                        name, code,
-                        "",
-                        String.format("%s đ", NumberUtils.formatPriceNumber(amount)),
-                        String.format("%s đ", NumberUtils.formatPriceNumber(fee)),
-                        1,
-                        "");
+                VnpostOrderInfo vnpostOrderInfo = new VnpostOrderInfo(list.getMaE(), name, code, "", String.format("%s đ", NumberUtils.formatPriceNumber(amount)), String.format("%s đ", NumberUtils.formatPriceNumber(fee)), 1, "");
                 if (list.getSenderMobile().length() > 11) {
                     Toast.showToast(getViewContext(), "Số điện thoại không hợp lệ");
                     return;
@@ -1601,14 +1626,16 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                 if (!list.getSenderMobile().isEmpty())
                     RingmeOttSdk.openChat(requireActivity(), list.getSenderMobile(), vnpostOrderInfo, 2, new OpenChatListener() {
                         @Override
-                        public void onSuccessful() {
+                        public void onFailure(int i) {
 
                         }
 
                         @Override
-                        public void onFailure(@NonNull String s) {
-                            Toast.showToast(getViewContext(), s);
+                        public void onSuccessful() {
+
                         }
+
+
                     });
                 popup.dismiss();
             }
@@ -1627,28 +1654,23 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                     code = "15";
                     name = "Giao hàng không thành công";
                 }
-                VnpostOrderInfo vnpostOrderInfo = new VnpostOrderInfo(
-                        list.getMaE(),
-                        name, code,
-                        "",
-                        String.format("%s đ", NumberUtils.formatPriceNumber(amount)),
-                        String.format("%s đ", NumberUtils.formatPriceNumber(fee)),
-                        1,
-                        "");
+                VnpostOrderInfo vnpostOrderInfo = new VnpostOrderInfo(list.getMaE(), name, code, "", String.format("%s đ", NumberUtils.formatPriceNumber(amount)), String.format("%s đ", NumberUtils.formatPriceNumber(fee)), 1, "");
 
                 new DialogChatButa(getViewContext(), "D", new BuuCucCallback() {
                     @Override
                     public void onResponse(String loaibc, String mabuucuc) {
                         RingmeOttSdk.openChat(requireActivity(), loaibc, vnpostOrderInfo, 2, new OpenChatListener() {
                             @Override
-                            public void onSuccessful() {
+                            public void onFailure(int i) {
 
                             }
 
                             @Override
-                            public void onFailure(@NonNull String s) {
-                                Toast.showToast(getViewContext(), s);
+                            public void onSuccessful() {
+
                             }
+
+
                         });
                     }
                 }).show();
@@ -1669,20 +1691,12 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                     code = "15";
                     name = "Giao hàng không thành công";
                 }
-                VnpostOrderInfo vnpostOrderInfo = new VnpostOrderInfo(
-                        list.getMaE(),
-                        name, code,
-                        "",
-                        String.format("%s đ", NumberUtils.formatPriceNumber(amount)),
-                        String.format("%s đ", NumberUtils.formatPriceNumber(fee)),
-                        1,
-                        "");
+                VnpostOrderInfo vnpostOrderInfo = new VnpostOrderInfo(list.getMaE(), name, code, "", String.format("%s đ", NumberUtils.formatPriceNumber(amount)), String.format("%s đ", NumberUtils.formatPriceNumber(fee)), 1, "");
 
                 new DilogCSKH(getViewContext(), 1, list.getPOProvinceCode(), new BuuCucCallback() {
                     @Override
                     public void onResponse(String loaibc, String mabuucuc) {
-                        RequestQueuChat q
-                                = new RequestQueuChat();
+                        RequestQueuChat q = new RequestQueuChat();
                         q.setIdMission(5);
                         q.setIdDepartment(mabuucuc);
                         mPresenter.ddQueuChat(q, vnpostOrderInfo, 5);
@@ -1706,14 +1720,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                     code = "15";
                     name = "Giao hàng không thành công";
                 }
-                VnpostOrderInfo vnpostOrderInfo = new VnpostOrderInfo(
-                        list.getMaE(),
-                        name, code,
-                        "",
-                        String.format("%s đ", NumberUtils.formatPriceNumber(amount)),
-                        String.format("%s đ", NumberUtils.formatPriceNumber(fee)),
-                        1,
-                        "");
+                VnpostOrderInfo vnpostOrderInfo = new VnpostOrderInfo(list.getMaE(), name, code, "", String.format("%s đ", NumberUtils.formatPriceNumber(amount)), String.format("%s đ", NumberUtils.formatPriceNumber(fee)), 1, "");
 
 //                new DilogCSKH(getViewContext(), new BuuCucCallback() {
 //                    @Override
@@ -1748,7 +1755,6 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
         queueInfo.setJidQueue(response.getJidQueue());
         queueInfo.setDispName(response.getDispName());
         Log.d("THANHKHIEM", new Gson().toJson(queueInfo) + " - " + type);
-        RingmeOttSdk.openChatQueue(requireActivity(),
-                queueInfo, vnpostOrderInfo, type, false);
+        RingmeOttSdk.openChatQueue(requireActivity(), queueInfo, vnpostOrderInfo, type, false);
     }
 }

@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.functions.mainhome.location.LocationPresenter;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.danhsachbaophat.TabBaoPhatPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.huybaophat.CancelBD13Activity;
 import com.ems.dingdong.functions.mainhome.phathang.baophatoffline.create.CreateBD13OfflinePresenter;
 import com.ems.dingdong.functions.mainhome.phathang.baophatoffline.list.BaoPhatOfflinePresenter;
@@ -17,6 +18,7 @@ import com.ems.dingdong.functions.mainhome.phathang.noptien.tabs.TabPaymentPrese
 import com.ems.dingdong.functions.mainhome.phathang.thongke.detailsuccess.HistoryDetailSuccessPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.thongke.detailsuccess.StatisticType;
 import com.ems.dingdong.functions.mainhome.phathang.thongke.sml.SmartlockStatisticPresenter;
+import com.ems.dingdong.functions.mainhome.phathang.thongke.ticket.StatisticTicketPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.thongkelogcuocgoi.StatisticalLogPresenter;
 import com.ems.dingdong.model.GachNo;
 import com.ems.dingdong.model.ModeTu;
@@ -140,5 +142,15 @@ public class PhatHangPresenter extends Presenter<PhatHangContract.View, PhatHang
     @Override
     public void showLog() {
         new StatisticalLogPresenter(mContainerView).pushView();
+    }
+
+    @Override
+    public void showStaticTicket() {
+        new StatisticTicketPresenter(mContainerView).pushView();
+    }
+
+    @Override
+    public void showBaoPhat() {
+        new TabBaoPhatPresenter(mContainerView).pushView();
     }
 }

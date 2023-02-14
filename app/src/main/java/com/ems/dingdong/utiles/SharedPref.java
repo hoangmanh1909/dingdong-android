@@ -90,17 +90,19 @@ public class SharedPref {
 
     public void clearRaVao() {
         try {
-            editor.remove(Constants.KEY_RA_VAO);
+            editor.remove(Constants.KEY_RA_VAOV1);
             editor.remove(Constants.KEY_LIST_PHONE);
             editor.commit();
         } catch (Exception ex) {
-            Logger.w("THanhKhiem123"+ex.getMessage());
+            Logger.w("THanhKhiem123" + ex.getMessage());
         }
     }
 
     public void clear() {
         try {
             editor.remove("UniqueID");
+//            editor.remove(Constants.KEY_RA_VAOV1);
+            editor.remove(Constants.KEY_TRANG_THAI_LOG_CALL);
             editor.remove(Constants.KEY_HOTLINE_NUMBER);
             editor.remove(Constants.KEY_USER_INFO);
             editor.remove(Constants.KEY_MOBILE_NUMBER_SIGN_CODE);

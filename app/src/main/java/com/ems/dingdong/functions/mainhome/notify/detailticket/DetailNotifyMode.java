@@ -53,10 +53,80 @@ public class DetailNotifyMode {
     private String modifyByName;
     @SerializedName("POName")
     private String pOName;
+    @SerializedName("POCode")
+    private String POCode;
     @SerializedName("CallStatus")
     private String CallStatus;
+    @SerializedName("ImagePath")
+    private String ImagePath;
+    @SerializedName("SubSolutionName")
+    private String SubSolutionName;
+    @SerializedName("Length")
+    private int Length;
+    @SerializedName("Height")
+    private int Height;
+    @SerializedName("Width")
+    private int Width;
+    @SerializedName("Fee")
+    private long Fee;
     @SerializedName("AnswerDuration")
     private int AnswerDuration;
+
+    public String getImagePath() {
+        return ImagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        ImagePath = imagePath;
+    }
+
+    public String getSubSolutionName() {
+        return SubSolutionName;
+    }
+
+    public void setSubSolutionName(String subSolutionName) {
+        SubSolutionName = subSolutionName;
+    }
+
+    public int getLength() {
+        return Length;
+    }
+
+    public void setLength(int length) {
+        Length = length;
+    }
+
+    public int getHeight() {
+        return Height;
+    }
+
+    public void setHeight(int height) {
+        Height = height;
+    }
+
+    public int getWidth() {
+        return Width;
+    }
+
+    public void setWidth(int width) {
+        Width = width;
+    }
+
+    public long getFee() {
+        return Fee;
+    }
+
+    public void setFee(long fee) {
+        Fee = fee;
+    }
+
+    public String getPOCode() {
+        return POCode;
+    }
+
+    public void setPOCode(String POCode) {
+        this.POCode = POCode;
+    }
 
     public String getCallStatus() {
         return CallStatus;

@@ -1,4 +1,4 @@
-//include ':SdkSipCmc'
+    //include ':SdkSipCmc'
 //include ':app', ':Libraries:VinattiCore', ':Libraries:libCamera' , ':Libraries:UtilCode'
 //,':Libraries:ringmeottsdk'
 pluginManagement {

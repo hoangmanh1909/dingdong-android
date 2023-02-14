@@ -74,7 +74,7 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="10dp"
                     android:layout_weight="1"
-                    android:background="@drawable/bg_border_botton_cam"
+                    android:background="@drawable/bg_confirm_continue"
                     android:gravity="center"
                     android:text="Cập nhật"
                     android:textAllCaps="false"

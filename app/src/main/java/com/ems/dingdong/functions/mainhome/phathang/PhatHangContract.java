@@ -44,6 +44,10 @@ interface PhatHangContract {
         void showStatisticLog();
 
         void showLog();
+
+        void showStaticTicket();
+
+        void showBaoPhat();
     }
 }
 

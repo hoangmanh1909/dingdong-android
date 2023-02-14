@@ -386,13 +386,13 @@ public class TimDuongDiFragmentBaoPhat extends ViewFragment<TimDuongDiContractBa
 //                    for (int i = 0; i < coordinates.length(); i++) {
                     List<Double> drawCoordinates = new ArrayList<>();
                     JSONArray element = coordinates.getJSONArray(0);
-                    drawCoordinates.add(element.getDouble(0));
-                    drawCoordinates.add(element.getDouble(1));
+                    drawCoordinates.add(mPresenter.getApiTravel().getPoints().get(0).getLon());
+                    drawCoordinates.add(mPresenter.getApiTravel().getPoints().get(0).getLat());
                     drawCoordinatess.add(drawCoordinates);
                     drawCoordinates = new ArrayList<>();
                     element = coordinates.getJSONArray(coordinates.length() - 1);
-                    drawCoordinates.add(element.getDouble(0));
-                    drawCoordinates.add(element.getDouble(1));
+                    drawCoordinates.add(mPresenter.getApiTravel().getPoints().get(1).getLon());
+                    drawCoordinates.add(mPresenter.getApiTravel().getPoints().get(1).getLat());
                     drawCoordinatess.add(drawCoordinates);
 //                    }
                     geometry.setCoordinates(drawCoordinatess);
@@ -432,6 +432,9 @@ public class TimDuongDiFragmentBaoPhat extends ViewFragment<TimDuongDiContractBa
             if (mPresenter.getApiTravel() != null)
                 mPresenter.vietmapTravelSalesmanProblem(mApiTravel);
             else mPresenter.getPoint(requests);
+
+
+
         }
     }
 

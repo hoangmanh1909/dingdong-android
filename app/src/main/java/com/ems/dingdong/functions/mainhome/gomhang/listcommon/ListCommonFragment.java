@@ -813,14 +813,15 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
                 }
                 RingmeOttSdk.openChat(requireActivity(), list.getReceiverPhone(), vnpostOrderInfo, 1, new OpenChatListener() {
                     @Override
+                    public void onFailure(int i) {
+                    }
+
+                    @Override
                     public void onSuccessful() {
 
                     }
 
-                    @Override
-                    public void onFailure(@NonNull String s) {
-                        Toast.showToast(getViewContext(), s);
-                    }
+
                 });
                 popup.dismiss();
             }
@@ -834,7 +835,7 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
                         "",
                         String.format("%s đ", NumberUtils.formatPriceNumber(0)),
                         String.format("%s đ", NumberUtils.formatPriceNumber(0)),
-                        1,
+                        2,
                         "");
 
                 new DialogChatButa(getViewContext(), "P", new BuuCucCallback() {
@@ -842,14 +843,16 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
                     public void onResponse(String loaibc, String mabuucuc) {
                         RingmeOttSdk.openChat(requireActivity(), loaibc, vnpostOrderInfo, 1, new OpenChatListener() {
                             @Override
-                            public void onSuccessful() {
+                            public void onFailure(int i) {
 
                             }
 
                             @Override
-                            public void onFailure(@NonNull String s) {
-                                Toast.showToast(getViewContext(), s);
+                            public void onSuccessful() {
+
                             }
+
+
                         });
                     }
                 }).show();
@@ -865,7 +868,7 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
                         "",
                         String.format("%s đ", NumberUtils.formatPriceNumber(0)),
                         String.format("%s đ", NumberUtils.formatPriceNumber(0)),
-                        1,
+                        2,
                         "");
 
                 new DilogCSKH(getViewContext(), 1, list.getPOProvinceCode(), new BuuCucCallback() {
@@ -891,7 +894,7 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
                         "",
                         String.format("%s đ", NumberUtils.formatPriceNumber(0)),
                         String.format("%s đ", NumberUtils.formatPriceNumber(0)),
-                        1,
+                        2,
                         "");
                 SharedPref sharedPref = new SharedPref(getContext());
                 String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");

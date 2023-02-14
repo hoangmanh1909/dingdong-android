@@ -96,6 +96,8 @@ public class PhatHangFragment extends ViewFragment<PhatHangContract.Presenter> i
                 homeInfos.add(new HomeInfo(17, R.drawable.ic_sml_123, "Smartlocker"));
 //                homeInfos.add(new HomeInfo(18, R.drawable.ic_baseline_contact_phone_24_l1, "Thống kê log cuộc gọi"));
                 homeInfos.add(new HomeInfo(18, R.drawable.ic_baseline_contact_phone_24_l1, "Quản lí lịch sử cuộc gọi"));
+                homeInfos.add(new HomeInfo(20, R.drawable.tickets, "Thống kê ticket"));
+//                homeInfos.add(new HomeInfo(21, R.drawable.tickets, "Thống kê ticket"));
 //                homeInfos.add(new HomeInfo(19, R.drawable.ic_baseline_contact_phone_24_l1, "Quản lí lịch sử cuộc gọi"));
 
                 mList.addAll(homeInfos);
@@ -175,6 +177,10 @@ public class PhatHangFragment extends ViewFragment<PhatHangContract.Presenter> i
                             mPresenter.showStatisticLog();
                         } else if (homeInfo.getId() == 19) {
                             mPresenter.showLog();
+                        } else if (homeInfo.getId() == 20) {
+                            mPresenter.showStaticTicket();
+                        } else if (homeInfo.getId() == 21) {
+                            mPresenter.showBaoPhat();
                         }
                     }
                 });

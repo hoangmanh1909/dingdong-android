@@ -250,118 +250,148 @@ public class HoanTatTinDialog extends Dialog implements com.tsongkha.spinnerdate
         this.containerView = containerView;
         this.vitri = vitri;
 
-        NetWorkControllerGateWay.vietmapVitriEndCode(lonv1, latv1).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(simpleResult -> {
-            if (simpleResult.getErrorCode().equals("00")) {
-                if (simpleResult.getResponseLocation() != null) {
-                    Object data = simpleResult.getResponseLocation();
-                    String dataJson = NetWorkController.getGson().toJson(data);
-                    XacMinhDiaChiResult resultModel = NetWorkController.getGson().fromJson(dataJson, XacMinhDiaChiResult.class);
-                    VpostcodeModel vpostcodeModel = new VpostcodeModel();
-                    vpostcodeModel.setMaE("");
-                    vpostcodeModel.setId(0);
-                    vpostcodeModel.setSenderVpostcode(resultModel.getResult().getSmartCode());
-                    vpostcodeModel.setFullAdress("Vị trí hiện tại");
-                    vpostcodeModel.setVitri(resultModel.getResult().getCompoundCode());
-                    vpostcodeModel.setLongitude(resultModel.getResult().getLocation().getLongitude());
-                    vpostcodeModel.setLatitude(resultModel.getResult().getLocation().getLatitude());
-                    list111.add(vpostcodeModel);
-                    requests.add(resultModel.getResult().getSmartCode());
-                    requests.add(smcodeV1);
-                    tvVitri.setText("Vị trí gom hàng: " + resultModel.getResult().getCompoundCode() + "\nTại tọa độ: " + latv1 + ", " + lonv1);
+        try {
+            NetWorkControllerGateWay.vietmapVitriEndCode(lonv1, latv1).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(simpleResult -> {
+                if (simpleResult.getErrorCode().equals("00")) {
+                    if (simpleResult.getResponseLocation() != null) {
+                        Object data = simpleResult.getResponseLocation();
+                        String dataJson = NetWorkController.getGson().toJson(data);
+                        XacMinhDiaChiResult resultModel = NetWorkController.getGson().fromJson(dataJson, XacMinhDiaChiResult.class);
+                        VpostcodeModel vpostcodeModel = new VpostcodeModel();
+                        vpostcodeModel.setMaE("");
+                        vpostcodeModel.setId(0);
+                        vpostcodeModel.setSenderVpostcode(resultModel.getResult().getSmartCode());
+                        vpostcodeModel.setFullAdress("Vị trí hiện tại");
+                        vpostcodeModel.setVitri(resultModel.getResult().getCompoundCode());
+                        vpostcodeModel.setLongitude(resultModel.getResult().getLocation().getLongitude());
+                        vpostcodeModel.setLatitude(resultModel.getResult().getLocation().getLatitude());
+                        list111.add(vpostcodeModel);
+                        requests.add(resultModel.getResult().getSmartCode());
+                        requests.add(smcodeV1);
+                        tvVitri.setText("Vị trí gom hàng: " + resultModel.getResult().getCompoundCode() + "\nTại tọa độ: " + latv1 + ", " + lonv1);
 
-                    if (latbg != 0.0 && lonbg != 0.0) {
-                        PointTinhKhoanCach toAddress = new PointTinhKhoanCach();
-                        toAddress.setLatitude(latbg);
-                        toAddress.setLongitude(lonbg);
-                        PointTinhKhoanCach fromAddress = new PointTinhKhoanCach();
-                        fromAddress.setLatitude(latv1);
-                        fromAddress.setLongitude(lonv1);
-                        DLVGetDistanceRequest dlvGetDistanceRequest = new DLVGetDistanceRequest();
-                        dlvGetDistanceRequest.setFrom(fromAddress);
-                        dlvGetDistanceRequest.setTo(toAddress);
-                        NetWorkControllerGateWay.vietmapKhoangCach(dlvGetDistanceRequest).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new SingleObserver<SimpleResult>() {
-                            @Override
-                            public void onSubscribe(Disposable d) {
-
-                            }
-
-                            @Override
-                            public void onSuccess(SimpleResult simpleResult) {
-                                if (simpleResult.getErrorCode().equals("00")) {
-                                    tvKhoancach.setText("Cách vị trí lấy hàng: " + simpleResult.getData() + " km");
-                                    soKM = simpleResult.getData();
-                                } else tvKhoancach.setText(simpleResult.getMessage());
-                            }
-
-                            @Override
-                            public void onError(Throwable e) {
-
-                            }
-                        });
-                    } else if (!vitri.isEmpty()) {
-                        NetWorkControllerGateWay.vietmapSearch(vitri, 0.0, 0.0).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new SingleObserver<XacMinhDiaChiResult>() {
-                            @Override
-                            public void onSubscribe(Disposable d) {
-
-                            }
-
-                            @SuppressLint("CheckResult")
-                            @Override
-                            public void onSuccess(XacMinhDiaChiResult xacMinhDiaChiResult) {
-                                if (xacMinhDiaChiResult.getErrorCode().equals("00")) {
-                                    List<AddressListModel> listModels = new ArrayList<>();
-                                    try {
-                                        listModels.addAll(handleObjectList(xacMinhDiaChiResult.getResponseLocation()));
-                                        PointTinhKhoanCach toAddress = new PointTinhKhoanCach();
-                                        smcodeV1 = listModels.get(0).getSmartCode();
-                                        toAddress.setLatitude(listModels.get(0).getLatitude());
-                                        toAddress.setLongitude(listModels.get(0).getLongitude());
-                                        PointTinhKhoanCach fromAddress = new PointTinhKhoanCach();
-                                        fromAddress.setLatitude(latv1);
-                                        fromAddress.setLongitude(lonv1);
-                                        DLVGetDistanceRequest dlvGetDistanceRequest = new DLVGetDistanceRequest();
-                                        dlvGetDistanceRequest.setFrom(fromAddress);
-                                        dlvGetDistanceRequest.setTo(toAddress);
-                                        NetWorkControllerGateWay.vietmapKhoangCach(dlvGetDistanceRequest).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new SingleObserver<SimpleResult>() {
-                                            @Override
-                                            public void onSubscribe(Disposable d) {
-
-                                            }
-
-                                            @Override
-                                            public void onSuccess(SimpleResult simpleResult) {
-                                                if (simpleResult.getErrorCode().equals("00")) {
-                                                    tvKhoancach.setText("Cách vị trí lấy hàng: " + simpleResult.getData() + " km");
-                                                    soKM = simpleResult.getData();
-                                                } else
-                                                    tvKhoancach.setText(simpleResult.getMessage());
-                                            }
-
-                                            @Override
-                                            public void onError(Throwable e) {
-
-                                            }
-                                        });
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
+                        if (latbg != 0.0 && lonbg != 0.0) {
+                            PointTinhKhoanCach toAddress = new PointTinhKhoanCach();
+                            toAddress.setLatitude(latbg);
+                            toAddress.setLongitude(lonbg);
+                            PointTinhKhoanCach fromAddress = new PointTinhKhoanCach();
+                            fromAddress.setLatitude(latv1);
+                            fromAddress.setLongitude(lonv1);
+                            RouteRequest request = new RouteRequest();
+                            request.setLon(lonv1);
+                            request.setLat(latv1);
+                            routeRequestList.add(request);
+                            request = new RouteRequest();
+                            request.setLon(lonbg);
+                            request.setLat(latbg);
+                            routeRequestList.add(request);
+                            DLVGetDistanceRequest dlvGetDistanceRequest = new DLVGetDistanceRequest();
+                            dlvGetDistanceRequest.setFrom(fromAddress);
+                            dlvGetDistanceRequest.setTo(toAddress);
+                            NetWorkControllerGateWay.vietmapKhoangCach(dlvGetDistanceRequest).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new SingleObserver<SimpleResult>() {
+                                @Override
+                                public void onSubscribe(Disposable d) {
 
                                 }
-                            }
 
-                            @Override
-                            public void onError(Throwable e) {
+                                @Override
+                                public void onSuccess(SimpleResult simpleResult) {
+                                    if (simpleResult.getErrorCode().equals("00")) {
+                                        tvKhoancach.setText("Cách vị trí lấy hàng: " + simpleResult.getData() + " km");
+                                        soKM = simpleResult.getData();
+                                    }  else {
+                                        tvKhoancach.setVisibility(View.GONE);
+                                        imgVitri.setVisibility(View.GONE);
+                                    }
+                                }
 
-                            }
-                        });
+                                @Override
+                                public void onError(Throwable e) {
+
+                                }
+                            });
+                        } else if (!vitri.isEmpty()) {
+                            NetWorkControllerGateWay.vietmapSearch(vitri, 0.0, 0.0).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new SingleObserver<XacMinhDiaChiResult>() {
+                                @Override
+                                public void onSubscribe(Disposable d) {
+
+                                }
+                                @SuppressLint("CheckResult")
+                                @Override
+                                public void onSuccess(XacMinhDiaChiResult xacMinhDiaChiResult) {
+                                    if (xacMinhDiaChiResult.getErrorCode().equals("00")) {
+                                        List<AddressListModel> listModels = new ArrayList<>();
+                                        try {
+                                            listModels.addAll(handleObjectList(xacMinhDiaChiResult.getResponseLocation()));
+                                            if (listModels.size() != 0) {
+                                                PointTinhKhoanCach toAddress = new PointTinhKhoanCach();
+                                                smcodeV1 = listModels.get(0).getSmartCode();
+                                                toAddress.setLatitude(listModels.get(0).getLatitude());
+                                                toAddress.setLongitude(listModels.get(0).getLongitude());
+                                                PointTinhKhoanCach fromAddress = new PointTinhKhoanCach();
+                                                fromAddress.setLatitude(latv1);
+                                                fromAddress.setLongitude(lonv1);
+                                                RouteRequest request = new RouteRequest();
+                                                request.setLon(lonv1);
+                                                request.setLat(latv1);
+                                                routeRequestList.add(request);
+                                                request = new RouteRequest();
+                                                request.setLon(listModels.get(0).getLongitude());
+                                                request.setLat(listModels.get(0).getLatitude());
+                                                DLVGetDistanceRequest dlvGetDistanceRequest = new DLVGetDistanceRequest();
+                                                dlvGetDistanceRequest.setFrom(fromAddress);
+                                                dlvGetDistanceRequest.setTo(toAddress);
+
+                                                NetWorkControllerGateWay.vietmapKhoangCach(dlvGetDistanceRequest).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new SingleObserver<SimpleResult>() {
+                                                    @Override
+                                                    public void onSubscribe(Disposable d) {
+
+                                                    }
+
+                                                    @Override
+                                                    public void onSuccess(SimpleResult simpleResult) {
+                                                        if (simpleResult.getErrorCode().equals("00")) {
+                                                            tvKhoancach.setText("Cách vị trí lấy hàng: " + simpleResult.getData() + " km");
+                                                            soKM = simpleResult.getData();
+                                                        } else {
+                                                            tvKhoancach.setVisibility(View.GONE);
+                                                            imgVitri.setVisibility(View.GONE);
+                                                        }
+                                                    }
+
+                                                    @Override
+                                                    public void onError(Throwable e) {
+
+                                                    }
+                                                });
+                                            }else {
+                                                tvKhoancach.setVisibility(View.GONE);
+                                                imgVitri.setVisibility(View.GONE);
+                                            }
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+
+                                    }
+                                }
+
+                                @Override
+                                public void onError(Throwable e) {
+
+                                }
+                            });
+                        } else {
+                            tvKhoancach.setText("Không có địa chỉ vui lòng kiểm tra lại");
+                        }
+
                     } else {
-                        tvKhoancach.setText("Không có địa chỉ vui lòng kiểm tra lại");
                     }
-
-                } else {
                 }
-            }
-        });
+            });
+        } catch (Exception e) {
+
+        }
+
 
     }
 
@@ -571,7 +601,7 @@ public class HoanTatTinDialog extends Dialog implements com.tsongkha.spinnerdate
     public void show() {
         super.show();
     }
-
+    List<RouteRequest> routeRequestList = new ArrayList<>();
 
     @OnClick({R.id.tv_reason, R.id.tv_update, R.id.tv_close, R.id.tv_date, R.id.tv_time, R.id.img_vitri})
     public void onViewClicked(View view) {
@@ -582,9 +612,13 @@ public class HoanTatTinDialog extends Dialog implements com.tsongkha.spinnerdate
                 vpostcodeModel.setSenderVpostcode(smcodeV1);
                 vpostcodeModel.setFullAdress(vitri);
                 list111.add(vpostcodeModel);
+                TravelSales travelSales = new TravelSales();
+                int transportType = NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class).getTransportType();
+                travelSales.setTransportType(transportType);
+                travelSales.setPoints(routeRequestList);
                 Log.d("ASD123123", new Gson().toJson(list111));
                 if (!smcodeV1.isEmpty()) {
-                    new TimDuongDiPresenterBaoPhat(containerView).setType(101).setApiTravel(null).setListVposcode(list111).setsoKm(soKM).pushView();
+                    new TimDuongDiPresenterBaoPhat(containerView).setType(101).setApiTravel(travelSales).setListVposcode(list111).setsoKm(soKM).pushView();
                     dismiss();
                 } else {
                     if (vitri.isEmpty())

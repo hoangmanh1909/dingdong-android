@@ -1,5 +1,6 @@
 package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 
@@ -113,17 +114,28 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
         return this;
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public void vietmapDecode(String decode, int posi) {
         mInteractor.vietmapSearchDecode(decode).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(simpleResult -> {
                     if (simpleResult.getErrorCode().equals("00")) {
-                        mBaoPhatBangke.get(posi).setReceiverLat(String.valueOf(simpleResult.getObject().getResult().getLocation().getLatitude()));
-                        mBaoPhatBangke.get(posi).setReceiverLon(String.valueOf(simpleResult.getObject().getResult().getLocation().getLongitude()));
+                        if (mBaoPhatBangke.get(posi).getReceiverLat() != null && mBaoPhatBangke.get(posi).getReceiverLon() != null) {
+                            if (mBaoPhatBangke.get(posi).getReceiverLat().isEmpty()) {
+                                mBaoPhatBangke.get(posi).setReceiverLat(String.valueOf(simpleResult.getObject().getResult().getLocation().getLatitude()));
+                            }
+                            if (mBaoPhatBangke.get(posi).getReceiverLon().isEmpty()) {
+                                mBaoPhatBangke.get(posi).setReceiverLon(String.valueOf(simpleResult.getObject().getResult().getLocation().getLongitude()));
+                            }
+                        }
                     } else {
-                        mBaoPhatBangke.get(posi).setReceiverLat("");
-                        mBaoPhatBangke.get(posi).setReceiverLon("");
+                        if (mBaoPhatBangke.get(posi).getReceiverLat() == null ||
+                                mBaoPhatBangke.get(posi).getReceiverLon() == null) {
+                        } else {
+                            mBaoPhatBangke.get(posi).setReceiverLat("");
+                            mBaoPhatBangke.get(posi).setReceiverLon("");
+                        }
 //                        mView.showError(simpleResult.getMessage());
                         mView.hideProgress();
                     }
@@ -476,7 +488,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             }
         deliverySuccessRequest.setPaymentBankCode(bankCode);
         deliverySuccessRequest.setPaypostPaymentRequests(paymentRequests);
-
+        Log.d("Thanhkhiem123", new Gson().toJson(deliverySuccessRequest));
         mInteractor.checkDeliverySuccess(deliverySuccessRequest)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

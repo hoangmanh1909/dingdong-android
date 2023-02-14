@@ -105,7 +105,6 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
                     } else {
                         Constants.HEADER_NUMBER = "tel:18002009";
                     }
-
                     boolean isDebit = sharedPref.getBoolean(Constants.KEY_GACH_NO_PAYPOS, true);
                     sharedPref.putBoolean(Constants.KEY_GACH_NO_PAYPOS, isDebit);
                     if (!"6".equals(userInfo.getEmpGroupID())) {
@@ -230,18 +229,14 @@ public class LoginPresenter extends Presenter<LoginContract.View, LoginContract.
                     @Override
                     public void onSuccess(SimpleResult simpleResult) {
                         if (simpleResult.getErrorCode().equals("00")) {
-                            mView.showCallLog();
-                            SharedPref sharedPref = new SharedPref(getViewContext());
-                            try {
-                                sharedPref.clearRaVao();
-                            } catch (Exception e) {
-                            }
-
+                            mView.showCallLog(request.size());
                             mView.hideProgress();
                         } else {
-                            Toast.showToast(getViewContext(), "Có lỗi trong quá trình đẩy cuộc gọi");
+                            Toast.showToast(getViewContext(), simpleResult.getMessage());
                             mView.hideProgress();
 //                        mView.showCallLog();
+                            SharedPref sharedPref = new SharedPref(getViewContext());
+                            sharedPref.putBoolean(Constants.KEY_TRANG_THAI_LOG_CALL, true);
                         }
                     }
 

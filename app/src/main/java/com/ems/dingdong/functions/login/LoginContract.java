@@ -60,7 +60,7 @@ interface LoginContract {
 
         void showVersionV1(List<GetVersionResponse> list);
 
-        void showCallLog();
+        void showCallLog(int size);
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
