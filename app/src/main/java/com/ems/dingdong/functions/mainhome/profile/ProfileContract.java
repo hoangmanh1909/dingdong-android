@@ -35,6 +35,8 @@ interface ProfileContract {
         void getCallLog(List<CallLogMode> request);
 
         void showChat();
+
+        void showTraceLog();
     }
 }
 

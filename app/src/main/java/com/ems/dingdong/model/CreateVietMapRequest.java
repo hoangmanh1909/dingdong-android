@@ -2,6 +2,8 @@ package com.ems.dingdong.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class CreateVietMapRequest extends BaseRequestModel {
     @SerializedName("Housenumber")
     private String Housenumber;
@@ -24,7 +26,7 @@ public class CreateVietMapRequest extends BaseRequestModel {
     @SerializedName("Latitude")
     private double Latitude;
     @SerializedName("Id")
-    private long  Id;
+    private List<Long> Id;
     @SerializedName("CityName")
     private String CityName = "";
     @SerializedName("DistrictName")
@@ -101,14 +103,6 @@ public class CreateVietMapRequest extends BaseRequestModel {
         DistID = distID;
     }
 
-    public long getId() {
-        return Id;
-    }
-
-    public void setId(long id) {
-        Id = id;
-    }
-
     public Integer getWardID() {
         return WardID;
     }
@@ -117,8 +111,11 @@ public class CreateVietMapRequest extends BaseRequestModel {
         WardID = wardID;
     }
 
+    public List<Long> getId() {
+        return Id;
+    }
 
-    public void setId(Integer id) {
+    public void setId(List<Long> id) {
         Id = id;
     }
 

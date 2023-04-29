@@ -4,7 +4,9 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -16,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -119,13 +122,13 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
         @BindView(R.id.tv_stt)
         CustomTextView tvStt;
         @BindView(R.id.tv_code)
-        CustomTextView tvCode;
+        AppCompatTextView tvCode;
         @BindView(R.id.tv_contactName)
         CustomTextView tvContactName;
         @BindView(R.id.tv_contact_address)
         CustomTextView tvContactAddress;
         @BindView(R.id.tv_contact_description)
-        CustomTextView tvContactDescription;
+        TextView tvContactDescription;
         @BindView(R.id.tv_status)
         CustomTextView tvStatus;
         @BindView(R.id.tv_ParcelCode)
@@ -169,14 +172,24 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
                     clipboard.setPrimaryClip(clip);
                 }
             });
-            tvStt.setText(String.format("Số thứ tự: %s", item.getCount()));
+            tvStt.setText(String.format("Số thứ tự : %s", item.getCount()));
             tvCode.setText(item.getCode());
             tvContactName.setText(String.format("%s - %s", item.getReceiverName(), item.getReceiverPhone()));
             tvContactAddress.setText(item.getReceiverAddress().trim());
 
             tvSodonhang.setVisibility(View.GONE);
+            tvContactDescription.setMovementMethod(new ScrollingMovementMethod());
 
+            tvContactDescription.setOnTouchListener(new View.OnTouchListener() {
 
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+
+                    tvContactDescription.getParent().requestDisallowInterceptTouchEvent(true);
+
+                    return false;
+                }
+            });
             if (mType == 3) {
                 tvContactDescription.setText(String.format("Chuyến thư: %s .Túi số: %s", item.getRoute(), item.getOrder()));
             } else {
@@ -194,12 +207,12 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
                 cbSelected.setOnCheckedChangeListener(null);
                 if (item.isSelected()) {
                     cbSelected.setChecked(true);
-                    llBackground.setBackgroundResource(R.color.color_background_bd13);
+                    llBackground.setBackgroundResource(R.drawable.bg_border_nen_xanh);
                 } else {
-                    {
-                        cbSelected.setChecked(false);
-                        llBackground.setBackgroundResource(R.color.white);
-                    }
+
+                    cbSelected.setChecked(false);
+                    llBackground.setBackgroundResource(R.drawable.bg_border);
+
                 }
 
                 cbSelected.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -207,9 +220,9 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         if (isChecked) {
                             item.setSelected(true);
-                            llBackground.setBackgroundResource(R.color.color_background_bd13);
+                            llBackground.setBackgroundResource(R.drawable.bg_border_nen_xanh);
                         } else {
-                            llBackground.setBackgroundResource(R.color.white);
+                            llBackground.setBackgroundResource(R.drawable.bg_border);
                             item.setSelected(false);
                         }
                     }
@@ -217,28 +230,28 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
 
                 if ("P0".equals(item.getStatusCode())) {
                     cbSelected.setVisibility(View.VISIBLE);
-                    Typeface typeface = Typefaces.getTypefaceRobotoBold(mContext);
-                    if (typeface != null) {
-                        tvStt.setTypeface(typeface);
-                        tvCode.setTypeface(typeface);
-                        tvContactName.setTypeface(typeface);
-                        tvContactAddress.setTypeface(typeface);
-                        tvContactDescription.setTypeface(typeface);
-                    }
+//                    Typeface typeface = Typefaces.getTypefaceRobotoBold(mContext);
+//                    if (typeface != null) {
+//                        tvStt.setTypeface(typeface);
+//                        tvCode.setTypeface(typeface);
+//                        tvContactName.setTypeface(typeface);
+//                        tvContactAddress.setTypeface(typeface);
+//                        tvContactDescription.setTypeface(typeface);
+//                    }
 //                    tvCode.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
                     tvStatus.setText("Chưa xác nhận");
                     tvStatus.setBackgroundResource(R.drawable.bg_status_not);
                 } else {
                     cbSelected.setVisibility(View.GONE);
 //                    tvCode.setTextColor(mContext.getResources().getColor(R.color.colorPrimary));
-                    Typeface typeface = Typefaces.getTypefaceRobotoNormal(mContext);
-                    if (typeface != null) {
-                        tvStt.setTypeface(typeface);
-                        tvCode.setTypeface(typeface);
-                        tvContactName.setTypeface(typeface);
-                        tvContactAddress.setTypeface(typeface);
-                        tvContactDescription.setTypeface(typeface);
-                    }
+//                    Typeface typeface = Typefaces.getTypefaceRobotoNormal(mContext);
+//                    if (typeface != null) {
+//                        tvStt.setTypeface(typeface);
+//                        tvCode.setTypeface(typeface);
+//                        tvContactName.setTypeface(typeface);
+//                        tvContactAddress.setTypeface(typeface);
+//                        tvContactDescription.setTypeface(typeface);
+//                    }
                     tvStatus.setText("Đã xác nhận");
                     tvStatus.setBackgroundResource(R.drawable.bg_status_done);
                 }
@@ -247,15 +260,15 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
                     ivStatus.setVisibility(View.GONE);
                 } else ivStatus.setVisibility(View.VISIBLE);
                 if ("P1".equals(item.getStatusCode()) || "P5".equals(item.getStatusCode()) || "P7".equals(item.getStatusCode())) {
-                    tvCode.setTextColor(mContext.getResources().getColor(R.color.black));
-                    Typeface typeface = Typefaces.getTypefaceRobotoBold(mContext);
-                    if (typeface != null) {
-                        tvStt.setTypeface(typeface);
-                        tvCode.setTypeface(typeface);
-                        tvContactName.setTypeface(typeface);
-                        tvContactAddress.setTypeface(typeface);
-                        tvContactDescription.setTypeface(typeface);
-                    }
+//                    tvCode.setTextColor(mContext.getResources().getColor(R.color.black));
+//                    Typeface typeface = Typefaces.getTypefaceRobotoBold(mContext);
+//                    if (typeface != null) {
+//                        tvStt.setTypeface(typeface);
+//                        tvCode.setTypeface(typeface);
+//                        tvContactName.setTypeface(typeface);
+//                        tvContactAddress.setTypeface(typeface);
+//                        tvContactDescription.setTypeface(typeface);
+//                    }
                     if ("P7".equals(item.getStatusCode())) {
                         tvStatus.setText("Hoàn tất một phần");
                     } else {
@@ -263,14 +276,14 @@ public class ListCommonAdapter extends RecyclerView.Adapter<ListCommonAdapter.Ho
                     }
                     tvStatus.setBackgroundResource(R.drawable.bg_status_not);
                 } else {
-                    Typeface typeface = Typefaces.getTypefaceRobotoNormal(mContext);
-                    if (typeface != null) {
-                        tvStt.setTypeface(typeface);
-                        tvCode.setTypeface(typeface);
-                        tvContactName.setTypeface(typeface);
-                        tvContactAddress.setTypeface(typeface);
-                        tvContactDescription.setTypeface(typeface);
-                    }
+//                    Typeface typeface = Typefaces.getTypefaceRobotoNormal(mContext);
+//                    if (typeface != null) {
+//                        tvStt.setTypeface(typeface);
+//                        tvCode.setTypeface(typeface);
+//                        tvContactName.setTypeface(typeface);
+//                        tvContactAddress.setTypeface(typeface);
+//                        tvContactDescription.setTypeface(typeface);
+//                    }
                     tvStatus.setText("Đã hoàn tất");
                     tvStatus.setBackgroundResource(R.drawable.bg_status_done);
                 }

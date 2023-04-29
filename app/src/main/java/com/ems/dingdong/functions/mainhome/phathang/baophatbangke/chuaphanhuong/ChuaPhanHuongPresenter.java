@@ -1,17 +1,23 @@
 package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.chuaphanhuong;
 
+import android.annotation.SuppressLint;
+import android.content.DialogInterface;
+
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.BarCodeCallback;
+import com.ems.dingdong.dialog.IOSDialog;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.CreateBd13Contract;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.modedata.OrderCreateBD13Mode;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.modedata.VietMapOrderCreateBD13DataRequest;
 import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
 import com.ems.dingdong.model.ComfrimCreateMode;
 import com.ems.dingdong.model.SearchMode;
+import com.ems.dingdong.model.VM_POSTMAN_ROUTE;
 import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
 import com.ems.dingdong.model.response.ChuaPhanHuongMode;
 import com.ems.dingdong.model.response.EWalletDataResponse;
+import com.ems.dingdong.network.ApiDisposable;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Toast;
 
@@ -52,8 +58,9 @@ public class ChuaPhanHuongPresenter extends Presenter<ChuaPhanHuongContract.View
         new ScannerCodePresenter(mContainerView).setDelegate(barCodeCallback).pushView();
     }
 
+    @SuppressLint("CheckResult")
     @Override
-    public void comfrimCreate(ComfrimCreateMode comfrimCreateMode) {
+    public void comfrimCreate(ComfrimCreateMode comfrimCreateMode, int type) {
         mView.showProgress();
         mInteractor.comfirmCreate(comfrimCreateMode)
                 .subscribeOn(Schedulers.io())
@@ -66,10 +73,13 @@ public class ChuaPhanHuongPresenter extends Presenter<ChuaPhanHuongContract.View
                                     chuaPhanHuongModes.remove(j);
                                 }
                         }
-                        mView.showComfrimThanCong(simpleResult.getMessage(), chuaPhanHuongModes);
+                        mView.showComfrimThanCong(simpleResult.getMessage(), chuaPhanHuongModes, type);
                         mView.hideProgress();
                     } else Toast.showToast(getViewContext(), simpleResult.getMessage());
                     mView.hideProgress();
+                }, throwable -> {
+                    mView.hideProgress();
+                    new ApiDisposable(throwable, getViewContext());
                 });
     }
 
@@ -90,6 +100,9 @@ public class ChuaPhanHuongPresenter extends Presenter<ChuaPhanHuongContract.View
                             mView.hideProgress();
 
                         }
+                    }, throwable -> {
+                        mView.hideProgress();
+                        new ApiDisposable(throwable, getViewContext());
                     });
         } catch (Exception e) {
             e.getMessage();
@@ -123,6 +136,9 @@ public class ChuaPhanHuongPresenter extends Presenter<ChuaPhanHuongContract.View
                         mView.showKhongcodl(simpleResult.getMessage());
                     }
                     mView.hideProgress();
+                }, throwable -> {
+                    mView.hideProgress();
+                    new ApiDisposable(throwable, getViewContext());
                 });
     }
 
@@ -150,5 +166,40 @@ public class ChuaPhanHuongPresenter extends Presenter<ChuaPhanHuongContract.View
     public ChuaPhanHuongPresenter setOnTabListener(CreateBd13Contract.OnTabListener listener) {
         this.tabListener = listener;
         return this;
+    }
+
+    @SuppressLint("CheckResult")
+    @Override
+    public void ddXacNhanLoTrinh(VM_POSTMAN_ROUTE vm_postman_route) {
+        try {
+            mView.showProgress();
+            mInteractor.ddXacNhanLoTrinhVmap(vm_postman_route)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(simpleResult -> {
+                        if (simpleResult.getErrorCode().equals("00")) {
+//                            new IOSDialog.Builder(getViewContext())
+//                                    .setTitle("Thông báo")
+//                                    .setMessage(simpleResult.getMessage())
+//                                    .setNegativeButton("Đóng", new DialogInterface.OnClickListener() {
+//                                        @Override
+//                                        public void onClick(DialogInterface dialogInterface, int i) {
+//                                        }
+//                                    }).show();
+                            mView.hideProgress();
+                        } else {
+                            new IOSDialog.Builder(getViewContext())
+                                    .setCancelable(false).setTitle("Thông báo")
+                                    .setMessage(simpleResult.getMessage())
+                                    .setNegativeButton("Đóng", null).show();
+                            mView.hideProgress();
+                        }
+                    }, throwable -> {
+                        mView.hideProgress();
+                        new ApiDisposable(throwable, getViewContext());
+                    });
+        } catch (Exception e) {
+            e.getMessage();
+        }
     }
 }

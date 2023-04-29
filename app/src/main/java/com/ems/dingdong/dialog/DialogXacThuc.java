@@ -51,7 +51,7 @@ public class DialogXacThuc extends Dialog {
     Integer mID = 0;
     XacMinhCallback callback;
 
-    public DialogXacThuc(@NonNull Context context, Values x, XacMinhCallback callback) {
+    public DialogXacThuc(@NonNull Context context, Values x, String diachi, XacMinhCallback callback) {
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
         View view = View.inflate(getContext(), R.layout.dialog_xacminhdiachi, null);
         setContentView(view);
@@ -59,6 +59,7 @@ public class DialogXacThuc extends Dialog {
         mActivity = (BaseActivity) context;
         this.callback = callback;
         k = x;
+        edtTendiadiem.setText(diachi);
         edtDonvihanhchinh.setText(k.getDataRevert().getWardName() + ", " + k.getDataRevert().getDistrictName() + ", " + k.getDataRevert().getCityName());
     }
 
@@ -104,7 +105,7 @@ public class DialogXacThuc extends Dialog {
 
     private void showUIStatus() {
         ArrayList<Item> items = new ArrayList<>();
-        Log.d("thahasdasdasd",new Gson().toJson(k.getDataCateModels()));
+        Log.d("thahasdasdasd", new Gson().toJson(k.getDataCateModels()));
         List<DataCateModel> cateModel = k.getDataCateModels();
         if (cateModel != null) {
             for (DataCateModel item : cateModel) {
@@ -117,7 +118,7 @@ public class DialogXacThuc extends Dialog {
                     idlv2 = item.getSubCategories().get(0).getId();
                     namelv2 = " - " + item.getSubCategories().get(0).getName();
                 }
-                items.add(new Item(item.getId()+"",
+                items.add(new Item(item.getId() + "",
                         item.getName() + namelv2));
             }
 

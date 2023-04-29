@@ -61,7 +61,7 @@
                 <com.ems.dingdong.views.CustomBoldTextView
                     style="@style/HeaderNews"
                     android:layout_width="match_parent"
-                    android:background="@drawable/bg_header_common"
+                    android:background="@drawable/bg_header_common_copy"
                     android:padding="@dimen/dimen_10dp"
                     android:text="Thông tin khách hàng"
                     android:textColor="@color/white" />
@@ -69,7 +69,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/textlines_item1"
+                    android:background="@drawable/bg_header_common_recy"
                     android:orientation="vertical"
                     android:padding="5dp">
 
@@ -112,7 +112,7 @@
                 <com.ems.dingdong.views.CustomBoldTextView
                     style="@style/HeaderNews"
                     android:layout_width="match_parent"
-                    android:background="@drawable/bg_header_common"
+                    android:background="@drawable/bg_header_common_copy"
                     android:padding="@dimen/dimen_10dp"
                     android:text="Tin thu gom"
                     android:textColor="@color/white" />
@@ -120,7 +120,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/textlines_item1"
+                    android:background="@drawable/bg_header_common_recy"
                     android:orientation="vertical"
                     android:padding="5dp">
 
@@ -283,6 +283,9 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1.2"
                             android:paddingTop="@dimen/dimen_10dp"
+                            android:maxLines="3"
+                            android:scrollbars = "vertical"
+                            android:fadeScrollbars="false"
                             android:paddingBottom="@dimen/dimen_10dp"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp" />
@@ -410,7 +413,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/textlines_item1"
+                    android:background="@drawable/bg_header_common_recy"
                     android:orientation="vertical"
                     android:padding="5dp">
 
@@ -450,6 +453,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
                         android:orientation="horizontal"
                         android:weightSum="2">
 
@@ -525,7 +530,7 @@
                 <com.ems.dingdong.views.CustomBoldTextView
                     style="@style/HeaderNews"
                     android:layout_width="match_parent"
-                    android:background="@drawable/bg_header_common"
+                    android:background="@drawable/bg_header_common_copy"
                     android:padding="@dimen/dimen_10dp"
                     android:text="Người gửi xác nhận"
                     android:textAllCaps="true"
@@ -534,7 +539,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/textlines_item1"
+                    android:background="@drawable/bg_header_common_recy"
                     android:orientation="vertical"
                     android:padding="5dp">
 
@@ -565,6 +570,10 @@
                             android:paddingBottom="@dimen/dimen_10dp"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp"
+
+                            android:paddingRight="10dp"
+                            android:fadeScrollbars="false"
+                            android:scrollbars="vertical"
                             tools:text="1\n1\n1\n1" />
 
                     </LinearLayout>
@@ -614,7 +623,7 @@
                         <com.ems.dingdong.views.CustomTextView
                             android:id="@+id/btn_sign"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="42dp"
                             android:background="@drawable/bg_gradient_radius_5"
                             android:gravity="center"
                             android:paddingLeft="@dimen/dimen_20dp"
@@ -663,7 +672,7 @@
                 <com.ems.dingdong.views.CustomBoldTextView
                     style="@style/HeaderNews"
                     android:layout_width="match_parent"
-                    android:background="@drawable/bg_header_common"
+                    android:background="@drawable/bg_header_common_copy"
                     android:padding="@dimen/dimen_10dp"
                     android:text="CHỤP ẢNH ĐƠN HÀNG"
                     android:textAllCaps="true"
@@ -672,7 +681,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/textlines_item1"
+                    android:background="@drawable/bg_header_common_recy"
                     android:orientation="vertical"
                     android:padding="5dp">
 
@@ -702,7 +711,7 @@
                     android:id="@+id/tv_count_scan"
                     style="@style/HeaderNews"
                     android:layout_width="match_parent"
-                    android:background="@drawable/bg_header_common"
+                    android:background="@drawable/bg_header_common_copy"
                     android:padding="@dimen/dimen_10dp"
                     android:text="Scan đơn hàng"
                     android:textAllCaps="true"
@@ -711,7 +720,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/textlines_item1"
+                    android:background="@drawable/bg_header_common_recy"
                     android:focusableInTouchMode="true"
                     android:orientation="vertical"
                     android:padding="5dp">

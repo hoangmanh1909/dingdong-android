@@ -37,7 +37,7 @@ public class LadingProduct {
     /// </summary>
     @SerializedName("Amount")
     private double Amount;
-
+    // noi dung
     @SerializedName("Content")
     private String Content;
 

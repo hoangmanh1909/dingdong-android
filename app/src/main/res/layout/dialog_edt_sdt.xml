@@ -2,8 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#80000000">
+    android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
         style="@style/MyCardViewStyle"
@@ -75,13 +74,13 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="55dp"
                     android:layout_weight="3">
 
                     <TextView
                         android:id="@+id/tv_goitongdai"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:layout_weight="1"
                         android:background="@color/blue"
@@ -89,7 +88,29 @@
                         android:padding="10dp"
                         android:text="Gọi qua tổng đài"
                         android:textColor="@color/white"
-                        android:textSize="14dp" />
+                        android:textSize="14dp"
+                        android:textStyle="bold" />
+
+                    <View
+                        android:id="@+id/view11"
+                        android:layout_width="0.5dp"
+                        android:layout_height="wrap_content"
+                        android:background="@color/gray" />
+
+                    <TextView
+                        android:id="@+id/tv_calltome"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:visibility="gone"
+                        android:background="@color/color_rad_fail"
+                        android:gravity="center"
+                        android:padding="10dp"
+                        android:text="Gọi miễn phí"
+                        android:textColor="@color/white"
+                        android:textSize="14dp"
+                        android:textStyle="bold" />
 
                     <View
                         android:id="@+id/view1"
@@ -100,7 +121,7 @@
                     <TextView
                         android:id="@+id/tv_goitructiep"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_gravity="center"
                         android:layout_weight="1"
                         android:background="@color/color_rad_success"

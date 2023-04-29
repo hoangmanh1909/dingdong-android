@@ -136,12 +136,6 @@ public class PortSipService extends Service implements NetWorkReceiver.NetWorkLi
         }
     };
 
-//    @Nullable
-//    @Override
-//    public IBinder onBind(Intent intent) {
-//        return mBinder;
-//    }
-
     public class PortSipBinder extends Binder {
         public PortSipService getService() {
             return PortSipService.this;

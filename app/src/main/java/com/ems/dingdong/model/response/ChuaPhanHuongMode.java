@@ -51,7 +51,16 @@ public class ChuaPhanHuongMode {
     private Integer FeeCollectLater;
 
     @SerializedName("VATCode")
-    private String VATCode="";
+    private String VATCode=""; @SerializedName("ReceiverVpostcode")
+    private String ReceiverVpostcode;
+
+    public String getReceiverVpostcode() {
+        return ReceiverVpostcode;
+    }
+
+    public void setReceiverVpostcode(String receiverVpostcode) {
+        ReceiverVpostcode = receiverVpostcode;
+    }
 
     public String getReceiverLat() {
         return ReceiverLat;

@@ -1,12 +1,15 @@
 package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.dialog.IOSDialog;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.modedata.OrderCreateBD13Mode;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.modedata.VietMapOrderCreateBD13DataRequest;
 import com.ems.dingdong.functions.mainhome.phathang.noptien.PaymentContract;
@@ -17,10 +20,12 @@ import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.model.VM_POSTMAN_ROUTE;
 import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
 import com.ems.dingdong.model.request.DingDongGetLadingCreateBD13Request;
 import com.ems.dingdong.model.response.ChuaPhanHuongMode;
 import com.ems.dingdong.model.response.DeliveryPostmanResponse;
+import com.ems.dingdong.network.ApiDisposable;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.Log;
@@ -82,6 +87,9 @@ public class CreateBd13Presenter extends Presenter<CreateBd13Contract.View, Crea
                             mView.hideProgress();
 
                         }
+                    }, throwable -> {
+                        mView.hideProgress();
+                        new ApiDisposable(throwable, getViewContext());
                     });
         } catch (Exception e) {
             e.getMessage();
@@ -95,25 +103,32 @@ public class CreateBd13Presenter extends Presenter<CreateBd13Contract.View, Crea
     }
 
     @Override
-    public void postBD13AddNew(Bd13Create bd13Create) {
+    public void postBD13AddNew(Bd13Create bd13Create,int type) {
         mView.showProgress();
         mInteractor.bD13AddNew(bd13Create, new CommonCallback<SimpleResult>((Context) mContainerView) {
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
                 mView.hideProgress();
-                if (response.body().getErrorCode().equals("00")) {
-                    mView.showSuccessMessage(response.body().getMessage());
-                } else {
-                    mView.showErrorToast(response.body().getMessage());
-                }
+                if (response.body().getErrorCode() != null) {
+                    if (response.body().getErrorCode().equals("00")) {
+                        mView.showSuccessMessage(response.body().getMessage(),type);
+                    } else {
+//                        mView.showErrorToast(response.body().getMessage());
+                        new IOSDialog.Builder(getViewContext())
+                                .setCancelable(false).setMessage(response.body().getMessage())
+                                .setNegativeButton("Đóng", null).show();
+                    }
+                } else Toast.showToast(getViewContext(), "Dữ liệu trả về sai cấu trúc");
             }
 
             @Override
             protected void onError(Call<SimpleResult> call, String message) {
                 super.onError(call, message);
                 mView.hideProgress();
-                mView.showErrorToast(message);
+                new IOSDialog.Builder(getViewContext())
+                        .setMessage(message)
+                        .setNegativeButton("Đóng", null).show();
             }
         });
     }
@@ -137,7 +152,9 @@ public class CreateBd13Presenter extends Presenter<CreateBd13Contract.View, Crea
                         mView.hideProgress();
                     } else {
                         mView.hideProgress();
-                        mView.showErrorToast(simpleResult.getMessage());
+                        new IOSDialog.Builder(getViewContext())
+                                .setCancelable(false).setMessage(simpleResult.getMessage())
+                                .setNegativeButton("Đóng", null).show();
                     }
 //                        }
 //
@@ -149,7 +166,7 @@ public class CreateBd13Presenter extends Presenter<CreateBd13Contract.View, Crea
 //                        }
 //                    });
                 }, throwable -> {
-                    mView.showErrorToast(throwable.getMessage());
+                    new ApiDisposable(throwable, getViewContext());
                     mView.hideProgress();
                 });
     }
@@ -177,6 +194,7 @@ public class CreateBd13Presenter extends Presenter<CreateBd13Contract.View, Crea
                     mView.showCallSuccess();
                 } else {
                     mView.showError(response.body().getMessage());
+
                 }
             }
 
@@ -237,5 +255,28 @@ public class CreateBd13Presenter extends Presenter<CreateBd13Contract.View, Crea
     public CreateBd13Presenter setOnTabListener(CreateBd13Contract.OnTabListener listener) {
         this.tabListener = listener;
         return this;
+    }
+
+    @SuppressLint("CheckResult")
+    @Override
+    public void ddXacNhanLoTrinh(VM_POSTMAN_ROUTE vm_postman_route) {
+        try {
+            mView.showProgress();
+            mInteractor.ddXacNhanLoTrinhVmap(vm_postman_route)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(simpleResult -> {
+                        if (simpleResult.getErrorCode().equals("00")) {
+                            mView.hideProgress();
+                        } else {
+                            mView.hideProgress();
+                        }
+                    }, throwable -> {
+                        mView.hideProgress();
+                        new ApiDisposable(throwable, getViewContext());
+                    });
+        } catch (Exception e) {
+            e.getMessage();
+        }
     }
 }

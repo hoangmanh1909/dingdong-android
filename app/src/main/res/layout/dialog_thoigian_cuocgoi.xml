@@ -86,7 +86,7 @@
                         android:layout_weight="1.8"
                         android:drawablePadding="10dp"
                         android:gravity="center|left"
-                        android:text="Thời gian kết thúc(mặt định)"
+                        android:text="Thời gian kết thúc (mặt định)"
                         android:textSize="14dp" />
 
                     <TextView

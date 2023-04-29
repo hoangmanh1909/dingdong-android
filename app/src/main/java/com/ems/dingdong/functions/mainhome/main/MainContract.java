@@ -12,16 +12,19 @@ import com.ems.dingdong.functions.mainhome.main.data.CallLogMode;
 import com.ems.dingdong.functions.mainhome.main.data.MainMode;
 import com.ems.dingdong.functions.mainhome.phathang.PhatHangPresenter;
 import com.ems.dingdong.model.BalanceModel;
+import com.ems.dingdong.model.BalanceRespone;
 import com.ems.dingdong.model.ShiftResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.StatisticPaymentResult;
 import com.ems.dingdong.model.TokenMoveCropResult;
+import com.ems.dingdong.model.request.StatisticPaymentRequest;
 import com.ems.dingdong.model.request.TicketNotifyRequest;
 import com.ems.dingdong.model.response.StatisticPaymentResponse;
 import com.ems.dingdong.model.response.TicketNotifyRespone;
 
 import java.util.List;
 
+import io.reactivex.Observable;
 import io.reactivex.Single;
 import retrofit2.Call;
 
@@ -33,11 +36,11 @@ interface MainContract {
     interface Interactor extends IInteractor<Presenter> {
         void getShift(String code, CommonCallback<SimpleResult> callback);
 
-        Single<StatisticPaymentResult> getBalance(String postmanID, String poCode, String phoneNumber, String fromDate, String toDate);
+//        Single<StatisticPaymentResult> getBalance(String postmanID, String poCode, String phoneNumber, String fromDate, String toDate);
 
         Single<SimpleResult> getMap();
 
-        void ddGetBalance(BalanceModel requset, CommonCallback<SimpleResult> callback);
+//        void ddGetBalance(BalanceModel requset, CommonCallback<SimpleResult> callback);
 
         Single<SimpleResult> getListTicket(TicketNotifyRequest request);
 
@@ -47,24 +50,37 @@ interface MainContract {
 
         Single<SimpleResult> getCallLog(List<CallLogMode> request);
 
+        Observable<SimpleResult> ddGetPayment(StatisticPaymentRequest statisticPaymentRequest);
+
+        Observable<SimpleResult> ddGetTienHome(BalanceModel balanceModel);
     }
 
     interface View extends PresentView<Presenter> {
-        void updateBalance(StatisticPaymentResponse value);
-
-        void setBalance(String x);
-
+//        void updateBalance(StatisticPaymentResponse value);
+//
+//        void setBalance(String x);
+//
         void showListNotifi(List<TicketNotifyRespone> list);
+//
+//        void showVaoCa(String data);
+//
+//        void showRaCa(String data);
+//
+        void showCallLog(int size);
+//
+//        void showError();
+//
+//        void showErrorRaCa();
 
-        void showVaoCa(String data);
+        void showPayment(StatisticPaymentResponse value);
 
-        void showRaCa(String data);
+        void showLoiPayment();
 
-        void showCallLog(String data);
+        void showTienHome(BalanceRespone value);
 
-        void showError();
+        void showLoiTienHome();
 
-        void showErrorRaCa();
+        void showLoiHeThong();
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
@@ -92,11 +108,17 @@ interface MainContract {
 
         void getMap();
 
-        void getBalance();
-
-        void ddGetBalance(BalanceModel v);
+//        void getBalance();
+//
+//        void ddGetBalance(BalanceModel v);
 
         void showNitify();
+
+        void getShift();
+
+        void ddGetPaymentStatistic();
+
+        void getTienHome();
     }
 }
 

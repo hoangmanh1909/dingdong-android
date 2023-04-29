@@ -29,6 +29,7 @@ import com.core.base.viper.ViewFragment;
 import com.core.utils.PermissionUtils;
 import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.R;
+import com.ems.dingdong.aDiaChi.CallDiaChi;
 import com.ems.dingdong.base.DingDongActivity;
 import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.DismissDialogCallback;
@@ -41,8 +42,10 @@ import com.ems.dingdong.dialog.PhoneNumberUpdateDialogIcon;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.log.LogAdapter;
 import com.ems.dingdong.functions.mainhome.profile.ewallet.deatilvi.DeatailMode;
 import com.ems.dingdong.model.CallLiveMode;
+import com.ems.dingdong.model.CallTomeRequest;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.Item;
+import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.StatusInfo;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
@@ -215,6 +218,11 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
                                         mPresenter.callForward(phone, tvParcelCode.getText().toString());
                                     }
 //                        mPresenter.updateMobile(phone, choosenLadingCode);
+                                }
+
+                                @Override
+                                public void onCallToMe(String phone, int type) {
+
                                 }
                             }).show();
                     }
@@ -449,10 +457,43 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
                             callLiveMode.setToNumber(phone);
                             callLiveMode.setLadingCode(tvParcelCode.getText().toString());
                             mPresenter.ddCall(callLiveMode);
-                        } else {
+                        } else if (type == 2) {
                             mPresenter.callForward(phone, tvParcelCode.getText().toString());
+                        } else {
+                            SharedPref sharedPref = new SharedPref(getViewContext());
+                            String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
+                            String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+                            CallDiaChi callDiaChi = CallDiaChi.getInstance(getViewContext());
+                            CallTomeRequest callTomeRequest = new CallTomeRequest();
+                            callTomeRequest.setCallType(Constants.CALL_NGUOI_GUI);
+                            callTomeRequest.setLadingCode(mPresenter.getCode());
+                            callTomeRequest.setToNumber(phone);
+                            callTomeRequest.setPOCode(NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getCode());
+                            callTomeRequest.setEmpGroupID(Integer.parseInt(NetWorkController.getGson().fromJson(userJson, UserInfo.class).getEmpGroupID()));
+                            callTomeRequest.setPostmanCode(NetWorkController.getGson().fromJson(userJson, UserInfo.class).getUserName());
+                            callTomeRequest.setPostmanTel(NetWorkController.getGson().fromJson(userJson, UserInfo.class).getMobileNumber());
+                            callTomeRequest.setPostmanId(Long.parseLong(NetWorkController.getGson().fromJson(userJson, UserInfo.class).getiD()));
+                            callDiaChi.callToMe(callTomeRequest);
                         }
 //                        mPresenter.updateMobile(phone, choosenLadingCode);
+                    }
+
+                    @Override
+                    public void onCallToMe(String phone, int type) {
+                        SharedPref sharedPref = new SharedPref(getViewContext());
+                        String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
+                        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+                        CallDiaChi callDiaChi = CallDiaChi.getInstance(getViewContext());
+                        CallTomeRequest callTomeRequest = new CallTomeRequest();
+                        callTomeRequest.setCallType(Constants.CALL_NGUOI_GUI);
+                        callTomeRequest.setLadingCode(mPresenter.getCode());
+                        callTomeRequest.setToNumber(phone);
+                        callTomeRequest.setPOCode(NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getCode());
+                        callTomeRequest.setEmpGroupID(Integer.parseInt(NetWorkController.getGson().fromJson(userJson, UserInfo.class).getEmpGroupID()));
+                        callTomeRequest.setPostmanCode(NetWorkController.getGson().fromJson(userJson, UserInfo.class).getUserName());
+                        callTomeRequest.setPostmanTel(NetWorkController.getGson().fromJson(userJson, UserInfo.class).getMobileNumber());
+                        callTomeRequest.setPostmanId(Long.parseLong(NetWorkController.getGson().fromJson(userJson, UserInfo.class).getiD()));
+                        callDiaChi.callToMe(callTomeRequest);
                     }
                 }).show();
                 break;
@@ -484,10 +525,43 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
                             callLiveMode.setToNumber(phone);
                             callLiveMode.setLadingCode(tvParcelCode.getText().toString());
                             mPresenter.ddCall(callLiveMode);
-                        } else {
+                        } else if (type == 2) {
                             mPresenter.callForward(phone, tvParcelCode.getText().toString());
+                        } else {
+                            SharedPref sharedPref = new SharedPref(getViewContext());
+                            String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
+                            String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+                            CallDiaChi callDiaChi = CallDiaChi.getInstance(getViewContext());
+                            CallTomeRequest callTomeRequest = new CallTomeRequest();
+                            callTomeRequest.setCallType(Constants.CALL_NGUOI_GUI);
+                            callTomeRequest.setLadingCode(mPresenter.getCode());
+                            callTomeRequest.setToNumber(phone);
+                            callTomeRequest.setPOCode(NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getCode());
+                            callTomeRequest.setEmpGroupID(Integer.parseInt(NetWorkController.getGson().fromJson(userJson, UserInfo.class).getEmpGroupID()));
+                            callTomeRequest.setPostmanCode(NetWorkController.getGson().fromJson(userJson, UserInfo.class).getUserName());
+                            callTomeRequest.setPostmanTel(NetWorkController.getGson().fromJson(userJson, UserInfo.class).getMobileNumber());
+                            callTomeRequest.setPostmanId(Long.parseLong(NetWorkController.getGson().fromJson(userJson, UserInfo.class).getiD()));
+                            callDiaChi.callToMe(callTomeRequest);
                         }
 //                        mPresenter.updateMobile(phone, choosenLadingCode);
+                    }
+
+                    @Override
+                    public void onCallToMe(String phone, int type) {
+                        SharedPref sharedPref = new SharedPref(getViewContext());
+                        String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
+                        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+                        CallDiaChi callDiaChi = CallDiaChi.getInstance(getViewContext());
+                        CallTomeRequest callTomeRequest = new CallTomeRequest();
+                        callTomeRequest.setCallType(Constants.CALL_NGUOI_GUI);
+                        callTomeRequest.setLadingCode(mPresenter.getCode());
+                        callTomeRequest.setToNumber(phone);
+                        callTomeRequest.setPOCode(NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getCode());
+                        callTomeRequest.setEmpGroupID(Integer.parseInt(NetWorkController.getGson().fromJson(userJson, UserInfo.class).getEmpGroupID()));
+                        callTomeRequest.setPostmanCode(NetWorkController.getGson().fromJson(userJson, UserInfo.class).getUserName());
+                        callTomeRequest.setPostmanTel(NetWorkController.getGson().fromJson(userJson, UserInfo.class).getMobileNumber());
+                        callTomeRequest.setPostmanId(Long.parseLong(NetWorkController.getGson().fromJson(userJson, UserInfo.class).getiD()));
+                        callDiaChi.callToMe(callTomeRequest);
                     }
                 }).show();
 

@@ -7,6 +7,15 @@ public class SolutionMode {
     String name;
     @SerializedName("Code")
     String Code;
+    boolean is;
+
+    public boolean isIs() {
+        return is;
+    }
+
+    public void setIs(boolean is) {
+        this.is = is;
+    }
 
     public String getName() {
         return name;

@@ -1,5 +1,6 @@
 package com.ems.dingdong.model.request;
 
+import com.ems.dingdong.model.DLVDeliveryUnSuccessRefundRequest;
 import com.google.gson.annotations.SerializedName;
 
 public class DeliveryUnSuccessRequest {
@@ -8,9 +9,19 @@ public class DeliveryUnSuccessRequest {
     private PushToPnsRequest Data;
     @SerializedName("PaymentBankCode")
     private String PaymentBankCode;
+    @SerializedName("RefundInfo")
+    private DLVDeliveryUnSuccessRefundRequest RefundInfo;
 
     public PushToPnsRequest getData() {
         return Data;
+    }
+
+    public DLVDeliveryUnSuccessRefundRequest getRefundInfo() {
+        return RefundInfo;
+    }
+
+    public void setRefundInfo(DLVDeliveryUnSuccessRefundRequest refundInfo) {
+        RefundInfo = refundInfo;
     }
 
     public void setData(PushToPnsRequest data) {

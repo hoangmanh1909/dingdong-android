@@ -142,7 +142,7 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
     }
 
     public void updateHomeView() {
-        SharedPref sharedPref = new SharedPref(Objects.requireNonNull(getActivity()));
+        SharedPref sharedPref = new SharedPref(requireActivity());
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         String routeJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
         if (!userJson.isEmpty()) {
@@ -176,9 +176,10 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
             v.setPostmanId(userInfo.getiD());
             v.setRouteCode(routeInfo.getRouteCode());
             v.setRouteId(Long.parseLong(routeInfo.getRouteId()));
-//            mPresenter.getDDThugom(v);
-            mPresenter.getDeliveryMainView(fromDate,toDate,userInfo.getUserName(), routeInfo.getRouteCode(),Constants.STT_GET_DELIVERY_MAIN_VIEW);
-            mPresenter.getPickUpMainView(fromDate,toDate,userInfo.getUserName(), routeInfo.getRouteCode(),Constants.STT_GET_PICKUP_MAIN_VIEW);
+            if (v != null)
+                mPresenter.getDDThugom(v);
+            mPresenter.getDeliveryMainView(fromDate, toDate, userInfo.getUserName(), routeInfo.getRouteCode(), Constants.STT_GET_DELIVERY_MAIN_VIEW);
+            mPresenter.getPickUpMainView(fromDate, toDate, userInfo.getUserName(), routeInfo.getRouteCode(), Constants.STT_GET_PICKUP_MAIN_VIEW);
         }
 
     }

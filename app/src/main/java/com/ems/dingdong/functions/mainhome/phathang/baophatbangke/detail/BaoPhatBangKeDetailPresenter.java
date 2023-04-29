@@ -22,6 +22,7 @@ import com.ems.dingdong.model.request.PaymentDeviveryRequest;
 import com.ems.dingdong.model.request.PushToPnsRequest;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.CustomToast;
 import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Utils;
@@ -75,6 +76,7 @@ public class BaoPhatBangKeDetailPresenter extends Presenter<BaoPhatBangKeDetailC
                 @Override
                 protected void onError(Call<InquiryAmountResult> call, String message) {
                     super.onError(call, message);
+                    CustomToast.makeText(getViewContext(), (int) CustomToast.LONG, message, Constants.ERROR).show();
                 }
             });
         }

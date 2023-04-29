@@ -18,67 +18,120 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+
+            <com.ems.dingdong.views.CustomBoldTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_header_common_copy"
+                android:text="Lý do"
+                android:textColor="@color/white"
+                android:textSize="14dp" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/bg_header_common_recy"
                 android:orientation="vertical">
-
-                <View
-                    style="@style/Devider"
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp" />
-
-                <com.ems.dingdong.views.CustomTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Lý do"
-                    android:textColor="@color/black"
-                    android:textSize="14dp" />
 
                 <com.ems.dingdong.views.form.FormItemTextView
                     android:id="@+id/tv_reason"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="left"
-                    android:textColor="@color/red_light"
+                    android:textColor="@color/black"
                     android:textSize="@dimen/text_size_14sp"
                     app:formAction="@drawable/ic_arrow_down"
                     app:formDrawablePadding="@dimen/dimen_10dp"
                     app:formHint="Chọn lý do" />
 
+
+                <View
+                    style="@style/Devider"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.ems.dingdong.views.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_weight="1"
+                        android:text="Phương án xử lý"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+
+                    <com.ems.dingdong.views.form.FormItemTextView
+                        android:id="@+id/tv_solution"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:textColor="@color/black"
+                        android:textSize="14dp"
+                        app:formAction="@drawable/ic_arrow_down"
+                        app:formDrawablePadding="@dimen/dimen_10dp"
+                        app:formHint="Chọn phương án" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:orientation="vertical">
+
+                    <com.ems.dingdong.views.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Thời gian dự kiến xuất kho"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+
+                    <com.ems.dingdong.views.form.FormItemTextView
+                        android:id="@+id/tv_time"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textSize="14dp"
+                        app:formAction="@drawable/ic_arrow_down"
+                        app:formDrawablePadding="@dimen/dimen_10dp"
+                        app:formHint="Chọn thời gian" />
+
+                </LinearLayout>
+
             </LinearLayout>
 
-            <View
-                style="@style/Devider"
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp" />
-
             <LinearLayout
+                android:id="@+id/ll_chuyen_hoan"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
-                <com.ems.dingdong.views.CustomTextView
-                    android:layout_width="wrap_content"
+
+                <com.ems.dingdong.views.CustomBoldTextView
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:layout_weight="1"
-                    android:text="Phương án xử lý"
-                    android:textColor="@color/black"
-                    android:textSize="14dp" />
+                    android:background="@drawable/bg_header_common_copy"
+                    android:text="Thông tin chuyển hoàn"
+                    android:textColor="@color/white"
+                    android:textSize="16dp" />
 
-                <com.ems.dingdong.views.form.FormItemTextView
-                    android:id="@+id/tv_solution"
+                <TextView
+                    android:id="@+id/tv_nhapthongtinchuyenhoan"
+                    style="@style/textStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:textColor="@color/red_light"
-                    android:textSize="14dp"
-                    app:formAction="@drawable/ic_arrow_down"
-                    app:formDrawablePadding="@dimen/dimen_10dp"
-                    app:formHint="Chọn phương án" />
+                    android:background="@drawable/bg_header_common_recy"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:text="Bạn chưa nhập thông tin chuyển hoàn\nBấm vào đây để nhập."
+                    android:textColor="@color/blue" />
 
             </LinearLayout>
 
@@ -88,35 +141,10 @@
                 android:layout_marginTop="5dp"
                 android:orientation="vertical">
 
-                <com.ems.dingdong.views.CustomTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Thời gian dự kiến xuất kho"
-                    android:textColor="@color/black"
-                    android:textSize="14dp" />
-
-                <com.ems.dingdong.views.form.FormItemTextView
-                    android:id="@+id/tv_time"
+                <View
+                    style="@style/Devider"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/red_light"
-                    android:textSize="14dp"
-                    app:formAction="@drawable/ic_arrow_down"
-                    app:formDrawablePadding="@dimen/dimen_10dp"
-                    app:formHint="Chọn thời gian" />
-
-            </LinearLayout>
-
-            <View
-                style="@style/Devider"
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:orientation="vertical">
+                    android:layout_height="0.5dp" />
 
                 <com.ems.dingdong.views.CustomTextView
                     android:layout_width="wrap_content"
@@ -140,7 +168,7 @@
                     android:lines="5"
                     android:maxLines="5"
                     android:padding="10dp"
-                    android:textColor="@color/red_light"
+                    android:textColor="@color/black"
                     android:textSize="14dp" />
             </LinearLayout>
 
@@ -419,7 +447,7 @@
                         android:lines="5"
                         android:maxLines="5"
                         android:padding="10dp"
-                        android:textColor="@color/red_light"
+                        android:textColor="@color/black"
                         android:textSize="14dp" />
                 </LinearLayout>
             </LinearLayout>
@@ -544,6 +572,8 @@
 
                 </LinearLayout>
             </LinearLayout>
+
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

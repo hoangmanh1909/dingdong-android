@@ -56,7 +56,7 @@ public class EditDayDialog extends BaseEditDayDialog implements View.OnClickList
     int mType = 0;
 
     public EditDayDialog(Context context, OnChooseDay delegate) {
-        super(context, android.R.style.Theme_Translucent_NoTitleBar);
+        super(context, R.style.ios_dialog_style1);
         this.delegate = delegate;
         tvDateStart.setText(TimeUtils.convertDateToString(calFrom.getTime(), TimeUtils.DATE_FORMAT_5));
         tvDateEnd.setText(TimeUtils.convertDateToString(calTo.getTime(), TimeUtils.DATE_FORMAT_5));
@@ -64,7 +64,7 @@ public class EditDayDialog extends BaseEditDayDialog implements View.OnClickList
     }
 
     public EditDayDialog(Context context, int type, OnChooseDay delegate) {
-        super(context, android.R.style.Theme_Translucent_NoTitleBar);
+        super(context, R.style.ios_dialog_style1);
         this.delegate = delegate;
         mType = type;
         tvDateStart.setText(TimeUtils.convertDateToString(calFrom.getTime(), TimeUtils.DATE_FORMAT_5));
@@ -74,7 +74,7 @@ public class EditDayDialog extends BaseEditDayDialog implements View.OnClickList
 
 
     public EditDayDialog(Context context, String fromDateString, String toDateString, int type, OnChooseDay delegate) {
-        super(context, android.R.style.Theme_Translucent_NoTitleBar);
+        super(context,  R.style.ios_dialog_style1);
         this.delegate = delegate;
         Date fromDate = DateTimeUtils.convertStringToDate(fromDateString, DateTimeUtils.SIMPLE_DATE_FORMAT5);
         Date toDate = DateTimeUtils.convertStringToDate(toDateString, DateTimeUtils.SIMPLE_DATE_FORMAT5);
@@ -90,7 +90,7 @@ public class EditDayDialog extends BaseEditDayDialog implements View.OnClickList
     }
 
     public EditDayDialog(Context context, String fromDateString, String toDateString, int status, int type, OnChooseDay delegate) {
-        super(context, android.R.style.Theme_Translucent_NoTitleBar);
+        super(context,  R.style.ios_dialog_style1);
         this.delegate = delegate;
         setListener();
         Date fromDate = DateTimeUtils.convertStringToDate(fromDateString, DateTimeUtils.SIMPLE_DATE_FORMAT5);
@@ -122,37 +122,6 @@ public class EditDayDialog extends BaseEditDayDialog implements View.OnClickList
         layoutDateEnd.setOnClickListener(this);
         tvShow.setOnClickListener(this);
 
-//        datePickerPopup = new DatePickerPopup.Builder()
-//                .from(getContext())
-//                .offset(3)
-//                .darkModeEnabled(true)
-//                .pickerMode(DatePicker.MONTH_ON_FIRST)
-//                .textSize(19)
-//                .endDate(DateUtils.getTimeMiles(2050, 10, 25))
-//                .currentDate(calFrom.getTimeInMillis())
-//                .startDate(DateUtils.getTimeMiles(1995, 0, 1))
-//                .listener(new DatePickerPopup.OnDateSelectListener() {
-//                    @Override
-//                    public void onDateSelected(DatePicker dp, long date, int dayOfMonth, int monthOfYear, int year) {
-////                                android.widget.Toast.makeText(getContext(), "" + day + "/" + (month + 1) + "/" + year, android.widget.Toast.LENGTH_SHORT).show();
-//                        if (typeDate != 0) {
-//                            calTo.set(year, monthOfYear, dayOfMonth);
-//                            if (calTo.before(calFrom)) {
-//                                calFrom.setTime(calTo.getTime());
-//                            }
-//                        } else {
-//                            calFrom.set(year, monthOfYear, dayOfMonth);
-//                            if (calFrom.after(calTo)) {
-//                                calTo.setTime(calFrom.getTime());
-//                            }
-//                        }
-//                        if (tvDateStart != null)
-//                            tvDateStart.setText(TimeUtils.convertDateToString(calFrom.getTime(), TimeUtils.DATE_FORMAT_5));
-//                        if (tvDateEnd != null)
-//                            tvDateEnd.setText(TimeUtils.convertDateToString(calTo.getTime(), TimeUtils.DATE_FORMAT_5));
-//                    }
-//                })
-//                .build();
     }
     private DatePickerPopup datePickerPopup;
 

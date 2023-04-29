@@ -5,6 +5,7 @@ import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.modedat
 import com.ems.dingdong.model.ComfrimCreateMode;
 import com.ems.dingdong.model.SearchMode;
 import com.ems.dingdong.model.SimpleResult;
+import com.ems.dingdong.model.VM_POSTMAN_ROUTE;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.network.NetWorkControllerGateWay;
 
@@ -30,5 +31,10 @@ public class ChuaPhanHuongInteractor extends Interactor<ChuaPhanHuongContract.Pr
     @Override
     public Single<SimpleResult> ddLapBD13Vmap(OrderCreateBD13Mode createBD13Mode) {
         return NetWorkControllerGateWay.getLapBangKeBD13(createBD13Mode);
+    }
+    @Override
+    public Single<SimpleResult> ddXacNhanLoTrinhVmap(VM_POSTMAN_ROUTE vm_postman_route) {
+        return NetWorkControllerGateWay.getXacNhanLoTrinh(vm_postman_route);
+
     }
 }

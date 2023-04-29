@@ -1,6 +1,8 @@
 package com.ems.dingdong.functions.mainhome.gomhang.packagenews.detailxacnhantin;
 
 import android.text.TextUtils;
+import android.text.method.ScrollingMovementMethod;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -285,6 +287,18 @@ public class XacNhanTinDetailFragment extends ViewFragment<XacNhanTinDetailContr
         //tvContactAddress.setText(mList.get(0).getReceiverAddress());
         tvContactName.setText(commonObject.getReceiverName());
         tvContactPhone.setText(commonObject.getReceiverPhone());
+        tvDescription.setMovementMethod(new ScrollingMovementMethod());
+        
+        tvDescription.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                tvDescription.getParent().requestDisallowInterceptTouchEvent(true);
+
+                return false;
+            }
+        });
         tvDescription.setText(commonObject.getDescription());
 
         if (!TextUtils.isEmpty(commonObject.getNote()))

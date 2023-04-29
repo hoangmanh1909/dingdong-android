@@ -3,22 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#80000000"
     android:clickable="true"
     android:focusable="true">
-<!--    <ImageView-->
-<!--        android:id="@+id/btnBack"-->
-<!--        android:layout_width="@dimen/size_50dp"-->
-<!--        android:layout_height="@dimen/size_50dp"-->
-<!--        android:layout_alignParentRight="true"-->
-<!--        android:layout_margin="@dimen/size_10dp"-->
-<!--        android:src="@drawable/ic_cancel" />-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_margin="@dimen/size_16dp"
-        android:layout_marginTop="@dimen/dimen_5dp"
         android:orientation="vertical">
 
         <com.ems.dingdong.views.CustomBoldTextView
@@ -26,7 +16,7 @@
             android:id="@+id/tbv_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_header_common"
+            android:background="@drawable/bg_header_common_copy"
             android:padding="@dimen/dimen_10dp"
             android:text="Xác nhận lập bản kê BD13"
             android:textColor="@color/white" />
@@ -34,7 +24,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg_white_radius_bottom_common"
+            android:background="@drawable/bg_header_common_recy"
             android:orientation="vertical">
 
             <LinearLayout

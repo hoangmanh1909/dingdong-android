@@ -207,13 +207,13 @@ public class CancelPaymentAdapter extends RecyclerView.Adapter<CancelPaymentAdap
             else
                 tvLadingCode.setText("");
 
-            if (!TextUtils.isEmpty(model.getBankName()))
+//            if (!TextUtils.isEmpty(model.getBankName()))
                 tvThanhtaoan.setText("Kênh thanh toán: " + model.getBankName());
-            else
-                tvThanhtaoan.setText("Kênh thanh toán: " +
-                        (model.getCashinChannel().equals("VNPD") ? "Ví điện tử PostPay" :
-                                (model.getCashinChannel().equals("SeABank") ? "Ngân hàng TMCP Đông Nam Á" :
-                                        model.getCashinChannel().equals("PP") ? "Ví điện tử PostPay - MB" : "")));
+//            else
+//                tvThanhtaoan.setText("Kênh thanh toán: " +
+//                        (model.getCashinChannel().equals("PP") ? "Ví điện tử PostPay" :
+//                                (model.getCashinChannel().equals("SeABank") ? "Ngân hàng TMCP Đông Nam Á" :
+//                                        model.getCashinChannel().equals("VNPD") ? "Ví điện tử PostPay - MB" : "")));
 
             if (model.getRetRefNumber() != null)
                 tvSoThamChieu.setText(String.format("%s: %s", mContext.getString(R.string.so_tham_chieu), model.getRetRefNumber()));

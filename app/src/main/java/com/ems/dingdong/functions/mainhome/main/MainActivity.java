@@ -2,6 +2,8 @@ package com.ems.dingdong.functions.mainhome.main;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
@@ -10,6 +12,9 @@ import com.ems.dingdong.callback.DialogCallback;
 import com.ems.dingdong.dialog.DialogTextThanhConhg;
 import com.ems.dingdong.functions.login.LoginActivity;
 import com.ems.dingdong.utiles.Log;
+import com.ems.dingdong.utiles.Toast;
+
+import java.util.Random;
 
 public class MainActivity extends DingDongActivity {
 
@@ -24,5 +29,6 @@ public class MainActivity extends DingDongActivity {
         super.onCreate(savedInstanceState);
 
     }
+
 
 }

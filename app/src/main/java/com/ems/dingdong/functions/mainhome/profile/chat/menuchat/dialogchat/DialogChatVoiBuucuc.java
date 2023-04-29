@@ -89,9 +89,7 @@ public class DialogChatVoiBuucuc extends Dialog {
         mListBuuCuc = new ArrayList<>();
         getBuuCuc("00", 1);
         tvBuucuc.setText(postOffice.getCode() + " - " + postOffice.getName());
-
         mItemBuuCuc = new Item(postOffice.getCode(), postOffice.getName());
-
         tvBuucuc.setEnabled(false);
     }
 

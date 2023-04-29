@@ -2,10 +2,13 @@ package com.ems.dingdong.functions.mainhome.gomhang.listcommon.more;
 
 import android.content.Context;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.core.utils.RecyclerUtils;
@@ -35,6 +38,16 @@ public class DialogItemDichvu extends BottomSheetDialog {
 
     public DialogItemDichvu(@NonNull Context context, List<Item> list, PickerCallback callback) {
         super(context, R.style.AppBottomSheetDialog);
+        Window window = getWindow();
+
+// clear FLAG_TRANSLUCENT_STATUS flag:
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+
+// add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+
+// finally change the color
+        window.setStatusBarColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
         View view = View.inflate(getContext(), R.layout.dialog_picker_dicvu, null);
         setContentView(view);
         ButterKnife.bind(this, view);

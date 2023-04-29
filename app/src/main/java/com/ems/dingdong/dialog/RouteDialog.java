@@ -35,9 +35,7 @@ public class RouteDialog extends Dialog {
     private ItemBottomSheetPickerUIFragment pickerUIRoute;
 
     public RouteDialog(Context context, List<RouteInfo> routeInfos, RouteOptionCallBack routeOptionCallBack) {
-
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
-
         this.mDelegate = routeOptionCallBack;
         mRouteInfos = routeInfos;
         View view = View.inflate(getContext(), R.layout.dialog_route, null);
@@ -71,9 +69,6 @@ public class RouteDialog extends Dialog {
             case R.id.tv_route:
                 showUIRoute();
                 break;
-//            case R.id.tv_close:
-//                dismiss();
-//                break;
             case R.id.tv_cancel_route:
                 dismiss();
                 break;

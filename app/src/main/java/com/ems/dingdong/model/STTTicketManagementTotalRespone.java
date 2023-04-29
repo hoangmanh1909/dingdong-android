@@ -2,6 +2,8 @@ package com.ems.dingdong.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class STTTicketManagementTotalRespone {
     @SerializedName("StatusCode")
     private String StatusCode;
@@ -15,6 +17,16 @@ public class STTTicketManagementTotalRespone {
     private String CreatedDate;
     @SerializedName("Quantity")
     private int Quantity;
+    @SerializedName("ListTicketCode")
+    private List<String> ListTicketCode;
+
+    public List<String> getListTicketCode() {
+        return ListTicketCode;
+    }
+
+    public void setListTicketCode(List<String> listTicketCode) {
+        ListTicketCode = listTicketCode;
+    }
 
     public String getTicketCode() {
         return TicketCode;

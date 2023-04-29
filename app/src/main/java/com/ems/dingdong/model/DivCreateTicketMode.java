@@ -55,6 +55,16 @@ public class DivCreateTicketMode {
     /// </summary>
     @SerializedName("ImagePath")
     public String ImagePath;
+    @SerializedName("SolutionCode")
+    public String SolutionCode;
+
+    public String getSolutionCode() {
+        return SolutionCode;
+    }
+
+    public void setSolutionCode(String solutionCode) {
+        SolutionCode = solutionCode;
+    }
 
     public long getPostmanId() {
         return PostmanId;

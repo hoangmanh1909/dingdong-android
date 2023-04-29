@@ -1,6 +1,7 @@
 package com.ems.dingdong.functions.mainhome.gomhang.listcommon;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 
 import androidx.annotation.NonNull;
@@ -30,6 +31,7 @@ import com.core.utils.RecyclerUtils;
 import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.BuuCucCallback;
 import com.ems.dingdong.callback.PickerCallback;
+import com.ems.dingdong.dialog.IOSDialog;
 import com.ems.dingdong.functions.mainhome.gomhang.listcommon.more.DialoChonKhuVuc;
 import com.ems.dingdong.functions.mainhome.gomhang.listcommon.more.DialogItemDichvu;
 import com.ems.dingdong.functions.mainhome.gomhang.listcommon.more.DichVuMode;
@@ -44,6 +46,7 @@ import com.ems.dingdong.model.Item;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.SearchMode;
+import com.ems.dingdong.utiles.CustomToast;
 import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.form.FormItemEditText;
@@ -464,10 +467,25 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
                 }
             }
             if (!list.isEmpty()) {
-                mPresenter.confirmAllOrderPostman(list);
+                new IOSDialog.Builder(getViewContext())
+                        .setTitle("Thông báo")
+                        .setCancelable(false)
+                        .setMessage("Bạn có chắc chắn muốn xác nhận " + list.size() + " tin?")
+                        .setPositiveButton("Xác nhận", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                mPresenter.confirmAllOrderPostman(list);
+                            }
+                        })
+                        .setNegativeButton("Đóng", null).show();
             } else {
-                Toast.showToast(getActivity(), "Chưa tin nào được chọn");
+                new IOSDialog.Builder(getViewContext())
+                        .setTitle("Thông báo")
+                        .setCancelable(false)
+                        .setMessage("Chưa tin nào được chọn")
+                        .setNegativeButton("Đóng", null).show();
             }
+
         } else {
             ArrayList<CommonObject> list = new ArrayList<>();
             for (CommonObject item : mListDa) {
@@ -477,8 +495,14 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
             }
             if (!list.isEmpty()) {
                 mPresenter.confirmAllOrderPostman(list);
+//                mPresenter.showSort(list);
             } else {
-                Toast.showToast(getActivity(), "Chưa tin nào được chọn");
+//                Toast.showToast(getActivity(), "Chưa tin nào được chọn");
+                new IOSDialog.Builder(getViewContext())
+                        .setTitle("Thông báo")
+                        .setCancelable(false)
+                        .setMessage("Chưa tin nào được chọn")
+                        .setNegativeButton("Đóng", null).show();
             }
         }
 
@@ -579,17 +603,23 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
     }
 
     @Override
-    public void showResult(ConfirmAllOrderPostman allOrderPostman) {
+    public void showResult(ConfirmAllOrderPostman allOrderPostman, ArrayList<CommonObject> list) {
 //        EventBus.getDefault().post(Constants.EVENTBUS_HOAN_THANH_TIN_THANH_CONG_NOTIFY_DATA);
-        if (getActivity() != null) {
-            new SweetAlertDialog(getActivity(), SweetAlertDialog.NORMAL_TYPE).setConfirmText("OK").setTitleText("Thông báo").setContentText("Có " + allOrderPostman.getSuccessRecord() + " Xác nhận thành công. Có " + allOrderPostman.getErrorRecord() + " xác nhận lỗi").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                @Override
-                public void onClick(SweetAlertDialog sweetAlertDialog) {
-                    sweetAlertDialog.dismiss();
-                    mPresenter.onCanceled();
-                }
-            }).show();
+//        if (getActivity() != null) {
+//            new SweetAlertDialog(getActivity(), SweetAlertDialog.NORMAL_TYPE).setConfirmText("OK").setTitleText("Thông báo").setContentText("Có " + allOrderPostman.getSuccessRecord() + " Xác nhận thành công. Có " + allOrderPostman.getErrorRecord() + " xác nhận lỗi").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+//                @Override
+//                public void onClick(SweetAlertDialog sweetAlertDialog) {
+//                    sweetAlertDialog.dismiss();
+//                    mPresenter.onCanceled();
+//                }
+//            }).show();
+//        }
+
+        CustomToast.makeText(getViewContext(), (int) CustomToast.LONG, "Có " + allOrderPostman.getSuccessRecord() + " Xác nhận thành công. Có " + allOrderPostman.getErrorRecord() + " xác nhận lỗi", Constants.ERROR).show();
+        if (list.size() <= Constants.SO_LUONG_TIN) {
+            mPresenter.showSort(list);
         }
+        mPresenter.onCanceled();
     }
 
 
@@ -805,7 +835,7 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
                         "",
                         String.format("%s đ", NumberUtils.formatPriceNumber(0)),
                         String.format("%s đ", NumberUtils.formatPriceNumber(0)),
-                       2,
+                        2,
                         "");
                 if (list.getReceiverPhone().length() > 11) {
                     Toast.showToast(getViewContext(), "Số điện thoại không hợp lệ");

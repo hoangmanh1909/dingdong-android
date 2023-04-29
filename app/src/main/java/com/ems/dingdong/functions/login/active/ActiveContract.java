@@ -23,6 +23,7 @@ interface ActiveContract {
 
     interface Presenter extends IPresenter<View, Interactor> {
         void activeAuthorized(String mobileNumber, String activeCode, String codeDeviceActive);
+
         String getMobileNumber();
     }
 }

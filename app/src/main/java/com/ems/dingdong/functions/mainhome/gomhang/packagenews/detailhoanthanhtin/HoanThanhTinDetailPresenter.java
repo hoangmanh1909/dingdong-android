@@ -14,6 +14,7 @@ import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
+import com.ems.dingdong.network.ApiDisposable;
 
 import java.util.List;
 
@@ -163,9 +164,11 @@ public class HoanThanhTinDetailPresenter extends Presenter<HoanThanhTinDetailCon
                         }
                         mView.hideProgress();
                     } else {
-//                        mView.showError(simpleResult.getMessage());
                         mView.hideProgress();
                     }
+                }, throwable -> {
+                    mView.hideProgress();
+                    new ApiDisposable(throwable, getViewContext());
                 });
     }
 

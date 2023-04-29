@@ -19,6 +19,7 @@ import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.tabs.ListBaoPh
 import com.ems.dingdong.model.GroupInfo;
 import com.ems.dingdong.model.HomeInfo;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,33 +48,33 @@ public class AddressFragment extends ViewFragment<AddressContract.Presenter> imp
     @Override
     public void initLayout() {
         super.initLayout();
-        mList = new ArrayList<>();
+        try {
+            mList = new ArrayList<>();
+            ArrayList<HomeInfo> homeInfos = new ArrayList<>();
+            homeInfos.add(new HomeInfo(1, R.drawable.ic_address, "Xác minh địa chỉ"));
+            homeInfos.add(new HomeInfo(2, R.drawable.ic_danhba, "Thêm danh bạ địa chỉ"));
+            mList.addAll(homeInfos);
 
-        ArrayList<HomeInfo> homeInfos = new ArrayList<>();
-        homeInfos.add(new HomeInfo(1, R.drawable.ic_address, "Xác minh địa chỉ"));
-        homeInfos.add(new HomeInfo(2, R.drawable.ic_danhba, "Thêm danh bạ địa chỉ"));
-        mList.addAll(homeInfos);
-
-        adapter = new HomeAdapter(getViewContext(), mList) {
-            @Override
-            public void onBindViewHolder(@NonNull HolderView holder, int position) {
-                super.onBindViewHolder(holder, position);
-                HomeInfo homeInfo = mList.get(position);
-                holder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (homeInfo.getId() == 1) {
-                            mPresenter.showXacMinhDiaChi();
-                        } else {
-                            mPresenter.showDanhBa();
+            adapter = new HomeAdapter(getViewContext(), mList) {
+                @Override
+                public void onBindViewHolder(@NonNull HolderView holder, int position) {
+                    super.onBindViewHolder(holder, position);
+                    HomeInfo homeInfo = mList.get(position);
+                    holder.itemView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if (homeInfo.getId() == 1) {
+                                mPresenter.showXacMinhDiaChi();
+                            } else {
+                                mPresenter.showDanhBa();
+                            }
                         }
-                    }
-                });
+                    });
 
-            }
-        };
-        mLayoutManager = new StickyHeaderGridLayoutManager(SPAN_SIZE);
-        mLayoutManager.setHeaderBottomOverlapMargin(getResources().getDimensionPixelSize(R.dimen.dimen_8dp));
+                }
+            };
+            mLayoutManager = new StickyHeaderGridLayoutManager(SPAN_SIZE);
+            mLayoutManager.setHeaderBottomOverlapMargin(getResources().getDimensionPixelSize(R.dimen.dimen_8dp));
 //        recycler.setItemAnimator(new DefaultItemAnimator() {
 //            @Override
 //            public boolean animateRemove(RecyclerView.ViewHolder holder) {
@@ -83,8 +84,12 @@ public class AddressFragment extends ViewFragment<AddressContract.Presenter> imp
 //        });
 //        recycler.setLayoutManager(mLayoutManager);
 //        recycler.setAdapter(adapter);
-        recycler.setHasFixedSize(true);
-        recycler.setLayoutManager(new GridLayoutManager(getActivity(), 3, GridLayout.VERTICAL, false));
-        recycler.setAdapter(adapter);
+            recycler.setHasFixedSize(true);
+            recycler.setLayoutManager(new GridLayoutManager(getActivity(), 3, GridLayout.VERTICAL, false));
+            recycler.setAdapter(adapter);
+        } catch (Exception e) {
+            Toast.showToast(getViewContext(), "Dia Chi");
+        }
+
     }
 }

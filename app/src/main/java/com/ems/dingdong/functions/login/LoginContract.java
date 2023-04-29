@@ -11,13 +11,17 @@ import com.ems.dingdong.model.PostOfficeResult;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.SolutionResult;
+import com.ems.dingdong.model.request.ActiveRequest;
+import com.ems.dingdong.model.request.GetPostOfficeByCodeRequest;
 import com.ems.dingdong.model.request.LoginRequest;
+import com.ems.dingdong.model.request.ValidationRequest;
 import com.ems.dingdong.model.response.GetVersionResponse;
 import com.ems.dingdong.model.response.ResponseObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Observable;
 import io.reactivex.Single;
 
 /**
@@ -26,55 +30,81 @@ import io.reactivex.Single;
 interface LoginContract {
 
     interface Interactor extends IInteractor<Presenter> {
-        void login(LoginRequest loginRequest, CommonCallback<LoginResult> commonCallback);
-
-        void login1(LoginRequest loginRequest, CommonCallback<LoginResult> commonCallback);
-
-        void getPostOfficeByCode(String code, String postmanID, CommonCallback<SimpleResult> callback);
-
-        void getSolutions(CommonCallback<SimpleResult> commonCallback);
-
+        //        Observable<LoginResult> login(LoginRequest loginRequest, CommonCallback<LoginResult> commonCallback);
+//
+//        void getPostOfficeByCode(String code, String postmanID, CommonCallback<SimpleResult> callback);
+//
         void getReasons(CommonCallback<SimpleResult> commonCallback);
-
-        void getVersion(CommonCallback<SimpleResult> callback);
+//
+//        void getVersion(CommonCallback<SimpleResult> callback);
 
         Single<SimpleResult> getList(String data);
 
         Single<SimpleResult> getDanhSachNganHang();
 
-        Single<SimpleResult> getCallLog(List<CallLogMode> request);
+        Observable<LoginResult> ddLogin(LoginRequest loginRequest);
 
-        void getBalance(String mobileNumber, String postmanId, CommonCallback<SimpleResult> commonCallback);
+        Observable<SimpleResult> ddvalidationAuthorized(ValidationRequest validationRequest);
+
+        Observable<SimpleResult> ddLoginSms(ActiveRequest activeRequest);
+
+        Observable<SimpleResult> ddPostOfficeByCode(GetPostOfficeByCodeRequest getPostOfficeByCodeRequest);
+
+        Observable<SimpleResult> ddGetVersion();
+
     }
 
     interface View extends PresentView<Presenter> {
-        void showMessage(String message);
-
+        //        void showMessage(String message);
+//
         void showError(String message);
-
-        void showVersion(String version, String urlDownload);
-
-        void gotoHome();
+//
+//        void gotoHome();
+//
+//        void showThanhCong();
+//
+//        void showVersionV1(List<GetVersionResponse> list);
 
         void showThanhCong();
 
-        void showVersionV1(List<GetVersionResponse> list);
+        void showThatBai();
 
-        void showCallLog(int size);
+        void showSMS();
+
+        void showXacThuc();
+
+        void showLogin();
+
+        void gotoLogin();
+
+        void showVersion(List<GetVersionResponse> list);
+
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
-        void login(String mobileNumber, String signCode);
+        //        void login(String mobileNumber, String signCode);
+//
+//        //XAC THUC
+//        void gotoValidation();
+//
+//        void getVersion();
+//
+        void ddLogin(String mobileNumber, String signCode);
 
-        void gotoValidation();
+        void ddXacThuc(String mobileNumber);
 
-        void getVersion();
+        void ddLoginSms(String phone, String smscode, String token);
+
+        void ddGetVersion();
+
+        void ddPostOfficeByCode(String unitCode, String postmanID);
 
         void getList(String data);
 
+        //
         void getDanhSachNganHang();
 
-        void getCallLog(List<CallLogMode> request);
+        void getReasons();
     }
 }
 

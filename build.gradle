@@ -5,14 +5,15 @@ buildscript {
     dependencies {
         classpath "io.realm:realm-gradle-plugin:$realm_version"
         classpath 'com.android.tools:r8:3.3.75'  // Must be before the Gradle Plugin for Android.
-        classpath 'com.android.tools.build:gradle:7.2.0'
-        classpath 'com.android.tools.build:gradle:7.1.0-alpha11'
+        classpath 'com.android.tools.build:gradle:7.3.0'
+        classpath 'com.android.tools.build:gradle:7.3.0'
         classpath 'com.google.gms:google-services:4.3.14'
+
     }
 }
 plugins {
-    id 'com.android.application' version '7.0.1' apply false
-    id 'com.android.library' version '7.0.1' apply false
+    id 'com.android.application' version '7.3.1' apply false
+    id 'com.android.library' version '7.3.1' apply false
     id 'org.jetbrains.kotlin.android' version '1.6.21' apply false
     id "com.google.gms.google-services" version "4.3.13" apply false
 }

@@ -16,14 +16,14 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_margin="8dp"
-            android:src="@drawable/ic_outline_image_24" />
+            android:src="@drawable/image_ioicon" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:padding="8dp"
-            android:text="Hình ảnh"
+            android:text="Chọn từ thư viện"
             android:textColor="@color/black"
             android:textSize="16dp" />
     </LinearLayout>
@@ -40,7 +40,7 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_margin="8dp"
-            android:src="@drawable/ic_outline_camera_24" />
+            android:src="@drawable/camera_ioicon" />
 
         <TextView
             android:layout_width="wrap_content"

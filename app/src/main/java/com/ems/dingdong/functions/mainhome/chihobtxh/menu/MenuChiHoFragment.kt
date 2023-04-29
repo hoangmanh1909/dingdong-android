@@ -10,7 +10,6 @@ import com.codewaves.stickyheadergrid.StickyHeaderGridLayoutManager
 import com.core.base.viper.ViewFragment
 import com.ems.dingdong.R
 import com.ems.dingdong.functions.mainhome.home.HomeGroupAdapter
-import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.tabs.ListBaoPhatBangKeActivity
 import com.ems.dingdong.functions.mainhome.phathang.baophatkhongthanhcong.BaoPhatBangKhongThanhCongActivity
 import com.ems.dingdong.functions.mainhome.phathang.baophatthanhcong.BaoPhatThanhCongActivity
 import com.ems.dingdong.functions.mainhome.phathang.thongke.tabs.StatictisActivity

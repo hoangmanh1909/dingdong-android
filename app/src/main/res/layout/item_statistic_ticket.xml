@@ -38,9 +38,10 @@
                     android:layout_marginTop="5dp"
                     android:gravity="center|left"
                     android:paddingLeft="5dp"
+                    android:fontFamily="@font/inter_semibold"
                     android:text="EG680005116VN"
                     android:layout_toLeftOf="@+id/tv_trangthai"
-                    android:textStyle="bold" />
+                   android:textColor="@color/md_blue_700" />
 
 
                 <TextView

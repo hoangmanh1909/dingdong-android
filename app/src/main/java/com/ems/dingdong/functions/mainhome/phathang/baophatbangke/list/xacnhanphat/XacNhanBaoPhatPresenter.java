@@ -8,8 +8,12 @@ import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.dialog.IOSDialog;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.ListDeliveryConstract;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.more.GroupServiceMode;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.more.LadingProduct;
+import com.ems.dingdong.model.CallLiveMode;
+import com.ems.dingdong.model.DLVDeliveryUnSuccessRefundRequest;
 import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.model.DeliverySuccessRequest;
 import com.ems.dingdong.model.DingDongCancelDividedRequest;
@@ -36,6 +40,7 @@ import com.ems.dingdong.model.request.DeliveryUnSuccessRequest;
 import com.ems.dingdong.model.request.PaypostPaymentRequest;
 import com.ems.dingdong.model.request.PushToPnsRequest;
 import com.ems.dingdong.model.response.DeliveryCheckAmountPaymentResponse;
+import com.ems.dingdong.network.ApiDisposable;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
@@ -53,6 +58,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -139,6 +145,9 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
 //                        mView.showError(simpleResult.getMessage());
                         mView.hideProgress();
                     }
+                }, throwable -> {
+                    mView.hideProgress();
+                    new ApiDisposable(throwable, getViewContext());
                 });
     }
 
@@ -190,52 +199,136 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
     @Override
     public void postImage(String path) {
         mView.showProgress();
-        mInteractor.postImage(path, new CommonCallback<UploadSingleResult>((Context) mContainerView) {
-            @Override
-            protected void onSuccess(Call<UploadSingleResult> call, Response<UploadSingleResult> response) {
-                super.onSuccess(call, response);
-                if (response.body().getErrorCode() != null) {
-                    if (response.body().getErrorCode().equals("00"))
-                        mView.showImage(response.body().getFile(), path);
-                    else Toast.showToast(getViewContext(), response.body().getMessage());
-                } else {
-                    if (response.body().getMessage() == null)
-                        mView.showAlertDialog("Không kết nối được với hệ thống!");
-                    else mView.showAlertDialog(response.body().getMessage());
-                }
-            }
+        mInteractor.postImage(path).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    if (simpleResult.getErrorCode() != null) {
+                        if (simpleResult.getErrorCode().equals("00"))
+                            mView.showImage(simpleResult.getFile(), path);
+                        else Toast.showToast(getViewContext(), simpleResult.getMessage());
+                        mView.hideProgress();
+                    } else {
+                        if (simpleResult.getMessage() == null)
+                            new IOSDialog.Builder(getViewContext())
+                                    .setCancelable(false).setTitle("Thông báo")
+                                    .setMessage("Không kết nối được với hệ thống!")
+                                    .setNegativeButton("Đóng", null).show();
+                        else new IOSDialog.Builder(getViewContext())
+                                .setCancelable(false).setTitle("Thông báo")
+                                .setMessage(simpleResult.getMessage())
+                                .setNegativeButton("Đóng", null).show();
+                        mView.hideProgress();
+                    }
+                }, throwable -> {
+                    try {
+                        mView.hideProgress();
+                        mView.deleteFile();
+                    } catch (Exception exception) {
+                    }
+                });
+//        mInteractor.postImage(path, new CommonCallback<UploadSingleResult>((Context) mContainerView) {
+//            @Override
+//            protected void onSuccess(Call<UploadSingleResult> call, Response<UploadSingleResult> response) {
+//                super.onSuccess(call, response);
+//                if (response.body().getErrorCode() != null) {
+//                    if (response.body().getErrorCode().equals("00"))
+//                        mView.showImage(response.body().getFile(), path);
+//                    else Toast.showToast(getViewContext(), response.body().getMessage());
+//                } else {
+//                    if (response.body().getMessage() == null)
+//                        new IOSDialog.Builder(getViewContext())
+//                                .setCancelable(false).setTitle("Thông báo")
+//                                .setMessage("Không kết nối được với hệ thống!")
+//                                .setNegativeButton("Đóng", null).show();
+//                    else new IOSDialog.Builder(getViewContext())
+//                            .setCancelable(false).setTitle("Thông báo")
+//                            .setMessage(response.body().getMessage())
+//                            .setNegativeButton("Đóng", null).show();
+//                }
+//            }
+//
+//            @Override
+//            protected void onError(Call<UploadSingleResult> call, String message) {
+//                super.onError(call, message);
+//                try {
+//                    new IOSDialog.Builder(getViewContext())
+//                            .setCancelable(false).setTitle("Thông báo")
+//                            .setMessage("Không kết nối được với hệ thống!")
+//                            .setNegativeButton("Đóng", null).show();
+//                    mView.deleteFile();
+//                } catch (Exception exception) {
+//                }
+//            }
+//        });
+    }
 
-            @Override
-            protected void onError(Call<UploadSingleResult> call, String message) {
-                super.onError(call, message);
-                try {
-                    mView.showAlertDialog("Không kết nối được với hệ thống");
-                    mView.deleteFile();
-                } catch (Exception exception) {
-                }
-            }
-        });
+    @Override
+    public void postImageImageSignature(String path) {
+        mView.showProgress();
+        mInteractor.postImageImageSignature(path).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    if (simpleResult.getErrorCode() != null) {
+                        if (simpleResult.getErrorCode().equals("00"))
+                            mView.showImage(simpleResult.getFile(), path);
+                        else Toast.showToast(getViewContext(), simpleResult.getMessage());
+                        mView.hideProgress();
+                    } else {
+                        if (simpleResult.getMessage() == null)
+                            new IOSDialog.Builder(getViewContext())
+                                    .setCancelable(false).setTitle("Thông báo")
+                                    .setMessage("Không kết nối được với hệ thống!")
+                                    .setNegativeButton("Đóng", null).show();
+                        else new IOSDialog.Builder(getViewContext())
+                                .setCancelable(false).setTitle("Thông báo")
+                                .setMessage(simpleResult.getMessage())
+                                .setNegativeButton("Đóng", null).show();
+                        mView.hideProgress();
+                    }
+                }, throwable -> {
+                    try {
+                        mView.hideProgress();
+                        mView.deleteFile();
+                    } catch (Exception exception) {
+                    }
+                });
     }
 
     @Override
     public void postImageAvatar(String pathAvatar) {
         mView.showProgress();
-        mInteractor.postImageAvatar(pathAvatar, new CommonCallback<UploadSingleResult>((Context) mContainerView) {
-            @Override
-            protected void onSuccess(Call<UploadSingleResult> call, Response<UploadSingleResult> response) {
-                super.onSuccess(call, response);
-                if (response.body() != null) {
-                    mView.showImage(response.body().getFile(), pathAvatar);
-                }
-            }
-
-            @Override
-            protected void onError(Call<UploadSingleResult> call, String message) {
-                super.onError(call, message);
-                mView.showAlertDialog("Không kết nối được với hệ thống");
-//                mView.deleteFile();
-            }
-        });
+//        mInteractor.postImageAvatar(pathAvatar, new CommonCallback<UploadSingleResult>((Context) mContainerView) {
+//            @Override
+//            protected void onSuccess(Call<UploadSingleResult> call, Response<UploadSingleResult> response) {
+//                super.onSuccess(call, response);
+//                if (response.body() != null) {
+//                    mView.showImage(response.body().getFile(), pathAvatar);
+//                }
+//            }
+//
+//            @Override
+//            protected void onError(Call<UploadSingleResult> call, String message) {
+//                super.onError(call, message);
+//                new IOSDialog.Builder(getViewContext())
+//                        .setCancelable(false).setTitle("Thông báo")
+//                        .setMessage("Không kết nối được với hệ thống!")
+//                        .setNegativeButton("Đóng", null).show();
+////                mView.deleteFile();
+//            }
+//        });
+        mInteractor.postImageAvatar(pathAvatar).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    if (simpleResult.getFile() != null) {
+                        mView.showImage(simpleResult.getFile(), pathAvatar);
+                    }
+                }, throwable -> {
+                    try {
+                        mView.hideProgress();
+                        mView.deleteFile();
+                    } catch (Exception exception) {
+                    }
+                });
     }
 
 
@@ -243,7 +336,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
     public void submitToPNS(String reason, String solution, String note, String deliveryImage,
                             String authenImage, String signCapture,
                             String EstimateProcessTime, boolean ischeck, String lydo, int idXaPhuong, int idQuanhuyen, String diachinew,
-                            String hinhthucphat, String ghichu, String doituong, int ngaydukien) {
+                            String hinhthucphat, String ghichu, String doituong, int ngaydukien, DLVDeliveryUnSuccessRefundRequest dlvDeliveryUnSuccessRefundRequest) {
         mView.showProgress();
         Log.d("thanhkhieee", note);
         String postmanID = userInfo.getiD();
@@ -318,6 +411,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
 
             DeliveryUnSuccessRequest deliveryUnSuccessRequest = new DeliveryUnSuccessRequest();
             deliveryUnSuccessRequest.setData(request);
+            deliveryUnSuccessRequest.setRefundInfo(dlvDeliveryUnSuccessRefundRequest);
             String bankCode = new String();
             if (userInfo.getSmartBankLink() != null)
                 for (int i = 0; i < userInfo.getSmartBankLink().size(); i++) {
@@ -332,7 +426,8 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                 @Override
                 protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                     super.onSuccess(call, response);
-                    mView.showSuccess(response.body().getErrorCode(), deliveryUnSuccessRequest.getData().getLadingPostmanID(), response.body().getMessage());
+                    mView.showSuccess(response.body().getErrorCode(), deliveryUnSuccessRequest.getData().getLadingPostmanID()
+                            , ladingCode, response.body().getMessage());
                     mView.hideProgress();
                 }
 
@@ -356,9 +451,9 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                 super.onSuccess(call, response);
                 if (response.body().getErrorCode().equals("00")) {
                     mView.hideProgress();
-                    mView.showSuccess(response.body().getErrorCode(), "", response.body().getMessage());
+                    mView.showSuccess(response.body().getErrorCode(), "", "", response.body().getMessage());
                 } else
-                    mView.showSuccess(response.body().getErrorCode(), "", response.body().getMessage());
+                    mView.showSuccess(response.body().getErrorCode(), "", "", response.body().getMessage());
             }
 
             @Override
@@ -374,7 +469,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                                 String relationship, InfoVerify infoVerify, boolean isCod, long codeEdit, String note,
                                 boolean IsExchange, String ExchangePODeliveryCode, String ExchangeRouteCode, String ExchangeLadingCode,
                                 long ExchangeDeliveryDate, int ExchangeDeliveryTime, List<LadingProduct> ExchangeDetails,
-                                String imgAnhHoangTra, int idXaphuong, int idQuanHUyen, String idCOD) {
+                                String imgAnhHoangTra, int idXaphuong, int idQuanHUyen, String idCOD,String imgSignCapture) {
         mView.showProgress();
         paymentRequests = new ArrayList<>();
         String postmanID = userInfo.getiD();
@@ -419,6 +514,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             request.setStatus(status);
             request.setPaymentChannel(paymentChannel);
             request.setSignatureCapture(signCapture);
+            request.setImageSignature(imgSignCapture);
             request.setNote(note);
             request.setCollectAmount(item.getAmount());
             request.setShiftID(item.getShiftId());
@@ -457,7 +553,6 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             request.setFeeCOD(item.getFeeCOD());
             request.setFeePA(item.getFeePA());
             request.setFeeC(item.getFeeC());
-
             request.setExchange(IsExchange);
             request.setExchangePODeliveryCode(ExchangePODeliveryCode);
             request.setExchangeRouteCode(ExchangeRouteCode);
@@ -516,7 +611,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                         },
                         throwable -> {
                             mView.hideProgress();
-                            mView.showPaymentV2Error(throwable.getMessage());
+                            new ApiDisposable(throwable, getViewContext());
 
                         }
                 );
@@ -779,8 +874,8 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                     }
                     mView.hideProgress();
                 }, throwable -> {
-                    mView.showErrorToast(throwable.getMessage());
                     mView.hideProgress();
+                    new ApiDisposable(throwable, getViewContext());
                 });
     }
 
@@ -802,8 +897,8 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                     }
                     mView.hideProgress();
                 }, throwable -> {
-                    mView.showErrorToast(throwable.getMessage());
                     mView.hideProgress();
+                    new ApiDisposable(throwable, getViewContext());
                 });
     }
 
@@ -835,6 +930,55 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                 });
     }
 
+    @Override
+    public void getDanhMucHCC() {
+        mView.showProgress();
+        SharedPref sharedPref = new SharedPref(getViewContext());
+        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+        mInteractor.getDanhMucHCC(new BaseRequest(0, userInfo.getMobileNumber(), null, null))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    if (simpleResult != null && simpleResult.getErrorCode().equals("00")) {
+                        GroupServiceMode[] list = NetWorkController.getGson().fromJson(simpleResult.getData(), GroupServiceMode[].class);
+                        List<GroupServiceMode> list1 = Arrays.asList(list);
+                        mView.showGroupService(list1);
+                        mView.hideProgress();
+                        mView.showErrorGroupService(simpleResult.getErrorCode(), simpleResult.getMessage());
+                    } else
+                        mView.showErrorGroupService(simpleResult.getErrorCode(), simpleResult.getMessage());
+                    mView.hideProgress();
+                }, throwable -> {
+                    mView.hideProgress();
+                    new ApiDisposable(throwable, getViewContext());
+                });
+    }
+
+    @Override
+    public void getNhomDanhMucHCC(String request) {
+        mView.showProgress();
+        SharedPref sharedPref = new SharedPref(getViewContext());
+        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+        UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+        mInteractor.getNhomDanhMucHCC(request)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    if (simpleResult != null && simpleResult.getErrorCode().equals("00")) {
+                        GroupServiceMode[] list = NetWorkController.getGson().fromJson(simpleResult.getData(), GroupServiceMode[].class);
+                        List<GroupServiceMode> list1 = Arrays.asList(list);
+                        mView.showGroupServicePA(list1);
+                        mView.hideProgress();
+
+                    } else Toast.showToast(getViewContext(), simpleResult.getMessage());
+                    mView.hideProgress();
+                }, throwable -> {
+                    mView.hideProgress();
+                    new ApiDisposable(throwable, getViewContext());
+                });
+    }
+
 
     @Override
     public void getXaPhuongNew(int id) {
@@ -854,8 +998,8 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                     }
                     mView.hideProgress();
                 }, throwable -> {
-                    mView.showErrorToast(throwable.getMessage());
                     mView.hideProgress();
+                    new ApiDisposable(throwable, getViewContext());
                 });
     }
 
@@ -877,8 +1021,29 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                     }
                     mView.hideProgress();
                 }, throwable -> {
-                    mView.showErrorToast(throwable.getMessage());
                     mView.hideProgress();
+                    new ApiDisposable(throwable, getViewContext());
+                });
+    }
+
+
+    @Override
+    public void ddCall(CallLiveMode r) {
+        mView.showProgress();
+        mInteractor.ddCall(r)
+                .subscribeOn(Schedulers.io())
+                .delay(1000, TimeUnit.MICROSECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(simpleResult -> {
+                    if (simpleResult.getErrorCode().equals("00")) {
+                        mView.showCallLive(r.getToNumber());
+                    } else {
+                        Toast.showToast(getViewContext(), simpleResult.getMessage());
+                    }
+                    mView.hideProgress();
+                }, throwable -> {
+                    mView.hideProgress();
+                    new ApiDisposable(throwable, getViewContext());
                 });
     }
 

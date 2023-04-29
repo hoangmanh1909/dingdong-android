@@ -7,6 +7,7 @@ import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.huybaophat.Can
 import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
 import com.ems.dingdong.model.request.CancelDeliveryStatisticRequest;
 import com.ems.dingdong.model.response.CancelStatisticItem;
+import com.ems.dingdong.network.ApiDisposable;
 import com.ems.dingdong.network.NetWorkController;
 import com.google.gson.reflect.TypeToken;
 
@@ -71,9 +72,11 @@ public class CancelBD13StatisticPresenter extends Presenter<CancelBD13StatisticC
                             } else {
                                 mView.showError(result.getMessage());
                             }
+                        },
+                        throwable -> {
+                            mView.hideProgress();
+                            new ApiDisposable(throwable, getViewContext());
                         }
-                        ,
-                        error -> mView.showError(error.getMessage())
                 );
     }
 

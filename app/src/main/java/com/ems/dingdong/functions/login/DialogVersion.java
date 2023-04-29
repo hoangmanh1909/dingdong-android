@@ -20,12 +20,13 @@ import butterknife.OnClick;
 public class DialogVersion extends Dialog {
 
     @BindView(R.id.tv_noidung)
-    TextView tvNoidung;  @BindView(R.id.btn_co)
+    TextView tvNoidung;
+    @BindView(R.id.btn_co)
     TextView btnCo;
     DialogVersionCallback dialogCallback;
 
     public DialogVersion(@NonNull Context context, String title, DialogVersionCallback versionCallback) {
-        super(context, R.style.AppBottomSheetDialog);
+        super(context, R.style.ios_dialog_style1);
         View view = View.inflate(getContext(), R.layout.dialog_version, null);
         setContentView(view);
         ButterKnife.bind(this, view);

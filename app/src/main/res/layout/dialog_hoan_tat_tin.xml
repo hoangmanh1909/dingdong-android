@@ -3,15 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#80000000">
+    android:layout_height="match_parent">
 
     <androidx.cardview.widget.CardView
         style="@style/MyCardViewStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_margin="@dimen/size_16dp">
+        android:layout_centerInParent="true">
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -242,8 +240,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/_5sdp"
-                        android:textColor="@color/red_light"
-                        android:textSize="@dimen/text_size_18sp" />
+                        android:textColor="@color/blackgray"
+                        android:textSize="14dp" />
 
 
                     <RelativeLayout
@@ -257,8 +255,8 @@
                             android:layout_toLeftOf="@+id/img_vitri"
                             android:padding="@dimen/_5sdp"
                             android:text="Đang tính khoảng cách...."
-                            android:textColor="@color/red_light"
-                            android:textSize="@dimen/text_size_18sp" />
+                            android:textColor="@color/blackgray"
+                            android:textSize="14dp" />
 
 
                         <ImageView

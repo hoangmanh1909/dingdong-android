@@ -65,7 +65,7 @@ public class ValidationFragment extends ViewFragment<ValidationContract.Presente
         }
     }
 
-    @OnClick(R.id.login_layout)
+    @OnClick(R.id.btn_tieptheo)
     public void onViewClicked() {
         String phone = edtPhone.getText().toString();
         if (TextUtils.isEmpty(phone)) {
@@ -91,6 +91,7 @@ public class ValidationFragment extends ViewFragment<ValidationContract.Presente
 //                        sweetAlertDialog.dismiss();
 //                    }
 //                }).show();
+
         new DialogLogin(getViewContext(), message).show();
     }
 }

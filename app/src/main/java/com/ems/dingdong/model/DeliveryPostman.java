@@ -218,6 +218,34 @@ public class DeliveryPostman implements Comparable {
     private String DeliveryProvinceName;
     @SerializedName("DeliveryDistrictName")
     private String DeliveryDistrictName;
+    @SerializedName("POAcceptedCode")
+    private String POAcceptedCode; @SerializedName("VATCodeMPITS")
+    private String VATCodeMPITS ;@SerializedName("ProductCodeMPITS")
+    private String ProductCodeMPITS ;
+
+    public String getVATCodeMPITS() {
+        return VATCodeMPITS;
+    }
+
+    public void setVATCodeMPITS(String VATCodeMPITS) {
+        this.VATCodeMPITS = VATCodeMPITS;
+    }
+
+    public String getProductCodeMPITS() {
+        return ProductCodeMPITS;
+    }
+
+    public void setProductCodeMPITS(String productCodeMPITS) {
+        ProductCodeMPITS = productCodeMPITS;
+    }
+
+    public String getPOAcceptedCode() {
+        return POAcceptedCode;
+    }
+
+    public void setPOAcceptedCode(String POAcceptedCode) {
+        this.POAcceptedCode = POAcceptedCode;
+    }
 
     public String getItemTypeCode() {
         return ItemTypeCode;

@@ -47,9 +47,9 @@
 
     </RelativeLayout>
 
-    <View
-        style="@style/Devider"
-        android:layout_marginTop="@dimen/dimen_5dp"
-        tools:ignore="MissingConstraints" />
+<!--    <View-->
+<!--        style="@style/Devider"-->
+<!--        android:layout_marginTop="@dimen/dimen_5dp"-->
+<!--        tools:ignore="MissingConstraints" />-->
 
 </LinearLayout>

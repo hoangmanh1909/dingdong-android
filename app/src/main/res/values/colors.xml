@@ -11,6 +11,7 @@
     <color name="colorBackgroud">#4267b2</color>
     <color name="colorButtonLogin">#d67601</color>
     <color name="colorBlack">#000000</color>
+    <color name="backround">#F2F3F5</color>
     <color name="colorHeader">#c7c7c7</color>
     <color name="colorBlue">#0000FF</color>
     <color name="colorUnSelect">#bebebe</color>
@@ -31,11 +32,12 @@
     <color name="md_amber_a700">#ffab00</color>
     <color name="white">#ffffff</color>
     <color name="colorNen">#F2F3F5</color>
-    <color name="primary">#f5f6fa</color>
+    <color name="primary">#PickerUI</color>
     <color name="sub_title_white">#d6efff</color>
     <color name="white_tranparent_75">#BFffffff</color>
     <color name="white_tranparent_70">#B3ffffff</color>
     <color name="black">#333333</color>
+    <color name="blackgray">#1D2129</color>
     <color name="black_title">#333333</color>
     <color name="black_singer">#96727171</color>
     <color name="black_listen">#666666</color>
@@ -384,7 +386,7 @@
     <color name="bg_blue_primary">#004689</color>
     <color name="bg_gray_primary">#939598</color>
     <color name="bg_red_gradient">#f56358</color>
-    <color name="color_bg_tab_header">#017aff</color>
+    <color name="color_bg_tab_header">#007AFF</color>
     <color name="color_text_tab_header">#9b976d</color>
     <color name="bg_dialog_ui_picker">#f5f6fa</color>
     <color name="bg_color_diapad_button">#f1f1f1</color>

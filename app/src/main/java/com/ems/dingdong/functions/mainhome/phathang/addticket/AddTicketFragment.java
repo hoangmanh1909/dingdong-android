@@ -2,11 +2,13 @@ package com.ems.dingdong.functions.mainhome.phathang.addticket;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
+import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,23 +17,32 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
+import android.widget.GridLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.core.base.log.Logger;
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.R;
 import com.ems.dingdong.callback.DialogCallback;
+import com.ems.dingdong.callback.SolutionModeCallback;
+import com.ems.dingdong.dialog.DialogBottomSheet;
 import com.ems.dingdong.dialog.DialogTextThanhConhg;
+import com.ems.dingdong.dialog.IOSDialog;
 import com.ems.dingdong.functions.mainhome.address.danhbadichi.model.DiaLogCauhoi;
 import com.ems.dingdong.functions.mainhome.phathang.PhatHangFragment;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.loadhinhanh.JavaImageResizer;
 import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.model.DivCreateTicketMode;
+import com.ems.dingdong.model.ItemV1;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.BitmapUtils;
@@ -63,33 +74,31 @@ public class AddTicketFragment extends ViewFragment<AddTicketContract.Presenter>
     }
 
     @BindView(R.id.edt_mabuugui)
-    TextInputEditText edtMabuugui;
+    TextView edtMabuugui;
     @BindView(R.id.edt_loaiyeucau)
-    TextInputEditText edtLoaiyeucau;
-    @BindView(R.id.edt_chitiet)
-    TextInputEditText edtChitiet;
-    @BindView(R.id.edt_dai)
-    TextInputEditText edtDai;
-    @BindView(R.id.edt_rong)
-    TextInputEditText edtRong;
-    @BindView(R.id.edt_cao)
-    TextInputEditText edtCao;
-    @BindView(R.id.edt_tien)
-    TextInputEditText edtTien;
-
-
-    @BindView(R.id.edt_chitiet_textInput)
-    TextInputLayout edt_chitiet_textInput;
-    @BindView(R.id.autoCompleteTextView_textInputlayout)
-    TextInputLayout autoCompleteTextView_textInputlayout;
+    TextView edtLoaiyeucau;
     @BindView(R.id.autoCompleteTextView)
-    AutoCompleteTextView act;
-    @BindView(R.id.iv_camera_plus)
-    ImageView iv_camera_plus;
-    @BindView(R.id.rightToLeft)
-    RelativeLayout rightToLeft;
-    @BindView(R.id.iv_package)
-    SimpleDraweeView ivPackage;
+    TextView autoCompleteTextView;
+    @BindView(R.id.edt_chitiet)
+    EditText edtChitiet;
+    @BindView(R.id.edt_dai)
+    EditText edtDai;
+    @BindView(R.id.edt_rong)
+    EditText edtRong;
+    @BindView(R.id.edt_cao)
+    EditText edtCao;
+    @BindView(R.id.edt_tien)
+    EditText edtTien;
+
+//    @BindView(R.id.iv_camera_plus)
+//    ImageView iv_camera_plus;
+//    @BindView(R.id.rightToLeft)
+//    RelativeLayout rightToLeft;
+//    @BindView(R.id.iv_package)
+//    SimpleDraweeView ivPackage;
+
+    @BindView(R.id.recycler_image)
+    RecyclerView recyclerImage;
     String subSolutionCode = "";
 
     List<SolutionMode> mList;
@@ -97,14 +106,17 @@ public class AddTicketFragment extends ViewFragment<AddTicketContract.Presenter>
     String mFile;
     private UserInfo userInfo;
     String userJson;
+    String idCode;
     SharedPref sharedPref;
+    private List<ItemV1> listImages;
+    private ImageAdapterV1 imageAdapter;
 
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_addticket;
     }
 
-    String[] country;
+    List<SolutionMode> modeList = new ArrayList<>();
 
     @Override
     public void initLayout() {
@@ -115,147 +127,177 @@ public class AddTicketFragment extends ViewFragment<AddTicketContract.Presenter>
         if (!userJson.isEmpty()) {
             userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
         }
-
-        edt_chitiet_textInput.setErrorEnabled(true);
-        edt_chitiet_textInput.setError("Trường này bắt buộc");
-        autoCompleteTextView_textInputlayout.setErrorEnabled(true);
-        autoCompleteTextView_textInputlayout.setError("Trường này bắt buộc");
         mList = new ArrayList<>();
-
         edtMabuugui.setText(mPresenter.getCode());
-        edtLoaiyeucau.setText("07 - Phản ánh sự vụ");
-
-        act.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View arg1, int pos, long id) {
-                subSolutionCode = mList.get(pos).getCode();
-                autoCompleteTextView_textInputlayout.setErrorEnabled(false);
-                autoCompleteTextView_textInputlayout.setError("");
-                //your stuff
-            }
-        });
-
-        edtChitiet.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                if (edtChitiet.getText().toString().trim().isEmpty()) {
-                    edt_chitiet_textInput.setErrorEnabled(true);
-                    edt_chitiet_textInput.setError("Trường này bắt buộc");
-                } else {
-                    edt_chitiet_textInput.setErrorEnabled(false);
-                    edt_chitiet_textInput.setError("");
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
+        edtLoaiyeucau.setText("07 - Thông báo hành vi gian lận cước");
+        mPresenter.ddGetSubSolution("7");
+        idCode = "7";
+        SolutionMode solutionMode = new SolutionMode();
+        solutionMode.setCode("7");
+        solutionMode.setName("07 - Thông báo hành vi gian lận cước");
+        solutionMode.setIs(true);
+        modeList.add(solutionMode);
+        solutionMode = new SolutionMode();
+        solutionMode.setCode("8");
+        solutionMode.setName("08 – Phản ánh của bưu tá, bưu cục phát");
+        modeList.add(solutionMode);
         EditTextUtils.editTextListener(edtTien);
+        EditTextUtils.editTextListener(edtCao);
+        EditTextUtils.editTextListener(edtDai);
+        EditTextUtils.editTextListener(edtRong);
+
+
+        listImages = new ArrayList<>();
+        listImages.add(new ItemV1("", ""));
+        imageAdapter = new ImageAdapterV1(getViewContext(), listImages) {
+            @Override
+            public void onBindViewHolder(@NonNull HolderView holder, int position) {
+                super.onBindViewHolder(holder, position);
+//                holder.ivCameraPlus.setVisibility(View.VISIBLE);
+                holder.ivDelete.setOnClickListener(view -> {
+                    listImages.remove(position);
+                    imageAdapter.notifyItemRemoved(position);
+                    imageAdapter.notifyItemRangeChanged(position, listImages.size());
+                });
+                holder.ivCameraPlus.setOnClickListener(view -> {
+                    if (listImages.size() > 4) {
+                        Toast.showToast(getViewContext(), "Tối đa 4 tấm ảnh");
+                        return;
+                    } else {
+                        showBottomSheetDialog();
+                    }
+                });
+            }
+        };
+        recyclerImage.setHasFixedSize(true);
+        recyclerImage.setLayoutManager(new GridLayoutManager(getActivity(), 3, GridLayout.VERTICAL, false));
+        recyclerImage.setAdapter(imageAdapter);
+
     }
 
     @Override
     public void showList(List<SolutionMode> list) {
         mList = new ArrayList<>();
         mList.addAll(list);
-        hideProgress();
-        country = new String[mList.size()];
-        for (int i = 0; i < mList.size(); i++)
-            country[i] = mList.get(i).getName();
-        adapter = new ArrayAdapter<String>(getViewContext(), R.layout.drop_text, country);
-        act.setAdapter(adapter);
-        act.setThreshold(1);
 
     }
 
     @Override
     public void showImage(String file) {
-        mFile = file;
-//        Toast.showToast(getViewContext(), file);
-        ivPackage.setImageURI(BuildConfig.URL_IMAGE + file);
-        iv_camera_plus.setVisibility(View.GONE);
-        rightToLeft.setVisibility(View.VISIBLE);
+        ItemV1 item = new ItemV1(BuildConfig.URL_IMAGE + file, file);
+        listImages.add(item);
+        imageAdapter.notifyDataSetChanged();
+//        ivPackage.setImageURI(BuildConfig.URL_IMAGE + file);
+//        iv_camera_plus.setVisibility(View.GONE);
+//        rightToLeft.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void deleteFile() {
         mFile = "";
-        iv_camera_plus.setVisibility(View.VISIBLE);
-        rightToLeft.setVisibility(View.GONE);
-        ivPackage.getHierarchy().setPlaceholderImage(R.drawable.ic_camera_capture);
+//        iv_camera_plus.setVisibility(View.VISIBLE);
+//        rightToLeft.setVisibility(View.GONE);
+//        ivPackage.getHierarchy().setPlaceholderImage(R.drawable.ic_camera_capture);
     }
 
-    @OnClick({R.id.img_back, R.id.iv_camera_plus, R.id.btn_them, R.id.iv_delete})
+    @OnClick({R.id.img_back, R.id.btn_them, R.id.edt_loaiyeucau, R.id.autoCompleteTextView})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.autoCompleteTextView:
+                new DialogBottomSheet(getViewContext(), mList, new SolutionModeCallback() {
+                    @Override
+                    public void onResponse(SolutionMode solutionMode) {
+
+                        autoCompleteTextView.setText(solutionMode.getName());
+                        subSolutionCode = solutionMode.getCode();
+                        for (SolutionMode item : mList) {
+                            item.setIs(false);
+                            if (item.getCode().equals(solutionMode.getCode()))
+                                item.setIs(true);
+                        }
+                    }
+                }).show();
+                break;
+            case R.id.edt_loaiyeucau:
+                new DialogBottomSheet(getViewContext(), modeList, new SolutionModeCallback() {
+                    @Override
+                    public void onResponse(SolutionMode solutionMode) {
+                        edtLoaiyeucau.setText(solutionMode.getName());
+                        idCode = solutionMode.getCode();
+                        mPresenter.ddGetSubSolution(idCode);
+                        for (SolutionMode item : modeList) {
+                            item.setIs(false);
+                            if (item.getCode().equals(solutionMode.getCode()))
+                                item.setIs(true);
+                        }
+                    }
+                }).show();
+                break;
             case R.id.img_back:
                 mPresenter.back();
                 break;
-            case R.id.iv_delete:
-                deleteFile();
-                break;
-            case R.id.iv_camera_plus:
-                showBottomSheetDialog();
-                break;
+//            case R.id.iv_delete:
+//                deleteFile();
+//                break;
+//            case R.id.iv_camera_plus:
+//                showBottomSheetDialog();
+//                break;
             case R.id.btn_them:
                 if (subSolutionCode.isEmpty()) {
-                    autoCompleteTextView_textInputlayout.setErrorEnabled(true);
-                    autoCompleteTextView_textInputlayout.setError("Trường này bắt buộc");
-                    new DialogTextThanhConhg(getViewContext(), "Vui lòng chọn nội dung yêu cầu!", new DialogCallback() {
-                        @Override
-                        public void onResponse(String loginRespone) {
-
-                        }
-                    }).show();
+                    new IOSDialog.Builder(getViewContext())
+                            .setCancelable(false)
+                            .setTitle("Thông báo")
+                            .setMessage("Vui lòng chọn nội dung yêu cầu!")
+                            .setNegativeButton("Đóng", null).show();
                     return;
-                } else {
-                    autoCompleteTextView_textInputlayout.setErrorEnabled(false);
-                    autoCompleteTextView_textInputlayout.setError("");
                 }
                 if (edtChitiet.getText().toString().trim().isEmpty()) {
-                    edt_chitiet_textInput.setErrorEnabled(true);
-                    edt_chitiet_textInput.setError("Trường này bắt buộc");
-                    new DialogTextThanhConhg(getViewContext(), "Vui lòng nhập chi tiết yêu cầu!", new DialogCallback() {
-                        @Override
-                        public void onResponse(String loginRespone) {
-
-                        }
-                    }).show();
+                    new IOSDialog.Builder(getViewContext())
+                            .setCancelable(false)
+                            .setTitle("Thông báo")
+                            .setMessage("Vui lòng nhập chi tiết yêu cầu!")
+                            .setNegativeButton("Đóng", null).show();
                     return;
-                } else {
-                    edt_chitiet_textInput.setErrorEnabled(false);
-                    edt_chitiet_textInput.setError("");
                 }
 
 
                 DivCreateTicketMode divCreateTicketMode = new DivCreateTicketMode();
+                divCreateTicketMode.setSolutionCode(idCode);
                 divCreateTicketMode.setPostmanId(Long.parseLong(userInfo.getiD()));
                 divCreateTicketMode.setLadingCode(mPresenter.getCode());
                 divCreateTicketMode.setPODeliveryCode(userInfo.getUnitCode());
                 divCreateTicketMode.setDescription(edtChitiet.getText().toString().trim());
                 divCreateTicketMode.setSubSolutionCode(subSolutionCode);
-                divCreateTicketMode.setLength(edtDai.getText().toString().trim().isEmpty() ? 0 : Long.parseLong(edtDai.getText().toString().trim()));
-                divCreateTicketMode.setWidth(edtRong.getText().toString().trim().isEmpty() ? 0 : Long.parseLong(edtRong.getText().toString().trim()));
-                divCreateTicketMode.setHeight(edtCao.getText().toString().trim().isEmpty() ? 0 : Long.parseLong(edtCao.getText().toString().trim()));
+                divCreateTicketMode.setLength(edtDai.getText().toString().trim().isEmpty() ? 0 : Long.parseLong(edtDai.getText().toString().trim().replaceAll("\\.", "")));
+                divCreateTicketMode.setWidth(edtRong.getText().toString().trim().isEmpty() ? 0 : Long.parseLong(edtRong.getText().toString().trim().replaceAll("\\.", "")));
+                divCreateTicketMode.setHeight(edtCao.getText().toString().trim().isEmpty() ? 0 : Long.parseLong(edtCao.getText().toString().trim().replaceAll("\\.", "")));
                 if (edtTien.getText().toString().trim().isEmpty()) divCreateTicketMode.setFee(0);
                 else
                     divCreateTicketMode.setFee(Long.parseLong(edtTien.getText().toString().trim().replaceAll("\\.", "")));
-                divCreateTicketMode.setImagePath(mFile);
 
-                new DiaLogCauhoi(getViewContext(), "Bạn có chắc chắn muốn tạo ticket?", new DialogCallback() {
-                    @Override
-                    public void onResponse(String loginRespone) {
-                        mPresenter.ddDivCreateTicket(divCreateTicketMode);
-
+                String stringImg = "";
+                for (int i = 0; i < listImages.size(); i++) {
+                    if (stringImg.equals("")) {
+                        stringImg += listImages.get(i).getText();
+                    } else {
+                        stringImg += ";";
+                        stringImg += listImages.get(i).getText();
                     }
-                }).show();
+                }
+                divCreateTicketMode.setImagePath(stringImg);
+
+                new IOSDialog.Builder(getViewContext())
+                        .setCancelable(false)
+                        .setMessage("Bạn có chắc chắn muốn tạo ticket?")
+                        .setTitle("Thông báo")
+                        .setNegativeButton("Hủy", null)
+                        .setPositiveButton("Xác nhận", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                mPresenter.ddDivCreateTicket(divCreateTicketMode);
+                            }
+                        }).show();
+
                 break;
         }
     }
@@ -326,30 +368,29 @@ public class AddTicketFragment extends ViewFragment<AddTicketContract.Presenter>
             if (resultCode == getActivity().RESULT_OK) {
                 mPresenter.postImage(data.getData().getPath());
             }
-        }
-        try {
-            if (requestCode == Constants.CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
-                if (resultCode == getActivity().RESULT_OK) {
-                    if (data == null) Toast.showToast(getViewContext(), "Lỗi cập nhật ảnh");
-                    else attemptSendMedia(data.getData().getPath());
-                } else Toast.showToast(getViewContext(), "Lỗi chụp ảnh");
-            } else if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == getActivity().RESULT_OK) {
-                if (data != null) {
-                    Uri selectedImageUri = data.getData();
-                    File file = new File(getPath(selectedImageUri));
-                    long length = file.length();
-                    length = length / 1024;
-                    if (length > 10240) {
-                        Toast.showToast(getViewContext(), "Hệ thống hỗ trợ tải ảnh dung lượng tối đa 10MB");
-                    } else
-                    attemptSendMediaFolder(JavaImageResizer.resizeAndCompressImageBeforeSend(getViewContext(), getPath(selectedImageUri), "DingDOng.jpg"), 1);
-                    System.out.println("File Path : " + file.getPath() + ", File size : " + length + " KB");
+        } else
+            try {
+                if (requestCode == Constants.CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
+                    if (resultCode == getActivity().RESULT_OK) {
+                        if (data == null)
+                            Toast.showToast(getViewContext(), "Lỗi cập nhật ảnh");
+                        else attemptSendMedia(data.getData().getPath());
+                    } else Toast.showToast(getViewContext(), "Lỗi chụp ảnh");
+                } else if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == getActivity().RESULT_OK) {
+                    if (data != null) {
+                        Uri selectedImageUri = data.getData();
+                        File file = new File(getPath(selectedImageUri));
+                        long length = file.length();
+                        length = length / 1024;
+                        if (length > 10240) {
+                            Toast.showToast(getViewContext(), "Hệ thống hỗ trợ tải ảnh dung lượng tối đa 10MB");
+                        } else
+                            attemptSendMediaFolder(JavaImageResizer.resizeAndCompressImageBeforeSend(getViewContext(), getPath(selectedImageUri), "DingDOng.jpg"), 1);
+                        System.out.println("File Path : " + file.getPath() + ", File size : " + length + " KB");
+                    }
                 }
-//                mPresenter.postImage(currentPhotoPath);
-//                imageView.setImageBitmap(imageBitmap);
+            } catch (Exception exception) {
             }
-        } catch (Exception exception) {
-        }
     }
 
 
@@ -389,22 +430,22 @@ public class AddTicketFragment extends ViewFragment<AddTicketContract.Presenter>
         File file = new File(path_media);
 
 
-            Observable.fromCallable(() -> {
-                Uri uri = Uri.fromFile(new File(path_media));
-                return BitmapUtils.processingBitmap(uri, getViewContext());
-            }).subscribeOn(Schedulers.computation()).observeOn(Schedulers.io()).map(bitmap -> BitmapUtils.saveImage(bitmap, file.getParent(), "Process_" + file.getName(), Bitmap.CompressFormat.JPEG, 40)).observeOn(AndroidSchedulers.mainThread()).subscribe(isSavedImage -> {
-                if (true) {
-                    String path = file.getParent() + File.separator + "Process_" + file.getName();
-                    // mSignPosition = false;
-                    //mPresenter.postImageAvatar(pathAvatar);
-                    mPresenter.postImage(path);
-                    if (type == 0) if (file.exists()) file.delete();
-                } else {
-                    String path = file.getParent() + File.separator + "Process_" + file.getName();
-                    Log.d("ASDASDSADasd", path);
-                    mPresenter.postImage(path_media);
-                }
-            }, onError -> Logger.e("error save image"));
+        Observable.fromCallable(() -> {
+            Uri uri = Uri.fromFile(new File(path_media));
+            return BitmapUtils.processingBitmap(uri, getViewContext());
+        }).subscribeOn(Schedulers.computation()).observeOn(Schedulers.io()).map(bitmap -> BitmapUtils.saveImage(bitmap, file.getParent(), "Process_" + file.getName(), Bitmap.CompressFormat.JPEG, 40)).observeOn(AndroidSchedulers.mainThread()).subscribe(isSavedImage -> {
+            if (true) {
+                String path = file.getParent() + File.separator + "Process_" + file.getName();
+                // mSignPosition = false;
+                //mPresenter.postImageAvatar(pathAvatar);
+                mPresenter.postImage(path);
+                if (type == 0) if (file.exists()) file.delete();
+            } else {
+                String path = file.getParent() + File.separator + "Process_" + file.getName();
+                Log.d("ASDASDSADasd", path);
+                mPresenter.postImage(path_media);
+            }
+        }, onError -> Logger.e("error save image"));
     }
 
 }

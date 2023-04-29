@@ -18,7 +18,7 @@ public class DialogTextThanhConhg extends Dialog {
     TextView tvNoidung;
     DialogCallback dialogCallback;
     public DialogTextThanhConhg(Context context, String noidung, DialogCallback dialogCallback) {
-        super(context, android.R.style.Theme_Translucent_NoTitleBar);
+        super(context,  R.style.ios_dialog_style1);
         View view = View.inflate(getContext(), R.layout.dialog_text_thanhcong, null);
         setContentView(view);
         ButterKnife.bind(this, view);

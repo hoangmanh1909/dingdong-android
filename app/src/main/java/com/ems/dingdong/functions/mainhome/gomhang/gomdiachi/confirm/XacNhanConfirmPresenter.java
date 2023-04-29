@@ -7,6 +7,8 @@ import android.util.Log;
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.functions.mainhome.gomhang.sortxacnhantin.SortPersenter;
+import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.ConfirmAllOrderPostman;
 import com.ems.dingdong.model.ConfirmAllOrderPostmanResult;
 import com.ems.dingdong.model.ConfirmOrderPostman;
@@ -16,7 +18,10 @@ import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.UserInfoResult;
 import com.ems.dingdong.model.request.OrderChangeRouteInsertRequest;
+import com.ems.dingdong.network.ApiDisposable;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.CustomToast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
@@ -36,6 +41,7 @@ public class XacNhanConfirmPresenter extends Presenter<XacNhanConfirmContract.Vi
         implements XacNhanConfirmContract.Presenter {
 
     ArrayList<ConfirmOrderPostman> mListRequest;
+    ArrayList<CommonObject> listCommonObject;
     String tenKH;
 
     public XacNhanConfirmPresenter(ContainerView containerView) {
@@ -63,6 +69,11 @@ public class XacNhanConfirmPresenter extends Presenter<XacNhanConfirmContract.Vi
     }
 
     @Override
+    public ArrayList<CommonObject> getListCommonObjec() {
+        return listCommonObject;
+    }
+
+    @Override
     public String setTenKH() {
         return tenKH;
     }
@@ -77,8 +88,9 @@ public class XacNhanConfirmPresenter extends Presenter<XacNhanConfirmContract.Vi
                 super.onSuccess(call, response);
                 mView.hideProgress();
                 if (response.body().getErrorCode().equals("00")) {
-                    ConfirmAllOrderPostman confirmAllOrderPostman = NetWorkController.getGson().fromJson(response.body().getData(), new TypeToken<ConfirmAllOrderPostman>() {
-                    }.getType());
+                    ConfirmAllOrderPostman confirmAllOrderPostman = NetWorkController.getGson().fromJson(response.body().getData(),
+                            new TypeToken<ConfirmAllOrderPostman>() {
+                            }.getType());
                     mView.showResult(confirmAllOrderPostman);
                 } else {
                     mView.showError(response.body().getMessage());
@@ -89,13 +101,23 @@ public class XacNhanConfirmPresenter extends Presenter<XacNhanConfirmContract.Vi
             protected void onError(Call<SimpleResult> call, String message) {
                 super.onError(call, message);
                 mView.hideProgress();
-                mView.showError(message);
+                CustomToast.makeText(getViewContext(), (int) CustomToast.LONG, message, Constants.ERROR).show();
             }
         });
     }
 
+    @Override
+    public void showSort(List<CommonObject> list) {
+        new SortPersenter(mContainerView).setListSort(list).pushView();
+    }
+
     public XacNhanConfirmPresenter setListRequest(ArrayList<ConfirmOrderPostman> listRequest) {
         this.mListRequest = listRequest;
+        return this;
+    }
+
+    public XacNhanConfirmPresenter setCommonObjec(ArrayList<CommonObject> listCommonObject) {
+        this.listCommonObject = listCommonObject;
         return this;
     }
 
@@ -122,6 +144,7 @@ public class XacNhanConfirmPresenter extends Presenter<XacNhanConfirmContract.Vi
             @Override
             protected void onError(Call<RouteInfoResult> call, String message) {
                 super.onError(call, message);
+                CustomToast.makeText(getViewContext(), (int) CustomToast.LONG, message, Constants.ERROR).show();
             }
         });
     }
@@ -140,6 +163,7 @@ public class XacNhanConfirmPresenter extends Presenter<XacNhanConfirmContract.Vi
             @Override
             protected void onError(Call<SimpleResult> call, String message) {
                 super.onError(call, message);
+                CustomToast.makeText(getViewContext(), (int) CustomToast.LONG, message, Constants.ERROR).show();
             }
         });
     }
@@ -163,7 +187,7 @@ public class XacNhanConfirmPresenter extends Presenter<XacNhanConfirmContract.Vi
                     }
                 }, throwable -> {
                     mView.hideProgress();
-                    mView.showErrorToast(throwable.getMessage());
+                    new ApiDisposable(throwable, getViewContext());
                 });
     }
 

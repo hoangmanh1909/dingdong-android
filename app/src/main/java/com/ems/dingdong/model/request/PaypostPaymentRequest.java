@@ -143,6 +143,8 @@ public class PaypostPaymentRequest {
     private boolean IsExchange;
     @SerializedName("ExchangePODeliveryCode")
     private String ExchangePODeliveryCode;
+    @SerializedName("ImageSignature")
+    private String ImageSignature;
     @SerializedName("EditCODAmountCallId")
     private String EditCODAmountCallId;
     @SerializedName("ExchangeRouteCode")
@@ -159,6 +161,14 @@ public class PaypostPaymentRequest {
     private long DeliveryDistrictIdAdditional;
     @SerializedName("ExchangeDetails")
     private List<LadingProduct> ExchangeDetails;
+
+    public String getImageSignature() {
+        return ImageSignature;
+    }
+
+    public void setImageSignature(String imageSignature) {
+        ImageSignature = imageSignature;
+    }
 
     public long getDeliveryDistrictIdAdditional() {
         return DeliveryDistrictIdAdditional;

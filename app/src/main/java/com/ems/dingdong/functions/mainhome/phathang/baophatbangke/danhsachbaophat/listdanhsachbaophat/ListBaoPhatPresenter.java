@@ -3,7 +3,11 @@ package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.danhsachbaoph
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.danhsachbaophat.TabBaoPhatConstract;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.ListBaoPhatBangKePresenter;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.ListDeliveryConstract;
 import com.ems.dingdong.model.DeliveryPostman;
+import com.ems.dingdong.network.ApiDisposable;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Toast;
 import com.google.gson.reflect.TypeToken;
@@ -21,6 +25,8 @@ public class ListBaoPhatPresenter extends Presenter<ListBaoPhatContract.View, Li
         super(containerView);
     }
 
+    private int mPos;
+
     @Override
     public void start() {
 
@@ -36,12 +42,26 @@ public class ListBaoPhatPresenter extends Presenter<ListBaoPhatContract.View, Li
         return ListBaoPhatFragment.getInstance();
     }
 
-    ListBaoPhatContract.OnTabListener tabListener;
+    TabBaoPhatConstract.OnTabsListener tabListener;
 
-    public ListBaoPhatPresenter setOnTabListener(ListBaoPhatContract.OnTabListener listener) {
+    TabBaoPhatConstract.OnDeliveryNotSuccessfulChange deliveryNotSuccessfulChange;
+
+    public ListBaoPhatPresenter setOnTabListener(TabBaoPhatConstract.OnTabsListener listener) {
         this.tabListener = listener;
         return this;
     }
+
+    public ListBaoPhatPresenter setDeliveryNotSuccessfulChange(TabBaoPhatConstract.OnDeliveryNotSuccessfulChange deliveryNotSuccessfulChange) {
+        this.deliveryNotSuccessfulChange = deliveryNotSuccessfulChange;
+        return this;
+    }
+
+
+    public ListBaoPhatPresenter setTypeTab(int position) {
+        mPos = position;
+        return this;
+    }
+
 
     @Override
     public void searchDeliveryPostman(String postmanID, String fromDate, String toDate, String routeCode, Integer deliveryType) {
@@ -55,12 +75,24 @@ public class ListBaoPhatPresenter extends Presenter<ListBaoPhatContract.View, Li
                         ArrayList<DeliveryPostman> deliveryPostmen = NetWorkController.getGson().fromJson(simpleResult.getData(), new TypeToken<List<DeliveryPostman>>() {
                         }.getType());
                         mView.showListSuccess(deliveryPostmen);
+
                     } else {
                         Toast.showToast(getViewContext(), simpleResult.getMessage());
                     }
                     mView.hideProgress();
                 }, throwable -> {
                     mView.hideProgress();
+                    new ApiDisposable(throwable, getViewContext());
                 });
+    }
+
+    @Override
+    public int getPositionTab() {
+        return mPos;
+    }
+
+    @Override
+    public void setTitleTab(int quantity) {
+        tabListener.onQuantityChanged(quantity, 0);
     }
 }

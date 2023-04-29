@@ -3,6 +3,7 @@ package com.ems.dingdong.functions.mainhome.gomhang.tabliscommon;
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.functions.mainhome.gomhang.listcommon.ListCommonPresenter;
+import com.ems.dingdong.functions.mainhome.gomhang.sortxacnhantin.SortPersenter;
 import com.ems.dingdong.functions.mainhome.phathang.noptien.PaymentContract;
 import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
 
@@ -24,6 +25,11 @@ public class TabListCommonPresenter extends Presenter<TabListCommonContract.View
     @Override
     public int getType() {
         return mType;
+    }
+
+    @Override
+    public void showSort() {
+        new SortPersenter(mContainerView).pushView();
     }
 
     public TabListCommonPresenter setType(int type) {

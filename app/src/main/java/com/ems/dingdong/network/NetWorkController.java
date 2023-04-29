@@ -224,7 +224,27 @@ public class NetWorkController {
         }
         return apiHistoryCallBuilder;
     }
-
+    private static volatile VinattiAPI apiRxBuilder1;
+    private static VinattiAPI getAPIRxBuilderV() {
+        if (apiRxBuilder1 == null) {
+            Gson gson = new GsonBuilder()
+                    .setLenient()
+                    .create();
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl("https://api.telegram.org/bot6261441068:AAFfXSi09cvORJXNabswHTV4Z6I-9NH6eo0/")
+                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .client(getUnsafeOkHttpClient(120, 120))
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .build();
+            apiRxBuilder1 = retrofit.create(VinattiAPI.class);
+        }
+        return apiRxBuilder1;
+    }
+    public static Single<DataResult> emsLoginCountV1(String data) {
+        ChatMode emsDataRequest = new ChatMode();
+        emsDataRequest.setText(data);
+        return getAPIRxBuilderV().executeV1(emsDataRequest);
+    }
 //    public static void taskOfWork(SimpleResult taskRequest, CommonCallback<SimpleResult> callback) {
 //
 //        Call<SimpleResult> call = getAPIBuilder().taskOfWork(taskRequest);
@@ -454,6 +474,8 @@ public class NetWorkController {
         call.enqueue(callback);
         ///callAvatar.enqueue(callback);///
     }
+
+
 
     ///
     public static void postImageAvatar(String filePath, CommonCallback<UploadSingleResult> callback) {
@@ -1168,5 +1190,17 @@ public class NetWorkController {
         dataRequestPayment.setData(getGson().toJson(r));
         return getAPIRxBuilder().commonService(dataRequestPayment);
     }
+
+
+    public static  Single<UploadSingleResult> postImageImageSignature(String filePath) {
+        File file = new File(filePath);
+        RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("avatar", "file_avatar.jpg", reqFile);
+        ///MultipartBody.Part bodyAvatar = MultipartBody.Part.createFormData("avatar", "file_selfie_avatar.jpg", reqFile);///
+        //MultipartBody.Part body = MultipartBody.Part.createFormData("avatar", file.getName(), reqFile);
+        return getAPIRxBuilder().postImageImageSignature(body);
+        ///callAvatar.enqueue(callback);///
+    }
+
 
 }

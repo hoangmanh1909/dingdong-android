@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#0D000000 ">
+
+
+    <TextView
+        android:id="@+id/tv_goitongdai"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/bg_border_edittext_v1"
+        android:gravity="center"
+        android:text="Gọi tổng đài"
+        android:textColor="#FF037BFF"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_goitructiep"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/bg_border_edittext_v1"
+        android:gravity="center"
+        android:text="Gọi trực tiếp"
+        android:textColor="#FF037BFF"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tvDong1"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/bg_border_edittext_v1"
+        android:gravity="center"
+        android:text="Đóng"
+        android:textColor="#FF037BFF"
+        android:textSize="16sp"
+        android:layout_marginBottom="10dp"
+        android:textStyle="bold" />
+
+</LinearLayout>

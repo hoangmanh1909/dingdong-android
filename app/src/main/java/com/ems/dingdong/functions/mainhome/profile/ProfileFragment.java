@@ -29,6 +29,7 @@ import com.ems.dingdong.callback.DialogCallback;
 import com.ems.dingdong.callback.DialogLogCallCallback;
 import com.ems.dingdong.callback.IdCallback;
 import com.ems.dingdong.dialog.DialoggoiLai;
+import com.ems.dingdong.dialog.IOSDialog;
 import com.ems.dingdong.dialog.PhoneDecisionDialog;
 import com.ems.dingdong.dialog.RouteDialog;
 import com.ems.dingdong.functions.login.LoginActivity;
@@ -128,9 +129,9 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
 
         sharedPref = new SharedPref(getActivity());
 
-        if (sharedPref.getBoolean(Constants.KEY_TRANG_THAI_LOG_CALL, false)) {
-            ll_log_cuoc_goi.setVisibility(View.VISIBLE);
-        } else ll_log_cuoc_goi.setVisibility(View.GONE);
+//        if (sharedPref.getBoolean(Constants.KEY_TRANG_THAI_LOG_CALL, false)) {
+//            ll_log_cuoc_goi.setVisibility(View.VISIBLE);
+//        } else ll_log_cuoc_goi.setVisibility(View.GONE);
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         if (!userJson.isEmpty()) {
             UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
@@ -186,67 +187,84 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
         mCalendarVaoCa = Calendar.getInstance();
         sharedPref.putBoolean(Constants.KEY_TRANG_THAI_LOG_CALL, false);
         sharedPref.putString(Constants.KEY_RA_VAOV1, DateTimeUtils.convertDateToString(mCalendarVaoCa.getTime(), DateTimeUtils.DEFAULT_DATETIME_FORMAT));
-        Toast.showToast(getViewContext(), "Ghi nhận thành công " + size + " cuộc gọi lên hệ thống");
-        if (sharedPref.getBoolean(Constants.KEY_TRANG_THAI_LOG_CALL, false)) {
-            ll_log_cuoc_goi.setVisibility(View.VISIBLE);
-        } else ll_log_cuoc_goi.setVisibility(View.GONE);
+//        Toast.showToast(getViewContext(), );
+        new IOSDialog.Builder(getViewContext())
+                .setCancelable(false).setMessage("Ghi nhận thành công " + size + " cuộc gọi lên hệ thống")
+                .setNegativeButton("Đóng", null).show();
+//        if (sharedPref.getBoolean(Constants.KEY_TRANG_THAI_LOG_CALL, false)) {
+//            ll_log_cuoc_goi.setVisibility(View.VISIBLE);
+//        } else ll_log_cuoc_goi.setVisibility(View.GONE);
     }
 
     @OnClick({R.id.img_back, R.id.rl_logout, R.id.rl_e_wallet, R.id.rl_route, R.id.rl_cuocgoi, R.id.rl_e_luong, R.id.sw_switch, R.id.rl_chat, R.id.rl_capnhat, R.id.ll_log_cuoc_goi})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_log_cuoc_goi:
-                new DiglogCuocGoi(getContext(), new DialogLogCallCallback() {
-                    @Override
-                    public void onResponse(String tu, String den) {
-                        CallLogUtils callLogUtils = CallLogUtils.getInstance(getContext());
-                        List<CallLogInfo> list = callLogUtils.readCallLogs();
-                        try {
-                            List<CallLogInfo> modeList = new ArrayList<>();
-                            for (int i = 0; i < list.size(); i++) {
-                                long dateFrom = list.get(i).getDate();
-                                @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter = new SimpleDateFormat(DateTimeUtils.DEFAULT_DATETIME_FORMAT);
-                                String date = formatter.format(dateFrom);
-                                @SuppressLint("SimpleDateFormat") Date date1 = new SimpleDateFormat(DateTimeUtils.DEFAULT_DATETIME_FORMAT).parse(date);
-                                @SuppressLint("SimpleDateFormat") Date date2 = new SimpleDateFormat(DateTimeUtils.DEFAULT_DATETIME_FORMAT).parse(tu);
-                                @SuppressLint("SimpleDateFormat") Date date3 = new SimpleDateFormat(DateTimeUtils.DEFAULT_DATETIME_FORMAT).parse(den);
-                                if (date1.compareTo(date2) >= 0 && date1.compareTo(date3) <= 0) {
-                                    modeList.add(list.get(i));
-                                }
-                            }
-                            String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
-                            if (!userJson.isEmpty()) {
-                                userInfo1 = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
-                            }
-                            List<CallLogMode> request = new ArrayList<>();
-                            if (modeList.size() > 0) {
-                                for (CallLogInfo info : modeList) {
-                                    CallLogMode i = new CallLogMode();
-                                    long dateFrom = info.getDate();
-                                    @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter = new SimpleDateFormat(DateTimeUtils.DEFAULT_DATETIME_FORMAT);
-                                    String date = formatter.format(dateFrom);
-                                    i.setDate(date);
-                                    i.setCallDate(date);
-                                    i.setCallDuration(String.valueOf(info.getDuration()));
-                                    i.setCallType(Integer.parseInt(info.getCallType()));
-                                    i.setPhNumber(info.getNumber());
-                                    i.setPostmanCode(userInfo1.getUserName());
-                                    i.setFromNumber(userInfo1.getMobileNumber());
-                                    request.add(i);
-                                }
-                                mPresenter.getCallLog(request);
-                            } else {
-                                Toast.showToast(getViewContext(), "Bạn không thực hiện cuộc gọi nào (từ " + tu + " đến " + mDateRaCa + ")");
-                            }
+//                new DiglogCuocGoi(getContext(), new DialogLogCallCallback() {
+//                    @Override
+//                    public void onResponse(String tu, String den) {
+                mCalendarRaCa = Calendar.getInstance();
+                String den = DateTimeUtils.convertDateToString(mCalendarRaCa.getTime(), DateTimeUtils.DEFAULT_DATETIME_FORMAT);
+                String tu = DateTimeUtils.convertDateToString(mCalendarRaCa.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT);
+                tu += " 00:00:00";
+                sharedPref = new SharedPref(getActivity());
+//                String tu = sharedPref.getString(Constants.KEY_RA_VAOV1, "");
+                Log.d("THANHKHIEM12312313123213", tu + " - " + den);
 
-                        } catch (Exception e) {
-                            e.getMessage();
-                            sharedPref.putBoolean(Constants.KEY_TRANG_THAI_LOG_CALL, true);
-                            Toast.showToast(getViewContext(), "Lỗi không thể ghi nhận được log cuộc gọi. (" + e.getMessage() + ")");
+                CallLogUtils callLogUtils = CallLogUtils.getInstance(getContext());
+                List<CallLogInfo> list = callLogUtils.readCallLogs();
+                try {
+                    List<CallLogInfo> modeList = new ArrayList<>();
+                    for (int i = 0; i < list.size(); i++) {
+                        long dateFrom = list.get(i).getDate();
+                        @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter = new SimpleDateFormat(DateTimeUtils.DEFAULT_DATETIME_FORMAT);
+                        String date = formatter.format(dateFrom);
+                        @SuppressLint("SimpleDateFormat") Date date1 = new SimpleDateFormat(DateTimeUtils.DEFAULT_DATETIME_FORMAT).parse(date);
+                        @SuppressLint("SimpleDateFormat") Date date2 = new SimpleDateFormat(DateTimeUtils.DEFAULT_DATETIME_FORMAT).parse(tu);
+                        @SuppressLint("SimpleDateFormat") Date date3 = new SimpleDateFormat(DateTimeUtils.DEFAULT_DATETIME_FORMAT).parse(den);
+                        if (date1.compareTo(date2) >= 0 && date1.compareTo(date3) <= 0) {
+                            modeList.add(list.get(i));
                         }
                     }
+                    String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+                    if (!userJson.isEmpty()) {
+                        userInfo1 = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+                    }
+                    List<CallLogMode> request = new ArrayList<>();
+                    if (modeList.size() > 0) {
+                        for (CallLogInfo info : modeList) {
+                            CallLogMode i = new CallLogMode();
+                            long dateFrom = info.getDate();
+                            @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter = new SimpleDateFormat(DateTimeUtils.DEFAULT_DATETIME_FORMAT);
+                            String date = formatter.format(dateFrom);
+                            i.setDate(date);
+                            i.setCallDate(date);
+                            i.setCallDuration(String.valueOf(info.getDuration()));
+                            i.setCallType(Integer.parseInt(info.getCallType()));
+                            i.setPhNumber(info.getNumber());
+                            i.setPostmanCode(userInfo1.getUserName());
+                            i.setFromNumber(userInfo1.getMobileNumber());
+                            request.add(i);
+                        }
+                        mPresenter.getCallLog(request);
+                    } else {
+                        new IOSDialog.Builder(getViewContext())
+                                .setCancelable(false).setTitle("Thông báo")
+                                .setMessage("Bạn không thực hiện cuộc gọi nào (từ " + tu + " đến " + den + ")")
+                                .setNegativeButton("Đóng", null).show();
+//                        Toast.showToast(getViewContext(), );
+                        mCalendarVaoCa = Calendar.getInstance();
+                        sharedPref.putString(Constants.KEY_RA_VAOV1, DateTimeUtils.convertDateToString(mCalendarVaoCa.getTime(), DateTimeUtils.DEFAULT_DATETIME_FORMAT));
+                    }
 
-                }).show();
+                } catch (Exception e) {
+                    e.getMessage();
+                    sharedPref.putBoolean(Constants.KEY_TRANG_THAI_LOG_CALL, true);
+                    Toast.showToast(getViewContext(), "Lỗi không thể ghi nhận được log cuộc gọi. (" + e.getMessage() + ")");
+                }
+//                    }
+
+//                }).show();
                 break;
             case R.id.rl_chat:
 //                Intent c = new Intent(getActivity(), ChatDingDongActivity.class);

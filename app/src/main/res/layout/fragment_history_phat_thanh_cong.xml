@@ -26,22 +26,16 @@
                 android:padding="@dimen/dimen_10dp"
                 android:src="@drawable/ic_back_shadown" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_toRightOf="@+id/img_back">
 
-                <com.ems.dingdong.views.CustomBoldTextView
-                    android:id="@+id/tv_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:gravity="center"
-                    android:text="Thống kê PHÁT HÀNG thành công"
-                    android:textAllCaps="true"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_size_14sp" />
-            </RelativeLayout>
+            <com.ems.dingdong.views.CustomBoldTextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="Thống kê phát hàng thành công"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_14sp" />
         </RelativeLayout>
     </FrameLayout>
 
@@ -74,7 +68,7 @@
                 android:background="@drawable/textlines1"
                 android:gravity="center"
                 android:padding="@dimen/dimen_5dp"
-                android:text="Số lượng"
+                android:text="Số\nlượng"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_16sp" />
 
@@ -126,8 +120,8 @@
 
             <ImageView
                 android:id="@+id/iv_search"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentBottom="true"
                 android:layout_marginRight="@dimen/dimen_10dp"

@@ -48,7 +48,8 @@
                 android:layout_gravity="center"
                 android:background="@null"
                 android:gravity="left|center"
-                android:textColor="@color/red_light"
+                android:textStyle="bold"
+                android:textColor="@color/black"
                 android:textSize="14dp" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -312,7 +313,7 @@
                 android:hint="Chọn mối quan hệ"
                 android:padding="10dp"
                 android:paddingRight="5dp"
-                android:textColor="@color/red_light"
+                android:textColor="@color/black"
                 android:textSize="14dp" />
 
         </LinearLayout>
@@ -367,7 +368,7 @@
             android:background="@null"
             android:hint="Vui lòng nhập mối quan hệ khác"
             android:padding="10dp"
-            android:textColor="@color/red_light"
+            android:textColor="@color/black"
             android:textSize="14dp" />
     </LinearLayout>
 
@@ -400,7 +401,8 @@
             android:background="@null"
             android:hint="Vui lòng nhập số GTTT"
             android:padding="10dp"
-            android:textColor="@color/red_light"
+            android:textStyle="bold"
+            android:textColor="@color/black"
             android:textSize="14dp" />
 
     </LinearLayout>
@@ -457,7 +459,7 @@
             android:lines="5"
             android:maxLines="5"
             android:padding="10dp"
-            android:textColor="@color/red_light"
+            android:textColor="@color/black"
             android:textSize="14dp" />
     </LinearLayout>
 

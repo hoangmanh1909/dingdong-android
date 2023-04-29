@@ -1,5 +1,6 @@
 package com.ems.dingdong.functions.mainhome.home;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 
@@ -17,6 +18,7 @@ import com.ems.dingdong.model.BalanceModel;
 import com.ems.dingdong.model.HomeCollectInfoResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.response.GetMainViewResponse;
+import com.ems.dingdong.network.ApiDisposable;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.Log;
@@ -94,7 +96,7 @@ public class HomePresenter extends Presenter<HomeContract.View, HomeContract.Int
                 super.onSuccess(call, response);
                 mView.hideProgress();
                 if (response.body().getErrorCode().equals("00")) {
-                    Log.d("AAAASDASD",new Gson().toJson(response.body()) );
+                    Log.d("AAAASDASD", new Gson().toJson(response.body()));
 //                    mView.showObjectSuccess(response.body());
                 } else {
                     mView.showErrorToast(response.body().getMessage());
@@ -108,6 +110,13 @@ public class HomePresenter extends Presenter<HomeContract.View, HomeContract.Int
                 mView.hideProgress();
                 mView.showErrorToast(message);
             }
+
+            @Override
+            public void onFailure(Call<HomeCollectInfoResult> call, Throwable error) {
+                super.onFailure(call, error);
+                mView.hideProgress();
+                new ApiDisposable(error, getViewContext());
+            }
         });
     }
 
@@ -118,6 +127,7 @@ public class HomePresenter extends Presenter<HomeContract.View, HomeContract.Int
         getViewContext().startActivity(intent);
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public void getDDThugom(BalanceModel v) {
         mView.showProgress();
@@ -136,6 +146,9 @@ public class HomePresenter extends Presenter<HomeContract.View, HomeContract.Int
                     } catch (Exception e) {
                     }
 
+                }, throwable -> {
+                    mView.hideProgress();
+                    new ApiDisposable(throwable, getViewContext());
                 });
     }
 
@@ -163,6 +176,13 @@ public class HomePresenter extends Presenter<HomeContract.View, HomeContract.Int
                 mView.hideProgress();
                 mView.showErrorToast(message);
             }
+
+            @Override
+            public void onFailure(Call<SimpleResult> call, Throwable error) {
+                super.onFailure(call, error);
+                mView.hideProgress();
+                new ApiDisposable(error, getViewContext());
+            }
         });
     }
 
@@ -176,7 +196,8 @@ public class HomePresenter extends Presenter<HomeContract.View, HomeContract.Int
                 mView.hideProgress();
                 if (response.body().getErrorCode().equals("00")) {
 //                    mView.showObjectSuccess(response.body());
-                    GetMainViewResponse mainViewResponse = NetWorkController.getGson().fromJson(response.body().getData(), new TypeToken<GetMainViewResponse>() {}.getType());
+                    GetMainViewResponse mainViewResponse = NetWorkController.getGson().fromJson(response.body().getData(), new TypeToken<GetMainViewResponse>() {
+                    }.getType());
                     Log.d("ASDASDASd", new Gson().toJson(mainViewResponse));
                     mView.showGetPickupMainView(mainViewResponse);
                 } else {
@@ -190,6 +211,13 @@ public class HomePresenter extends Presenter<HomeContract.View, HomeContract.Int
                 super.onError(call, message);
                 mView.hideProgress();
                 mView.showErrorToast(message);
+            }
+
+            @Override
+            public void onFailure(Call<SimpleResult> call, Throwable error) {
+                super.onFailure(call, error);
+                mView.hideProgress();
+                new ApiDisposable(error, getViewContext());
             }
         });
     }

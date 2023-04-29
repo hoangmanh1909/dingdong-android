@@ -2,12 +2,15 @@ package com.ems.dingdong.functions.mainhome.profile;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
+import com.ems.dingdong.dialog.IOSDialog;
 import com.ems.dingdong.functions.mainhome.lichsucuocgoi.tabcall.TabCallPresenter;
 import com.ems.dingdong.functions.mainhome.main.data.CallLogMode;
 import com.ems.dingdong.functions.mainhome.profile.chat.ChatPresenter;
 import com.ems.dingdong.functions.mainhome.profile.ewallet.EWalletPresenter;
 import com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.ListBankPresenter;
 import com.ems.dingdong.functions.mainhome.profile.tienluong.SalaryPresenter;
+import com.ems.dingdong.functions.mainhome.profile.trace_log.TraceLogPresenter;
+import com.ems.dingdong.network.ApiDisposable;
 import com.ems.dingdong.utiles.Toast;
 
 import java.util.List;
@@ -64,6 +67,11 @@ public class ProfilePresenter extends Presenter<ProfileContract.View, ProfileCon
     }
 
     @Override
+    public void showTraceLog() {
+        new TraceLogPresenter(mContainerView).pushView();
+    }
+
+    @Override
     public void getCallLog(List<CallLogMode> request) {
         mInteractor.getCallLog(request)
                 .subscribeOn(Schedulers.io())
@@ -74,9 +82,15 @@ public class ProfilePresenter extends Presenter<ProfileContract.View, ProfileCon
                         mView.showCallLog(request.size());
                         mView.hideProgress();
                     } else {
-                        Toast.showToast(getViewContext(), "Có lỗi trong quá trình đẩy cuộc gọi");
+                        new IOSDialog.Builder(getViewContext())
+                                .setTitle("Thông báo")
+                                .setMessage(simpleResult.getMessage())
+                                .setNegativeButton("Đóng", null).show();
                         mView.hideProgress();
                     }
+                },throwable -> {
+                    mView.hideProgress();
+                    new ApiDisposable(throwable, getViewContext());
                 });
     }
 }

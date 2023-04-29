@@ -77,7 +77,7 @@ public class ConfirmPKTCDialog extends Dialog {
 
     @SuppressLint("CheckResult")
     public ConfirmPKTCDialog(Context context, int quantity, String vitri, double lat, double lon, double latbg, double lonbg, String smcode, ContainerView containerView) {
-        super(context, android.R.style.Theme_Translucent_NoTitleBar);
+        super(context, R.style.ios_dialog_style1);
         View view = View.inflate(getContext(), R.layout.diaglog_pktc, null);
         setContentView(view);
         ButterKnife.bind(this, view);

@@ -129,15 +129,16 @@
             android:paddingLeft="@dimen/dimen_5dp"
             android:paddingRight="@dimen/dimen_10dp"
             android:visibility="visible">
+
             <com.rengwuxian.materialedittext.MaterialEditText
                 android:id="@+id/edt_search"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="5dp"
+                android:layout_toLeftOf="@+id/img_search"
                 android:hint="Nhập bưu gửi"
                 android:imeOptions="actionDone"
-                android:layout_toLeftOf="@+id/img_search"
                 android:inputType="textCapCharacters"
                 android:textColorHint="@color/colorBlackTrans20"
                 android:textSize="@dimen/text_size_14sp"
@@ -148,28 +149,29 @@
                 app:met_textColor="@color/black"
                 app:met_textColorHint="@color/colorBlackTrans20"
                 app:met_underlineColor="@color/transparent">
+
                 <requestFocus />
             </com.rengwuxian.materialedittext.MaterialEditText>
-<!--            <com.ems.dingdong.views.form.FormItemEditText-->
-<!--                android:id="@+id/edt_search"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:inputType="textCapCharacters"-->
-<!--                android:layout_toLeftOf="@+id/img_search"-->
-<!--                android:textAllCaps="true"-->
-<!--                android:textColor="@color/black"-->
-<!--                android:textSize="@dimen/text_size_14sp"-->
-<!--                app:formHint=""-->
-<!--                app:formShowUnderline="false" />-->
+            <!--            <com.ems.dingdong.views.form.FormItemEditText-->
+            <!--                android:id="@+id/edt_search"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:inputType="textCapCharacters"-->
+            <!--                android:layout_toLeftOf="@+id/img_search"-->
+            <!--                android:textAllCaps="true"-->
+            <!--                android:textColor="@color/black"-->
+            <!--                android:textSize="@dimen/text_size_14sp"-->
+            <!--                app:formHint=""-->
+            <!--                app:formShowUnderline="false" />-->
 
             <ImageView
                 android:id="@+id/img_search"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
+                android:layout_toLeftOf="@+id/img_capture"
                 android:padding="@dimen/_2sdp"
-                android:src="@drawable/ic_search_blue"
-                android:layout_toLeftOf="@+id/img_capture"/>
+                android:src="@drawable/ic_search_blue" />
 
             <ImageView
                 android:id="@+id/img_capture"
@@ -208,7 +210,7 @@
         android:id="@+id/layout_item_pick_all"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/_5sdp">
+       android:paddingLeft="16dp">
 
         <CheckBox
             android:id="@+id/cb_pick_all"
@@ -217,20 +219,16 @@
             android:layout_alignParentLeft="true"
             android:button="@drawable/custom_btn_radio"
             android:clickable="false"
-            android:padding="@dimen/_5sdp" />
+            android:text="@string/pick_all"
+            android:padding="10dp" />
 
-        <com.ems.dingdong.views.CustomBoldTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_toRightOf="@id/cb_pick_all"
-            android:padding="@dimen/_5sdp"
-            android:text="@string/pick_all" />
+
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <RelativeLayout
             android:id="@+id/rl_count_item_selected"
             android:layout_width="60dp"
@@ -294,17 +292,16 @@
             android:id="@+id/recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/dimen_10dp"
-            android:layout_marginTop="@dimen/dimen_10dp"
-            android:layout_marginRight="@dimen/dimen_10dp"
-            android:layout_marginBottom="@dimen/dimen_5dp"
+            android:background="@color/backround"
+            android:paddingLeft="8dp"
+            android:paddingTop="16dp"
+            android:paddingRight="8dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
 
 
         </androidx.recyclerview.widget.RecyclerView>
 
         <ImageView
-            android:visibility="gone"
             android:id="@+id/tv_search"
             android:layout_width="@dimen/dimen_70dp"
             android:layout_height="@dimen/dimen_70dp"
@@ -313,7 +310,8 @@
             android:layout_marginRight="@dimen/_10sdp"
             android:layout_marginBottom="@dimen/_10sdp"
             android:padding="@dimen/dimen_10dp"
-            android:src="@drawable/ic_choose_calendar" />
+            android:src="@drawable/ic_choose_calendar"
+            android:visibility="gone" />
     </RelativeLayout>
 
 

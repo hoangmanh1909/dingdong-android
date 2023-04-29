@@ -30,7 +30,7 @@ public class ConfirmPhiHuyDonHangDialog extends Dialog {
 
 
     public ConfirmPhiHuyDonHangDialog(Context context, int quantity, long tien) {
-        super(context, android.R.style.Theme_Translucent_NoTitleBar);
+        super(context, R.style.ios_dialog_style1);
         View view = View.inflate(getContext(), R.layout.diaglog_phihuy_donhang, null);
         setContentView(view);
         ButterKnife.bind(this, view);

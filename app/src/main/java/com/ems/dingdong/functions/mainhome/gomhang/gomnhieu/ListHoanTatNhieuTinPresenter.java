@@ -13,7 +13,10 @@ import com.ems.dingdong.model.ReasonInfo;
 import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
+import com.ems.dingdong.network.ApiDisposable;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.CustomToast;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
@@ -27,8 +30,7 @@ import retrofit2.Response;
 /**
  * The CommonObject Presenter
  */
-public class ListHoanTatNhieuTinPresenter extends Presenter<ListHoanTatNhieuTinContract.View, ListHoanTatNhieuTinContract.Interactor>
-        implements ListHoanTatNhieuTinContract.Presenter {
+public class ListHoanTatNhieuTinPresenter extends Presenter<ListHoanTatNhieuTinContract.View, ListHoanTatNhieuTinContract.Interactor> implements ListHoanTatNhieuTinContract.Presenter {
 
     public ListHoanTatNhieuTinPresenter(ContainerView containerView) {
         super(containerView);
@@ -95,6 +97,7 @@ public class ListHoanTatNhieuTinPresenter extends Presenter<ListHoanTatNhieuTinC
             @Override
             protected void onError(Call<SimpleResult> call, String message) {
                 super.onError(call, message);
+                mView.showErrorToast(message);
             }
         });
     }
@@ -131,18 +134,17 @@ public class ListHoanTatNhieuTinPresenter extends Presenter<ListHoanTatNhieuTinC
 
     @Override
     public void vietmapDecode(String decode) {
-        mInteractor.vietmapSearchDecode(decode).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(simpleResult -> {
-                    if (simpleResult.getErrorCode().equals("00")) {
-                        mView.showVitringuoinhan(simpleResult.getObject().getResult().getLocation().getLatitude(),
-                                simpleResult.getObject().getResult().getLocation().getLongitude());
+        mInteractor.vietmapSearchDecode(decode).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(simpleResult -> {
+            if (simpleResult.getErrorCode().equals("00")) {
+                mView.showVitringuoinhan(simpleResult.getObject().getResult().getLocation().getLatitude(), simpleResult.getObject().getResult().getLocation().getLongitude());
 //                        mBaoPhatBangke.get(posi).setReceiverLat(simpleResult.getObject().getResult().getLocation().getLatitude());
 //                        mBaoPhatBangke.get(posi).setReceiverLon(simpleResult.getObject().getResult().getLocation().getLongitude());
-                    } else {
-//                        mView.showError(simpleResult.getMessage());
-                        mView.hideProgress();
-                    }
-                });
+            } else {
+                CustomToast.makeText(getViewContext(), (int) CustomToast.LONG, simpleResult.getMessage(), Constants.ERROR).show();
+            }
+        }, throwable -> {
+            mView.hideProgress();
+            new ApiDisposable(throwable, getViewContext());
+        });
     }
 }

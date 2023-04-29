@@ -5,8 +5,11 @@ import com.core.base.viper.interfaces.IInteractor;
 import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.more.GroupServiceMode;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.more.LadingProduct;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.parital.ThuPhiMode;
+import com.ems.dingdong.model.CallLiveMode;
+import com.ems.dingdong.model.DLVDeliveryUnSuccessRefundRequest;
 import com.ems.dingdong.model.DecodeDiaChiResult;
 import com.ems.dingdong.model.DeliveryCheckAmountPaymentResult;
 import com.ems.dingdong.model.DeliveryPostman;
@@ -22,6 +25,7 @@ import com.ems.dingdong.model.RouteInfoResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.SolutionInfo;
 import com.ems.dingdong.model.SolutionResult;
+import com.ems.dingdong.model.UploadResult;
 import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.UserInfoResult;
@@ -38,10 +42,12 @@ import com.ems.dingdong.model.request.PushToPnsRequest;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Observable;
 import io.reactivex.Single;
 import retrofit2.Call;
 
 public interface XacNhanBaoPhatContract {
+
     interface Interactor extends IInteractor<Presenter> {
         /**
          * Get all reasons.
@@ -60,10 +66,12 @@ public interface XacNhanBaoPhatContract {
          *
          * @param path path file.
          */
-        void postImage(String path, CommonCallback<UploadSingleResult> callback);
+        Observable<UploadSingleResult> postImage(String path);
+
+        Observable<UploadSingleResult> postImageImageSignature(String path);
 
         ///
-        void postImageAvatar(String pathAvatar, CommonCallback<UploadSingleResult> callback);
+        Observable<UploadSingleResult> postImageAvatar(String pathAvatar);
 
         /**
          * delivery success.
@@ -127,10 +135,24 @@ public interface XacNhanBaoPhatContract {
         Single<SimpleResult> getQuanHuyen(BaseRequest request);
 
         Single<SimpleResult> getTinhThanhPho(BaseRequest request);
+
+        Single<SimpleResult> getDanhMucHCC(BaseRequest request);
+
+        Single<SimpleResult> getNhomDanhMucHCC(String request);
+
+        Single<SimpleResult> ddCall(CallLiveMode callLiveMode);
     }
 
     interface View extends PresentView<Presenter> {
+        void showCallLive(String phone);
+
         void showXaPhuong(List<WardModels> list);
+
+        void showGroupService(List<GroupServiceMode> list);
+
+        void showErrorGroupService(String code, String mess);
+
+        void showGroupServicePA(List<GroupServiceMode> list);
 
         void showXaPhuongNew(List<WardModels> list);
 
@@ -193,7 +215,7 @@ public interface XacNhanBaoPhatContract {
         /**
          * Show success code.
          */
-        void showSuccess(String code, String id, String mess);
+        void showSuccess(String code, String id, String mabg, String mess);
 
         /**
          * Show change route status.
@@ -220,9 +242,15 @@ public interface XacNhanBaoPhatContract {
 
 
     interface Presenter extends IPresenter<View, Interactor> {
+        void ddCall(CallLiveMode r);
+
         ContainerView getContainerView();
 
         void getTinhThanhPho();
+
+        void getDanhMucHCC();
+
+        void getNhomDanhMucHCC(String request);
 
         void getXaPhuong(int id);
 
@@ -262,6 +290,8 @@ public interface XacNhanBaoPhatContract {
          */
         void postImage(String path);
 
+        void postImageImageSignature(String path);
+
         ///
         void postImageAvatar(String pathAvatar);
 
@@ -271,7 +301,7 @@ public interface XacNhanBaoPhatContract {
          */
         void submitToPNS(String reason, String solution, String note, String deliveryImage, String authenImage,
                          String signCapture, String EstimateProcessTime, boolean ischeck, String lydo, int idXaPhuong, int idQuanhuyen, String diachinew,
-                         String hinhthucphat, String ghichu, String doituong, int ngaydukien);
+                         String hinhthucphat, String ghichu, String doituong, int ngaydukien, DLVDeliveryUnSuccessRefundRequest dlvDeliveryUnSuccessRefundRequest);
 
         /**
          * delivery success.
@@ -280,7 +310,7 @@ public interface XacNhanBaoPhatContract {
                              String relationship, InfoVerify infoVerify, boolean isCod, long codeEdit, String note,
                              boolean IsExchange, String ExchangePODeliveryCode, String ExchangeRouteCode, String ExchangeLadingCode,
                              long ExchangeDeliveryDate, int ExchangeDeliveryTime, List<LadingProduct> ExchangeDetails, String imgAnhHoangTra
-                , int idXaphuong, int idQuanHUyen, String idCOD);
+                , int idXaphuong, int idQuanHUyen, String idCOD,String imgSignCapture);
 
 
         void paymentV2(boolean isAutoUpdateCODAmount);

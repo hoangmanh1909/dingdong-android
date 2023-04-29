@@ -9,7 +9,6 @@ import android.widget.TextView;
 import com.core.base.adapter.RecyclerBaseAdapter;
 import com.core.widget.BaseViewHolder;
 import com.ems.dingdong.R;
-import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.parital.ModeFee;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.utiles.NumberUtils;
 
@@ -115,7 +114,7 @@ public class StatictisAdapter extends RecyclerBaseAdapter {
                 }
             } else {
                 tvStatusName.setTextColor(mContext.getResources().getColor(R.color.color_000080));
-                tvStatusName.setBackgroundResource(R.drawable.bg_border_blue);
+                tvStatusName.setBackgroundResource(R.drawable.bg_border_blue_v1);
                 if (!TextUtils.isEmpty(item.getReasonName())) {
                     tvReason.setText(String.format("%s", item.getReasonName()));
                 }

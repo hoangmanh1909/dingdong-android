@@ -289,8 +289,8 @@ public class ListBaoPhatBD13Adapter extends RecyclerView.Adapter<ListBaoPhatBD13
             }
             int fee = (int) (item.getFeeShip() + item.getFeeCollectLater() + item.getFeePPA() + item.getFeeCOD() + item.getFeePA());
             if (!TextUtils.isEmpty(item.getBatchCode())) {
-                if (item.getAmountForBatch().equals("Y")) {
-                    Spanned spanned = Html.fromHtml("<font color=#1D2129>Mã lô: " + item.getBatchCode() + "</font><font color=#fd013c>( Tổng thu của lô - "
+                if (item.getAmountForBatch().equals("Y") || item.getItemsInBatch() > 0) {
+                    Spanned spanned = Html.fromHtml("<font color=#1D2129>Mã lô: " + item.getBatchCode() + "</font><font color=#fd013c> (Tổng thu của lô - "
                             + String.format("%s đ", NumberUtils.formatPriceNumber(item.getAmount() + fee)) + ")");
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                         tvBatchCode.setText(spanned);
@@ -347,10 +347,11 @@ public class ListBaoPhatBD13Adapter extends RecyclerView.Adapter<ListBaoPhatBD13
             tvIndex.setText(String.format("%s. ", mListFilter.indexOf(item) + 1));
             cb_selected.setOnCheckedChangeListener((v1, v2) -> {
                 if (v2) {
-                    linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.color_background_bd13));
+                    linearLayout.setBackgroundResource(R.drawable.bg_border_nen_xanh);
                 } else {
-                    linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+                    linearLayout.setBackgroundResource(R.drawable.bg_border);
                 }
+
             });
             cb_selected.setChecked(item.isSelected());
             if (!TextUtils.isEmpty(item.getVatCode())) {

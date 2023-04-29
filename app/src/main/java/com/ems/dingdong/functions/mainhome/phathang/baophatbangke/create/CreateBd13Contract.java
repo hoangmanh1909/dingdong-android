@@ -12,6 +12,7 @@ import com.ems.dingdong.model.Bd13Create;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.model.SolutionInfo;
+import com.ems.dingdong.model.VM_POSTMAN_ROUTE;
 import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
 import com.ems.dingdong.model.request.DingDongGetLadingCreateBD13Request;
 import com.ems.dingdong.model.SimpleResult;
@@ -39,10 +40,12 @@ public interface CreateBd13Contract {
         void updateMobile(String code, String type, String phone, CommonCallback<SimpleResult> simpleResultCommonCallback);
 
         Single<SimpleResult> ddLapBD13Vmap(OrderCreateBD13Mode createBD13Mode);
+
+        Single<SimpleResult> ddXacNhanLoTrinhVmap(VM_POSTMAN_ROUTE vm_postman_route);
     }
 
     interface View extends PresentView<Presenter> {
-        void showSuccessMessage(String message);
+        void showSuccessMessage(String message,int type);
 
         void showListSuccess(ArrayList<DeliveryPostman> list);
 
@@ -60,12 +63,13 @@ public interface CreateBd13Contract {
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
+        void ddXacNhanLoTrinh(VM_POSTMAN_ROUTE vm_postman_route);
 
         void ddLapBD13Vmap(OrderCreateBD13Mode createBD13Mode);
 
         void showBarcode(BarCodeCallback barCodeCallback);
 
-        void postBD13AddNew(Bd13Create bd13Create);
+        void postBD13AddNew(Bd13Create bd13Create,int type);
 
         void searchLadingBd13(DingDongGetLadingCreateBD13Request objRequest);
 

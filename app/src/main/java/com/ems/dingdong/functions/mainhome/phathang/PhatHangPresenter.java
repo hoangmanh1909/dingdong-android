@@ -1,39 +1,28 @@
 package com.ems.dingdong.functions.mainhome.phathang;
 
 import android.content.Intent;
-import android.text.TextUtils;
 
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.functions.mainhome.location.LocationPresenter;
+import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.chuyenhoan.thongke.StatisticCompleteTransferPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.danhsachbaophat.TabBaoPhatPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.huybaophat.CancelBD13Activity;
 import com.ems.dingdong.functions.mainhome.phathang.baophatoffline.create.CreateBD13OfflinePresenter;
 import com.ems.dingdong.functions.mainhome.phathang.baophatoffline.list.BaoPhatOfflinePresenter;
 import com.ems.dingdong.functions.mainhome.phathang.gachno.thongke.StatisticDebitPresenter;
-import com.ems.dingdong.functions.mainhome.phathang.logcuocgoi.LogCallPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.logcuocgoi.tablogcall.TabLogCallPresenter;
-import com.ems.dingdong.functions.mainhome.phathang.noptien.PaymentPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.noptien.tabs.TabPaymentPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.thongke.detailsuccess.HistoryDetailSuccessPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.thongke.detailsuccess.StatisticType;
 import com.ems.dingdong.functions.mainhome.phathang.thongke.sml.SmartlockStatisticPresenter;
-import com.ems.dingdong.functions.mainhome.phathang.thongke.ticket.StatisticTicketPresenter;
+import com.ems.dingdong.functions.mainhome.phathang.thongke.ticket.tabthongke.TabStatisticTicketPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.thongkelogcuocgoi.StatisticalLogPresenter;
-import com.ems.dingdong.model.GachNo;
-import com.ems.dingdong.model.ModeTu;
 import com.ems.dingdong.model.PostOffice;
-import com.ems.dingdong.model.response.EWalletDataResponse;
+import com.ems.dingdong.network.ApiDisposable;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
-import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.SharedPref;
-import com.ems.dingdong.utiles.Toast;
-import com.google.gson.Gson;
-import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
-
-import java.util.Arrays;
-import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -86,6 +75,9 @@ public class PhatHangPresenter extends Presenter<PhatHangContract.View, PhatHang
                         mView.hideProgress();
 //                        Toast.showToast(getViewContext(), simpleResult.getMessage());
                     }
+                }, throwable -> {
+                    mView.hideProgress();
+                    new ApiDisposable(throwable, getViewContext());
                 });
     }
 
@@ -146,11 +138,16 @@ public class PhatHangPresenter extends Presenter<PhatHangContract.View, PhatHang
 
     @Override
     public void showStaticTicket() {
-        new StatisticTicketPresenter(mContainerView).pushView();
+        new TabStatisticTicketPresenter(mContainerView).pushView();
     }
 
     @Override
     public void showBaoPhat() {
         new TabBaoPhatPresenter(mContainerView).pushView();
+    }
+
+    @Override
+    public void showBuuGuiChuyenHoan() {
+        new StatisticCompleteTransferPresenter(mContainerView).pushView();
     }
 }

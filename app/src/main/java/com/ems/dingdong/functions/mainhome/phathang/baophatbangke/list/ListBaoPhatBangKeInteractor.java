@@ -4,6 +4,7 @@ import com.core.base.viper.Interactor;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.functions.mainhome.profile.chat.menuchat.model.RequestQueuChat;
 import com.ems.dingdong.model.CallLiveMode;
+import com.ems.dingdong.model.CallTomeRequest;
 import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.CreateVietMapRequest;
 import com.ems.dingdong.model.PhoneNumber;
@@ -16,7 +17,9 @@ import com.ems.dingdong.model.response.DeliveryPostmanResponse;
 import com.ems.dingdong.model.response.VerifyAddressRespone;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.network.NetWorkControllerGateWay;
+import com.ems.dingdong.network.api.ApiService;
 
+import io.reactivex.Observable;
 import io.reactivex.Single;
 import retrofit2.Call;
 
@@ -94,5 +97,10 @@ class ListBaoPhatBangKeInteractor extends Interactor<ListBaoPhatBangKeContract.P
     @Override
     public Single<SimpleResult> ddQueuChat(RequestQueuChat request) {
         return NetWorkControllerGateWay.ddQueuChat(request);
+    }
+
+    @Override
+    public Observable<SimpleResult> ddCallToMe(CallTomeRequest request) {
+        return ApiService.ddCallToMe(request);
     }
 }

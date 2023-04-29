@@ -50,7 +50,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/line_gray"
+        android:background="@color/white"
         android:orientation="horizontal"
         android:weightSum="2">
 
@@ -132,24 +132,23 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="7dp"
             android:layout_toLeftOf="@+id/ll_scan_qr"
+            android:maxLines="2"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_14sp"
-            android:maxLines="2"
             app:formHint="Nhập tiêu chí để tìm kiếm nhanh" />
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#F2F3F5">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/dimen_10dp"
-            android:layout_marginRight="@dimen/dimen_10dp"
+            android:paddingTop="10dp"
             android:visibility="visible" />
-
 
         <TextView
             android:id="@+id/tv_nodata"
@@ -161,76 +160,63 @@
             android:textColor="@color/black"
             android:visibility="gone" />
 
-        <FrameLayout
-            android:id="@+id/fr_thongbao"
-            android:visibility="gone"
-            style="?attr/actionButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
-            android:layout_above="@+id/img_tim_kiem_dich_vu"
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/bg_trong_thongbao">
+            android:layout_alignParentBottom="true">
+
+            <FrameLayout
+                android:id="@+id/fr_thongbao"
+                style="?attr/actionButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_marginStart="10dp"
+                android:layout_toLeftOf="@+id/img_tim_kiem_dich_vu"
+                android:background="@drawable/bg_trong_thongbao"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/img_notification"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_notify" />
+
+                <TextView
+                    android:id="@+id/notification_badge"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_marginLeft="13dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/badge_background"
+                    android:gravity="center"
+                    android:textColor="@android:color/white"
+                    android:textSize="8sp"
+                    android:visibility="gone" />
+            </FrameLayout>
 
             <ImageView
-                android:id="@+id/img_notification"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_notify" />
+                android:id="@+id/img_tim_kiem_dich_vu"
+                android:layout_width="@dimen/size_50dp"
+                android:layout_height="@dimen/size_50dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_toStartOf="@+id/img_view"
+                android:background="@drawable/bg_trong"
+                android:padding="10dp"
+                android:src="@drawable/ic_search_sharp"
+                android:visibility="gone" />
 
-            <TextView
-                android:id="@+id/notification_badge"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:layout_marginLeft="13dp"
-                android:layout_marginTop="5dp"
-                android:background="@drawable/badge_background"
-                android:gravity="center"
-                android:visibility="gone"
-                android:textColor="@android:color/white"
-                android:textSize="8sp" />
-        </FrameLayout>
-
-        <!--        <ImageView-->
-        <!--            android:id="@+id/img_thongbao_mipit"-->
-        <!--            android:layout_width="@dimen/size_50dp"-->
-        <!--            android:layout_height="@dimen/size_50dp"-->
-        <!--            android:layout_above="@+id/img_tim_kiem_dich_vu"-->
-        <!--            android:layout_alignParentEnd="true"-->
-        <!--            android:layout_marginStart="@dimen/_10sdp"-->
-        <!--            android:layout_marginTop="@dimen/_10sdp"-->
-        <!--            android:layout_marginEnd="@dimen/_10sdp"-->
-        <!--            android:layout_marginBottom="10dp"-->
-        <!--            android:background="@drawable/bg_trong_thongbao"-->
-        <!--            android:src="@drawable/ic_item" />-->
-
-        <ImageView
-            android:id="@+id/img_tim_kiem_dich_vu"
-            android:layout_width="@dimen/size_50dp"
-            android:layout_height="@dimen/size_50dp"
-            android:layout_above="@+id/img_view"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:visibility="gone"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/bg_trong"
-            android:padding="10dp"
-            android:src="@drawable/ic_search_sharp" />
-
-        <ImageView
-            android:id="@+id/img_view"
-            android:layout_width="@dimen/size_50dp"
-            android:layout_height="@dimen/size_50dp"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_10sdp"
-            android:layout_marginBottom="@dimen/_10sdp"
-            android:src="@drawable/ic_choose_calendar" />
+            <ImageView
+                android:id="@+id/img_view"
+                android:layout_width="@dimen/size_50dp"
+                android:layout_height="@dimen/size_50dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:src="@drawable/ic_choose_calendar" />
+        </RelativeLayout>
     </RelativeLayout>
 </LinearLayout>

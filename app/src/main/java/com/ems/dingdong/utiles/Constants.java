@@ -40,6 +40,8 @@ public class Constants {
     public static final int RED = 2;
     public static final int GREEN = 0;
     public static final int GREY = 1;
+    public static final int CALL_NGUOI_GUI = 1;
+    public static final int CALL_NGUOI_NHAN = 2;
     public static final int ADDRESS_SUCCESS = 1000;
     public static final int ADDRESS_UNSUCCESS = 1001;
     public static final int ADDRESS_FAILURE = 1002;
@@ -152,6 +154,12 @@ public class Constants {
     public static final String EVENTBUS_HOAN_THANH_TIN_THANH_CONG_NOTIFY_DATA = "HOAN_THANH_TIN_THANH_CONG";
 
     public static final String DATE_FORMAT = "dd/mm/yyyy HH:mm:ss";
+    public static final String STT_TICKET_MANAGEMENT_TOTAL_V2 = "STT_TICKET_MANAGEMENT_TOTAL_V2";
+    public static final String STT_TICKET_MANAGEMENT_DETAIL_V2 = "STT_TICKET_MANAGEMENT_DETAIL_V2";
+    public static final String STT_LADING_REFUND_TOTAL = "STT_LADING_REFUND_TOTAL";
+    public static final String STT_LADING_REFUND_DETAIL = "STT_LADING_REFUND_DETAIL";
+    public static final String STT_GET_LADING_REFUND_DETAIL = "STT_GET_LADING_REFUND_DETAIL";
+    public static final String DLV_UPDATE_LADING_REFUND_DETAIL = "DLV_UPDATE_LADING_REFUND_DETAIL";
 
     //Đăng nhập
     public static final String AUTH_LOGIN = "AUTH_LOGIN";
@@ -216,6 +224,7 @@ public class Constants {
     // thống
 
     public static final String STT_POSTMAN_GET_BALANCE = "STT_POSTMAN_GET_BALANCE";
+    public static final String DLV_CALL_TO_ME = "DLV_CALL_TO_ME";
     public static final String STT_GET_DELIVERY_MAIN_VIEW = "STT_GET_DELIVERY_MAIN_VIEW";
     public static final String STT_GET_PICKUP_MAIN_VIEW = "STT_GET_PICKUP_MAIN_VIEW";
     public static final String STT_GET_TICKET_NOTIFY = "STT_GET_TICKET_NOTIFY";
@@ -270,6 +279,8 @@ public class Constants {
     public static final String PU_BP_GET_BY_ID = "PU_BP_GET_BY_ID";
     public static final String PU_BP_GET_CHILD_BY_CODE = "PU_BP_GET_CHILD_BY_CODE";
     public static final String PU_DIC_GET_PROVINCES = "PU_DIC_GET_PROVINCES";
+    public static final String DIC_GET_RETURN_GROUP_PA = "DIC_GET_RETURN_GROUP_PA";
+    public static final String DIC_GET_RETURN_PA = "DIC_GET_RETURN_PA";
     public static final String PU_DIC_GET_DISTRICTS = "PU_DIC_GET_DISTRICTS";
     public static final String PU_DIC_GET_WARDS = "PU_DIC_GET_WARDS";
     public static final String PU_DIC_GET_PICKUP_REASON = "PU_DIC_GET_PICKUP_REASON";
@@ -300,6 +311,9 @@ public class Constants {
     public static final String VM_VERIFY_ADDRESS = "VM_VERIFY_ADDRESS";
     public static final String VM_CREATE = "VM_CREATE";
     public static final String VM_ORDER_BD13 = "VM_ORDER_BD13";
+    public static final String VM_ORDER_BY_COORDINATES = "VM_ORDER_BY_COORDINATES";
+    public static final String VM_POSTMAN_ROUTE = "VM_POSTMAN_ROUTE";
+    public static final String AUTH_CREATE_VMAP_ID = "AUTH_CREATE_VMAP_ID";
     public static final String AUTH_GET_PARAMS = "AUTH_GET_PARAMS";
     public static final String VM_SEARCH_V2 = "VM_SEARCH_V2";
     public static final String VM_PLACE = "VM_PLACE";
@@ -333,4 +347,10 @@ public class Constants {
     public static final int DOI_SOAT = 3;
     public static final int THANH_TOAN = 4;
     public static final int CSKH = 5;
+
+    public static int SUCCESS = 1;
+    public static int ERROR = 0;
+
+    public static final int SO_LUONG_TIN = 100;
+
 }

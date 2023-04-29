@@ -195,7 +195,6 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
 
             @Override
@@ -506,6 +505,8 @@ public class CreateBD13OfflineFragment extends ViewFragment<CreateBD13OfflineCon
                     if (solutionInfo.getID() == 1) {
                         tv_solution.setText(solutionInfo.getName());
                         mSolutionInfo = solutionInfo;
+                        solutionInfos = new ArrayList<>();
+                        solutionInfos.addAll(listSolution);
                         break;
                     }
                 }

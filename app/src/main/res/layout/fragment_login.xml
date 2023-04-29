@@ -45,11 +45,11 @@
 
                     <ImageView
                         android:id="@+id/my_image_view"
-                        android:layout_width="130dp"
-                        android:layout_height="130dp"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
                         android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="@dimen/dimen_10dp"
-                        android:src="@drawable/ic_person_circle_sharp" />
+                        android:layout_marginTop="16dp"
+                        android:src="@drawable/postman" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -75,35 +75,44 @@
                             android:layout_marginTop="24dp"
                             android:orientation="vertical">
 
-
-                            <LinearLayout
-                                android:id="@+id/login_layout"
+                            <TextView
+                                android:id="@+id/btn_login"
+                                style="@style/textStyleButton"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/bg_login"
+                                android:layout_height="48dp"
+                                android:layout_gravity="center"
+                                android:background="@drawable/bg_border_botton"
                                 android:gravity="center"
-                                android:orientation="horizontal"
-                                android:paddingTop="@dimen/size_12dp"
-                                android:paddingBottom="@dimen/size_12dp">
+                                android:text="Truy cập ứng dụng"
+                                android:textColor="@color/white" />
+                            <!--                            <LinearLayout-->
+                            <!--                                android:id="@+id/login_layout"-->
+                            <!--                                android:layout_width="match_parent"-->
+                            <!--                                android:layout_height="wrap_content"-->
+                            <!--                                android:background="@drawable/bg_login"-->
+                            <!--                                android:gravity="center"-->
+                            <!--                                android:orientation="horizontal"-->
+                            <!--                                android:paddingTop="@dimen/size_12dp"-->
+                            <!--                                android:paddingBottom="@dimen/size_12dp">-->
 
-                                <ImageView
-                                    android:layout_width="@dimen/dimen_25dp"
-                                    android:layout_height="@dimen/size_15dp"
-                                    android:layout_gravity="center_vertical"
-                                    android:src="@drawable/ic_done" />
+                            <!--                                <ImageView-->
+                            <!--                                    android:layout_width="@dimen/dimen_25dp"-->
+                            <!--                                    android:layout_height="@dimen/size_15dp"-->
+                            <!--                                    android:layout_gravity="center_vertical"-->
+                            <!--                                    android:src="@drawable/ic_done" />-->
 
-                                <com.ems.dingdong.views.CustomTextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center_vertical"
-                                    android:layout_marginLeft="@dimen/dimen_8dp"
-                                    android:text="@string/title_login"
-                                    android:textAllCaps="true"
-                                    android:textColor="@android:color/white"
-                                    android:textSize="@dimen/text_size_14sp" />
+                            <!--                                <com.ems.dingdong.views.CustomTextView-->
+                            <!--                                    android:layout_width="wrap_content"-->
+                            <!--                                    android:layout_height="wrap_content"-->
+                            <!--                                    android:layout_gravity="center_vertical"-->
+                            <!--                                    android:layout_marginLeft="@dimen/dimen_8dp"-->
+                            <!--                                    android:text="@string/title_login"-->
+                            <!--                                    android:textAllCaps="true"-->
+                            <!--                                    android:textColor="@android:color/white"-->
+                            <!--                                    android:textSize="@dimen/text_size_14sp" />-->
 
 
-                            </LinearLayout>
+                            <!--                            </LinearLayout>-->
 
 
                         </RelativeLayout>
@@ -113,18 +122,19 @@
 
                 </LinearLayout>
 
-                <com.ems.dingdong.views.CustomTextView
+                <TextView
                     android:id="@+id/tv_version"
-                    style="@style/st_gray.h3"
-                    android:layout_width="wrap_content"
+                    style="@style/textStyle"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
                     android:layout_alignParentBottom="true"
-                    android:layout_marginRight="@dimen/size_30dp"
-                    android:layout_marginBottom="@dimen/dimen_5dp"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_size_12sp"
-                    android:visibility="visible" />
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="24dp"
+                    android:layout_marginBottom="24dp"
+                    android:gravity="center"
+                    android:text="v.1.0"
+                    android:textColor="@color/white" />
             </RelativeLayout>
 
 

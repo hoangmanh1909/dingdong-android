@@ -12,6 +12,7 @@ import com.ems.dingdong.functions.mainhome.gomhang.listcommon.more.Mpit;
 import com.ems.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanhtin.HoanThanhTinDetailPresenter;
 import com.ems.dingdong.functions.mainhome.gomhang.packagenews.detailxacnhantin.XacNhanTinDetailPresenter;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.functions.mainhome.gomhang.sortxacnhantin.SortPersenter;
 import com.ems.dingdong.functions.mainhome.gomhang.tabliscommon.TabListCommonContract;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.detail.BaoPhatBangKeDetailPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.noptien.PaymentContract;
@@ -211,9 +212,8 @@ public class ListCommonPresenter extends Presenter<ListCommonContract.View, List
                     super.onSuccess(call, response);
                     mView.hideProgress();
                     if (response.body().getErrorCode().equals("00")) {
-                        ConfirmAllOrderPostman confirmAllOrderPostman = NetWorkController.getGson().fromJson(response.body().getData(), new TypeToken<ConfirmAllOrderPostman>() {
-                        }.getType());
-                        mView.showResult(confirmAllOrderPostman);
+                        ConfirmAllOrderPostman confirmAllOrderPostman = NetWorkController.getGson().fromJson(response.body().getData(), new TypeToken<ConfirmAllOrderPostman>() {}.getType());
+                        mView.showResult(confirmAllOrderPostman,list);
                     } else {
                         mView.showError(response.body().getMessage());
                     }
@@ -274,8 +274,14 @@ public class ListCommonPresenter extends Presenter<ListCommonContract.View, List
         this.tabListener = listener;
         return this;
     }
+
     @Override
-    public void ddQueuChat(RequestQueuChat request , VnpostOrderInfo vnpostOrderInfo,int type) {
+    public void showSort(List<CommonObject> list) {
+        new SortPersenter(mContainerView).setListSort(list).pushView();
+    }
+
+    @Override
+    public void ddQueuChat(RequestQueuChat request, VnpostOrderInfo vnpostOrderInfo, int type) {
         mView.showProgress();
         mInteractor.ddQueuChat(request)
                 .subscribeOn(Schedulers.io())
@@ -292,7 +298,7 @@ public class ListCommonPresenter extends Presenter<ListCommonContract.View, List
                         mView.hideProgress();
                         if (simpleResult.getErrorCode().equals("00")) {
                             AccountChatInAppGetQueueResponse response = NetWorkController.getGson().fromJson(simpleResult.getData(), AccountChatInAppGetQueueResponse.class);
-                            mView.showAccountChatInAppGetQueueResponse(response,vnpostOrderInfo,type);
+                            mView.showAccountChatInAppGetQueueResponse(response, vnpostOrderInfo, type);
                         } else mView.showLoi(simpleResult.getMessage());
                     }
 

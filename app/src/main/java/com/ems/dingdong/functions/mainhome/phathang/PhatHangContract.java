@@ -48,6 +48,8 @@ interface PhatHangContract {
         void showStaticTicket();
 
         void showBaoPhat();
+
+        void showBuuGuiChuyenHoan();
     }
 }
 

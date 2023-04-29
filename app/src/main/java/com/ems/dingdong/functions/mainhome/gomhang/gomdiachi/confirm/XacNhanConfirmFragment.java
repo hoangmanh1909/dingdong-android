@@ -22,6 +22,7 @@ import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.request.OrderChangeRouteInsertRequest;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.CustomToast;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.CustomBoldTextView;
@@ -93,7 +94,7 @@ public class XacNhanConfirmFragment extends ViewFragment<XacNhanConfirmContract.
     public void initLayout() {
         super.initLayout();
         mListRequest = mPresenter.getList();
-        Log.d("THanhhiem",new Gson().toJson(mListRequest));
+        Log.d("THanhhiem", new Gson().toJson(mListRequest));
         SharedPref sharedPref = new SharedPref(getActivity());
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
         String routeJson = sharedPref.getString(Constants.KEY_ROUTE_INFO, "");
@@ -267,26 +268,36 @@ public class XacNhanConfirmFragment extends ViewFragment<XacNhanConfirmContract.
 
     @Override
     public void showError(String message) {
-        if (getActivity() != null) {
-            new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
-                    .setConfirmText("OK")
-                    .setTitleText("Thông báo")
-                    .setContentText(message)
-                    .setConfirmClickListener(sweetAlertDialog -> sweetAlertDialog.dismiss()).show();
-        }
+        CustomToast.makeText(getViewContext(), (int) CustomToast.LONG, message, Constants.ERROR).show();
     }
 
     @Override
     public void showResult(ConfirmAllOrderPostman allOrderPostman) {
-        if (getActivity() != null) {
-            new SweetAlertDialog(getActivity(), SweetAlertDialog.NORMAL_TYPE)
-                    .setConfirmText("OK")
-                    .setTitleText("Thông báo")
-                    .setContentText("Có " + allOrderPostman.getSuccessRecord() + " Xác nhận thành công. Có " + allOrderPostman.getErrorRecord() + " xác nhận lỗi")
-                    .setConfirmClickListener(sweetAlertDialog -> {
-                        sweetAlertDialog.dismiss();
-                        mPresenter.back();
-                    }).show();
+//        if (getActivity() != null) {
+//            new SweetAlertDialog(getActivity(), SweetAlertDialog.NORMAL_TYPE)
+//                    .setConfirmText("OK")
+//                    .setTitleText("Thông báo")
+//                    .setContentText("Có " + allOrderPostman.getSuccessRecord() + " Xác nhận thành công. Có " + allOrderPostman.getErrorRecord() + " xác nhận lỗi")
+//                    .setConfirmClickListener(sweetAlertDialog -> {
+//                        sweetAlertDialog.dismiss();
+//                        mPresenter.back();
+//                    }).show();
+//        }
+
+        if (mPresenter.getListCommonObjec().size() > 1 && mPresenter.getListCommonObjec().size() <= Constants.SO_LUONG_TIN) {
+            CustomToast.makeText(getViewContext(), (int) CustomToast.LONG, "Có " + allOrderPostman.getSuccessRecord() + " Xác nhận thành công. Có " + allOrderPostman.getErrorRecord() + " xác nhận lỗi", Constants.ERROR).show();
+            mPresenter.showSort(mPresenter.getListCommonObjec());
+        } else {
+            if (getActivity() != null) {
+                new SweetAlertDialog(getActivity(), SweetAlertDialog.NORMAL_TYPE)
+                        .setConfirmText("OK")
+                        .setTitleText("Thông báo")
+                        .setContentText("Có " + allOrderPostman.getSuccessRecord() + " Xác nhận thành công. Có " + allOrderPostman.getErrorRecord() + " xác nhận lỗi")
+                        .setConfirmClickListener(sweetAlertDialog -> {
+                            sweetAlertDialog.dismiss();
+                            mPresenter.back();
+                        }).show();
+            }
         }
     }
 

@@ -4,7 +4,10 @@ import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.core.utils.RecyclerUtils;
@@ -32,6 +35,16 @@ public class DialogVmap extends Dialog {
 
     public DialogVmap(Context context, List<DeliveryPostman> list, SapXepCallback idCallback) {
         super(context, android.R.style.Theme_Translucent_NoTitleBar);
+        Window window = getWindow();
+
+// clear FLAG_TRANSLUCENT_STATUS flag:
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+
+// add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+
+// finally change the color
+        window.setStatusBarColor(ContextCompat.getColor(getContext(), R.color.bg_yellow_primary));
         this.mContext = context;
         View view = View.inflate(getContext(), R.layout.dialog_vmap, null);
         getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;

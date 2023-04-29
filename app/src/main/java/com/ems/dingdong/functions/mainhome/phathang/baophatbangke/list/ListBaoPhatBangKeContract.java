@@ -9,6 +9,7 @@ import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.functions.mainhome.profile.chat.menuchat.model.AccountChatInAppGetQueueResponse;
 import com.ems.dingdong.functions.mainhome.profile.chat.menuchat.model.RequestQueuChat;
 import com.ems.dingdong.model.CallLiveMode;
+import com.ems.dingdong.model.CallTomeRequest;
 import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.CreateVietMapRequest;
 import com.ems.dingdong.model.DeliveryPostman;
@@ -27,6 +28,7 @@ import com.ringme.ott.sdk.customer.vnpost.model.VnpostOrderInfo;
 
 import java.util.List;
 
+import io.reactivex.Observable;
 import io.reactivex.Single;
 import retrofit2.Call;
 
@@ -103,12 +105,14 @@ interface ListBaoPhatBangKeContract {
         Single<SimpleResult> ddCall(CallLiveMode callLiveMode);
 
         Single<SimpleResult> ddQueuChat(RequestQueuChat request);
+
+        Observable<SimpleResult> ddCallToMe(CallTomeRequest request);
     }
 
     interface View extends PresentView<Presenter> {
         void showLoi(String mess);
 
-        void showAccountChatInAppGetQueueResponse(AccountChatInAppGetQueueResponse response,VnpostOrderInfo vnpostOrderInfo, int type);
+        void showAccountChatInAppGetQueueResponse(AccountChatInAppGetQueueResponse response, VnpostOrderInfo vnpostOrderInfo, int type);
 
         void showDiachi(String x);
 
@@ -143,7 +147,7 @@ interface ListBaoPhatBangKeContract {
 
         void showSuccessUpdateMobileSender(String phoneSender, String message);
 
-        void showAddress(Values x);
+        void showAddress(Values x, String diachi);
 
         void showThongBao(String mess);
 
@@ -159,13 +163,14 @@ interface ListBaoPhatBangKeContract {
     interface Presenter extends IPresenter<View, Interactor> {
 
         void showAddTicket(String code);
+
         /*void searchStatisticCollect(String orderPostmanID,
                                        String orderID,
                                        String postmanID,
                                        String status,
                                        String fromAssignDate,
                                        String toAssignDate);*/
-        void ddQueuChat(RequestQueuChat request,   VnpostOrderInfo vnpostOrderInfo, int type);
+        void ddQueuChat(RequestQueuChat request, VnpostOrderInfo vnpostOrderInfo, int type);
 
         void showThemDanhBa(String diachi);
 
@@ -308,7 +313,7 @@ interface ListBaoPhatBangKeContract {
 
         void callByCtellFree(String calleeNumber);
 
-        void getDDVeryAddress(VerifyAddress verifyAddress);
+        void getDDVeryAddress(VerifyAddress verifyAddress, String diachi);
 
         void ddCreateVietMap(CreateVietMapRequest createVietMapRequest);
 
@@ -319,6 +324,8 @@ interface ListBaoPhatBangKeContract {
         void ddCall(CallLiveMode r);
 
         ContainerView getContraiView();
+
+        void ddCallToMe(CallTomeRequest request);
     }
 
 }

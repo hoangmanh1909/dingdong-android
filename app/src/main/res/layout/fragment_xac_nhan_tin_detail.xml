@@ -292,8 +292,12 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1.2"
                             android:gravity="right"
+                            android:maxLines="3"
                             android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingRight="5dp"
+                            android:fadeScrollbars="false"
                             android:paddingBottom="@dimen/dimen_10dp"
+                            android:scrollbars="vertical"
                             android:textColor="@color/home_bg"
                             android:textSize="@dimen/text_size_14sp" />
 

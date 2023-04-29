@@ -36,7 +36,9 @@
                 android:textColor="@color/white" />
         </RelativeLayout>
     </FrameLayout>
-
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -45,8 +47,8 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#fafafa"
             android:layout_marginBottom="5dp"
+            android:background="#fafafa"
 
             tools:ignore="MissingConstraints">
 
@@ -107,7 +109,7 @@
                         android:id="@+id/tv_fullname"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="2w"
+                        android:text=""
                         android:textColor="@color/white"
                         android:textSize="@dimen/text_size_14sp" />
 
@@ -115,7 +117,7 @@
                         android:id="@+id/tv_poname"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="asda"
+                        android:text=""
                         android:textColor="@color/white"
                         android:textSize="@dimen/text_size_14sp" />
 
@@ -156,9 +158,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
+            android:visibility="gone"
             android:background="@color/white"
-            android:orientation="vertical"
-            android:visibility="gone">
+            android:orientation="vertical">
 
             <RelativeLayout
                 android:id="@+id/rl_log_cuoc_goi"
@@ -570,5 +572,5 @@
 
 
     </LinearLayout>
-
+    </androidx.core.widget.NestedScrollView>
 </LinearLayout>

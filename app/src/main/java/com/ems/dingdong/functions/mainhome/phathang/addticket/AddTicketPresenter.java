@@ -10,6 +10,7 @@ import com.ems.dingdong.functions.mainhome.profile.chat.menuchat.model.AccountCh
 import com.ems.dingdong.model.DivCreateTicketMode;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.UploadSingleResult;
+import com.ems.dingdong.network.ApiDisposable;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Toast;
 
@@ -36,7 +37,6 @@ public class AddTicketPresenter extends Presenter<AddTicketContract.View, AddTic
 
     @Override
     public void start() {
-        ddGetSubSolution();
     }
 
     public AddTicketPresenter setCode(String code) {
@@ -55,9 +55,9 @@ public class AddTicketPresenter extends Presenter<AddTicketContract.View, AddTic
     }
 
     @Override
-    public void ddGetSubSolution() {
+    public void ddGetSubSolution(String code ) {
         mView.showProgress();
-        mInteractor.ddGetSubSolution("7")
+        mInteractor.ddGetSubSolution(code)
                 .subscribeOn(Schedulers.io())
                 .delay(1000, TimeUnit.MICROSECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
@@ -83,6 +83,7 @@ public class AddTicketPresenter extends Presenter<AddTicketContract.View, AddTic
                     @Override
                     public void onError(Throwable e) {
                         mView.hideProgress();
+                        new ApiDisposable(e, getViewContext());
                     }
                 });
     }
@@ -103,18 +104,24 @@ public class AddTicketPresenter extends Presenter<AddTicketContract.View, AddTic
 
                     @Override
                     public void onSuccess(SimpleResult simpleResult) {
-                        if (simpleResult.getErrorCode().equals("00")) {
-                            Toast.showToast(getViewContext(), simpleResult.getMessage());
-                            back();
-                        } else {
-                            Toast.showToast(getViewContext(), simpleResult.getMessage());
-                            mView.hideProgress();
+                        try {
+                            if (simpleResult.getErrorCode().equals("00")) {
+                                Toast.showToast(getViewContext(), simpleResult.getMessage());
+                                back();
+                            } else {
+                                Toast.showToast(getViewContext(), simpleResult.getMessage());
+                                mView.hideProgress();
+                            }
+                        }catch (Exception e){
+
                         }
+
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         mView.hideProgress();
+                        new ApiDisposable(e, getViewContext());
                     }
                 });
     }

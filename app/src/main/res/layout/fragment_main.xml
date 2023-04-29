@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
@@ -93,8 +94,7 @@
                         android:background="@drawable/badge_background"
                         android:gravity="center"
                         android:textColor="@android:color/white"
-                        android:textSize="8sp"
-                        android:visibility="gone" />
+                        android:textSize="8sp" />
                 </FrameLayout>
 
                 <ImageView
@@ -135,93 +135,85 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/view_top"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/header"
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:paddingLeft="16dp">
 
-        <LinearLayout
-            android:id="@+id/view_top"
-            android:layout_width="match_parent"
+
+        <TextView
+            android:id="@+id/first_header"
+            style="@style/textStyle"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="left"
+            android:text=""
+            android:textColor="@color/black" />
 
-            android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:orientation="horizontal"
-                android:paddingLeft="@dimen/dimen_10dp">
+        <TextView
+            android:id="@+id/second_header"
+            style="@style/textStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:text=""
+            android:textColor="@color/black" />
 
-                <com.ems.dingdong.views.CustomTextView
-                    android:id="@+id/first_header"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="left"
-                    android:text=""
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp" />
-            </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:orientation="horizontal"
-                android:paddingLeft="@dimen/dimen_10dp">
-
-                <com.ems.dingdong.views.CustomTextView
-                    android:id="@+id/second_header"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="left"
-                    android:text=""
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingLeft="@dimen/dimen_10dp">
-
-                <com.ems.dingdong.views.CustomTextView
-                    android:id="@+id/thirst_header"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="left"
-                    android:text=""
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_12sdp" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <com.ems.dingdong.views.MyViewPager
-            android:id="@+id/view_pager"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:scrollbars="vertical" />
-
+        <TextView
+            android:id="@+id/thirst_header"
+            style="@style/textStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:text=""
+            android:textColor="@color/black" />
     </LinearLayout>
     <!-- app:bb_activeTabColor="#5f3075"
      app:bb_inActiveTabColor="#666666"-->
+<!--    <com.ems.dingdong.views.MyViewPager-->
+<!--        android:id="@+id/view_pager"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_weight="1"-->
+<!--        android:scrollbars="vertical" />-->
 
-
-    <com.roughike.bottombar.BottomBar
-        android:id="@+id/bottomBar"
+<!--    <com.roughike.bottombar.BottomBar-->
+<!--        android:id="@+id/bottomBar"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="60dp"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:background="#ffffff"-->
+<!--        app:bb_activeTabColor="#5f3075"-->
+<!--        app:bb_inActiveTabColor="#666666"-->
+<!--        app:bb_showShadow="true"-->
+<!--        app:bb_tabXmlResource="@xml/bottom_navigation_main"-->
+<!--        app:bb_titleTextAppearance="@style/CustomTitleTextAppearance"-->
+<!--        app:bb_titleTypeFace="fonts/Roboto-Regular.ttf" />-->
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewpager"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/bottombavigationview"
+        android:layout_below="@+id/view_top"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottombavigationview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="#ffffff"
-        app:bb_activeTabColor="#5f3075"
-        app:bb_inActiveTabColor="#666666"
-        app:bb_showShadow="true"
-        app:bb_tabXmlResource="@xml/bottom_navigation_main"
-        app:bb_titleTextAppearance="@style/CustomTitleTextAppearance"
-        app:bb_titleTypeFace="fonts/Roboto-Regular.ttf" />
+        android:background="@color/white"
+        app:itemIconTint="@color/custom_bottom"
+        app:itemTextColor="@color/custom_bottom"
+        app:labelVisibilityMode="labeled"
+        app:menu="@menu/bottom_navigation_main">
+
+    </com.google.android.material.bottomnavigation.BottomNavigationView>
 
     <!--Helvetica.otf shifting-->
-</LinearLayout>
+</RelativeLayout>

@@ -305,7 +305,7 @@ public class TaoTInFragment extends ViewFragment<TaoTinContract.Presenter> imple
         createOrderRequest.setPickupDistrictId(idQuuanhuyen);
         createOrderRequest.setPickupWardId(idXaphuong);
         createOrderRequest.setContactName(nguoilienhe);
-        createOrderRequest.setPickupStreet(edt_sonha.getText().toString() + ", " + edt_xaphuong.getText().toString() + ", " + edt_quanhuyen.getText() + "," + edt_tinhthanhpho.getText());
+        createOrderRequest.setPickupStreet(edt_sonha.getText().toString() + ", " + edt_xaphuong.getText().toString() + ", " + edt_quanhuyen.getText() + ", " + edt_tinhthanhpho.getText());
         createOrderRequest.setContactPhone(phone);
 
         mPresenter.themTinPresenter(createOrderRequest);

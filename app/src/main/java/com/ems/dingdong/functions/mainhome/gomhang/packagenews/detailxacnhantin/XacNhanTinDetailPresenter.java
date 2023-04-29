@@ -15,6 +15,7 @@ import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.UserInfoResult;
 import com.ems.dingdong.model.request.OrderChangeRouteInsertRequest;
 import com.ems.dingdong.model.response.StatisticSMLDeliveryFailResponse;
+import com.ems.dingdong.network.ApiDisposable;
 import com.ems.dingdong.network.NetWorkController;
 import com.google.gson.reflect.TypeToken;
 
@@ -157,7 +158,7 @@ public class XacNhanTinDetailPresenter extends Presenter<XacNhanTinDetailContrac
                     }
                 }, throwable -> {
                     mView.hideProgress();
-                    mView.showErrorToast(throwable.getMessage());
+                    new ApiDisposable(throwable, getViewContext());
                 });
     }
 

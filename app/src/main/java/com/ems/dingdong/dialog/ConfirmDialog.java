@@ -87,7 +87,7 @@ public class ConfirmDialog extends Dialog {
     @SuppressLint("CheckResult")
     public ConfirmDialog(Context context, int quantity, long amount, long fee, String vitri, double lat, double lon, double latbg, double lonbg,
                          String smcode, ContainerView containerView) {
-        super(context, android.R.style.Theme_Translucent_NoTitleBar);
+        super(context, R.style.ios_dialog_style1);
         View view = View.inflate(getContext(), R.layout.dialog_confirm, null);
         setContentView(view);
         ButterKnife.bind(this, view);
@@ -132,7 +132,6 @@ public class ConfirmDialog extends Dialog {
                                 PointTinhKhoanCach toAddress = new PointTinhKhoanCach();
                                 toAddress.setLatitude(latbg);
                                 toAddress.setLongitude(lonbg);
-
                                 PointTinhKhoanCach fromAddress = new PointTinhKhoanCach();
                                 fromAddress.setLatitude(lat);
                                 fromAddress.setLongitude(lon);

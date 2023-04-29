@@ -41,6 +41,16 @@ public class DialoChonKhuVuc extends Dialog {
     public DialoChonKhuVuc(@NonNull Context context, String title, List<Item> list, PickerCallback callback) {
         super(context, android.R.style.Theme_NoTitleBar);
 //
+        Window window = getWindow();
+
+// clear FLAG_TRANSLUCENT_STATUS flag:
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+
+// add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+
+// finally change the color
+        window.setStatusBarColor(ContextCompat.getColor(getContext(), R.color.colorPrimary));
         View view = View.inflate(getContext(), R.layout.dialog_picker_dichvu_mpit, null);
         setContentView(view);
         ButterKnife.bind(this, view);

@@ -45,4 +45,16 @@ public interface TabBaoPhatConstract {
         void onSearchChange(String fromDate, String toDate, int currentPosition);
     }
 
+    interface OnDeliveryNotSuccessfulChange {
+
+        /**
+         * Function event when current tab update data then notify other tab need to refresh data on recycle view.
+         */
+        void onChanged(List<DeliveryPostman> list);
+
+        int getCurrentTab();
+
+        void onError(String message);
+    }
+
 }

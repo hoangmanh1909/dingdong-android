@@ -2,6 +2,7 @@ package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanp
 
 import com.core.base.viper.Interactor;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.model.CallLiveMode;
 import com.ems.dingdong.model.DecodeDiaChiResult;
 import com.ems.dingdong.model.DeliveryCheckAmountPaymentResult;
 import com.ems.dingdong.model.DeliverySuccessRequest;
@@ -22,9 +23,11 @@ import com.ems.dingdong.model.request.PaypostPaymentRequest;
 import com.ems.dingdong.model.request.PushToPnsRequest;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.network.NetWorkControllerGateWay;
+import com.ems.dingdong.network.api.ApiService;
 
 import java.util.List;
 
+import io.reactivex.Observable;
 import io.reactivex.Single;
 import retrofit2.Call;
 
@@ -46,6 +49,21 @@ public class XacNhanBaoPhatInteractor extends Interactor<XacNhanBaoPhatContract.
     @Override
     public Single<SimpleResult> getTinhThanhPho(BaseRequest request) {
         return NetWorkControllerGateWay.getTinhThanhPho(request);
+    }
+
+    @Override
+    public Single<SimpleResult> getDanhMucHCC(BaseRequest request) {
+        return NetWorkControllerGateWay.getDanhMucHCC(request);
+    }
+
+    @Override
+    public Single<SimpleResult> getNhomDanhMucHCC(String request) {
+        return NetWorkControllerGateWay.getNhomDanhMucHCC(request);
+    }
+
+    @Override
+    public Single<SimpleResult> ddCall(CallLiveMode callLiveMode) {
+        return NetWorkControllerGateWay.ddCall(callLiveMode);
     }
 
     @Override
@@ -71,14 +89,29 @@ public class XacNhanBaoPhatInteractor extends Interactor<XacNhanBaoPhatContract.
     }
 
     @Override
-    public void postImage(String path, CommonCallback<UploadSingleResult> callback) {
-        NetWorkController.postImageSingle(path, callback);
+    public Observable<UploadSingleResult> postImage(String path) {
+        return ApiService.postImageSingle(path);
+    }
+
+//    @Override
+//    public void postImage(String path, CommonCallback<UploadSingleResult> callback) {
+//        NetWorkController.postImageSingle(path, callback);
+//    }
+
+    @Override
+    public Observable<UploadSingleResult> postImageImageSignature(String path) {
+        return ApiService.postImageImageSignature(path);
     }
 
     @Override
-    public void postImageAvatar(String pathAvatar, CommonCallback<UploadSingleResult> callback) {
-        NetWorkController.postImageAvatar(pathAvatar, callback);
+    public Observable<UploadSingleResult> postImageAvatar(String pathAvatar) {
+        return ApiService.postImageAvatar(pathAvatar);
     }
+
+//    @Override
+//    public void postImageAvatar(String pathAvatar, CommonCallback<UploadSingleResult> callback) {
+//        NetWorkController.postImageAvatar(pathAvatar, callback);
+//    }
 
     @Override
     public void paymentDelivery(PaymentDeviveryRequest request, CommonCallback<SimpleResult> simpleResultCommonCallback) {

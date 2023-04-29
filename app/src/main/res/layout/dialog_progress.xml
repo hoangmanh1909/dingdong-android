@@ -2,22 +2,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
->
-    <!--        <com.ems.dingdong.views.CustomProgressBar-->
-    <!--            android:id="@+id/progress_bar"-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:layout_centerInParent="true"-->
-    <!--            ></com.ems.dingdong.views.CustomProgressBar>-->
+    android:layout_height="match_parent">
 
     <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/tv_load"
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:layout_centerInParent="true"
         app:lottie_autoPlay="true"
         app:lottie_loop="true"
-        android:id="@+id/tv_load"
         app:lottie_rawRes="@raw/dingdong" />
 
     <TextView

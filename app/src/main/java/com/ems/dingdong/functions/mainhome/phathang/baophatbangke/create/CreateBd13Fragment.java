@@ -3,6 +3,7 @@ package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create;
 import static android.content.Context.LOCATION_SERVICE;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationManager;
@@ -31,6 +32,7 @@ import com.ems.dingdong.dialog.CreateBangKeSearchDialog;
 import com.ems.dingdong.dialog.CreatedBd13Dialog;
 import com.ems.dingdong.dialog.DialogText;
 import com.ems.dingdong.dialog.DialogThongBao;
+import com.ems.dingdong.dialog.IOSDialog;
 import com.ems.dingdong.dialog.PhoneConectDialog;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.modedata.DialogCreateBd13;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.modedata.DialogVmap;
@@ -46,6 +48,7 @@ import com.ems.dingdong.model.Item;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.model.VM_POSTMAN_ROUTE;
 import com.ems.dingdong.model.request.DingDongGetLadingCreateBD13Request;
 import com.ems.dingdong.model.response.SmartBankLink;
 import com.ems.dingdong.network.NetWorkController;
@@ -62,6 +65,8 @@ import com.ems.dingdong.views.form.FormItemEditText;
 import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
 import com.google.gson.Gson;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
+
+import org.minidns.record.A;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -177,11 +182,9 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
                                 e.printStackTrace();
                             }
                         }
-                        if (mAdapter.getItemsFilterSelected().size() < mAdapter.getListFilter().size() ||
-                                mAdapter.getListFilter().size() == 0)
+                        if (mAdapter.getItemsFilterSelected().size() < mAdapter.getListFilter().size() || mAdapter.getListFilter().size() == 0)
                             cbPickAll.setChecked(false);
-                        else
-                            cbPickAll.setChecked(true);
+                        else cbPickAll.setChecked(true);
                         tvCount.setText("Số lượng: " + String.format(" %s", count + ""));
                         tvAmount.setText("Tổng tiền" + String.format(" %s đ", NumberUtils.formatPriceNumber(amount)));
                     }
@@ -258,7 +261,7 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
                 });
             }
         };
-        recycler.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
+//        recycler.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
         recycler.setAdapter(mAdapter);
 
         calFromDate = Calendar.getInstance();
@@ -306,27 +309,21 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
     }
 
     private void showConfirmSaveMobile(final String phone, String parcelCode, DismissDialogCallback callback) {
-        new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE)
-                .setConfirmText(getResources().getString(R.string.yes))
-                .setTitleText(getResources().getString(R.string.notification))
-                .setContentText(getResources().getString(R.string.update_phone_number))
-                .setCancelText(getResources().getString(R.string.no))
-                .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                    @Override
-                    public void onClick(SweetAlertDialog sweetAlertDialog) {
-                        mPresenter.updateMobile(phone, parcelCode);
-                        sweetAlertDialog.dismiss();
-                        callback.dismissDialog();
+        new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE).setConfirmText(getResources().getString(R.string.yes)).setTitleText(getResources().getString(R.string.notification)).setContentText(getResources().getString(R.string.update_phone_number)).setCancelText(getResources().getString(R.string.no)).setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+            @Override
+            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                mPresenter.updateMobile(phone, parcelCode);
+                sweetAlertDialog.dismiss();
+                callback.dismissDialog();
 
-                    }
-                })
-                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                    @Override
-                    public void onClick(SweetAlertDialog sweetAlertDialog) {
-                        showCallSuccess();
-                        sweetAlertDialog.dismiss();
-                    }
-                }).show();
+            }
+        }).setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+            @Override
+            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                showCallSuccess();
+                sweetAlertDialog.dismiss();
+            }
+        }).show();
     }
 
     public void scanQr() {
@@ -410,71 +407,135 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
         }).show();
     }
 
-    private void showDialogConfirm(long quantity, long totalAmount) {
-        new DialogCreateBd13(getViewContext(), new SapXepCallback() {
-            @Override
-            public void onResponse(int type) {
-                if (type == 2) {
-                    mLocation = getLastKnownLocation();
-                    if (mLocation == null) {
-                        new DialogText(getContext(), "(Không thể dùng chức năng . Bạn đã đã bật định vị trên thiết bị chưa?)").show();
-                        return;
-                    }
-                    OrderCreateBD13Mode orderCreateBD13Mode = new OrderCreateBD13Mode();
-                    Point point = new Point();
-                    point.setLatitude(mLocation.getLatitude());
-                    point.setLongitude(mLocation.getLongitude());
-//                    point.setLatitude(21.02521717084667);
-//                    point.setLongitude(105.78886083337086);
-                    orderCreateBD13Mode.setStartPoint(point);
-                    orderCreateBD13Mode.setTransportType(String.valueOf(routeInfo.getTransportType()));
-                    List<VietMapOrderCreateBD13DataRequest> dataRequests = new ArrayList<>();
-                    List<DeliveryPostman> deliveryPostmans = mAdapter.getItemsSelected();
 
-                    for (DeliveryPostman i : deliveryPostmans) {
-                        VietMapOrderCreateBD13DataRequest request = new VietMapOrderCreateBD13DataRequest();
-                        request.setId(i.getId());
-                        request.setLadingCode(i.getMaE());
-                        request.setReceiverAddress(i.getReciverAddress());
-//                        Log.d("ASDSDSDASDSDASDSD", new Gson().toJson(i));
-                        request.setReceiverLat((i.getReceiverLat() == null || i.getReceiverLat().isEmpty()) ? 0.0 : Double.parseDouble(i.getReceiverLat()));
-                        request.setReceiverLon((i.getReceiverLat() == null || i.getReceiverLat().isEmpty()) ? 0.0 : Double.parseDouble(i.getReceiverLon()));
-//            request.setOrderNumber(String.valueOf(i.getReferenceCode()));
-                        dataRequests.add(request);
-                    }
-                    orderCreateBD13Mode.setData(dataRequests);
-                    String json = NetWorkController.getGson().toJson(orderCreateBD13Mode);
-                    Log.d("AAAAAAA", json);
-                    mPresenter.ddLapBD13Vmap(orderCreateBD13Mode);
-                } else {
-                    new CreatedBd13Dialog(getActivity(), 0, quantity, totalAmount, new CreatedBD13Callback() {
-                        @Override
-                        public void onResponse(String cancelType, String des) {
-                            final List<DeliveryPostman> deliveryPostmans = mAdapter.getItemsSelected();
-//                            Collections.sort(deliveryPostmans, new Comparator<DeliveryPostman>() {
-//                                @Override
-//                                public int compare(DeliveryPostman o1, DeliveryPostman o2) {
-//                                    return String.valueOf(o1.getmViti()).compareTo(String.valueOf(o2.getmViti()));
-//                                }
-//                            });
-                            Bd13Create bd13Create = new Bd13Create();
-                            List<Integer> ids = new ArrayList<>();
-                            for (DeliveryPostman i : deliveryPostmans) {
-                                ids.add(i.getId());
-                            }
-                            bd13Create.setIds(ids);
-                            bd13Create.setPostmanId(Integer.parseInt(userInfo.getiD()));
-                            bd13Create.setPoDeliveryCode(userInfo.getUnitCode());
-                            bd13Create.setPostmanCode(userInfo.getUserName());
-                            bd13Create.setRouteDeliveryCode(routeInfo.getRouteCode());
-                            String json = NetWorkController.getGson().toJson(bd13Create);
-                            Log.d("AAAAAAA", json);
-                            mPresenter.postBD13AddNew(bd13Create);
+    private void showDialogConfirm(long quantity, long totalAmount) {
+//        if (mAdapter.getItemsSelected().size() > Constants.SO_LUONG_TIN) {
+//            new IOSDialog.Builder(getViewContext()).setTitle("Thông báo").
+//                    setMessage("Bạn có chắc chắn muốn lập " + mAdapter.getItemsSelected().size() + " bản kê không?").
+//                    setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialogInterface, int pos) {
+//                            final List<DeliveryPostman> deliveryPostmans = mAdapter.getItemsSelected();
+//                            Bd13Create bd13Create = new Bd13Create();
+//                            List<Integer> ids = new ArrayList<>();
+//                            List<VietMapOrderCreateBD13DataRequest> mapOrderCreateBD13DataRequestList = new ArrayList<>();
+//                            int t = 1;
+//                            for (DeliveryPostman i : deliveryPostmans) {
+//                                ids.add(i.getId());
+//                                VietMapOrderCreateBD13DataRequest k = new VietMapOrderCreateBD13DataRequest();
+//                                k.setId(i.getId());
+//                                k.setDataType("D");
+//                                k.setReceiverVpostCode(i.getReceiverVpostcode());
+//                                k.setOrderNumber(String.valueOf(t));
+//                                t++;
+//                                k.setReceiverLat(i.getReceiverLat());
+//                                k.setReceiverLon(i.getReceiverLon());
+//                                k.setReceiverAddress(i.getReciverAddress());
+//                                mapOrderCreateBD13DataRequestList.add(k);
+//                            }
+//                            bd13Create.setIds(ids);
+//                            bd13Create.setPostmanId(Integer.parseInt(userInfo.getiD()));
+//                            bd13Create.setPoDeliveryCode(userInfo.getUnitCode());
+//                            bd13Create.setPostmanCode(userInfo.getUserName());
+//                            bd13Create.setRouteDeliveryCode(routeInfo.getRouteCode());
+//                            String json = NetWorkController.getGson().toJson(bd13Create);
+//                            Log.d("AAAAAAA", json);
+////                            VM_POSTMAN_ROUTE vm_postman_route = new VM_POSTMAN_ROUTE();
+////                            vm_postman_route.setDataType("D");
+////                            vm_postman_route.setPostmanCode(userInfo.getUserName());
+////                            vm_postman_route.setVmOrderBd13DataRequest(mapOrderCreateBD13DataRequestList);
+////                            mPresenter.ddXacNhanLoTrinh(vm_postman_route);
+//                            mPresenter.postBD13AddNew(bd13Create);
+//                        }
+//                    }).setNegativeButton("Không", null).show();
+//
+//        } else {
+        new IOSDialog.Builder(getViewContext()).setTitle("Gợi ý số thứ tự theo hành trình")
+                .setCancelable(false).setMessage("Bạn có muốn Sắp xếp STT theo hành trình bản đồ hay không?")
+                .setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int pos) {
+                        mLocation = getLastKnownLocation();
+                        if (mLocation == null) {
+                            new DialogText(getContext(), "(Không thể dùng chức năng . Bạn đã đã bật định vị trên thiết bị chưa?)").show();
+                            return;
                         }
-                    }).show();
-                }
-            }
-        }).show();
+                        OrderCreateBD13Mode orderCreateBD13Mode = new OrderCreateBD13Mode();
+                        Point point = new Point();
+                        point.setLatitude(mLocation.getLatitude());
+                        point.setLongitude(mLocation.getLongitude());
+                        orderCreateBD13Mode.setStartPoint(point);
+                        orderCreateBD13Mode.setTransportType(String.valueOf(routeInfo.getTransportType()));
+                        List<VietMapOrderCreateBD13DataRequest> dataRequests = new ArrayList<>();
+                        List<DeliveryPostman> deliveryPostmans = mAdapter.getItemsSelected();
+                        orderCreateBD13Mode.setDataType("D");
+                        for (DeliveryPostman i : deliveryPostmans) {
+                            VietMapOrderCreateBD13DataRequest request = new VietMapOrderCreateBD13DataRequest();
+                            request.setId(i.getId());
+                            request.setLadingCode(i.getMaE());
+                            request.setDataType("D");
+                            request.setReceiverAddress(i.getReciverAddress());
+                            request.setReceiverLat((i.getReceiverLat().equals("0") || i.getReceiverLat().isEmpty()) ? null : i.getReceiverLat());
+                            request.setReceiverLon((i.getReceiverLat().equals("0") || i.getReceiverLat().isEmpty()) ? null : i.getReceiverLon());
+                            dataRequests.add(request);
+                        }
+                        orderCreateBD13Mode.setData(dataRequests);
+                        String json = NetWorkController.getGson().toJson(orderCreateBD13Mode);
+                        Log.d("AAAAAAA", json);
+                        mPresenter.ddLapBD13Vmap(orderCreateBD13Mode);
+                    }
+                }).setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        new CreatedBd13Dialog(getActivity(), 0, quantity, totalAmount, new CreatedBD13Callback() {
+                            @Override
+                            public void onResponse(String cancelType, String des) {
+                                final List<DeliveryPostman> deliveryPostmans = mAdapter.getItemsSelected();
+                                Bd13Create bd13Create = new Bd13Create();
+                                List<Integer> ids = new ArrayList<>();
+                                List<VietMapOrderCreateBD13DataRequest> mapOrderCreateBD13DataRequestList = new ArrayList<>();
+                                int t = 1;
+                                for (DeliveryPostman i : deliveryPostmans) {
+                                    ids.add(i.getId());
+                                    VietMapOrderCreateBD13DataRequest k = new VietMapOrderCreateBD13DataRequest();
+                                    k.setId(i.getId());
+                                    k.setDataType("D");
+                                    k.setReceiverVpostCode(i.getReceiverVpostcode());
+                                    k.setOrderNumber(String.valueOf(t));
+                                    t++;
+                                    k.setReceiverLat(i.getReceiverLat());
+                                    k.setReceiverLon(i.getReceiverLon());
+                                    k.setReceiverAddress(i.getReciverAddress());
+                                    mapOrderCreateBD13DataRequestList.add(k);
+                                }
+                                bd13Create.setIds(ids);
+                                bd13Create.setPostmanId(Integer.parseInt(userInfo.getiD()));
+                                bd13Create.setPoDeliveryCode(userInfo.getUnitCode());
+                                bd13Create.setPostmanCode(userInfo.getUserName());
+                                bd13Create.setRouteDeliveryCode(routeInfo.getRouteCode());
+                                String json = NetWorkController.getGson().toJson(bd13Create);
+                                Log.d("AAAAAAA", json);
+//                                    VM_POSTMAN_ROUTE vm_postman_route = new VM_POSTMAN_ROUTE();
+//                                    vm_postman_route.setDataType("D");
+//                                    vm_postman_route.setPostmanCode(userInfo.getUserName());
+//                                    vm_postman_route.setVmOrderBd13DataRequest(mapOrderCreateBD13DataRequestList);
+//                                    mPresenter.ddXacNhanLoTrinh(vm_postman_route);
+                                mPresenter.postBD13AddNew(bd13Create, 0);
+                            }
+                        }).show();
+                    }
+                }).show();
+//            new DialogCreateBd13(getViewContext(), new SapXepCallback() {
+//                @Override
+//                public void onResponse(int type) {
+//                    if (type == 2) {
+//
+//                    } else {
+//
+//                    }
+//                }
+//            }).show();
+//        }
 
     }
 
@@ -498,7 +559,7 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
             }
             showDialogConfirm(deliveryPostmamns.size(), totalAmount);
         } else {
-            showErrorToast("Chưa có bưu gửi nào được chọn.");
+            new IOSDialog.Builder(getViewContext()).setCancelable(false).setMessage("Chưa có bưu gửi nào được chọn.").setNegativeButton("Đóng", null).show();
         }
     }
 
@@ -508,15 +569,14 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
             items.add(new Item(i + "", i + ""));
         }
         if (pickerBag == null) {
-            pickerBag = new ItemBottomSheetPickerUIFragment(items, getResources().getString(R.string.chon_tui),
-                    new ItemBottomSheetPickerUIFragment.PickerUiListener() {
-                        @Override
-                        public void onChooseClick(Item item, int position) {
-                            /*tvBag.setText(item.getText());*/
-                            mBag = item.getValue();
+            pickerBag = new ItemBottomSheetPickerUIFragment(items, getResources().getString(R.string.chon_tui), new ItemBottomSheetPickerUIFragment.PickerUiListener() {
+                @Override
+                public void onChooseClick(Item item, int position) {
+                    /*tvBag.setText(item.getText());*/
+                    mBag = item.getValue();
 
-                        }
-                    }, 0);
+                }
+            }, 0);
             pickerBag.show(getActivity().getSupportFragmentManager(), pickerBag.getTag());
         } else {
             pickerBag.setData(items, 0);
@@ -534,15 +594,14 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
             items.add(new Item(i + "", "Ca " + i));
         }
         if (pickerShift == null) {
-            pickerShift = new ItemBottomSheetPickerUIFragment(items, getResources().getString(R.string.chon_tuyen),
-                    new ItemBottomSheetPickerUIFragment.PickerUiListener() {
-                        @Override
-                        public void onChooseClick(Item item, int position) {
-                            /*  tvShift.setText(item.getText());*/
-                            mShift = item.getValue();
+            pickerShift = new ItemBottomSheetPickerUIFragment(items, getResources().getString(R.string.chon_tuyen), new ItemBottomSheetPickerUIFragment.PickerUiListener() {
+                @Override
+                public void onChooseClick(Item item, int position) {
+                    /*  tvShift.setText(item.getText());*/
+                    mShift = item.getValue();
 
-                        }
-                    }, 0);
+                }
+            }, 0);
             pickerShift.show(getActivity().getSupportFragmentManager(), pickerShift.getTag());
         } else {
             pickerShift.setData(items, 0);
@@ -555,23 +614,48 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
     }
 
     @Override
-    public void showSuccessMessage(String message) {
+    public void showSuccessMessage(String message, int type) {
+        if (mAdapter.getItemsSelected().size() <= Constants.SO_LUONG_TIN) {
+            List<VietMapOrderCreateBD13DataRequest> mapOrderCreateBD13DataRequestList = new ArrayList<>();
+            int t = 1;
+            for (int i = 0; i < mAdapter.getItemsSelected().size(); i++) {
+                VietMapOrderCreateBD13DataRequest k = new VietMapOrderCreateBD13DataRequest();
+                k.setId(mAdapter.getItemsSelected().get(i).getId());
+                k.setDataType("D");
+                if (orderCreateBD13DataRequests != null && orderCreateBD13DataRequests.size() > 0)
+                    if (orderCreateBD13DataRequests.get(i).getReceiverVpostCode() == null || orderCreateBD13DataRequests.get(i).getReceiverVpostCode().isEmpty())
+                        k.setReceiverVpostCode(mAdapter.getItemsSelected().get(i).getReceiverVpostcode());
+                    else
+                        k.setReceiverVpostCode(orderCreateBD13DataRequests.get(i).getReceiverVpostCode());
+
+                else
+                    k.setReceiverVpostCode(mAdapter.getItemsSelected().get(i).getReceiverVpostcode());
+                k.setOrderNumber(String.valueOf(t));
+                t++;
+                k.setReceiverLat(mAdapter.getItemsSelected().get(i).getReceiverLat());
+                k.setReceiverLon(mAdapter.getItemsSelected().get(i).getReceiverLon());
+                k.setReceiverAddress(mAdapter.getItemsSelected().get(i).getReciverAddress());
+                k.setLadingCode(mAdapter.getItemsSelected().get(i).getMaE());
+                mapOrderCreateBD13DataRequestList.add(k);
+            }
+            VM_POSTMAN_ROUTE vm_postman_route = new VM_POSTMAN_ROUTE();
+            vm_postman_route.setDataType("D");
+            vm_postman_route.setPostmanCode(userInfo.getUserName());
+            vm_postman_route.setVmOrderBd13DataRequest(mapOrderCreateBD13DataRequestList);
+            mPresenter.ddXacNhanLoTrinh(vm_postman_route);
+        }
         mList.clear();
         edtSearch.getEditText().removeTextChangedListener(textWatcher);
         edtSearch.setText("");
         edtSearch.getEditText().addTextChangedListener(textWatcher);
         searchLadingBd13(mFromDate, mToDate, mChuyenThu);
         if (getActivity() != null) {
-            new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE)
-                    .setConfirmText("OK")
-                    .setTitleText(getResources().getString(R.string.notification))
-                    .setContentText(message)
-                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                        @Override
-                        public void onClick(SweetAlertDialog sweetAlertDialog) {
-                            sweetAlertDialog.dismiss();
-                        }
-                    }).show();
+            new SweetAlertDialog(getActivity(), SweetAlertDialog.SUCCESS_TYPE).setConfirmText("OK").setTitleText(getResources().getString(R.string.notification)).setContentText(message).setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                @Override
+                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                    sweetAlertDialog.dismiss();
+                }
+            }).show();
         }
     }
 
@@ -615,7 +699,10 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
 
     @Override
     public void showError(String message) {
-
+        new IOSDialog.Builder(getViewContext())
+                .setTitle("Thông báo")
+                .setCancelable(false).setMessage(message)
+                .setNegativeButton("Đóng", null).show();
     }
 
     @Override
@@ -623,9 +710,13 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
 
     }
 
+    List<VietMapOrderCreateBD13DataRequest> orderCreateBD13DataRequests = new ArrayList<>();
+
     @Override
     public void showVmap(List<VietMapOrderCreateBD13DataRequest> mList) {
         hideProgress();
+        orderCreateBD13DataRequests = new ArrayList<>();
+        orderCreateBD13DataRequests = mList;
         List<DeliveryPostman> deliveryPostmanList = mAdapter.getItemsSelected();
         for (int i = 0; i < deliveryPostmanList.size(); i++) {
             for (int j = 0; j < mList.size(); j++)
@@ -643,7 +734,6 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
                     for (DeliveryPostman i : postmen) {
                         totalAmount = totalAmount + i.getAmount();
                     }
-
                     new CreatedBd13Dialog(getActivity(), 0, postmen.size(), totalAmount, new CreatedBD13Callback() {
                         @Override
                         public void onResponse(String cancelType, String des) {
@@ -667,7 +757,14 @@ public class CreateBd13Fragment extends ViewFragment<CreateBd13Contract.Presente
                             bd13Create.setRouteDeliveryCode(routeInfo.getRouteCode());
                             String json = NetWorkController.getGson().toJson(bd13Create);
                             Log.d("AAAAAAA", json);
-                            mPresenter.postBD13AddNew(bd13Create);
+//                            VM_POSTMAN_ROUTE vm_postman_route = new VM_POSTMAN_ROUTE();
+//                            vm_postman_route.setDataType("D");
+//                            vm_postman_route.setPostmanCode(userInfo.getUserName());
+//                            vm_postman_route.setVmOrderBd13DataRequest(mList);
+//                            mPresenter.ddXacNhanLoTrinh(vm_postman_route);
+                            mPresenter.postBD13AddNew(bd13Create, 1);
+
+
                         }
                     }).show();
                 } else {

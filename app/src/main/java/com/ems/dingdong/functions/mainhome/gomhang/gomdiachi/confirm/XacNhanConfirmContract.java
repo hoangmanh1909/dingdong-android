@@ -4,6 +4,7 @@ import com.core.base.viper.interfaces.IInteractor;
 import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.ConfirmAllOrderPostman;
 import com.ems.dingdong.model.ConfirmAllOrderPostmanResult;
 import com.ems.dingdong.model.ConfirmOrderPostman;
@@ -15,6 +16,7 @@ import com.ems.dingdong.model.UserInfoResult;
 import com.ems.dingdong.model.request.OrderChangeRouteInsertRequest;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import io.reactivex.Single;
 
@@ -44,7 +46,11 @@ interface XacNhanConfirmContract {
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
+        void showSort(List<CommonObject> list);
+
         ArrayList<ConfirmOrderPostman> getList();
+
+        ArrayList<CommonObject> getListCommonObjec();
 
         String setTenKH();
 

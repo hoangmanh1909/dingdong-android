@@ -9,6 +9,7 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+
     <style name="textStyleTitle">
         <!-- Card background color -->
         <!-- Ripple for API 21 of android, and regular selector on older -->
@@ -22,6 +23,21 @@
         <!--<item name="android:clickable">true</item>-->
         <!--<item name="android:layout_margin">8dp</item>-->
     </style>
+
+    <style name="textStyleTitleFont">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">@font/tahomabd</item>
+        <item name="textAllCaps">false</item>
+    </style>
+
+    <style name="textStyleFont">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">@font/tahoma</item>
+        <item name="textAllCaps">false</item>
+    </style>
+
     <style name="textStyle">
         <!-- Card background color -->
         <!-- Ripple for API 21 of android, and regular selector on older -->
@@ -29,14 +45,27 @@
         <!-- Resting Elevation from Material guidelines -->
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">@font/inter_regular</item>
+        <!--        <item name="android:fontFamily"></item>-->
         <!-- Add corner Radius -->
         <!--<item name="android:clickable">true</item>-->
         <!--<item name="android:layout_margin">8dp</item>-->
     </style>
+
+
     <style name="AppBottomSheetDialog123" parent="Theme.Design.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/AppModeStyle</item>
         <item name="behavior_draggable">false</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
     </style>
+
+    <style name="AppBottomSheetDialog1234" parent="Theme.Design.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppModeStyle</item>
+        <item name="behavior_draggable">false</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowAnimationStyle">@style/Animation.Design.BottomSheetDialog</item>
+    </style>
+
     <style name="AppTheme_Actionbar" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -85,7 +114,6 @@
         <item name="android:orientation">horizontal</item>
         <item name="android:paddingTop">@dimen/size_12dp</item>
         <item name="android:paddingBottom">@dimen/size_12dp</item>
-        <item name="android:layout_marginLeft">@dimen/size_15dp</item>
 
     </style>
 
@@ -202,8 +230,12 @@
     </style>
 
     <style name="DialogAnimation">
-        <item name="android:windowEnterAnimation">@anim/push_top_down</item>
-        <item name="android:windowExitAnimation">@anim/push_bottom_up</item>
+        <!--        <item name="android:windowEnterAnimation">@anim/push_top_down</item>-->
+        <!--        <item name="android:windowExitAnimation">@anim/push_bottom_up</item>-->
+        <!--        <item name="android:windowMinWidthMajor">100%</item>-->
+        <!--        <item name="android:windowMinWidthMinor">100%</item>-->
+        <!--        &lt;!&ndash;        <item name="android:background">@android:color/white</item>&ndash;&gt;-->
+        <!--        <item name="android:windowBackground">@android:color/transparent</item>-->
     </style>
 
     <style name="DatePickerSpinner">
@@ -363,7 +395,7 @@
         <item name="android:popupBackground">@color/white</item>
         <item name="android:listPreferredItemHeightSmall">40dp</item>
         <item name="android:textColor">@color/black</item>
-        <item name="android:textSize">12sp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:itemBackground">@color/white</item>
     </style>
 
@@ -388,7 +420,11 @@
         <item name="android:paddingRight">21dp</item>
         <item name="android:textColor">@color/button_text_color</item>
     </style>
-
+    <style name="DialogAnimationBottomSheet">
+        <item name="android:windowEnterAnimation">@anim/in_bottom</item>
+        <item name="android:windowExitAnimation">@anim/out_bottom</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
+    </style>
     <style name="EditTextStyle">
         <!-- Card background color -->
         <!-- Ripple for API 21 of android, and regular selector on older -->
@@ -410,8 +446,62 @@
     <style name="textStyleButton">
         <item name="android:textSize">14sp</item>
         <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">@font/inter_regular</item>
         <item name="android:stateListAnimator">@null</item>
-        <item name="android:textAllCaps">false</item>
+        <item name="textAllCaps">false</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">48dp</item>
 
+
+    </style>
+    <!--IOS-->
+    <color name="ios_bg">#FFE9E9E9</color>
+    <color name="ios_blue">#FF037BFF</color>
+    <color name="ios_btn_normal">#FFE9E9E9</color>
+    <color name="ios_btn_press">#FFCDCDCD</color>
+    <color name="ios_grey">#FFC6C6C6</color>
+    <color name="ios_red">#FFFD4A2E</color>
+    <dimen name="ios_dialog_radius">10dp</dimen>
+    <dimen name="ios_sheet_dialog_radius">10dp</dimen>
+    <string name="ios_dialog_default_ok">我知道了</string>
+    <string name="iossheet_cancel">取消</string>
+
+    <style name="ios_dialog_style" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@drawable/iosdialog_bg</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+    <style name="ios_dialog_style1" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@drawable/iosdialog_bg</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+    <style name="ios_dialog_style2">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="ios_sheet_anim" mce_bogus="1" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/iossheet_in</item>
+        <item name="android:windowExitAnimation">@anim/iossheet_out</item>
+    </style>
+
+    <style name="ios_sheet_style" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
     </style>
 </resources>

@@ -148,7 +148,7 @@ public class HoanTatTinDialog extends Dialog implements com.tsongkha.spinnerdate
 
     public HoanTatTinDialog(Context context, String code, List<ParcelCodeInfo> list, String vitri, double latv1, double lonv1, double latbg, double lonbg, String smcode, ContainerView containerView, HoanThanhTinCallback reasonCallback) {
 
-        super(context, android.R.style.Theme_Translucent_NoTitleBar);
+        super(context, R.style.ios_dialog_style1);
         mActivity = (BaseActivity) context;
         this.mCode = code;
         smcodeV1 = smcode;

@@ -56,17 +56,20 @@ public interface ListCommonContract {
 
         void showError(String message);
 
-        void showResult(ConfirmAllOrderPostman allOrderPostman);
+        void showResult(ConfirmAllOrderPostman allOrderPostman,ArrayList<CommonObject> list);
 
         void showDichVuMPit(ArrayList<CommonObject> list);
 
         void showLoi(String mess);
 
-        void showAccountChatInAppGetQueueResponse(AccountChatInAppGetQueueResponse response , VnpostOrderInfo vnpostOrderInfo,int type);
+        void showAccountChatInAppGetQueueResponse(AccountChatInAppGetQueueResponse response, VnpostOrderInfo vnpostOrderInfo, int type);
+
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
-        void ddQueuChat(RequestQueuChat request , VnpostOrderInfo vnpostOrderInfo,int type);
+        void showSort(List<CommonObject> list);
+
+        void ddQueuChat(RequestQueuChat request, VnpostOrderInfo vnpostOrderInfo, int type);
 
         void showDichVu(List<Mpit> list);
 

@@ -298,7 +298,6 @@ public class PaymentFragment extends ViewFragment<PaymentContract.Presenter>
                 tvAmount.setText(String.format("%s %s", getString(R.string.amount), "0"));
                 tvFee.setText(String.format("%s %s đ", getString(R.string.fee), "0"));
                 tvCod.setText(String.format("%s: %s đ", getString(R.string.cod), "0"));
-
             }
         }
 

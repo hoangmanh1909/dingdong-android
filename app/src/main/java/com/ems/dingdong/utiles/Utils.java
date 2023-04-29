@@ -1,5 +1,6 @@
 package com.ems.dingdong.utiles;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.ComponentName;
@@ -643,7 +644,89 @@ public class Utils {
         }
 
     }
-    public static OkHttpClient getUnsafeOkHttpClient(int readTimeOut, int connectTimeOut,String userName) {
+
+    public static OkHttpClient getUnsafeOkHttpClientSSL(int readTimeOut, int connectTimeOut, String token) {
+
+        try {
+            // Create a trust manager that does not validate certificate chains
+
+            //TrustManager
+            @SuppressLint("CustomX509TrustManager") final TrustManager[] trustAllCerts = new X509TrustManager[]{new X509TrustManager() {
+                @Override
+                public void checkClientTrusted(
+                        java.security.cert.X509Certificate[] chain,
+                        String authType) throws CertificateException {
+                }
+
+                @Override
+                public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                    return new java.security.cert.X509Certificate[0];
+                }
+
+                @Override
+                public void checkServerTrusted(
+                        java.security.cert.X509Certificate[] chain,
+                        String authType) throws CertificateException {
+                }
+
+            }};
+
+            // Install the all-trusting trust manager
+            final SSLContext tls = SSLContext.getInstance("SSL");
+
+            tls.init(null, trustAllCerts,
+                    new java.security.SecureRandom());
+            // Create an ssl socket factory with our all-trusting manager
+            final SSLSocketFactory sslSocketFactory = tls
+                    .getSocketFactory();
+            HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+            OkHttpClient.Builder builder = new OkHttpClient.Builder();
+            HostnameVerifier hostnameVerifier = new HostnameVerifier() {
+                @Override
+                public boolean verify(String hostname, SSLSession session) {
+                    return true;
+                }
+            };
+            builder.readTimeout(readTimeOut, TimeUnit.SECONDS)
+                    .connectTimeout(connectTimeOut, TimeUnit.SECONDS)
+//                    .sslSocketFactory(sslSocketFactory)
+                    .hostnameVerifier(hostnameVerifier);//org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER
+
+            if (BuildConfig.DEBUG) {
+                loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+                builder.addInterceptor(loggingInterceptor);
+            }
+
+            builder.addInterceptor(new Interceptor() {
+                @Override
+                public Response intercept(Chain chain) throws IOException {
+                    Request original = chain.request();
+                    String credentials = "lottnet:dms";
+                    String base64EncodedCredentials = Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                    // Request customization: add request headers
+                    Request.Builder requestBuilder = original.newBuilder()
+                            .addHeader("Authorization", "Bearer " + token)
+                            .addHeader("APIKey", BuildConfig.PRIVATE_KEY); // <-- this is the important line
+
+                    Request request = requestBuilder.build();
+                    return chain.proceed(request);
+                }
+            });
+            builder.sslSocketFactory(sslSocketFactory, (X509TrustManager) trustAllCerts[0]);
+            builder.hostnameVerifier(new HostnameVerifier() {
+                @Override
+                public boolean verify(String hostname, SSLSession session) {
+                    return true;
+                }
+            });
+            return builder.build();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    public static OkHttpClient getUnsafeOkHttpClient(int readTimeOut, int connectTimeOut, String userName) {
 
         try {
             // Create a trust manager that does not validate certificate chains
@@ -828,9 +911,9 @@ public class Utils {
         ArrayList<ContentProviderOperation> cntProOper = new ArrayList<ContentProviderOperation>();
         int contactIndex = cntProOper.size();//ContactSize
         int mType = Phone.TYPE_MOBILE;
-        if ("home".equals(type)) {
+        if ("home" .equals(type)) {
             mType = Phone.TYPE_HOME;
-        } else if ("work".equals(type)) {
+        } else if ("work" .equals(type)) {
             mType = Phone.TYPE_WORK;
         }
         //Newly Inserted contact
@@ -978,7 +1061,7 @@ public class Utils {
         return componentInfo.getClassName().equals("com.ems.dingdong.calls.IncomingCallActivity");
     }
 
-    public static String getLocalTime(String format){
+    public static String getLocalTime(String format) {
         try {
             long time = System.currentTimeMillis();
             SimpleDateFormat sdf = new SimpleDateFormat(format);

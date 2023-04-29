@@ -33,9 +33,7 @@ public interface ChiTietHoanThanhTinTheoDiaChiContract {
 
         void collectOrderPostmanCollect(HoanTatTinRequest hoanTatTinRequest, CommonCallback<SimpleResult> callback);
 
-        void callForwardCallCenter(String callerNumber, String calleeNumber,
-                                   String callForwardType, String hotlineNumber,
-                                   String ladingCode, String PostmanId, String POcode,CommonCallback<SimpleResult> callback);
+        void callForwardCallCenter(String callerNumber, String calleeNumber, String callForwardType, String hotlineNumber, String ladingCode, String PostmanId, String POcode, CommonCallback<SimpleResult> callback);
 
         void updateMobile(String code, String type, String mobileNumber, CommonCallback<SimpleResult> commonCallback);
 
@@ -61,6 +59,7 @@ public interface ChiTietHoanThanhTinTheoDiaChiContract {
     }
 
     interface Presenter extends IPresenter<ChiTietHoanThanhTinTheoDiaChiContract.View, ChiTietHoanThanhTinTheoDiaChiContract.Interactor> {
+
         List<ConfirmOrderPostman> getList();
 
         CommonObject getListCommon();

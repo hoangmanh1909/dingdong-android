@@ -5,6 +5,8 @@ public interface PhoneKhiem {
 
     void onCall(String phone);
 
-    void onCallEdit(String phone,int type);
+    void onCallEdit(String phone, int type);
+
+    void onCallToMe(String phone, int type);
 
 }

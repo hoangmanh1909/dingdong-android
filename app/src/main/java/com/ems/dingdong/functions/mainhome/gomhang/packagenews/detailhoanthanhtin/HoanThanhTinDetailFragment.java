@@ -14,8 +14,10 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ImageView;
@@ -205,6 +207,20 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
         });
 
         showView(mPresenter.getCommonObject());
+
+        tvDescription.setMovementMethod(new ScrollingMovementMethod());
+
+        tvDescription.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                tvDescription.getParent().requestDisallowInterceptTouchEvent(true);
+
+                return false;
+            }
+        });
+
     }
 
     private void checkPermission() {

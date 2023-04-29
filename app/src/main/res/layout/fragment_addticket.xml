@@ -54,214 +54,314 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="10dp"
                 android:orientation="vertical"
                 tools:ignore="MissingConstraints">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/textField"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:hint="Mã bưu gửi"
-                    app:endIconMode="clear_text">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edt_mabuugui"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:enabled="false"
-                        android:textColor="@color/black"
-                        tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:hint="Loại yêu cầu"
-                    app:endIconMode="clear_text">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edt_loaiyeucau"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:enabled="false"
-                        android:text="07 - Phản ánh sự vụ"
-                        android:textColor="@color/black"
-                        tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/autoCompleteTextView_textInputlayout"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:hint="Nội dung yêu cầu">
-
-                    <AutoCompleteTextView
-                        android:id="@+id/autoCompleteTextView"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:inputType="none" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/edt_chitiet_textInput"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:hint="Chi tiết yêu cầu"
-                    app:endIconMode="clear_text">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edt_chitiet"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:imeOptions="actionDone"
-                        android:textColor="@color/black"
-                        tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:layout_weight="1"
-                    android:hint="Chiều dài thực tế"
-                    app:endIconMode="clear_text">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edt_dai"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:imeOptions="actionDone"
-                        android:inputType="number"
-                        android:maxLength="8"
-                        tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:layout_weight="1"
-                    android:hint="Chiều rộng thực tế"
-                    app:endIconMode="clear_text">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edt_rong"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:imeOptions="actionDone"
-                        android:inputType="number"
-                        android:maxLength="8"
-                        tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:layout_weight="1"
-                    android:hint="Chiều cao thực tế"
-                    android:imeOptions="actionDone"
-                    app:endIconMode="clear_text">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edt_cao"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="number"
-                        android:maxLength="8"
-                        tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:hint="Khối lượng thực tế"
-                    app:endIconMode="clear_text">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/edt_tien"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:imeOptions="actionDone"
-                        android:inputType="number"
-                        android:maxLength="10"
-                        tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="24dp"
                     android:orientation="horizontal">
 
-                    <RelativeLayout
-                        android:id="@+id/rightToLeft"
-                        android:layout_width="100dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginRight="10dp"
-                        android:visibility="gone">
+                    <TextView
+                        style="@style/textStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:enabled="false"
+                        android:text="Mã bưu gửi: "
+                        android:textSize="14dp" />
 
-                        <com.facebook.drawee.view.SimpleDraweeView
-                            android:id="@+id/iv_package"
-                            android:layout_width="100dp"
-                            android:layout_height="100dp"
-                            android:layout_gravity="center"
-                            android:scaleType="center"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:placeholderImage="@drawable/ic_logo_instagram"
-                            app:placeholderImageScaleType="centerInside"
-                            app:roundedCornerRadius="10dp"
-                            app:viewAspectRatio="1" />
+                    <TextView
+                        android:id="@+id/edt_mabuugui"
+                        style="@style/textStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:enabled="false"
+                        android:fontFamily="@font/inter_semibold"
+                        android:text="Mã đơn hàng"
+                        android:textSize="14dp" />
+                </LinearLayout>
+
+
+                <TextView
+                    style="@style/textStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:drawableEnd="@drawable/ic_sao"
+                    android:drawablePadding="10dp"
+                    android:enabled="false"
+                    android:onClick="hideKeyboard"
+                    android:text="Loại yêu cầu" />
+
+
+                <TextView
+                    android:id="@+id/edt_loaiyeucau"
+                    style="@style/EditTextStyle"
+                    android:layout_height="42dp"
+                    android:layout_marginTop="4dp"
+                    android:drawablePadding="10dp"
+                    android:gravity="center|left"
+                    android:hint="Vui lòng chọn"
+                    android:paddingLeft="10dp"
+                    android:textColorHint="#86909C"
+                    app:drawableEndCompat="@drawable/ic_arrow_drop_down_v1" />
+                <!--//edt_chitiet -->
+
+                <TextView
+                    style="@style/textStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:drawableEnd="@drawable/ic_sao"
+                    android:drawablePadding="10dp"
+                    android:enabled="false"
+                    android:onClick="hideKeyboard"
+                    android:text="Chi tiết yêu cầu" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/bg_border_edittext"
+                    android:enabled="false"
+                    android:onClick="hideKeyboard"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/edt_chitiet"
+                        style="@style/EditTextStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:gravity="top"
+                        android:hint="Nhập Chi tiết yêu cầu"
+                        android:inputType="textMultiLine"
+                        android:lines="8"
+                        android:maxLength="250"
+                        android:maxLines="10"
+                        android:minLines="5"
+                        android:padding="10dp"
+                        android:paddingLeft="10dp"
+                        android:scrollbars="vertical"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_14sp" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="right"
+                        android:enabled="false"
+                        android:onClick="hideKeyboard">
 
                         <ImageView
-                            android:id="@+id/iv_delete"
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
-                            app:layout_constraintBottom_toBottomOf="@+id/iv_package"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="1.0"
-                            app:layout_constraintStart_toStartOf="@+id/iv_package"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="0.0"
-                            app:srcCompat="@drawable/ic_frame_113" />
+                            android:enabled="false"
+                            android:onClick="hideKeyboard"
+                            android:padding="5dp"
+                            android:src="@drawable/resizer" />
                     </RelativeLayout>
+                </LinearLayout>
 
-                    <ImageView
-                        android:id="@+id/iv_camera_plus"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_marginRight="@dimen/size_10dp"
-                        android:src="@drawable/ic_upload_photos" />
+                <TextView
+                    style="@style/textStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:drawableEnd="@drawable/ic_sao"
+                    android:drawablePadding="10dp"
+                    android:enabled="false"
+                    android:onClick="hideKeyboard"
+                    android:text="Nội dung yêu cầu" />
 
-                </RelativeLayout>
+                <TextView
+                    android:id="@+id/autoCompleteTextView"
+                    style="@style/EditTextStyle"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:drawablePadding="10dp"
+                    android:gravity="center|left"
+                    android:hint="Vui lòng chọn"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:textColorHint="#86909C"
+                    app:drawableEndCompat="@drawable/ic_arrow_drop_down_v1" />
+
+                <TextView
+                    style="@style/textStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:enabled="false"
+                    android:onClick="hideKeyboard"
+                    android:text="Chiều dài thực tế" />
+
+
+                <EditText
+                    android:id="@+id/edt_dai"
+                    style="@style/EditTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:layout_marginTop="4dp"
+                    android:imeOptions="actionDone"
+                    android:inputType="number"
+                    android:maxLength="8"
+                    android:paddingLeft="10dp"
+                    tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
+                <TextView
+                    style="@style/textStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:enabled="false"
+                    android:onClick="hideKeyboard"
+                    android:text="Chiều rộng thực tế" />
+
+
+                <EditText
+                    android:id="@+id/edt_rong"
+                    style="@style/EditTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:layout_marginTop="4dp"
+                    android:imeOptions="actionDone"
+                    android:inputType="number"
+                    android:maxLength="8"
+                    android:paddingLeft="10dp"
+                    tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
+
+                <TextView
+                    style="@style/textStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:enabled="false"
+                    android:onClick="hideKeyboard"
+                    android:text="Chiều cao thực tế" />
+
+                <EditText
+                    android:id="@+id/edt_cao"
+                    style="@style/EditTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:inputType="number"
+                    android:maxLength="8"
+                    android:paddingLeft="10dp"
+                    tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
+                <TextView
+                    style="@style/textStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:enabled="false"
+                    android:onClick="hideKeyboard"
+                    android:text="Khối lượng thực tế" />
+
+
+                <EditText
+                    android:id="@+id/edt_tien"
+                    style="@style/EditTextStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:layout_marginTop="4dp"
+                    android:imeOptions="actionDone"
+                    android:inputType="number"
+                    android:maxLength="10"
+                    android:paddingLeft="10dp"
+                    tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
+
+
+                <!--                <RelativeLayout-->
+                <!--                    android:layout_width="wrap_content"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:layout_marginTop="16dp"-->
+                <!--                    android:layout_marginBottom="24dp"-->
+                <!--                    android:orientation="horizontal">-->
+
+                <!--                    <RelativeLayout-->
+                <!--                        android:id="@+id/rightToLeft"-->
+                <!--                        android:layout_width="100dp"-->
+                <!--                        android:layout_height="match_parent"-->
+                <!--                        android:layout_marginRight="10dp">-->
+
+                <!--                        <com.facebook.drawee.view.SimpleDraweeView-->
+                <!--                            android:id="@+id/iv_package"-->
+                <!--                            android:layout_width="100dp"-->
+                <!--                            android:layout_height="100dp"-->
+                <!--                            android:layout_gravity="center"-->
+                <!--                            android:scaleType="center"-->
+                <!--                            app:layout_constraintBottom_toBottomOf="parent"-->
+                <!--                            app:layout_constraintEnd_toEndOf="parent"-->
+                <!--                            app:layout_constraintStart_toStartOf="parent"-->
+                <!--                            app:layout_constraintTop_toTopOf="parent"-->
+                <!--                            app:placeholderImage="@drawable/ic_logo_instagram"-->
+                <!--                            app:placeholderImageScaleType="centerInside"-->
+                <!--                            app:roundedCornerRadius="10dp"-->
+                <!--                            app:viewAspectRatio="1" />-->
+
+                <!--                        <ImageView-->
+                <!--                            android:id="@+id/iv_delete"-->
+                <!--                            android:layout_width="18dp"-->
+                <!--                            android:layout_height="18dp"-->
+                <!--                            android:layout_alignParentRight="true"-->
+                <!--                            app:layout_constraintBottom_toBottomOf="@+id/iv_package"-->
+                <!--                            app:layout_constraintEnd_toEndOf="parent"-->
+                <!--                            app:layout_constraintHorizontal_bias="1.0"-->
+                <!--                            app:layout_constraintStart_toStartOf="@+id/iv_package"-->
+                <!--                            app:layout_constraintTop_toTopOf="parent"-->
+                <!--                            app:layout_constraintVertical_bias="0.0"-->
+                <!--                            app:srcCompat="@drawable/ic_frame_113" />-->
+                <!--                    </RelativeLayout>-->
+
+                <!--                    <ImageView-->
+                <!--                        android:id="@+id/iv_camera_plus"-->
+                <!--                        android:layout_width="100dp"-->
+                <!--                        android:layout_height="100dp"-->
+                <!--                        android:src="@drawable/ic_upload_photos" />-->
+
+                <!--                </RelativeLayout>-->
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@color/white"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_chitiet"
+                        style="@style/textStyleTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:enabled="false"
+                        android:text=" Hình ảnh"
+                        android:textColor="@color/black" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/dimen_5dp">
+
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recycler_image"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/dimen_5dp"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/dimen_5dp" />
+                    </LinearLayout>
+
+
+                </LinearLayout>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 

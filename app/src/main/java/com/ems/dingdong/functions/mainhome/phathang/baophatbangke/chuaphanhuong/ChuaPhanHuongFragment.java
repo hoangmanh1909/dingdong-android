@@ -3,6 +3,7 @@ package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.chuaphanhuong
 import static android.content.Context.LOCATION_SERVICE;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Handler;
@@ -26,6 +27,7 @@ import com.ems.dingdong.callback.SapXepCallback;
 import com.ems.dingdong.dialog.CreatedBd13Dialog;
 import com.ems.dingdong.dialog.DialogText;
 import com.ems.dingdong.dialog.DialogThongBao;
+import com.ems.dingdong.dialog.IOSDialog;
 import com.ems.dingdong.dialog.NotificationDialog;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.chuaphanhuong.moredata.DialogVmapChuaPhanHuowng;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.create.modedata.DialogCreateBd13;
@@ -39,6 +41,7 @@ import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.SearchMode;
 import com.ems.dingdong.model.UserInfo;
+import com.ems.dingdong.model.VM_POSTMAN_ROUTE;
 import com.ems.dingdong.model.response.ChuaPhanHuongMode;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
@@ -124,11 +127,9 @@ public class ChuaPhanHuongFragment extends ViewFragment<ChuaPhanHuongContract.Pr
                                 e.printStackTrace();
                             }
                         }
-                        if (mAdapter.getItemsFilterSelected().size() < mAdapter.getListFilter().size() ||
-                                mAdapter.getListFilter().size() == 0)
+                        if (mAdapter.getItemsFilterSelected().size() < mAdapter.getListFilter().size() || mAdapter.getListFilter().size() == 0)
                             cbPickAll.setChecked(false);
-                        else
-                            cbPickAll.setChecked(true);
+                        else cbPickAll.setChecked(true);
                         tvCount.setText("Số lượng: " + String.format(" %s", count + ""));
                         tvAmount.setText("Tổng tiền" + String.format(" %s đ", NumberUtils.formatPriceNumber(amount)));
                     }
@@ -191,74 +192,132 @@ public class ChuaPhanHuongFragment extends ViewFragment<ChuaPhanHuongContract.Pr
     }
 
     public void submit() {
+//        if (mAdapter.getItemsSelected().size() > Constants.SO_LUONG_TIN) {
+//            new IOSDialog.Builder(getViewContext()).setTitle("Thông báo").
+//                    setMessage("Bạn có chắc chắn muốn lập " + mAdapter.getItemsSelected() + " bản kê không?")
+//                    .setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+//                        @Override
+//                        public void onClick(DialogInterface dialogInterface, int posotion) {
+//                            int j = 0;
+//                            for (int i = 0; i < mList.size(); i++) {
+//                                if (mList.get(i).isSelected()) j++;
+//                            }
+//                            if (j == 0) {
+//                                new IOSDialog.Builder(getViewContext()).setMessage("Chưa có bưu gửi nào được chọn.").setNegativeButton("Đóng", null).show();
+//                                return;
+//                            }
+//
+//                            ComfrimCreateMode comfrimCreateMode = new ComfrimCreateMode();
+//                            comfrimCreateMode.setPostmanId(userInfo.getiD());
+//                            comfrimCreateMode.setPostmanCode(userInfo.getUserName());
+//                            comfrimCreateMode.setPOCode(postOffice.getCode());
+//                            comfrimCreateMode.setRouteCode(routeInfo.getRouteCode());
+//                            List<String> strings = new ArrayList<>();
+//                            for (int i = 0; i < mList.size(); i++) {
+//                                if (mList.get(i).isSelected())
+//                                    strings.add(mList.get(i).getLadingCode());
+//                            }
+//                            comfrimCreateMode.setListLadingCode(strings);
+//                            mPresenter.comfrimCreate(comfrimCreateMode);
+//                        }
+//                    }).setNegativeButton("Không", null).show();
+//        } else {
         final List<ChuaPhanHuongMode> deliveryPostmamns = mAdapter.getItemsSelected();
         if (!deliveryPostmamns.isEmpty() && deliveryPostmamns.size() > 0) {
-            new DialogCreateBd13(getViewContext(), new SapXepCallback() {
+            new IOSDialog.Builder(getViewContext()).setCancelable(false).setTitle("Gợi ý số thứ tự theo hành trình").setMessage("Bạn có muốn Sắp xếp STT theo hành trình bản đồ hay không?").setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
                 @Override
-                public void onResponse(int type) {
-                    if (type == 2) {
-                        mLocation = getLastKnownLocation();
-                        if (mLocation == null) {
-                            new DialogText(getContext(), "(Không thể dùng chức năng . Bạn đã đã bật định vị trên thiết bị chưa?)").show();
-                            return;
-                        }
-                        OrderCreateBD13Mode orderCreateBD13Mode = new OrderCreateBD13Mode();
-                        Point point = new Point();
-                        point.setLatitude(mLocation.getLatitude());
-                        point.setLongitude(mLocation.getLongitude());
-                        orderCreateBD13Mode.setStartPoint(point);
-                        orderCreateBD13Mode.setTransportType(String.valueOf(routeInfo.getTransportType()));
-                        List<VietMapOrderCreateBD13DataRequest> dataRequests = new ArrayList<>();
-                        List<ChuaPhanHuongMode> deliveryPostmans = mAdapter.getItemsSelected();
-
-                        for (ChuaPhanHuongMode i : deliveryPostmans) {
-                            VietMapOrderCreateBD13DataRequest request = new VietMapOrderCreateBD13DataRequest();
-                            request.setId(i.getId());
-                            request.setLadingCode(i.getLadingCode());
-                            request.setReceiverAddress(i.getReceiverAddress());
-                            request.setReceiverLat((i.getReceiverLat() == null || i.getReceiverLat().isEmpty()) ? 0.0 : Double.parseDouble(i.getReceiverLat()));
-                            request.setReceiverLon((i.getReceiverLon() == null || i.getReceiverLon().isEmpty()) ? 0.0 : Double.parseDouble(i.getReceiverLon()));
-//            request.setOrderNumber(String.valueOf(i.getReferenceCode()));
-                            dataRequests.add(request);
-                        }
-                        orderCreateBD13Mode.setData(dataRequests);
-                        String json = NetWorkController.getGson().toJson(orderCreateBD13Mode);
-                        Log.d("AAAAAAA", json);
-                        mPresenter.ddLapBD13Vmap(orderCreateBD13Mode);
-                    } else {
-                        int j = 0;
-                        for (int i = 0; i < mList.size(); i++) {
-                            if (mList.get(i).isSelected())
-                                j++;
-                        }
-                        if (j == 0) {
-                            Toast.showToast(getViewContext(), "Bạn chưa chọn bưu gửi nào.");
-                            return;
-                        }
-
-                        ComfrimCreateMode comfrimCreateMode = new ComfrimCreateMode();
-                        comfrimCreateMode.setPostmanId(userInfo.getiD());
-                        comfrimCreateMode.setPostmanCode(userInfo.getUserName());
-                        comfrimCreateMode.setPOCode(postOffice.getCode());
-                        comfrimCreateMode.setRouteCode(routeInfo.getRouteCode());
-                        List<String> strings = new ArrayList<>();
-                        for (int i = 0; i < mList.size(); i++) {
-                            if (mList.get(i).isSelected())
-                                strings.add(mList.get(i).getLadingCode());
-                        }
-                        comfrimCreateMode.setListLadingCode(strings);
-                        mPresenter.comfrimCreate(comfrimCreateMode);
+                public void onClick(DialogInterface dialogInterface, int pos) {
+                    mLocation = getLastKnownLocation();
+                    if (mLocation == null) {
+                        new DialogText(getContext(), "(Không thể dùng chức năng . Bạn đã đã bật định vị trên thiết bị chưa?)").show();
+                        return;
                     }
+                    OrderCreateBD13Mode orderCreateBD13Mode = new OrderCreateBD13Mode();
+                    Point point = new Point();
+                    point.setLatitude(mLocation.getLatitude());
+                    point.setLongitude(mLocation.getLongitude());
+                    orderCreateBD13Mode.setStartPoint(point);
+                    orderCreateBD13Mode.setTransportType(String.valueOf(routeInfo.getTransportType()));
+                    List<VietMapOrderCreateBD13DataRequest> dataRequests = new ArrayList<>();
+                    List<ChuaPhanHuongMode> deliveryPostmans = mAdapter.getItemsSelected();
+                    orderCreateBD13Mode.setDataType("D");
+                    for (ChuaPhanHuongMode i : deliveryPostmans) {
+                        VietMapOrderCreateBD13DataRequest request = new VietMapOrderCreateBD13DataRequest();
+                        request.setId(i.getId());
+                        request.setLadingCode(i.getLadingCode());
+                        request.setDataType("D");
+                        request.setReceiverAddress(i.getReceiverAddress());
+                        request.setReceiverLat((i.getReceiverLat().equals("0") || i.getReceiverLat().isEmpty()) ? null : i.getReceiverLat());
+                        request.setReceiverLon((i.getReceiverLat().equals("0") || i.getReceiverLat().isEmpty()) ? null : i.getReceiverLon());
+                        dataRequests.add(request);
+                    }
+                    orderCreateBD13Mode.setData(dataRequests);
+                    String json = NetWorkController.getGson().toJson(orderCreateBD13Mode);
+                    Log.d("AAAAAAA", json);
+                    mPresenter.ddLapBD13Vmap(orderCreateBD13Mode);
+                }
+            }).setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int pos) {
+                    int j = 0;
+                    for (int i = 0; i < mList.size(); i++) {
+                        if (mList.get(i).isSelected()) j++;
+                    }
+                    if (j == 0) {
+                        new IOSDialog.Builder(getViewContext()).setCancelable(false).setMessage("Chưa có bưu gửi nào được chọn.").setNegativeButton("Đóng", null).show();
+                        return;
+                    }
+                    int totalAmount = 0;
+                    for (ChuaPhanHuongMode item : mAdapter.getItemsSelected()) {
+                        totalAmount = totalAmount + item.getAmountCOD();
+                    }
+                    new CreatedBd13Dialog(getActivity(), 0, mAdapter.getItemsSelected().size(), totalAmount, new CreatedBD13Callback() {
+                        @Override
+                        public void onResponse(String cancelType, String des) {
+                            ComfrimCreateMode comfrimCreateMode = new ComfrimCreateMode();
+                            comfrimCreateMode.setPostmanId(userInfo.getiD());
+                            comfrimCreateMode.setPostmanCode(userInfo.getUserName());
+                            comfrimCreateMode.setPOCode(postOffice.getCode());
+                            comfrimCreateMode.setRouteCode(routeInfo.getRouteCode());
+                            List<String> strings = new ArrayList<>();
+                            List<VietMapOrderCreateBD13DataRequest> mapOrderCreateBD13DataRequestList = new ArrayList<>();
+                            for (int i = 0; i < mList.size(); i++) {
+                                if (mList.get(i).isSelected()) {
+                                    strings.add(mList.get(i).getLadingCode());
+                                    VietMapOrderCreateBD13DataRequest k = new VietMapOrderCreateBD13DataRequest();
+                                    k.setId(mList.get(i).getId());
+                                    k.setDataType("D");
+                                    k.setOrderNumber(String.valueOf(i));
+                                    k.setReceiverLat(mList.get(i).getReceiverLat());
+                                    k.setReceiverLon(mList.get(i).getReceiverLon());
+                                    k.setReceiverAddress(mList.get(i).getReceiverAddress());
+                                    mapOrderCreateBD13DataRequestList.add(k);
+                                }
+                            }
+                            comfrimCreateMode.setListLadingCode(strings);
+                            mPresenter.comfrimCreate(comfrimCreateMode, 0);
+//                                    VM_POSTMAN_ROUTE vm_postman_route = new VM_POSTMAN_ROUTE();
+//                                    vm_postman_route.setDataType("D");
+//                                    vm_postman_route.setPostmanCode(userInfo.getUserName());
+//                                    vm_postman_route.setVmOrderBd13DataRequest(mapOrderCreateBD13DataRequestList);
+//                                    mPresenter.ddXacNhanLoTrinh(vm_postman_route);
+                        }
+                    }).show();
+
+
                 }
             }).show();
         } else {
-            showErrorToast("Chưa có bưu gửi nào được chọn.");
+            new IOSDialog.Builder(getViewContext()).setCancelable(false).setMessage("Chưa có bưu gửi nào được chọn.").setNegativeButton("Đóng", null).show();
         }
+//        }
     }
 
     @Override
     public void showVmap(List<VietMapOrderCreateBD13DataRequest> mList1) {
         hideProgress();
+        orderCreateBD13DataRequests = new ArrayList<>();
+        orderCreateBD13DataRequests = mList1;
         List<ChuaPhanHuongMode> deliveryPostmanList = mAdapter.getItemsSelected();
         for (int i = 0; i < deliveryPostmanList.size(); i++) {
             for (int j = 0; j < mList1.size(); j++)
@@ -267,7 +326,6 @@ public class ChuaPhanHuongFragment extends ViewFragment<ChuaPhanHuongContract.Pr
                 }
         }
         List<ChuaPhanHuongMode> postmen = sort(deliveryPostmanList);
-        Log.d("AAAAAAAA", new Gson().toJson(postmen));
         new DialogVmapChuaPhanHuowng(getViewContext(), postmen, new SapXepCallback() {
             @Override
             public void onResponse(int type) {
@@ -280,14 +338,7 @@ public class ChuaPhanHuongFragment extends ViewFragment<ChuaPhanHuongContract.Pr
                         @Override
                         public void onResponse(String cancelType, String des) {
                             final List<ChuaPhanHuongMode> deliveryPostmans = postmen;
-//                            Collections.sort(deliveryPostmans, new Comparator<ChuaPhanHuongMode>() {
-//                                @Override
-//                                public int compare(ChuaPhanHuongMode o1, ChuaPhanHuongMode o2) {
-//                                    return String.valueOf(o1.getmViti()).compareTo(String.valueOf(o2.getmViti()));
-//                                }
-//                            });
                             ComfrimCreateMode comfrimCreateMode = new ComfrimCreateMode();
-
                             comfrimCreateMode.setPostmanId(userInfo.getiD());
                             comfrimCreateMode.setPostmanCode(userInfo.getUserName());
                             comfrimCreateMode.setPOCode(postOffice.getCode());
@@ -300,7 +351,7 @@ public class ChuaPhanHuongFragment extends ViewFragment<ChuaPhanHuongContract.Pr
 
                             String json = NetWorkController.getGson().toJson(comfrimCreateMode);
                             Log.d("AAAAAAA", json);
-                            mPresenter.comfrimCreate(comfrimCreateMode);
+                            mPresenter.comfrimCreate(comfrimCreateMode, 1);
                         }
                     }).show();
                 }
@@ -396,18 +447,42 @@ public class ChuaPhanHuongFragment extends ViewFragment<ChuaPhanHuongContract.Pr
         }).show();
     }
 
+    List<VietMapOrderCreateBD13DataRequest> orderCreateBD13DataRequests = new ArrayList<>();
+
     @Override
-    public void showComfrimThanCong(String mess, List<ChuaPhanHuongMode> list) {
-        new NotificationDialog(getViewContext())
-                .setConfirmText(getString(R.string.confirm))
-                .setImage(NotificationDialog.DialogType.NOTIFICATION_SUCCESS)
-                .setConfirmClickListener(sweetAlertDialog -> {
-                    sweetAlertDialog.dismiss();
-                    showListSuccess(list);
-                    mPresenter.onCanceled();
-                })
-                .setContent(mess)
-                .show();
+    public void showComfrimThanCong(String mess, List<ChuaPhanHuongMode> list, int type) {
+        if (mAdapter.getItemsSelected().size() <= Constants.SO_LUONG_TIN) {
+            List<VietMapOrderCreateBD13DataRequest> mapOrderCreateBD13DataRequestList = new ArrayList<>();
+            for (int i = 0; i < mAdapter.getItemsSelected().size(); i++) {
+                VietMapOrderCreateBD13DataRequest k = new VietMapOrderCreateBD13DataRequest();
+                k.setId(mList.get(i).getId());
+                k.setDataType("D");
+                k.setOrderNumber(String.valueOf(i));
+                k.setReceiverLat(mList.get(i).getReceiverLat());
+                k.setReceiverLon(mList.get(i).getReceiverLon());
+                k.setReceiverAddress(mList.get(i).getReceiverAddress());
+                k.setLadingCode(mList.get(i).getLadingCode());
+                if (type == 1) {
+                    if (orderCreateBD13DataRequests != null && orderCreateBD13DataRequests.size() > 0)
+                        if (orderCreateBD13DataRequests.get(i).getReceiverVpostCode() == null || orderCreateBD13DataRequests.get(i).getReceiverVpostCode().isEmpty())
+                            k.setReceiverVpostCode(mAdapter.getItemsSelected().get(i).getReceiverVpostcode());
+                        else
+                            k.setReceiverVpostCode(orderCreateBD13DataRequests.get(i).getReceiverVpostCode());
+                } else
+                    k.setReceiverVpostCode(mAdapter.getItemsSelected().get(i).getReceiverVpostcode());
+                mapOrderCreateBD13DataRequestList.add(k);
+            }
+            VM_POSTMAN_ROUTE vm_postman_route = new VM_POSTMAN_ROUTE();
+            vm_postman_route.setDataType("D");
+            vm_postman_route.setPostmanCode(userInfo.getUserName());
+            vm_postman_route.setVmOrderBd13DataRequest(mapOrderCreateBD13DataRequestList);
+            mPresenter.ddXacNhanLoTrinh(vm_postman_route);
+        }
+        new NotificationDialog(getViewContext()).setConfirmText(getString(R.string.confirm)).setImage(NotificationDialog.DialogType.NOTIFICATION_SUCCESS).setConfirmClickListener(sweetAlertDialog -> {
+            sweetAlertDialog.dismiss();
+            showListSuccess(list);
+            mPresenter.onCanceled();
+        }).setContent(mess).show();
     }
 
 

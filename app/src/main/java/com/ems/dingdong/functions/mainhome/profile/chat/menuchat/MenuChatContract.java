@@ -23,12 +23,12 @@ interface MenuChatContract {
 
         void showLoi(String mess);
 
-        void showAccountChatInAppGetQueueResponse(AccountChatInAppGetQueueResponse response,int type);
+        void showAccountChatInAppGetQueueResponse(AccountChatInAppGetQueueResponse response, int type);
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
         Context getContext();
 
-        void ddQueuChat(RequestQueuChat request,int type);
+        void ddQueuChat(RequestQueuChat request, int type);
     }
 }

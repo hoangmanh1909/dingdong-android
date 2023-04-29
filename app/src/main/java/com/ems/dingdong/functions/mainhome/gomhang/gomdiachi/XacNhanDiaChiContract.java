@@ -60,7 +60,7 @@ public interface XacNhanDiaChiContract {
 
         void showError(String message);
 
-        void showAddress(Values x);
+        void showAddress(Values x,String diachi);
 
         void shoSucces(String mess);
 
@@ -143,7 +143,7 @@ public interface XacNhanDiaChiContract {
         int getCurrentTab();
 
 
-        void getDDVeryAddress(VerifyAddress verifyAddress);
+        void getDDVeryAddress(VerifyAddress verifyAddress,String diachi);
 
         void ddCreateVietMap(CreateVietMapRequest createVietMapRequest);
 

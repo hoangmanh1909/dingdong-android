@@ -48,7 +48,7 @@ public class ActiveFragment extends ViewFragment<ActiveContract.Presenter> imple
         SharedPref.getInstance(getViewContext()).clear();
     }
 
-    @OnClick(R.id.done_layout)
+    @OnClick(R.id.btn_sms)
     public void onViewClicked() {
         String code = edtCode.getText().toString();
         if (TextUtils.isEmpty(code)) {

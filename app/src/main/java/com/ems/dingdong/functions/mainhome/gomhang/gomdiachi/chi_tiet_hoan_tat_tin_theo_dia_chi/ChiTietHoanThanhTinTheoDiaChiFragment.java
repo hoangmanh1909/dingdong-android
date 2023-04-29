@@ -19,6 +19,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
@@ -28,6 +29,7 @@ import android.widget.RadioButton;
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.core.base.log.Logger;
@@ -57,6 +59,7 @@ import com.ems.dingdong.model.request.HoanTatTinRequest;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.BitmapUtils;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.CustomToast;
 import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.MediaUltisV1;
 import com.ems.dingdong.utiles.NumberUtils;
@@ -101,6 +104,8 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
 
     @BindView(R.id.tv_name_receiver)
     CustomTextView tvNameReceiver;
+    @BindView(R.id.neverCompleteToStart)
+    NestedScrollView neverCompleteToStart;
     @BindView(R.id.tv_phone_receiver)
     LinearLayout tvPhoneReceiver;
     @BindView(R.id.tv_address_receiver)
@@ -264,6 +269,15 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
 //        mPreview = new CameraPreview(getViewContext(), mCamera);
 //        FrameLayout preview = (FrameLayout) findViewById(R.id.camera_preview);
 //        preview.addView(mPreview);
+        neverCompleteToStart.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (v.hasFocus()) {
+                    v.clearFocus();
+                }
+                return false;
+            }
+        });
         imagePro = new ImagePro(getViewContext());
         radioBtn.setChecked(false);
         llUnsuccess.setVisibility(View.GONE);
@@ -293,7 +307,11 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
         for (int i = 0; i < mListCommonObject.getListParcelCode().size(); i++) {
             mListCommonObject.getListParcelCode().get(i).setSelected(false);
         }
+
         commonObjects.addAll(mListCommonObject.getListParcelCode());
+
+        Log.d("thasdas1231", new Gson().toJson(commonObjects));
+
         if (commonObjects.size() == 0) {
             commonObjects = new ArrayList<>();
             for (int i = 0; i < mListCommonObject.getCodeS().size(); i++) {
@@ -306,6 +324,7 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
                 commonObjects.add(parcelCodeInfo);
             }
         }
+
         int soluongbuugui = 0;
         for (ParcelCodeInfo info : commonObjects) {
             if (!TextUtils.isEmpty(info.getTrackingCode()))
@@ -333,7 +352,6 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
                 }
             }
         }
-//        Log.d("thasdas1231", new Gson().toJson(commonObjects));
         buuguiAdapter = new BuuguiAdapter(getViewContext(), commonObjects) {
             @Override
             public void onBindViewHolder(@NonNull HolderView holder, int position) {
@@ -867,18 +885,17 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
                 list.get(i).getShipmentIds().addAll(list.get(i - 1).getShipmentIds());
                 list.remove(i - 1);
             } else i++;
-
         }
-
 
         for (int k = 0; k < list.size(); k++) {
             for (int j = 0; j < list.get(k).getShipmentIds().size(); j++)
                 if (list.get(k).getShipmentIds().get(j) == 0)
                     list.get(k).getShipmentIds().remove(j);
         }
+//        Log.d("THANHKHIEM123", list.size() + new Gson().toJson(list));
+
 //        xuatfile();
         mPresenter.collectAllOrderPostman(list);
-
 
     }
 
@@ -1001,13 +1018,7 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
 
     @Override
     public void showError(String message) {
-        if (getActivity() != null) {
-            new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE)
-                    .setConfirmText("OK")
-                    .setTitleText("Thông báo")
-                    .setContentText(message)
-                    .setConfirmClickListener(sweetAlertDialog -> sweetAlertDialog.dismiss()).show();
-        }
+        CustomToast.makeText(getViewContext(), (int) CustomToast.LONG, message, Constants.ERROR).show();
     }
 
     @Override

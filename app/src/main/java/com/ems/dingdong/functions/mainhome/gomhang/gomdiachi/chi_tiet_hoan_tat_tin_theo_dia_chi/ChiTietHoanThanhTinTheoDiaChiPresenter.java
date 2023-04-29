@@ -8,6 +8,7 @@ import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.XacNhanDiaChiPresenter;
+import com.ems.dingdong.functions.mainhome.gomhang.sortxacnhantin.SortPersenter;
 import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
 import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.ConfirmOrderPostman;
@@ -17,7 +18,10 @@ import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
+import com.ems.dingdong.network.ApiDisposable;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.CustomToast;
 import com.ems.dingdong.utiles.Log;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -43,6 +47,8 @@ public class ChiTietHoanThanhTinTheoDiaChiPresenter extends Presenter<ChiTietHoa
     public ChiTietHoanThanhTinTheoDiaChiPresenter(ContainerView containerView) {
         super(containerView);
     }
+
+
 
     @Override
     public ArrayList<ConfirmOrderPostman> getList() {
@@ -79,6 +85,7 @@ public class ChiTietHoanThanhTinTheoDiaChiPresenter extends Presenter<ChiTietHoa
             @Override
             protected void onError(Call<SimpleResult> call, String message) {
                 super.onError(call, message);
+                CustomToast.makeText(getViewContext(), (int) CustomToast.LONG, message, Constants.ERROR).show();
             }
         });
     }
@@ -98,6 +105,7 @@ public class ChiTietHoanThanhTinTheoDiaChiPresenter extends Presenter<ChiTietHoa
             @Override
             protected void onError(Call<SimpleResult> call, String message) {
                 super.onError(call, message);
+                CustomToast.makeText(getViewContext(), (int) CustomToast.LONG, message, Constants.ERROR).show();
             }
         });
     }
@@ -121,7 +129,7 @@ public class ChiTietHoanThanhTinTheoDiaChiPresenter extends Presenter<ChiTietHoa
             protected void onError(Call<SimpleResult> call, String message) {
                 super.onError(call, message);
                 mView.hideProgress();
-                mView.showErrorToast(message);
+                CustomToast.makeText(getViewContext(), (int) CustomToast.LONG, message, Constants.ERROR).show();
             }
         });
     }
@@ -235,6 +243,9 @@ public class ChiTietHoanThanhTinTheoDiaChiPresenter extends Presenter<ChiTietHoa
                     } else {
                         mView.hideProgress();
                     }
+                }, throwable -> {
+                    mView.hideProgress();
+                    new ApiDisposable(throwable, getViewContext());
                 });
     }
 }

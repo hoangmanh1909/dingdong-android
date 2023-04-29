@@ -7,6 +7,8 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.core.utils.NetworkUtils;
@@ -26,6 +28,7 @@ import com.ems.dingdong.functions.mainhome.profile.chat.menuchat.model.AccountCh
 import com.ems.dingdong.functions.mainhome.profile.chat.menuchat.model.RequestQueuChat;
 import com.ems.dingdong.model.AddressListModel;
 import com.ems.dingdong.model.CallLiveMode;
+import com.ems.dingdong.model.CallTomeRequest;
 import com.ems.dingdong.model.CreateVietMapRequest;
 import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.model.PhoneNumber;
@@ -38,8 +41,10 @@ import com.ems.dingdong.model.XacMinhDiaChiResult;
 import com.ems.dingdong.model.request.SMLRequest;
 import com.ems.dingdong.model.request.vietmap.TravelSales;
 import com.ems.dingdong.model.response.DeliveryPostmanResponse;
+import com.ems.dingdong.network.ApiDisposable;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.CustomToast;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
 import com.google.gson.Gson;
@@ -51,6 +56,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Observer;
 import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -130,6 +136,7 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                     mView.hideProgress();
                 }, throwable -> {
                     mView.hideProgress();
+                    new ApiDisposable(throwable, getViewContext());
                 });
     }
 
@@ -147,6 +154,7 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                     mView.hideProgress();
                 }, throwable -> {
                     mView.hideProgress();
+                    new ApiDisposable(throwable, getViewContext());
                 });
     }
 
@@ -186,9 +194,11 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                                     }.getType());
                                     mView.showListSuccess(deliveryPostmen);
                                     deliveryNotSuccessfulChange.onChanged(deliveryPostmen);
+                                    mView.hideProgress();
                                 } else {
                                     mView.showError(response.body().getMessage());
                                     deliveryNotSuccessfulChange.onError(response.body().getMessage());
+                                    mView.hideProgress();
                                 }
                             }
                         }
@@ -288,6 +298,7 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                     @Override
                     public void onError(Throwable e) {
                         mView.hideProgress();
+                        new ApiDisposable(e, getViewContext());
                     }
                 });
     }
@@ -330,7 +341,8 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
             @Override
             public void onFailure(Call<SimpleResult> call, Throwable error) {
                 super.onFailure(call, error);
-                mView.showCallError("Lỗi kết nối đến tổng đài");
+                mView.hideProgress();
+                new ApiDisposable(error, getViewContext());
             }
         });
 
@@ -338,21 +350,18 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
 
     @Override
     public void updateMobile(String phone, String parcelCode, int type) {
-        mView.showProgress();
         String tPhone = phone;
 
         addCallback(mInteractor.updateMobile(parcelCode, "1", phone, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {
                 super.onSuccess(call, response);
-                mView.hideProgress();
                 mView.showSuccessUpdateMobile(tPhone, response.body().getMessage(), type);
             }
 
             @Override
             protected void onError(Call<SimpleResult> call, String message) {
                 super.onError(call, message);
-                mView.hideProgress();
                 mView.showErrorToast(message);
             }
         }));
@@ -416,7 +425,7 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
     }
 
     @Override
-    public void getDDVeryAddress(VerifyAddress verifyAddress) {
+    public void getDDVeryAddress(VerifyAddress verifyAddress, String diachi) {
         mView.showProgress();
         mInteractor.ddVerifyAddress(verifyAddress)
                 .subscribeOn(Schedulers.io())
@@ -425,12 +434,13 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                 .subscribe(simpleResult -> {
                     if (simpleResult.getErrorCode().equals("00")) {
                         Log.d("asdasdasdasd", new Gson().toJson(simpleResult.getValue()));
-                        mView.showAddress(simpleResult.getValue());
+                        mView.showAddress(simpleResult.getValue(), diachi);
                     } else Toast.showToast(getViewContext(), simpleResult.getMessage());
 
                     mView.hideProgress();
                 }, throwable -> {
                     mView.hideProgress();
+                    new ApiDisposable(throwable, getViewContext());
                 });
     }
 
@@ -449,6 +459,7 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                     mView.hideProgress();
                 }, throwable -> {
                     mView.hideProgress();
+                    new ApiDisposable(throwable, getViewContext());
                 });
     }
 
@@ -482,6 +493,7 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                     mView.hideProgress();
                 }, throwable -> {
                     mView.hideProgress();
+                    new ApiDisposable(throwable, getViewContext());
                 });
     }
 
@@ -511,12 +523,51 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                     mView.hideProgress();
                 }, throwable -> {
                     mView.hideProgress();
+                    new ApiDisposable(throwable, getViewContext());
                 });
     }
 
     @Override
     public ContainerView getContraiView() {
         return mContainerView;
+    }
+
+    @Override
+    public void ddCallToMe(CallTomeRequest request) {
+        mView.showProgress();
+        mInteractor.ddCallToMe(request)
+                .subscribeOn(Schedulers.io())
+                .delay(500, TimeUnit.MILLISECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<SimpleResult>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                    }
+
+                    @Override
+                    public void onNext(@NonNull SimpleResult simpleResult) {
+                        if (simpleResult.getErrorCode() != null) {
+                            if (simpleResult.getErrorCode().equals("00")) {
+                                CustomToast.makeText(getViewContext(), (int) CustomToast.LONG, simpleResult.getMessage(), Constants.ERROR).show();
+                                mView.hideProgress();
+                            } else {
+                                CustomToast.makeText(getViewContext(), (int) CustomToast.LONG, simpleResult.getMessage(), Constants.ERROR).show();
+                                mView.hideProgress();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        new ApiDisposable(e, getViewContext());
+                        mView.hideProgress();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
     }
 
 
@@ -556,6 +607,7 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
                     mView.hideProgress();
                 }, throwable -> {
                     mView.hideProgress();
+                    new ApiDisposable(throwable, getViewContext());
                 });
     }
 }

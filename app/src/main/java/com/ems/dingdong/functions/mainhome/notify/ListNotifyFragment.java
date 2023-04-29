@@ -89,7 +89,8 @@ public class ListNotifyFragment extends ViewFragment<ListNotifyContract.Presente
                         } else if (mList.get(position).getType() != 1) {
                             mPresenter.isSeen(ticketModes, mList.get(position).getTicketCode(), mList.get(position).getType());
                         } else {
-                            mPresenter.isSeen(ticketModes, mList.get(position).getTicketCode(), mList.get(position).getType());
+                            if (mList.get(position).getIsSeen().equals("N"))
+                                mPresenter.isSeen(ticketModes, mList.get(position).getTicketCode(), mList.get(position).getType());
                             new DialogTextThanhConhg(getViewContext(), mList.get(position).getContent(), new DialogCallback() {
                                 @Override
                                 public void onResponse(String loginRespone) {

@@ -11,6 +11,7 @@ import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.request.TicketNotifyRequest;
 import com.ems.dingdong.model.response.EWalletDataResponse;
 import com.ems.dingdong.model.response.TicketNotifyRespone;
+import com.ems.dingdong.network.ApiDisposable;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.notification.cuocgoictel.NotiCtelPresenter;
 import com.ems.dingdong.utiles.Constants;
@@ -87,6 +88,9 @@ public class ListNotifyPresenter extends Presenter<ListNotifyContract.View, List
                         mView.showListNotifi(new ArrayList<>());
                         Toast.showToast(getViewContext(), simpleResult.getMessage());
                     }
+                }, throwable -> {
+                    mView.hideProgress();
+                    new ApiDisposable(throwable, getViewContext());
                 });
     }
 
@@ -101,7 +105,7 @@ public class ListNotifyPresenter extends Presenter<ListNotifyContract.View, List
 
     @Override
     public void isSeen(List<String> list, String ticket, int type) {
-        mView.hideProgress();
+//        mView.hideProgress();
         mInteractor.isSeen(list)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -119,6 +123,9 @@ public class ListNotifyPresenter extends Presenter<ListNotifyContract.View, List
                         Toast.showToast(getViewContext(), simpleResult.getMessage());
                         mView.hideProgress();
                     }
+                }, throwable -> {
+                    mView.hideProgress();
+                    new ApiDisposable(throwable, getViewContext());
                 });
     }
 

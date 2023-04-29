@@ -12,6 +12,7 @@ import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.WardModels;
 import com.ems.dingdong.model.request.BaseRequest;
 import com.ems.dingdong.model.request.PUGetBusinessProfileRequest;
+import com.ems.dingdong.network.ApiDisposable;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.SharedPref;
@@ -74,8 +75,8 @@ public class TaoTinPresenter extends Presenter<TaoTinContract.View, TaoTinContra
                     }
                     mView.hideProgress();
                 }, throwable -> {
-                    mView.showErrorToast(throwable.getMessage());
                     mView.hideProgress();
+                    new ApiDisposable(throwable, getViewContext());
                 });
     }
 
@@ -94,8 +95,8 @@ public class TaoTinPresenter extends Presenter<TaoTinContract.View, TaoTinContra
                     }
                     mView.hideProgress();
                 }, throwable -> {
-                    mView.showErrorToast(throwable.getMessage());
                     mView.hideProgress();
+                    new ApiDisposable(throwable, getViewContext());
                 });
     }
 
@@ -114,8 +115,8 @@ public class TaoTinPresenter extends Presenter<TaoTinContract.View, TaoTinContra
                     }
                     mView.hideProgress();
                 }, throwable -> {
-                    mView.showErrorToast(throwable.getMessage());
                     mView.hideProgress();
+                    new ApiDisposable(throwable, getViewContext());
                 });
     }
 
@@ -134,8 +135,8 @@ public class TaoTinPresenter extends Presenter<TaoTinContract.View, TaoTinContra
                     } else Toast.showToast(getViewContext(), simpleResult.getMessage());
                     mView.hideProgress();
                 }, throwable -> {
-                    mView.showErrorToast(throwable.getMessage());
                     mView.hideProgress();
+                    new ApiDisposable(throwable, getViewContext());
                 });
     }
 
@@ -153,8 +154,8 @@ public class TaoTinPresenter extends Presenter<TaoTinContract.View, TaoTinContra
                     } else Toast.showToast(getViewContext(), simpleResult.getMessage());
                     mView.hideProgress();
                 }, throwable -> {
-                    mView.showErrorToast(throwable.getMessage());
                     mView.hideProgress();
+                    new ApiDisposable(throwable, getViewContext());
                 });
     }
 
@@ -172,8 +173,8 @@ public class TaoTinPresenter extends Presenter<TaoTinContract.View, TaoTinContra
                         mView.hideProgress();
                     }
                 }, throwable -> {
-                    mView.showErrorToast(throwable.getMessage());
                     mView.hideProgress();
+                    new ApiDisposable(throwable, getViewContext());
                 });
     }
 

@@ -17,7 +17,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#f5f6fa"
+            android:background="@drawable/bg_gradient_top"
             android:padding="10dp">
 
             <TextView
@@ -29,7 +29,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="Lập bản kê theo hành trình"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="16dp"
                 android:textStyle="bold" />
 
@@ -39,7 +39,7 @@
                 android:layout_height="42dp"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                android:src="@drawable/ic_outline_cancel_24_v" />
+                android:src="@drawable/close__1__ioicon" />
 
             <ImageView
                 android:id="@+id/img_check"
@@ -47,7 +47,8 @@
                 android:layout_height="42dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:src="@drawable/ic_check" />
+                android:padding="5dp"
+                android:src="@drawable/paper_plane" />
         </RelativeLayout>
 
         <androidx.core.widget.NestedScrollView
@@ -62,8 +63,9 @@
                     android:id="@+id/rcView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@color/backround"
                     android:orientation="vertical"
+                    android:paddingTop="10dp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
             </LinearLayout>
 

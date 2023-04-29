@@ -1,24 +1,19 @@
 package com.ems.dingdong.functions.login;
 
 
-import android.net.Network;
-
 import com.core.base.viper.Interactor;
-import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.callback.CommonCallback;
-import com.ems.dingdong.functions.mainhome.main.data.CallLogMode;
 import com.ems.dingdong.model.LoginResult;
-import com.ems.dingdong.model.PostOfficeResult;
-import com.ems.dingdong.model.ReasonResult;
 import com.ems.dingdong.model.SimpleResult;
-import com.ems.dingdong.model.SolutionResult;
+import com.ems.dingdong.model.request.ActiveRequest;
+import com.ems.dingdong.model.request.GetPostOfficeByCodeRequest;
 import com.ems.dingdong.model.request.LoginRequest;
-import com.ems.dingdong.model.response.ResponseObject;
-import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.model.request.ValidationRequest;
 import com.ems.dingdong.network.NetWorkControllerGateWay;
+import com.ems.dingdong.network.api.ApiService;
+import com.ems.dingdong.model.request.LoginRequest;
 
-import java.util.List;
-
+import io.reactivex.Observable;
 import io.reactivex.Single;
 
 /**
@@ -31,36 +26,31 @@ class LoginInteractor extends Interactor<LoginContract.Presenter>
         super(presenter);
     }
 
-    @Override
-    public void login(LoginRequest loginRequest, CommonCallback<LoginResult> commonCallback) {
-        NetWorkControllerGateWay.loginAuthorized(loginRequest, commonCallback);
-//        NetWorkController.loginAuthorized(loginRequest.getMobileNumber(), loginRequest., BuildConfig.VERSION_NAME, "", signature);
-    }
-
-    @Override
-    public void login1(LoginRequest loginRequest, CommonCallback<LoginResult> commonCallback) {
-//        NetWorkController.loginAuthorized(loginRequest.getMobileNumber(), loginRequest.getSignCode(), BuildConfig.VERSION_NAME, "", signature);
-    }
-
-    @Override
-    public void getPostOfficeByCode(String code, String postmanID, CommonCallback<SimpleResult> callback) {
-        NetWorkControllerGateWay.getPostOfficeByCode(code, postmanID, callback);
-    }
-
-    @Override
-    public void getSolutions(CommonCallback<SimpleResult> commonCallback) {
-        NetWorkControllerGateWay.getSolutions(commonCallback);
-    }
-
+//    @Override
+//    public Observable<LoginResult> login(LoginRequest loginRequest, CommonCallback<LoginResult> commonCallback) {
+//        return NetWorkControllerGateWay.loginAuthorized(loginRequest, commonCallback);
+//    }
+//
+//
+//    @Override
+//    public void getPostOfficeByCode(String code, String postmanID, CommonCallback<SimpleResult> callback) {
+//        NetWorkControllerGateWay.getPostOfficeByCode(code, postmanID, callback);
+//    }
+//
+////    @Override
+////    public void getSolutions(CommonCallback<SimpleResult> commonCallback) {
+////        NetWorkControllerGateWay.getSolutions(commonCallback);
+////    }
+//
     @Override
     public void getReasons(CommonCallback<SimpleResult> commonCallback) {
         NetWorkControllerGateWay.getReasons(commonCallback);
     }
-
-    @Override
-    public void getVersion(CommonCallback<SimpleResult> callback) {
-        NetWorkControllerGateWay.getVersion(callback);
-    }
+//
+//    @Override
+//    public void getVersion(CommonCallback<SimpleResult> callback) {
+//        NetWorkControllerGateWay.getVersion(callback);
+//    }
 
     @Override
     public Single<SimpleResult> getList(String data) {
@@ -73,12 +63,36 @@ class LoginInteractor extends Interactor<LoginContract.Presenter>
     }
 
     @Override
-    public Single<SimpleResult> getCallLog(List<CallLogMode> request) {
-        return NetWorkControllerGateWay.getCallLog(request);
+    public Observable<LoginResult> ddLogin(LoginRequest loginRequest) {
+        return ApiService.ddLogin(loginRequest);
     }
 
     @Override
-    public void getBalance(String mobileNumber, String postmanId, CommonCallback<SimpleResult> commonCallback) {
-        NetWorkControllerGateWay.getBalance(mobileNumber,postmanId ,commonCallback);
+    public Observable<SimpleResult> ddvalidationAuthorized(ValidationRequest validationRequest) {
+        return ApiService.ddXacThuc(validationRequest);
     }
+
+    @Override
+    public Observable<SimpleResult> ddLoginSms(ActiveRequest activeRequest) {
+        return ApiService.ddLoginSms(activeRequest);
+    }
+
+    @Override
+    public Observable<SimpleResult> ddPostOfficeByCode(GetPostOfficeByCodeRequest getPostOfficeByCodeRequest) {
+        return ApiService.ddPostOfficeByCode(getPostOfficeByCodeRequest);
+    }
+
+    @Override
+    public Observable<SimpleResult> ddGetVersion() {
+        return ApiService.ddGetVersion();
+    }
+//    @Override
+//    public Single<SimpleResult> getCallLog(List<CallLogMode> request) {
+//        return NetWorkControllerGateWay.getCallLog(request);
+//    }
+
+//    @Override
+//    public void getBalance(String mobileNumber, String postmanId, CommonCallback<SimpleResult> commonCallback) {
+//        NetWorkControllerGateWay.getBalance(mobileNumber,postmanId ,commonCallback);
+//    }
 }

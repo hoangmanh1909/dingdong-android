@@ -2,19 +2,18 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#80000000">
+    android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
         style="@style/MyCardViewStyle"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
-        android:layout_centerInParent="true"
-        android:layout_margin="@dimen/size_16dp">
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:paddingBottom="10dp">
 
             <androidx.core.widget.NestedScrollView
@@ -39,22 +38,20 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content">
 
-                            <com.ems.dingdong.views.CustomTextView
+                            <com.ems.dingdong.views.CustomBoldTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_centerInParent="true"
-                                android:padding="@dimen/_5sdp"
                                 android:text="@string/notification"
                                 android:textColor="@color/black"
-                                android:textSize="@dimen/text_size_18sp" />
+                                android:textSize="@dimen/text_size_18sp"
+                                android:textStyle="bold" />
                         </RelativeLayout>
                     </LinearLayout>
 
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="0.5dp"
-                        android:layout_marginLeft="@dimen/size_16dp"
-                        android:layout_marginRight="@dimen/size_16dp"
                         android:background="@color/gray" />
 
 
@@ -90,7 +87,7 @@
                                 android:padding="@dimen/_5sdp"
                                 android:text="@string/lading_code"
                                 android:textColor="@color/black"
-                                android:textSize="@dimen/text_size_18sp" />
+                                android:textSize="14dp" />
 
                             <com.ems.dingdong.views.CustomBoldTextView
                                 android:id="@+id/total_record"
@@ -98,7 +95,7 @@
                                 android:layout_height="wrap_content"
                                 android:padding="@dimen/_5sdp"
                                 android:textColor="@color/red_light"
-                                android:textSize="@dimen/text_size_18sp" />
+                                android:textSize="14dp" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -113,7 +110,7 @@
                                 android:padding="@dimen/_5sdp"
                                 android:text="@string/total_amount"
                                 android:textColor="@color/black"
-                                android:textSize="@dimen/text_size_18sp" />
+                                android:textSize="14dp" />
 
                             <com.ems.dingdong.views.CustomBoldTextView
                                 android:id="@+id/total_amount"
@@ -121,7 +118,7 @@
                                 android:layout_height="wrap_content"
                                 android:padding="@dimen/_5sdp"
                                 android:textColor="@color/red_light"
-                                android:textSize="@dimen/text_size_18sp" />
+                                android:textSize="14dp" />
                         </LinearLayout>
 
                         <LinearLayout
@@ -135,8 +132,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:padding="@dimen/_5sdp"
-                                android:textColor="@color/red_light"
-                                android:textSize="@dimen/text_size_18sp" />
+                                android:textColor="#4E5969"
+                                android:textSize="14dp" />
 
 
                             <RelativeLayout
@@ -150,8 +147,8 @@
                                     android:layout_toLeftOf="@+id/img_vitri"
                                     android:padding="@dimen/_5sdp"
                                     android:text="Đang tính khoảng cách...."
-                                    android:textColor="@color/red_light"
-                                    android:textSize="@dimen/text_size_18sp" />
+                                    android:textColor="#4E5969"
+                                    android:textSize="14dp" />
 
 
                                 <ImageView
@@ -200,8 +197,7 @@
                     android:paddingRight="@dimen/dimen_10dp"
                     android:paddingBottom="@dimen/dimen_10dp"
                     android:text="Hủy"
-                    android:textAllCaps="true"
-                    android:textColor="@color/red_light"
+                    android:textColor="#4E5969"
                     android:textSize="16sp" />
 
                 <com.ems.dingdong.views.CustomMediumTextView
@@ -217,12 +213,11 @@
                     android:paddingTop="@dimen/dimen_10dp"
                     android:paddingRight="@dimen/dimen_10dp"
                     android:paddingBottom="@dimen/dimen_10dp"
-                    android:text="OK"
-                    android:textAllCaps="true"
+                    android:text="Xác nhận"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
             </LinearLayout>
 
-        </RelativeLayout>
+        </LinearLayout>
     </androidx.cardview.widget.CardView>
 </RelativeLayout>

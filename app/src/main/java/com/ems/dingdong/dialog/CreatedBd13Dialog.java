@@ -55,7 +55,7 @@ public class CreatedBd13Dialog extends Dialog {
 
     public CreatedBd13Dialog(Context context, int type, long quantity, long totalAmount, CreatedBD13Callback confirmCallback) {
 
-        super(context, android.R.style.Theme_Translucent_NoTitleBar);
+        super(context, R.style.ios_dialog_style1);
         this.mDelegate = confirmCallback;
         View view = View.inflate(getContext(), R.layout.dialog_created_bd13_confirm, null);
         setContentView(view);

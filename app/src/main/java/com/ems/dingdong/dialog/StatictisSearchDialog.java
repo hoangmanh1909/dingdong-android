@@ -9,8 +9,11 @@ import com.ems.dingdong.R;
 import com.ems.dingdong.callback.StatictisSearchCallback;
 import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.TimeUtils;
+import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.form.FormItemTextView;
 import com.tsongkha.spinnerdatepicker.SpinnerDatePickerDialogBuilder;
+
+import org.apache.poi.ss.formula.functions.T;
 
 import java.util.Calendar;
 import java.util.Locale;
@@ -94,8 +97,15 @@ public class StatictisSearchDialog extends Dialog implements com.tsongkha.spinne
                         .show();
                 break;
             case R.id.tv_search:
-                mDelegate.onResponse(DateTimeUtils.convertDateToString(calFromDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5),
-                        DateTimeUtils.convertDateToString(calToDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5));
+//                if (DateTimeUtils.convertDateToString(calFromDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5)
+//                        .equals(DateTimeUtils.convertDateToString(calToDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5)))
+                    mDelegate.onResponse(DateTimeUtils.convertDateToString(calFromDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5),
+                            DateTimeUtils.convertDateToString(calToDate.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT5));
+//
+//                else {
+//                    Toast.showToast(getContext(), "Vui lòng chỉ chọn 1 ngày.");
+//                    return;
+//                }
                 dismiss();
                 break;
             case R.id.btnBack:

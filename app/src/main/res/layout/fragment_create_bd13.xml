@@ -189,15 +189,16 @@
             android:layout_alignParentLeft="true"
             android:button="@drawable/custom_btn_radio"
             android:clickable="false"
-            android:padding="5dp" />
-
-        <com.ems.dingdong.views.CustomBoldTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_toRightOf="@id/cb_pick_all"
             android:padding="5dp"
-            android:text="@string/pick_all" />
+            android:text="@string/pick_all"/>
+
+<!--        <com.ems.dingdong.views.CustomBoldTextView-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_gravity="right"-->
+        <!--            android:layout_toRightOf="@id/cb_pick_all"-->
+        <!--            android:padding="5dp"-->
+        <!--            android:text="" />-->
     </RelativeLayout>
 
     <RelativeLayout
@@ -251,10 +252,10 @@
                 android:id="@+id/recycler"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/dimen_10dp"
-                android:layout_marginTop="@dimen/dimen_10dp"
-                android:layout_marginRight="@dimen/dimen_10dp"
-                android:layout_marginBottom="@dimen/dimen_5dp"
+                android:paddingTop="16dp"
+                android:background="@color/backround"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager">
 
 

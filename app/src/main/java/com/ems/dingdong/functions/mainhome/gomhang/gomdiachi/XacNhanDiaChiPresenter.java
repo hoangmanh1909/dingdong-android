@@ -1,5 +1,6 @@
 package com.ems.dingdong.functions.mainhome.gomhang.gomdiachi;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 
@@ -34,8 +35,10 @@ import com.ems.dingdong.model.VpostcodeModel;
 import com.ems.dingdong.model.XacMinhDiaChiResult;
 import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
 import com.ems.dingdong.model.request.vietmap.TravelSales;
+import com.ems.dingdong.network.ApiDisposable;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.CustomToast;
 import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
@@ -78,7 +81,11 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
 
     @Override
     public void start() {
-        ddgetDichVuMpit();
+        try {
+            ddgetDichVuMpit();
+        } catch (Exception e) {
+
+        }
     }
 
     @Override
@@ -120,6 +127,17 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
                             item.addCode1(item.getiD());
                             item.addCodelistMpit(item.getServiceNameMPITS());
                             item.addCodemPit(item.getServiceCodeMPITS());
+                            if (item.getListParcelCode().size() == 0) {
+                                ParcelCodeInfo parcelCodeInfo = new ParcelCodeInfo();
+                                parcelCodeInfo.setOrderCode(item.getCode());
+                                parcelCodeInfo.setOrderId(item.getiD());
+                                parcelCodeInfo.setOrderPostmanId(item.getOrderPostmanID());
+                                parcelCodeInfo.setTrackingCode("");
+                                item.getListParcelCode().add(parcelCodeInfo);
+                            } else for (ParcelCodeInfo parcelCodeInfo : item.getListParcelCode()) {
+                                Log.d("NHUHANMEMIT1", new Gson().toJson(item.getListParcelCode()));
+                            }
+
                             try {
                                 item.weightS += Integer.parseInt(item.getWeigh());
                             } catch (Exception e) {
@@ -132,9 +150,11 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
                                 parcelCodeInfo.setOrderId(item.getiD());
                                 parcelCodeInfo.setOrderPostmanId(item.getOrderPostmanID());
                                 parcelCodeInfo.setTrackingCode("");
+                                Log.d("NHUHANMEMIT", new Gson().toJson(parcelCodeInfo));
                                 itemExists.getListParcelCode().add(parcelCodeInfo);
                             } else for (ParcelCodeInfo parcelCodeInfo : item.getListParcelCode()) {
                                 itemExists.getListParcelCode().add(parcelCodeInfo);
+                                Log.d("NHUHANMEMIT1", new Gson().toJson(item.getListParcelCode()));
                             }
                             itemExists.addOrderPostmanID(item.getOrderPostmanID());
                             itemExists.addCode(item.getCode());
@@ -156,7 +176,7 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
             protected void onError(Call<SimpleResult> call, String message) {
                 super.onError(call, message);
                 mView.hideProgress();
-                mView.showError(message);
+                CustomToast.makeText(getViewContext(), (int) CustomToast.LONG, message, Constants.ERROR).show();
             }
         });
     }
@@ -167,6 +187,7 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
         return this;
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public void ddgetDichVuMpit() {
         mView.showProgress();
@@ -180,9 +201,10 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
                         }.getType());
                         mView.showDichVuMpit(list);
                     } else {
-                        Toast.showToast(getViewContext(), simpleResult.getMessage());
+                        CustomToast.makeText(getFragment().requireContext(), (int) CustomToast.LONG, simpleResult.getMessage(), Constants.ERROR).show();
                     }
                     mView.hideProgress();
+                }, throwable -> {
                 });
     }
 
@@ -227,7 +249,7 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
             }
         }
         if (!listRequest.isEmpty()) {
-            new XacNhanConfirmPresenter(mContainerView).setListRequest(listRequest).setTenKH(tenkhachhang).pushView();
+            new XacNhanConfirmPresenter(mContainerView).setCommonObjec(list).setListRequest(listRequest).setTenKH(tenkhachhang).pushView();
         }
     }
 
@@ -359,7 +381,7 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
     }
 
     @Override
-    public void getDDVeryAddress(VerifyAddress verifyAddress) {
+    public void getDDVeryAddress(VerifyAddress verifyAddress, String diachi) {
         mView.showProgress();
         mInteractor.ddVerifyAddress(verifyAddress)
                 .subscribeOn(Schedulers.io())
@@ -367,9 +389,12 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(simpleResult -> {
                     if (simpleResult.getErrorCode().equals("00")) {
-                        mView.showAddress(simpleResult.getValue());
-                    }
+                        mView.showAddress(simpleResult.getValue(), diachi);
+                    } else Toast.showToast(getViewContext(), simpleResult.getMessage());
                     mView.hideProgress();
+                }, throwable -> {
+                    mView.hideProgress();
+                    new ApiDisposable(throwable, getViewContext());
                 });
     }
 
@@ -383,10 +408,15 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
                 .subscribe(simpleResult -> {
                     if (simpleResult.getErrorCode().equals("00")) {
                         mView.shoSucces(simpleResult.getValue());
-                    } else Toast.showToast(getViewContext(), simpleResult.getMessage());
+                    } else {
+                        Toast.showToast(getViewContext(), simpleResult.getMessage());
+                    }
 
                     mView.hideProgress();
-                }, Throwable::printStackTrace);
+                }, throwable -> {
+                    mView.hideProgress();
+                    new ApiDisposable(throwable, getViewContext());
+                });
     }
 
     @Override
@@ -405,12 +435,16 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
                         mView.hideProgress();
                     } else Toast.showToast(getViewContext(), "Không tìm thấy dữ liệu");
                     mView.hideProgress();
-                }, Throwable::printStackTrace);
+                }, throwable -> {
+                    mView.hideProgress();
+                    new ApiDisposable(throwable, getViewContext());
+                });
     }
 
 
     @Override
-    public void showAddressDetail(List<VpostcodeModel> addressListModel, TravelSales ApiTravel) {
+    public void showAddressDetail(List<VpostcodeModel> addressListModel, TravelSales
+            ApiTravel) {
         new TimDuongDiPresenter(mContainerView).setType(mType).setApiTravel(ApiTravel).setType(98).setTypeBack(1).setListVposcode(addressListModel).pushView();
     }
 
@@ -442,10 +476,14 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
                     } else {
                     }
                     mView.hideProgress();
-                }, Throwable::printStackTrace);
+                }, throwable -> {
+                    mView.hideProgress();
+                    new ApiDisposable(throwable, getViewContext());
+                });
     }
+
     @Override
-    public void ddQueuChat(RequestQueuChat request , VnpostOrderInfo vnpostOrderInfo, int type) {
+    public void ddQueuChat(RequestQueuChat request, VnpostOrderInfo vnpostOrderInfo, int type) {
         mView.showProgress();
         mInteractor.ddQueuChat(request)
                 .subscribeOn(Schedulers.io())
@@ -462,13 +500,14 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
                         mView.hideProgress();
                         if (simpleResult.getErrorCode().equals("00")) {
                             AccountChatInAppGetQueueResponse response = NetWorkController.getGson().fromJson(simpleResult.getData(), AccountChatInAppGetQueueResponse.class);
-                            mView.showAccountChatInAppGetQueueResponse(response,vnpostOrderInfo,type);
+                            mView.showAccountChatInAppGetQueueResponse(response, vnpostOrderInfo, type);
                         } else mView.showLoi(simpleResult.getMessage());
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         mView.hideProgress();
+                        new ApiDisposable(e, getViewContext());
                     }
                 });
     }

@@ -22,7 +22,7 @@ public class DiaLogThongbao extends Dialog {
     DialogCallback dialogCallback;
 
     public DiaLogThongbao(@NonNull Context context, String title, DialogCallback dialogCallback) {
-        super(context, R.style.AppBottomSheetDialog);
+        super(context, R.style.ios_dialog_style1);
         View view = View.inflate(getContext(), R.layout.dialog_cauhoi, null);
         getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         setContentView(view);

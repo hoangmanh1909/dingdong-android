@@ -10,11 +10,8 @@ import com.ems.dingdong.R;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.danhsachbaophat.listdanhsachbaophat.ListBaoPhatContract;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.danhsachbaophat.listdanhsachbaophat.ListBaoPhatFragment;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.danhsachbaophat.listdanhsachbaophat.ListBaoPhatPresenter;
-import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.ListBaoPhatBangKePresenter;
-import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.ListDeliveryAdapter;
-import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.ListDeliveryConstract;
 import com.ems.dingdong.model.DeliveryPostman;
-import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,14 +20,15 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 public class TabBaoPhatFragment extends ViewFragment<TabBaoPhatConstract.Presenter>
-        implements TabBaoPhatConstract.View, ListBaoPhatContract.OnTabListener {
+        implements TabBaoPhatConstract.View, TabBaoPhatConstract.OnTabsListener {
 
     @BindView(R.id.tabs)
     PagerSlidingTabStrip tabs;
     @BindView(R.id.pager)
     ViewPager pager;
-    private List<ListBaoPhatFragment> tabList;
+    private List<ViewFragment> tabList;
     private TabBaoPhatAdapter mAdapter;
+
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_tab_list_bd13;
@@ -60,15 +58,37 @@ public class TabBaoPhatFragment extends ViewFragment<TabBaoPhatConstract.Present
 
 
     @Override
-    public void getCurrentTab() {
+    public void onQuantityChanged(int quantity, int currentSetTab) {
+        mAdapter.setTittle(quantity, currentSetTab);
+        mAdapter.notifyDataSetChanged();
+        tabs.notifyDataSetChanged();
+        Log.d("Thanh Khiem", quantity + " - " + currentSetTab);
+    }
+
+    @Override
+    public void onTabChange(int position) {
+        if (position == 0)
+            pager.setCurrentItem(0);
+        else
+            pager.setCurrentItem(1);
+    }
+
+    @Override
+    public void onDelivered(String data, int mType) {
 
     }
-//    @OnClick({R.id.img_back})
-//    public void onViewClicked(View view) {
-//        switch (view.getId()) {
-//            case R.id.img_back:
-//                mPresenter.back();
-//                break;
-//        }
-//    }
+
+    @Override
+    public void onSearchChange(String fromDate, String toDate, int currentPosition) {
+
+    }
+
+    @OnClick({R.id.img_back})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.img_back:
+                mPresenter.back();
+                break;
+        }
+    }
 }

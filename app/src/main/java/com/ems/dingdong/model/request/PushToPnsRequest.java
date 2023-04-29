@@ -1,5 +1,6 @@
 package com.ems.dingdong.model.request;
 
+import com.ems.dingdong.model.DLVDeliveryUnSuccessRefundRequest;
 import com.google.gson.annotations.SerializedName;
 
 public class PushToPnsRequest {
@@ -94,6 +95,9 @@ public class PushToPnsRequest {
     private String OtherRequestObject;
     @SerializedName("OtherEstimateBackTime")
     private int OtherEstimateBackTime;
+
+
+
 
     public String getOtherRequestObject() {
         return OtherRequestObject;

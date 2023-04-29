@@ -102,6 +102,7 @@
         android:layout_height="match_parent">
 
         <androidx.core.widget.NestedScrollView
+            android:id="@+id/neverCompleteToStart"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fillViewport="true">
@@ -148,7 +149,7 @@
                 <com.ems.dingdong.views.CustomBoldTextView
                     style="@style/HeaderNews"
                     android:layout_width="match_parent"
-                    android:background="@drawable/bg_header_common"
+                    android:background="@drawable/bg_header_common_copy"
                     android:padding="@dimen/dimen_10dp"
                     android:text="Địa chỉ thu gom"
                     android:textColor="@color/white"
@@ -157,7 +158,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_white_radius_bottom_common"
+                    android:background="@drawable/bg_header_common_recy"
                     android:orientation="vertical">
 
                     <LinearLayout
@@ -347,7 +348,7 @@
                 <com.ems.dingdong.views.CustomBoldTextView
                     style="@style/HeaderNews"
                     android:layout_width="match_parent"
-                    android:background="@drawable/bg_header_common"
+                    android:background="@drawable/bg_header_common_copy"
                     android:padding="@dimen/dimen_10dp"
                     android:text="Hình thức thu gom"
                     android:textColor="@color/white"
@@ -455,7 +456,7 @@
                         <com.ems.dingdong.views.CustomBoldTextView
                             style="@style/HeaderNews"
                             android:layout_width="match_parent"
-                            android:background="@drawable/bg_header_common"
+                            android:background="@drawable/bg_header_common_copy"
                             android:padding="@dimen/dimen_10dp"
                             android:text="Danh sách bưu gửi"
                             android:textColor="@color/white"
@@ -464,7 +465,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/bg_white_radius_bottom_common"
+                            android:background="@drawable/bg_header_common_recy"
                             android:orientation="vertical">
 
                             <LinearLayout
@@ -518,7 +519,7 @@
                         <com.ems.dingdong.views.CustomBoldTextView
                             style="@style/HeaderNews"
                             android:layout_width="match_parent"
-                            android:background="@drawable/bg_header_common"
+                            android:background="@drawable/bg_header_common_copy"
                             android:padding="@dimen/dimen_10dp"
                             android:text="Hình thức thu gom"
                             android:textColor="@color/white"
@@ -605,10 +606,8 @@
                         <com.ems.dingdong.views.CustomTextView
                             android:id="@+id/btn_sign"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/_10sdp"
-                            android:layout_marginTop="24dp"
-                            android:layout_marginRight="@dimen/_10sdp"
+                            android:layout_height="42dp"
+                            android:layout_marginTop="16dp"
                             android:background="@drawable/bg_gradient_radius_5"
                             android:gravity="center"
                             android:paddingLeft="@dimen/dimen_20dp"
@@ -661,7 +660,6 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_margin="@dimen/_6sdp"
                             android:layout_marginTop="16dp"
                             android:orientation="horizontal"
                             app:layout_constraintStart_toStartOf="@+id/btn_sign"

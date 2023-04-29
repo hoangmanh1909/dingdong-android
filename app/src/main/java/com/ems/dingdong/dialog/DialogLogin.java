@@ -16,7 +16,7 @@ public class DialogLogin extends Dialog {
     TextView tvText;
 
     public DialogLogin(Context context, String noidung) {
-        super(context, R.style.AppBottomSheetDialog123);
+        super(context, R.style.ios_dialog_style1);
         View view = View.inflate(getContext(), R.layout.dialog_text_login, null);
         setContentView(view);
         ButterKnife.bind(this, view);

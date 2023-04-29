@@ -43,11 +43,13 @@
                         android:textSize="@dimen/text_size_16sp" />
 
                     <ImageView
+                        android:id="@+id/my_image_view"
                         android:layout_width="130dp"
                         android:layout_height="130dp"
                         android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="@dimen/dimen_10dp"
-                        android:src="@drawable/ic_active" />
+                        android:layout_marginTop="10dp"
+                        android:padding="10dp"
+                        android:src="@drawable/message" />
 
                     <com.ems.dingdong.views.CustomBoldTextView
                         android:layout_width="wrap_content"
@@ -67,7 +69,6 @@
                         android:layout_marginRight="@dimen/dimen_20dp"
                         android:text="Một tin nhắn văn bản kèm theo mã kích hoạt của bạn vừa được gửi đến"
                         android:textColor="@color/white"
-
                         android:textSize="@dimen/text_size_14sp" />
 
                     <LinearLayout
@@ -103,35 +104,45 @@
                             android:layout_marginTop="24dp"
                             android:orientation="vertical">
 
-
-                            <LinearLayout
-                                android:id="@+id/done_layout"
+                            <TextView
+                                android:id="@+id/btn_sms"
+                                style="@style/textStyleButton"
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/bg_login"
+                                android:layout_height="48dp"
+                                android:layout_gravity="center"
+                                android:background="@drawable/bg_border_botton"
                                 android:gravity="center"
-                                android:orientation="horizontal"
-                                android:paddingTop="@dimen/size_12dp"
-                                android:paddingBottom="@dimen/size_12dp">
+                                android:text="Hoàn tất"
+                                android:textColor="@color/white" />
 
-                                <ImageView
-                                    android:layout_width="@dimen/dimen_25dp"
-                                    android:layout_height="@dimen/size_15dp"
-                                    android:layout_gravity="center_vertical"
-                                    android:src="@drawable/ic_done" />
+                            <!--                            <LinearLayout-->
+                            <!--                                android:id="@+id/done_layout"-->
+                            <!--                                android:layout_width="match_parent"-->
+                            <!--                                android:layout_height="wrap_content"-->
+                            <!--                                android:background="@drawable/bg_login"-->
+                            <!--                                android:gravity="center"-->
+                            <!--                                android:orientation="horizontal"-->
+                            <!--                                android:paddingTop="@dimen/size_12dp"-->
+                            <!--                                android:paddingBottom="@dimen/size_12dp">-->
 
-                                <com.ems.dingdong.views.CustomTextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center_vertical"
-                                    android:layout_marginLeft="@dimen/dimen_8dp"
-                                    android:text="Hoàn tất"
-                                    android:textAllCaps="true"
-                                    android:textColor="@android:color/white"
-                                    android:textSize="@dimen/text_size_14sp" />
+                            <!--                                <ImageView-->
+                            <!--                                    android:layout_width="@dimen/dimen_25dp"-->
+                            <!--                                    android:layout_height="@dimen/size_15dp"-->
+                            <!--                                    android:layout_gravity="center_vertical"-->
+                            <!--                                    android:src="@drawable/ic_done" />-->
+
+                            <!--                                <com.ems.dingdong.views.CustomTextView-->
+                            <!--                                    android:layout_width="wrap_content"-->
+                            <!--                                    android:layout_height="wrap_content"-->
+                            <!--                                    android:layout_gravity="center_vertical"-->
+                            <!--                                    android:layout_marginLeft="@dimen/dimen_8dp"-->
+                            <!--                                    android:text="Hoàn tất"-->
+                            <!--                                    android:textAllCaps="true"-->
+                            <!--                                    android:textColor="@android:color/white"-->
+                            <!--                                    android:textSize="@dimen/text_size_14sp" />-->
 
 
-                            </LinearLayout>
+                            <!--                            </LinearLayout>-->
 
 
                         </RelativeLayout>

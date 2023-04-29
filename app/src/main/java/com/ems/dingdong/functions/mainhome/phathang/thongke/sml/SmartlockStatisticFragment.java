@@ -1,6 +1,5 @@
 package com.ems.dingdong.functions.mainhome.phathang.thongke.sml;
 
-import android.Manifest;
 import android.widget.ImageView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -10,9 +9,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.core.base.viper.ViewFragment;
 import com.ems.dingdong.R;
 import com.ems.dingdong.dialog.EditDayDialog;
-import com.ems.dingdong.model.CommonObject;
 import com.ems.dingdong.model.response.StatisticSMLDeliveryFailResponse;
-import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 

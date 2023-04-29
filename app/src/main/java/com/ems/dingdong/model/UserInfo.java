@@ -18,7 +18,7 @@ public class UserInfo {
     @SerializedName("HRMCode")
     private String HRMCode;
     @SerializedName("IsLearning")
-    private boolean IsLearning ;
+    private boolean IsLearning;
     @SerializedName("EmpGroupID")
     private String empGroupID;
     @SerializedName("UnitLink")
@@ -65,6 +65,16 @@ public class UserInfo {
     private String ChatPassword;
     @SerializedName("UnitName")
     private String UnitName;
+    @SerializedName("VMapId")
+    private String VMapId;
+
+    public String getVMapId() {
+        return VMapId;
+    }
+
+    public void setVMapId(String VMapId) {
+        this.VMapId = VMapId;
+    }
 
     public String getHRMCode() {
         return HRMCode;

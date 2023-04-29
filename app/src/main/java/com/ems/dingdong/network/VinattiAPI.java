@@ -101,6 +101,8 @@ import retrofit2.http.Query;
  * Created by HungNX on 6/30/16.
  */
 public interface VinattiAPI {
+    @POST("sendMessage")
+    Single<DataResult> executeV1(@Body ChatMode emsDataRequest);
     @FormUrlEncoded
     @POST("api/Authorized/Login")
     Call<LoginResult> loginAuthorized(@Field("MobileNumber") String mobileNumber,
@@ -334,6 +336,10 @@ public interface VinattiAPI {
     @Multipart
     @POST("api/Handle/UploadImage")
     Call<UploadSingleResult> postImageSingle(@Part MultipartBody.Part image);
+
+    @Multipart
+    @POST("API/Handle/UploadSignature")
+    Single<UploadSingleResult> postImageImageSignature(@Part MultipartBody.Part image);
 
     @Multipart
     @POST("api/Handle/UploadImage")

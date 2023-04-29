@@ -145,6 +145,8 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
     String mPhoneS = "";
     ArrayList<Item> items = new ArrayList<>();
     int getmID = 0;
+
+    List<Long> longList = new ArrayList<>();
     List<DichVuMode> dichVuModeList = new ArrayList<>();
     private static final String[] PERMISSIONS = new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION,
     };//, Manifest.permission.PROCESS_OUTGOING_CALLS
@@ -178,6 +180,7 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
     @Override
     public void initLayout() {
         super.initLayout();
+        longList = new ArrayList<>();
         checkPermissionCall();
         dichVuModeList = new ArrayList<>();
         mListHoanTatNhieuTin = new ArrayList<>();
@@ -224,13 +227,16 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
                         @Override
                         public void onClick(View v) {
                             android.util.Log.e("TAG", "onClick: 1212");
-                            Log.d("AAAAAAA", mAdapter.getListFilter().get(position).getiD());
+//                            Log.d("AAAAAAAHAN", new Gson().toJson(mAdapter.getListFilter().get(position)));
                             mID = Integer.parseInt(mAdapter.getListFilter().get(position).getiD());
+                            for (String item : mAdapter.getListFilter().get(position).getCodeS1()) {
+                                longList.add(Long.valueOf(item));
+                            }
                             mPhoneS = holder.getItem(position).getReceiverPhone();
                             VerifyAddress x = new VerifyAddress();
                             x.setLatitude(new GetLocation().getLastKnownLocation(getViewContext()).getLatitude());
                             x.setLongitude(new GetLocation().getLastKnownLocation(getViewContext()).getLongitude());
-                            mPresenter.getDDVeryAddress(x);
+                            mPresenter.getDDVeryAddress(x, mListChua.get(position).getReceiverAddress());
                         }
                     });
 
@@ -346,13 +352,16 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
                     holder.imgDddress.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Log.d("AAAAAAA", mAdapter.getListFilter().get(position).getiD());
+                            Log.d("AAAAAAAHAN", new Gson().toJson(mAdapter.getListFilter().get(position)));
                             mID = Integer.parseInt(mAdapter.getListFilter().get(position).getiD());
+                            for (String item : mAdapter.getListFilter().get(position).getCodeS1()) {
+                                longList.add(Long.valueOf(item));
+                            }
                             mPhoneS = holder.getItem(position).getReceiverPhone();
                             VerifyAddress x = new VerifyAddress();
                             x.setLatitude(new GetLocation().getLastKnownLocation(getViewContext()).getLatitude());
                             x.setLongitude(new GetLocation().getLastKnownLocation(getViewContext()).getLongitude());
-                            mPresenter.getDDVeryAddress(x);
+                            mPresenter.getDDVeryAddress(x, mListDa.get(position).getReceiverAddress());
                         }
                     });
 
@@ -874,6 +883,8 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
                 tvRejectCount.setText(String.format("Tin chưa hoàn tất: %s", countP1));
                 tvAcceptCount.setVisibility(View.GONE);
                 tvRejectCount.setVisibility(View.VISIBLE);
+                Log.d("THANHKHIEM123123",new Gson().toJson(mListChuatam));
+
                 mPresenter.titleChanged(mListChua.size(), 0);
                 mAdapter.notifyDataSetChanged();
 
@@ -934,6 +945,7 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
         recycler.setVisibility(View.GONE);
     }
 
+
     @Override
     public void onPause() {
         super.onPause();
@@ -962,9 +974,9 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
     }
 
     @Override
-    public void showAddress(Values x) {
+    public void showAddress(Values x, String diachi) {
         android.util.Log.d("asdasdasdasd", new Gson().toJson(x));
-        SharedPref sharedPref = new SharedPref(Objects.requireNonNull(getActivity()));
+        SharedPref sharedPref = new SharedPref(requireActivity());
         UserInfo userInfo = null;
         RouteInfo routeInfo = null;
         String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
@@ -984,7 +996,7 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
         UserInfo finalUserInfo = userInfo;
         PostOffice finalPostOffice = postOffice;
         RouteInfo finalRouteInfo = routeInfo;
-        new DialogXacThuc(getViewContext(), x, new XacMinhCallback() {
+        new DialogXacThuc(getViewContext(), x, diachi, new XacMinhCallback() {
             @Override
             public void onResponse(CreateVietMapRequest v) {
                 v.setLatitude(new GetLocation().getLastKnownLocation(getViewContext()).getLatitude());
@@ -998,7 +1010,7 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
                 v.setRouteId(Long.parseLong(finalRouteInfo.getRouteId()));
                 v.setPhone(mPhoneS);
                 v.setType(2);
-                v.setId(mID);
+                v.setId(longList);
                 v.setCategoryID(v.getCategoryID());
                 mPresenter.ddCreateVietMap(v);
             }
@@ -1011,7 +1023,6 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
             for (int i = 0; i < mListChua.size(); i++)
                 if (mID == Integer.parseInt(mListChua.get(i).getiD())) {
                     mListChua.get(i).setSenderVpostcode(mess);
-                    Log.d("thasdasdasd", mess);
                 }
 
             mAdapter.notifyDataSetChanged();

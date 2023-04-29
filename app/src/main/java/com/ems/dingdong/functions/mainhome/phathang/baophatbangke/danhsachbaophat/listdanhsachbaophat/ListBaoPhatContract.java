@@ -26,11 +26,11 @@ import retrofit2.Call;
 public interface ListBaoPhatContract {
     interface Interactor extends IInteractor<Presenter> {
 
-        Single<SimpleResult>  searchDeliveryPostman(String postmanID,
-                                                            String fromDate,
-                                                            String toDate,
-                                                            String routeCode,
-                                                            Integer searchType);
+        Single<SimpleResult> searchDeliveryPostman(String postmanID,
+                                                   String fromDate,
+                                                   String toDate,
+                                                   String routeCode,
+                                                   Integer searchType);
 
         /**
          * Call to service center to connect to calleenumber.
@@ -85,14 +85,10 @@ public interface ListBaoPhatContract {
                                    Integer deliveryType
         );
 
+        int getPositionTab();
 
+        void setTitleTab(int quantity);
     }
 
-    interface OnTabListener {
-        /**
-         * Event when tab cancel delivery success.
-         */
 
-        void getCurrentTab();
-    }
 }

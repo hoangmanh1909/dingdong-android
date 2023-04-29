@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/bg_border_edittext_v1"
+    android:paddingBottom="10dp"
+    app:cardCornerRadius="5dp">
+
+    <LinearLayout
+        android:id="@+id/layout_itemBD13"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:weightSum="10">
+
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <CheckBox
+                android:id="@+id/cb_selected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@drawable/custom_btn_radio"
+                android:clickable="false"
+                android:paddingRight="@dimen/_5sdp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="9"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <com.ems.dingdong.views.CustomBoldTextView
+                    android:id="@+id/tv_index"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:gravity="left"
+
+                    android:textColor="@color/blue"
+                    android:textSize="@dimen/text_size_16sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/ll_code"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/ll_code" />
+
+                <LinearLayout
+                    android:id="@+id/ll_code"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="@+id/img_chat"
+                    app:layout_constraintEnd_toStartOf="@+id/img_chat"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toEndOf="@+id/tv_index"
+                    app:layout_constraintTop_toTopOf="@+id/img_chat"
+                    tools:ignore="MissingConstraints">
+
+                    <com.ems.dingdong.views.CustomBoldTextView
+                        android:id="@+id/tv_code"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/tv_index"
+                        android:text="COD2018041"
+                        android:textColor="@color/blue"
+                        android:textSize="16dp" />
+
+                    <TextView
+                        android:id="@+id/tv_xacminhdiachi"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/hyperlink_underline_red"
+                        android:text="Chưa xác thực địa chỉ "
+                        android:textColor="@color/red_light"
+                        android:textSize="12dp"
+                        android:textStyle="italic"
+                        android:visibility="gone" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/img_map"
+                    android:layout_width="@dimen/_27sdp"
+                    android:layout_height="@dimen/_27sdp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="2dp"
+                    android:padding="3dp"
+                    android:src="@drawable/ic_map64"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="@+id/img_contact_phone"
+                    app:layout_constraintEnd_toStartOf="@+id/img_contact_phone"
+                    app:layout_constraintTop_toTopOf="@+id/img_contact_phone" />
+
+                <ImageView
+                    android:id="@+id/img_sml"
+                    android:layout_width="@dimen/_27sdp"
+                    android:layout_height="@dimen/_27sdp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="2dp"
+                    android:padding="3dp"
+                    android:src="@drawable/ic_sml"
+                    app:layout_constraintBottom_toBottomOf="@+id/img_map"
+                    app:layout_constraintEnd_toEndOf="@+id/ll_code"
+                    app:layout_constraintEnd_toStartOf="@+id/img_map"
+                    app:layout_constraintTop_toTopOf="@+id/img_map" />
+
+                <ImageView
+                    android:id="@+id/img_address"
+                    android:layout_width="@dimen/_27sdp"
+                    android:layout_height="@dimen/_27sdp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="2dp"
+                    android:padding="3dp"
+                    android:src="@drawable/ic_navigate_circle"
+                    app:layout_constraintBottom_toBottomOf="@+id/img_sml"
+                    app:layout_constraintEnd_toEndOf="@+id/ll_code"
+                    app:layout_constraintEnd_toStartOf="@+id/img_sml"
+                    app:layout_constraintTop_toTopOf="@+id/img_sml" />
+
+                <ImageView
+                    android:id="@+id/img_chat"
+
+                    android:layout_width="@dimen/_27sdp"
+                    android:layout_height="@dimen/_27sdp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="2dp"
+                    android:padding="3dp"
+                    android:src="@drawable/chatbubbles"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="@+id/img_address"
+                    app:layout_constraintEnd_toEndOf="@+id/ll_code"
+                    app:layout_constraintEnd_toStartOf="@+id/img_address"
+                    app:layout_constraintTop_toTopOf="@+id/img_address" />
+
+
+                <!--temporary gone-->
+                <ImageView
+                    android:id="@+id/img_contact_phone_ctel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:padding="3dp"
+                    android:src="@drawable/ic_call"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="@+id/img_map"
+                    app:layout_constraintEnd_toEndOf="@+id/ll_code"
+                    app:layout_constraintTop_toTopOf="@+id/img_map" />
+
+                <!--icon_extend_menu-->
+                <ImageView
+                    android:id="@+id/img_contact_phone"
+                    android:layout_width="@dimen/_27sdp"
+                    android:layout_height="@dimen/_27sdp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="2dp"
+                    android:padding="3dp"
+                    android:src="@drawable/ic_call"
+                    android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="@+id/img_ContactPhone_extend"
+                    app:layout_constraintEnd_toStartOf="@+id/img_ContactPhone_extend"
+                    app:layout_constraintTop_toTopOf="@+id/img_ContactPhone_extend" />
+
+                <ImageView
+                    android:id="@+id/img_ContactPhone_extend"
+                    android:layout_width="@dimen/_27sdp"
+                    android:layout_height="@dimen/_27sdp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="2dp"
+                    android:padding="3dp"
+                    android:src="@drawable/icon_extend_menu"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/tv_refund_postage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:textAllCaps="true"
+                android:textColor="@color/green_border"
+                android:textSize="14dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_tien_phathoan"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:paddingBottom="5dp"
+                android:textColor="@color/red_light"
+                android:textSize="14dp" />
+
+            <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/tv_sodonhang"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/red_light"
+                android:textSize="@dimen/text_size_14sp" />
+
+            <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/tv_batch_code"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_14sp" />
+
+            <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/tv_new_instruction"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/red_light"
+                android:textSize="@dimen/text_size_14sp" />
+
+            <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/tv_new_receiver_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/red_light"
+                android:textSize="@dimen/text_size_14sp" />
+
+            <LinearLayout
+                android:id="@+id/ll_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <com.ems.dingdong.views.CustomBoldTextView
+                    android:id="@+id/tv_receiver"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center|left"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_14sp" />
+
+                <ImageView
+                    android:id="@+id/iv_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/_5sdp"
+                    android:src="@drawable/ic_check_v2"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_goiy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_5dp"
+                android:drawableRight="@drawable/ic_map_v1"
+                android:gravity="center|left"
+                android:text="Gợi ý địa chỉ "
+                android:textColor="#0290fd"
+                android:textSize="14dp"
+                android:visibility="gone" />
+
+            <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/tv_sender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_14sp" />
+
+            <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/tv_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="5dp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_14sp" />
+
+            <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/tv_instruction"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/red_light"
+
+                android:textSize="@dimen/text_size_14sp" />
+
+            <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/tv_weight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_14sp" />
+
+
+            <com.ems.dingdong.views.CustomBoldTextView
+                android:id="@+id/tv_COD"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/red_light"
+
+                android:textSize="@dimen/text_size_14sp" />
+
+            <com.ems.dingdong.views.CustomBoldTextView
+                android:id="@+id/tv_fee"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/red_light"
+                android:textSize="@dimen/text_size_14sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="5dp"
+                android:weightSum="2">
+
+                <com.ems.dingdong.views.CustomTextView
+                    android:id="@+id/tv_gtgt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1.5"
+                    android:textColor="@color/red_light"
+                    android:textSize="@dimen/text_size_14sp" />
+
+                <ImageView
+                    android:id="@+id/img_doitra"
+                    android:layout_width="0dp"
+                    android:layout_height="42dp"
+                    android:layout_gravity="right"
+                    android:layout_weight="0.5"
+                    android:padding="5dp"
+                    android:src="@drawable/ic_doitra"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+
+            <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/tv_sml_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text=""
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_14sp"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
+            <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/tv_create_dated"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="@dimen/text_size_14sp" />
+
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

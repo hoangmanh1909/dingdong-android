@@ -50,7 +50,7 @@ public class BaseEditDayDialog extends Dialog implements com.tsongkha.spinnerdat
 
     private void init(Context context)
     {
-        getWindow().setWindowAnimations(R.style.DialogAnimation);
+//        getWindow().setWindowAnimations(R.style.ios_dialog_style);
         mActivity = (BaseActivity) context;
         setContentView(R.layout.dialog_edit_day);
         final Unbinder unbinder = ButterKnife.bind(this);

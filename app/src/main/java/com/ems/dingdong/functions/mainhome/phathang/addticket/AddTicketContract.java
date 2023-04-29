@@ -33,7 +33,7 @@ interface AddTicketContract {
     }
 
     interface Presenter extends IPresenter<AddTicketContract.View, AddTicketContract.Interactor> {
-        void ddGetSubSolution();
+        void ddGetSubSolution(String code );
 
         void ddDivCreateTicket(DivCreateTicketMode data);
 

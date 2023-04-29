@@ -17,5 +17,7 @@ public class TabListCommonContract {
         ContainerView getContainerView();
 
         int getType();
+
+        void  showSort();
     }
 }

@@ -10,10 +10,17 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.CallLog;
+import android.provider.Settings;
 import android.telephony.TelephonyManager;
+import android.text.TextPaint;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,6 +31,7 @@ import androidx.loader.app.LoaderManager;
 import androidx.loader.content.CursorLoader;
 import androidx.loader.content.Loader;
 
+import com.core.base.log.Logger;
 import com.core.base.viper.ViewFragment;
 import com.core.utils.NetworkUtils;
 import com.ems.dingdong.BuildConfig;
@@ -32,9 +40,11 @@ import com.ems.dingdong.app.logcall.CallLogInfo;
 import com.ems.dingdong.app.logcall.CallLogUtils;
 import com.ems.dingdong.callback.DialogVersionCallback;
 import com.ems.dingdong.callback.RouteOptionCallBack;
+import com.ems.dingdong.callback.RouteOptionCallBackV1;
 import com.ems.dingdong.dialog.DialogLogin;
 import com.ems.dingdong.dialog.DialogText;
 import com.ems.dingdong.dialog.RouteDialog;
+import com.ems.dingdong.functions.mainhome.address.xacminhdiachi.timduongdi.TimDuongDiFragment;
 import com.ems.dingdong.functions.mainhome.main.MainActivity;
 import com.ems.dingdong.functions.mainhome.main.MainFragment;
 import com.ems.dingdong.functions.mainhome.main.data.CallLogMode;
@@ -45,7 +55,9 @@ import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.response.GetVersionResponse;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.network.api.ApiService;
 import com.ems.dingdong.utiles.Constants;
+import com.ems.dingdong.utiles.CustomToast;
 import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.Log;
 import com.ems.dingdong.utiles.NumberUtils;
@@ -54,6 +66,7 @@ import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.CustomMediumTextView;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.gson.Gson;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.ringme.ott.sdk.listener.RingmeChatLoginListener;
@@ -64,6 +77,9 @@ import com.ringme.ott.sdk.RingmeOttSdk;
 //import com.ringme.ott.sdk.utils.RingmeOttSdk;
 //import com.ringme.ott.sdk.listener.RingmeChatLoginListener;
 //import com.ringme.ott.sdk.utils.RingmeOttSdk;
+
+import org.apache.poi.ss.formula.functions.T;
+import org.checkerframework.checker.lock.qual.LockHeld;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -83,58 +99,96 @@ import butterknife.OnClick;
  */
 public class LoginFragment extends ViewFragment<LoginContract.Presenter> implements LoginContract.View {
 
+    //    @BindView(R.id.tv_version)
+//    TextView tvVersion;
+//    @BindView(R.id.tv_phone)
+//    CustomMediumTextView tvPhone;
+//    @BindView(R.id.tv_status)
+//    CustomTextView tvStatus;
+//    private SharedPref mSharedPref;
+    @BindView(R.id.ll_login)
+    View llLogin;
+    @BindView(R.id.ll_xacthuc)
+    View llXacthuc;
+    @BindView(R.id.ll_sms)
+    View llSms;
+    @BindView(R.id.edt_sdt)
+    EditText edtSdt;
+    @BindView(R.id.edt_sms)
+    EditText edtSms;
+    @BindView(R.id.tv_login)
+    TextView tvLogin;
+    @BindView(R.id.tv_title)
+    TextView tvTitle;
     @BindView(R.id.tv_version)
-    CustomTextView tvVersion;
-    @BindView(R.id.tv_phone)
-    CustomMediumTextView tvPhone;
-    @BindView(R.id.tv_status)
-    CustomTextView tvStatus;
+    TextView tvVersion;
+    String mPhone = "";
+    boolean isVersion = true;
     private SharedPref mSharedPref;
     private static final String[] PERMISSIONS = new String[]{Manifest.permission.READ_CALL_LOG, Manifest.permission.WRITE_CONTACTS, Manifest.permission.CAMERA, Manifest.permission.READ_PHONE_STATE, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_WIFI_STATE, Manifest.permission.ACCESS_NETWORK_STATE, Manifest.permission.INTERNET, Manifest.permission.RECORD_AUDIO, Manifest.permission.MODIFY_AUDIO_SETTINGS, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE,};//, Manifest.permission.PROCESS_OUTGOING_CALLS
     private static final int REQUEST_CODE_ASK_PERMISSIONS = 98;
-    private ItemBottomSheetPickerUIFragment pickerShift;
 
-
-    private Calendar mCalendarRaCa;
-    private Calendar mCalendarVaoCa;
-    private String mDateRaCa;
-    private String mDateVaoCa;
-    String mDataCA;
     UserInfo userInfo1 = null;
-    List<CallLogMode> mList = new ArrayList<>();
 
     public static LoginFragment getInstance() {
         return new LoginFragment();
     }
 
-    boolean isVersion;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Window window = getActivity().getWindow();
+
+// clear FLAG_TRANSLUCENT_STATUS flag:
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+
+// add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+
+// finally change the color
+        window.setStatusBarColor(ContextCompat.getColor(getContext(), R.color.colorPrimaryDark));
+    }
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_login;
+        return R.layout.fragment_login_v1;
     }
 
     @Override
     public void initLayout() {
         super.initLayout();
-
-        isVersion = true;
-        tvVersion.setText(String.format("V.%s (%s)", BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE));
+        try {
+            mSharedPref = new SharedPref(getActivity());
+            isVersion = true;
+            llLogin.setVisibility(View.VISIBLE);
+            llXacthuc.setVisibility(View.GONE);
+            llSms.setVisibility(View.GONE);
+            String values = mSharedPref.getString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "");
+            if (TextUtils.isEmpty(values)) {
+//                showXacThuc();
+                tvTitle.setText("Xác thực ứng dụng lần đầu sử dụng");
+            } else {
+                mPhone = values.split(";")[0];
+                tvLogin.setText(mPhone);
+                tvTitle.setText("Truy cập để tiếp tục sử dụng");
+                showLogin();
+            }
+            tvVersion.setText("Phiên bản: " + BuildConfig.VERSION_NAME);
 //        CheckCall.checkPermissionCall(getViewContext());
 
-        mSharedPref = new SharedPref(getActivity());
-        if (BuildConfig.DEBUG) {
-//        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0969803622;9F44C481A28BA1C5831AC903F4451FE980205595AFAA5134B41E23B1651306A4");//dev EMS
+            if (BuildConfig.DEBUG) {
+//        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0941178861;7B5D73A88B118F0362969B3F58419A23C09F40238240F8B2941F9C2974D218F0");//dev EMS
 //        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0973222902;A0F0033A62B4FB523F85F25C0469F41F35AABCCE42165823EB9E11D42C91D427");// pro vinatti
 //         mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0947278893;73AA9207BC84142291421BC028955CBC6637BF01CE20948531B259787B5C74CE");// dev vinatti
 //         product
 //            mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0846043045;8BA5730A24D18630D3B442451CBCE4950BE906606BAA9796D49D238C03A2EF9F");// dev UAT
 //            mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0386429889;DA64BB2CC38718125DF731ED355695D88207E78544332F9F9E4B4153A0FED175");// pre UAT
 //            mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0935271867;7790BAABB8FFC68592EE7F53045706EC326AC735B52B78339CE1D2D1791013F9");// pre UAT
-            // dev vinatti
-//            mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0869635326;249DBDE22786D30E4B9420A12B5347565208A39485F90D9029AF793BCC84BC0C"); // dev
-
-        }
+                // dev vinatti
+//                mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0919440179;86C1162DC057618E721048A6711DB73EE9FDADE0470851262DA591E3D9EA90AA"); // dev
+//
+            }
 //        loginSipCmc();
 
 //        String a = "05/10/2022 17:11:19"; // thowif gian dong bo
@@ -152,97 +206,14 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
 //        } catch (ParseException e) {
 //            e.printStackTrace();
 //        }
-        checkPermissionCall();
-
-//        if (getRuntimePermission())
-//            loadData();
-    }
-
-    public void loadData() {
-        CallLogUtils callLogUtils = CallLogUtils.getInstance(getContext());
-        List<CallLogInfo> list = callLogUtils.readCallLogs();
-        System.out.println("NHUHAN" + new Gson().toJson(list));
-        sharedPref = new SharedPref(getActivity());
-
-        mCalendarRaCa = Calendar.getInstance();
-        mDataCA = sharedPref.getString(Constants.KEY_RA_VAOV1, "");
-        try {
-            if (!mDataCA.isEmpty()) {
-                mDateRaCa = DateTimeUtils.convertDateToString(mCalendarRaCa.getTime(), DateTimeUtils.DEFAULT_DATETIME_FORMAT);
-//                ModeCA modeCA = NetWorkController.getGson().fromJson(mDataCA, ModeCA.class);
-//                mDateVaoCa = modeCA.getNgaygio();
-                List<CallLogInfo> modeList = new ArrayList<>();
-//                String ml = sharedPref.getString(Constants.KEY_LIST_PHONE, "");
-//                if (!ml.isEmpty()) {
-//                CallLogMode[] callLogModeList = NetWorkController.getGson().fromJson(ml, CallLogMode[].class);
-//                List<CallLogMode> list = Arrays.asList(callLogModeList);
-                for (int i = 0; i < list.size(); i++) {
-//                    list.get(i).setPostmanCode(modeCA.getPostmanCode());
-//                    list.get(i).setFromNumber(modeCA.getFromNumber());
-                    long dateFrom = list.get(i).getDate();
-                    @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter = new SimpleDateFormat(DateTimeUtils.DEFAULT_DATETIME_FORMAT);
-                    String date = formatter.format(dateFrom);
-                    @SuppressLint("SimpleDateFormat") Date date1 = new SimpleDateFormat(DateTimeUtils.DEFAULT_DATETIME_FORMAT).parse(date);
-                    @SuppressLint("SimpleDateFormat") Date date2 = new SimpleDateFormat(DateTimeUtils.DEFAULT_DATETIME_FORMAT).parse(mDataCA);
-                    @SuppressLint("SimpleDateFormat") Date date3 = new SimpleDateFormat(DateTimeUtils.DEFAULT_DATETIME_FORMAT).parse(mDateRaCa);
-                    if (date1.compareTo(date2) >= 0 && date1.compareTo(date3) <= 0) {
-                        modeList.add(list.get(i));
-                    }
-                }
-//                }
-                String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
-                if (!userJson.isEmpty()) {
-                    userInfo1 = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
-                }
-                List<CallLogMode> request = new ArrayList<>();
-                if (modeList.size() > 0) {
-                    for (CallLogInfo info : modeList) {
-                        CallLogMode i = new CallLogMode();
-                        long dateFrom = info.getDate();
-                        @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter = new SimpleDateFormat(DateTimeUtils.DEFAULT_DATETIME_FORMAT);
-                        String date = formatter.format(dateFrom);
-                        i.setDate(date);
-                        i.setCallDate(date);
-                        i.setCallDuration(String.valueOf(info.getDuration()));
-                        i.setCallType(Integer.parseInt(info.getCallType()));
-                        i.setPhNumber(info.getNumber());
-                        i.setPostmanCode(userInfo1.getUserName());
-                        i.setFromNumber(userInfo1.getMobileNumber());
-                        request.add(i);
-                    }
-                    Log.d("NhuHanTHNHKASDASD", new Gson().toJson(request) + mDataCA);
-                    mPresenter.getCallLog(request);
-                } else {
-                    Toast.showToast(getViewContext(), "Bạn không thực hiện cuộc gọi nào (từ " + mDataCA + " đến " + mDateRaCa + ")");
-                }
-            } else {
-                mCalendarVaoCa = Calendar.getInstance();
-//                ModeCA modeCA1 = new ModeCA();
-//                modeCA1.setNgaygio(DateTimeUtils.convertDateToString(mCalendarVaoCa.getTime(), DateTimeUtils.DEFAULT_DATETIME_FORMAT));
-//                modeCA1.setPostmanCode(userInfo1.getUserName());
-//                modeCA1.setFromNumber(userInfo1.getMobileNumber());
-                sharedPref.putString(Constants.KEY_RA_VAOV1, DateTimeUtils.convertDateToString(mCalendarVaoCa.getTime(), DateTimeUtils.DEFAULT_DATETIME_FORMAT));
-                Log.d("THNHKASDASDLANDAU", DateTimeUtils.convertDateToString(mCalendarVaoCa.getTime(), DateTimeUtils.DEFAULT_DATETIME_FORMAT));
-            }
+            checkPermissionCall();
         } catch (Exception e) {
-            e.getMessage();
-            sharedPref.putBoolean(Constants.KEY_TRANG_THAI_LOG_CALL, true);
-            Toast.showToast(getViewContext(), "Lỗi không thể ghi nhận được log cuộc gọi. (" + e.getMessage() + ")");
+            Toast.showToast(getViewContext(), e.getMessage());
         }
-
-    }
-
-    private boolean getRuntimePermission() {
-        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_CALL_LOG) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.READ_CALL_LOG}, 123);
-            return false;
-        }
-        return true;
     }
 
     private void checkPermissionCall() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-//            int hasPermission1 = getActivity().checkSelfPermission(Manifest.permission.READ_CALL_LOG);
             int hasPermission21 = getActivity().checkSelfPermission(Manifest.permission.WRITE_CONTACTS);
             int hasPermission2 = getActivity().checkSelfPermission(Manifest.permission.READ_PHONE_STATE);
             int hasPermission3 = getActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION);
@@ -272,217 +243,193 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 123) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                loadData();
+//                loadData();
             } else {
                 Toast.showToast(getViewContext(), "Bạn đã từ chối quyền " + grantResults[0]);
             }
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
+    @OnClick({R.id.btn_login, R.id.btn_tieptheo, R.id.btn_sms})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.btn_login:
+                mPresenter.ddGetVersion();
+                llSms.setVisibility(View.GONE);
+                break;
+            case R.id.btn_tieptheo:
+                mPhone = edtSdt.getText().toString();
+                if (TextUtils.isEmpty(mPhone)) {
+                    showErrorToast("Vui lòng nhập số điện thoại.");
+                    return;
+                }
+                if (!NumberUtils.checkMobileNumber(mPhone)) {
+                    showErrorToast("Số điện thoại không hợp lệ.");
+                    return;
+                }
+                mPresenter.ddXacThuc(mPhone);
+                break;
+            case R.id.btn_sms:
+                String code = edtSms.getText().toString();
+                if (TextUtils.isEmpty(code)) {
+                    showErrorToast("Xin vui lòng nhập mã kích hoạt.");
+                    return;
+                }
 
-    @Override
-    public void onDisplay() {
-        super.onDisplay();
-//        try {
-//            getLoaderManager().initLoader(URL_LOADER, null, this);
-//        } catch (Exception ignored) {
-//        }
-
-        String values = mSharedPref.getString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "");
-        Log.d("1212", "a: " + values);
-        if (!TextUtils.isEmpty(values)) {
-            String mobileNumber = values.split(";")[0];
-            if (!TextUtils.isEmpty(mobileNumber)) {
-                tvPhone.setText(mobileNumber);
-                tvPhone.setVisibility(View.VISIBLE);
-                tvStatus.setText("Truy cập để tiếp tục sử dụng");
-
-            } else {
-                tvPhone.setVisibility(View.GONE);
-                tvStatus.setText("Xác thực ứng dụng lần đầu sử dụng");
-            }
-        }
-    }
-
-    @OnClick(R.id.login_layout)
-    public void onViewClicked() {
-        if (NetworkUtils.isNoNetworkAvailable(getActivity())) {
-            SharedPref sharedPref = new SharedPref(getActivity());
-            String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
-            if (!userJson.isEmpty()) {
-                UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
-                if (userInfo != null) {
-                    if (userInfo.getIsEms() != null && "Y".equals(userInfo.getIsEms())) {
-                        Constants.HEADER_NUMBER = "tel:159";
-                    } else {
-                        Constants.HEADER_NUMBER = "tel:18002009";
+                if (!NumberUtils.checkActiveCode(code)) {
+                    showErrorToast("Mã kích hoạt của bạn là số có 6 chữ số.");
+                    return;
+                }
+                String codeDeviceActive = Settings.Secure.getString(getActivity().getContentResolver(),
+                        Settings.Secure.ANDROID_ID);
+                SharedPref sharedPref = new SharedPref(getActivity());
+                String token = sharedPref.getString(Constants.KEY_PUSH_NOTIFICATION, "");
+                if (TextUtils.isEmpty(token)) {
+                    token = FirebaseInstanceId.getInstance().getToken();
+                    if (TextUtils.isEmpty(token)) {
+                        token = codeDeviceActive;
+                        Logger.i("==== token: " + codeDeviceActive);
                     }
-                    gotoHome();
+                    Logger.i("token: " + token);
                 }
-            }
-        } else {
-            mPresenter.getVersion();
+                mPresenter.ddLoginSms(mPhone, code, token);
+                break;
         }
-
-    }
-
-    @Override
-    public void showError(String message) {
-        if (getActivity() != null) {
-
-            new DialogLogin(getViewContext(), message).show();
-//            new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE).
-//                    setConfirmText("OK").setTitleText("Thông báo").
-//                    setContentText(message).
-//                    setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-//                @Override
-//                public void onClick(SweetAlertDialog sweetAlertDialog) {
-//                    sweetAlertDialog.dismiss();
-//                }
-//            }).show();
-        }
-    }
-
-    @Override
-    public void showVersion(String version, String urlDownload) {
-        AlertDialog.Builder builder1 = new AlertDialog.Builder(getContext());
-        builder1.setMessage("Đã có phiên bản mới " + version + " vui lòng cập nhật ứng dụng.");
-        builder1.setCancelable(false);
-        builder1.setPositiveButton("Cập nhật", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                Intent viewIntent = new Intent("android.intent.action.VIEW", Uri.parse(urlDownload));
-                startActivity(viewIntent);
-            }
-        });
-        builder1.setNegativeButton("Đóng", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                showThanhCong();
-            }
-        });
-        AlertDialog alert11 = builder1.create();
-        alert11.show();
-        return;
-    }
-
-
-    @Override
-    public void gotoHome() {
-        if (getRuntimePermission()) loadData();
-        else {
-            Toast.showToast(getViewContext(), "Bạn đã từ chối quyền ghi nhận nhật ký cuộc gọi");
-        }
-        SharedPref sharedPref = new SharedPref(getActivity());
-        String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
-        String routeInfoJson = mSharedPref.getString(Constants.KEY_ROUTE_INFO, "");
-        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
-        if (!userJson.isEmpty()) {
-            userInfo1 = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
-        }
-        PostOffice postOffice = null;
-        RouteInfo routeInfo = null;
-        if (!postOfficeJson.isEmpty()) {
-            postOffice = NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class);
-        }
-
-        if (!routeInfoJson.isEmpty()) {
-            routeInfo = NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class);
-        }
-
-
-// sdk chij Ly
-//        String user = "7jk75dqp5j@vnpost";
-//        String pass = "3d74d58168c121430af6abd10bfd786f2e5023dd";
-//sdk chi QUyeen
-        String user = userInfo1.getChatUserName();
-        String pass = userInfo1.getChatPassword();
-
-        try {
-            if (!user.isEmpty() && !pass.isEmpty()) {
-                try {
-                    RingmeOttSdk.login(user, pass, new RingmeChatLoginListener() {
-                        @Override
-                        public void onLoginProcessError(int i, @Nullable Exception e) {
-
-                        }
-
-                        @Override
-                        public void onLoginSuccessful() {
-                            Log.d("onLoginSuccessful", "THANHCONG");
-                        }
-
-
-                    });
-                } catch (Exception e) {
-                    Toast.showToast(getViewContext(), e.getMessage());
-                }
-
-            }
-        } catch (Exception e) {
-            e.getMessage();
-        }
-
-
-        if (routeInfo != null) {
-            if (getActivity() != null) {
-                // showUIShift();
-                Intent intent = new Intent(getActivity(), MainActivity.class);
-                getActivity().finish();
-                getActivity().startActivity(intent);
-
-            }
-        } else {
-            if (postOffice != null) {
-                List<RouteInfo> routeInfos = postOffice.getRoutes();
-                if (routeInfos.size() > 0) {
-                    if (routeInfos.size() == 1) {
-                        sharedPref.putString(Constants.KEY_ROUTE_INFO, NetWorkController.getGson().toJson(routeInfos.get(0)));
-                        if (getActivity() != null) {
-                            // showUIShift();
-                            Intent intent = new Intent(getActivity(), MainActivity.class);
-                            getActivity().finish();
-                            getActivity().startActivity(intent);
-
-                        }
-                    } else {
-                        showDialog(routeInfos);
-                    }
-                }
-            } else {
-                Intent intent = new Intent(getActivity(), MainActivity.class);
-                getActivity().finish();
-                getActivity().startActivity(intent);
-            }
-        }
-        isVersion = true;
-
     }
 
     @Override
     public void showThanhCong() {
-        String values = mSharedPref.getString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "");
-        if (TextUtils.isEmpty(values)) {
-            mPresenter.gotoValidation();
+        try {
+            SharedPref sharedPref = new SharedPref(getActivity());
+            String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
+            String routeInfoJson = mSharedPref.getString(Constants.KEY_ROUTE_INFO, "");
+            PostOffice postOffice = null;
+            RouteInfo routeInfo = null;
+            String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+            if (!userJson.isEmpty()) {
+                userInfo1 = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+            }
+            if (!postOfficeJson.isEmpty()) {
+                postOffice = ApiService.getGson().fromJson(postOfficeJson, PostOffice.class);
+            }
+
+            if (!routeInfoJson.isEmpty()) {
+                routeInfo = ApiService.getGson().fromJson(routeInfoJson, RouteInfo.class);
+            }
+            String user = userInfo1.getChatUserName();
+            String pass = userInfo1.getChatPassword();
+            if (!user.isEmpty() && !pass.isEmpty()) {
+                try {
+                    if (!RingmeOttSdk.isLoggedIn())
+                        RingmeOttSdk.login(user, pass, new RingmeChatLoginListener() {
+                            @Override
+                            public void onLoginProcessError(int i, @Nullable Exception e) {
+//                        Log.d("onLoginProcessError", e != null ? e.getMessage() : null);
+                            }
+
+                            @Override
+                            public void onLoginSuccessful() {
+                                Log.d("onLoginSuccessful", "THANHCONG");
+                            }
+
+                        });
+                } catch (Exception e) {
+                    Toast.showToast(getViewContext(), "RingMe");
+                }
+
+            }
+            if (routeInfo != null) {
+                if (getActivity() != null) {
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    getActivity().finish();
+                    getActivity().startActivity(intent);
+                }
+            } else {
+                if (postOffice != null) {
+                    List<RouteInfo> routeInfos = postOffice.getRoutes();
+                    if (routeInfos.size() > 0) {
+                        if (routeInfos.size() == 1) {
+                            sharedPref.putString(Constants.KEY_ROUTE_INFO, ApiService.getGson().toJson(routeInfos.get(0)));
+                            if (getActivity() != null) {
+                                // showUIShift();
+                                Intent intent = new Intent(getActivity(), MainActivity.class);
+                                getActivity().finish();
+                                getActivity().startActivity(intent);
+
+                            }
+                        } else {
+                            showDialog(routeInfos);
+                        }
+                    }
+                } else {
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    getActivity().finish();
+                    getActivity().startActivity(intent);
+                }
+            }
+        } catch (Exception e) {
+            Toast.showToast(getViewContext(), e
+                    .getMessage());
+        }
+
+    }
+
+    @Override
+    public void showThatBai() {
+
+    }
+
+    @Override
+    public void showSMS() {
+        llLogin.setVisibility(View.GONE);
+        llSms.setVisibility(View.VISIBLE);
+        llXacthuc.setVisibility(View.GONE);
+        edtSdt.setText("");
+    }
+
+    @Override
+    public void showXacThuc() {
+        llLogin.setVisibility(View.GONE);
+        llSms.setVisibility(View.GONE);
+        llXacthuc.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showLogin() {
+        edtSms.setText("");
+        tvLogin.setText(mPhone);
+        llLogin.setVisibility(View.VISIBLE);
+        llXacthuc.setVisibility(View.GONE);
+        llSms.setVisibility(View.GONE);
+        if (TextUtils.isEmpty(mPhone)) {
+            tvTitle.setText("Xác thực ứng dụng lần đầu sử dụng");
         } else {
-            String mobileNumber = values.split(";")[0];
-            String signCode = values.split(";")[1];
-            if (TextUtils.isEmpty(mobileNumber)) {
-                showError("Không tìm thấy thông tin số điện thoại.");
-                return;
-            }
-            if (!NumberUtils.checkMobileNumber(mobileNumber)) {
-                showError("Số điện thoại không hợp lệ.");
-                return;
-            }
-            mPresenter.login(mobileNumber, signCode);
+            tvTitle.setText("Truy cập để tiếp tục sử dụng");
         }
     }
 
     @Override
-    public void showVersionV1(List<GetVersionResponse> list) {
+    public void gotoLogin() {
+        String values = mSharedPref.getString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "");
+        if (TextUtils.isEmpty(values)) {
+            showXacThuc();
+        } else {
+            String mobileNumber = values.split(";")[0];
+            String signCode = values.split(";")[1];
+            if (TextUtils.isEmpty(mobileNumber)) {
+                showErrorToast("Không tìm thấy thông tin số điện thoại.");
+                return;
+            }
+            if (!NumberUtils.checkMobileNumber(mobileNumber)) {
+                showErrorToast("Số điện thoại không hợp lệ.");
+                return;
+            }
+            mPresenter.ddLogin(mobileNumber, signCode);
+        }
+    }
+
+    @Override
+    public void showVersion(List<GetVersionResponse> list) {
         if (isVersion) {
             int isKtr = 0;
             int version = Integer.parseInt(BuildConfig.VERSION_NAME.replaceAll("\\.", ""));
@@ -503,70 +450,31 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
                 new DialogVersion(getViewContext(), v, new DialogVersionCallback() {
                     @Override
                     public void onPhienBanCu() {
-                        showThanhCong();
+                        gotoLogin();
                         isVersion = false;
                     }
 
                     @Override
                     public void onPhienBanMoi() {
+                        hideProgress();
                         Intent viewIntent = new Intent("android.intent.action.VIEW", Uri.parse(list.get(0).getUrlDownload()));
                         startActivity(viewIntent);
+
                     }
                 }).show();
-            } else showThanhCong();
+            } else gotoLogin();
         } else {
-            showThanhCong();
+            gotoLogin();
         }
-    }
-
-    SharedPref sharedPref;
-
-    @Override
-    public void showCallLog(int size) {
-        sharedPref = new SharedPref(getActivity());
-        try {
-            sharedPref.clearRaVao();
-        } catch (Exception e) {
-        }
-        UserInfo userInfo123 = null;
-        String userJson = sharedPref.getString(Constants.KEY_NAME_PHONE, "");
-        if (!userJson.isEmpty()) {
-            userInfo123 = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
-        }
-        ModeCA modeCA = new ModeCA();
-        mCalendarVaoCa = Calendar.getInstance();
-        modeCA.setNgaygio(DateTimeUtils.convertDateToString(mCalendarVaoCa.getTime(), DateTimeUtils.DEFAULT_DATETIME_FORMAT));
-//        if (userInfo123 != null) {
-//            modeCA.setPostmanCode(userInfo123.getUserName());
-//            modeCA.setFromNumber(userInfo123.getMobileNumber());
-//
-//        }
-        sharedPref.putBoolean(Constants.KEY_TRANG_THAI_LOG_CALL, false);
-        sharedPref.putString(Constants.KEY_RA_VAOV1, DateTimeUtils.convertDateToString(mCalendarVaoCa.getTime(), DateTimeUtils.DEFAULT_DATETIME_FORMAT));
-        Toast.showToast(getViewContext(), "Ghi nhận thành công " + size + " cuộc gọi lên hệ thống");
-    }
-
-
-    @Override
-    public void showMessage(String message) {
-        new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE).setConfirmText("OK").setTitleText("Thông báo").setContentText(message).setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-            @Override
-            public void onClick(SweetAlertDialog sweetAlertDialog) {
-                sweetAlertDialog.dismiss();
-                // Di toi view Validation
-                mPresenter.gotoValidation();
-            }
-        }).show();
     }
 
     void showDialog(List<RouteInfo> routeInfos) {
         new RouteDialog(getActivity(), routeInfos, new RouteOptionCallBack() {
             @Override
-            public void onRouteOptionResponse(Item item, RouteInfo itemRouteInfo) {
+            public void onRouteOptionResponse(Item routeInfo, RouteInfo itemRouteInfo) {
                 SharedPref sharedPref = new SharedPref(getActivity());
                 sharedPref.putString(Constants.KEY_ROUTE_INFO, NetWorkController.getGson().toJson(itemRouteInfo));
                 if (getActivity() != null) {
-                    // showUIShift();
                     Intent intent = new Intent(getActivity(), MainActivity.class);
                     getActivity().finish();
                     getActivity().startActivity(intent);
@@ -576,88 +484,225 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
         }).show();
     }
 
-    private static final int URL_LOADER = 1;
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 
-//    @NonNull
+    @Override
+    public void onDisplay() {
+        super.onDisplay();
+//        llLogin.setVisibility(View.VISIBLE);
+//        llXacthuc.setVisibility(View.GONE);
+//        llSms.setVisibility(View.GONE);
+//        String values = mSharedPref.getString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "");
+//        Log.d("1212", "a: " + values);
+//        if (!TextUtils.isEmpty(values)) {
+//            String mobileNumber = values.split(";")[0];
+//            if (!TextUtils.isEmpty(mobileNumber)) {
+//                tvLogin.setText(mobileNumber);
+//                tvLogin.setVisibility(View.VISIBLE);
+//                tvTitle.setText("Truy cập để tiếp tục sử dụng");
+//            } else {
+//                tvLogin.setVisibility(View.GONE);
+//                tvTitle.setText("Xác thực ứng dụng lần đầu sử dụng");
+//            }
+//        }
+    }
+
+
+    //    @OnClick(R.id.btn_login)
+//    public void onViewClicked() {
+//        if (NetworkUtils.isNoNetworkAvailable(getActivity())) {
+//            SharedPref sharedPref = new SharedPref(getActivity());
+//            String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+//            if (!userJson.isEmpty()) {
+//                UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+//                if (userInfo != null) {
+//                    if (userInfo.getIsEms() != null && "Y".equals(userInfo.getIsEms())) {
+//                        Constants.HEADER_NUMBER = "tel:159";
+//                    } else {
+//                        Constants.HEADER_NUMBER = "tel:18002009";
+//                    }
+//                    gotoHome();
+//                }
+//            }
+//        } else {
+//            mPresenter.getVersion();
+//        }
+//
+//    }
+//
+    @Override
+    public void showError(String message) {
+        if (getActivity() != null) {
+            new DialogLogin(getViewContext(), message).show();
+        }
+    }
+
+//
 //    @Override
-//    public Loader<Cursor> onCreateLoader(int loaderID, @Nullable Bundle args) {
-//        android.util.Log.d("AAAAAAAA", "onCreateLoader() >> loaderID : " + loaderID);
-//        switch (loaderID) {
-//            case URL_LOADER:
-//                // Returns a new CursorLoader
-//                return new CursorLoader(getActivity(),   // Parent activity context
-//                        CallLog.Calls.CONTENT_URI,        // Table to query
-//                        null,     // Projection to return
-//                        null,            // No selection clause
-//                        null,            // No selection arguments
-//                        null             // Default sort order
-//                );
-//            default:
-//                return null;
+//    public void gotoHome() {
+//        try {
+//            SharedPref sharedPref = new SharedPref(getActivity());
+//            String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
+//            String routeInfoJson = mSharedPref.getString(Constants.KEY_ROUTE_INFO, "");
+//            String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
+//            if (!userJson.isEmpty()) {
+//                userInfo1 = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+//            }
+//            PostOffice postOffice = null;
+//            RouteInfo routeInfo = null;
+//            if (!postOfficeJson.isEmpty()) {
+//                postOffice = NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class);
+//            }
+//
+//            if (!routeInfoJson.isEmpty()) {
+//                routeInfo = NetWorkController.getGson().fromJson(routeInfoJson, RouteInfo.class);
+//            }
+//
+//            String user = userInfo1.getChatUserName();
+//            String pass = userInfo1.getChatPassword();
+//            if (!user.isEmpty() && !pass.isEmpty()) {
+//                try {
+//                    if (!RingmeOttSdk.isLoggedIn())
+//                        RingmeOttSdk.login(user, pass, new RingmeChatLoginListener() {
+//                            @Override
+//                            public void onLoginProcessError(int i, @Nullable Exception e) {
+////                        Log.d("onLoginProcessError", e != null ? e.getMessage() : null);
+//                            }
+//
+//                            @Override
+//                            public void onLoginSuccessful() {
+//                                Log.d("onLoginSuccessful", "THANHCONG");
+//                            }
+//
+//                        });
+//                } catch (Exception e) {
+//                    Toast.showToast(getViewContext(), "RingMe");
+//                }
+//
+//            }
+//
+//
+//            if (routeInfo != null) {
+//                if (getActivity() != null) {
+//                    showProgress();
+//                    Intent intent = new Intent(getActivity(), MainActivity.class);
+//                    getActivity().finish();
+//                    getActivity().startActivity(intent);
+//                    hideProgress();
+//                }
+//            } else {
+//                if (postOffice != null) {
+//                    List<RouteInfo> routeInfos = postOffice.getRoutes();
+//                    if (routeInfos.size() > 0) {
+//                        if (routeInfos.size() == 1) {
+//                            sharedPref.putString(Constants.KEY_ROUTE_INFO, NetWorkController.getGson().toJson(routeInfos.get(0)));
+//                            if (getActivity() != null) {
+//                                // showUIShift();
+//                                showProgress();
+//                                Intent intent = new Intent(getActivity(), MainActivity.class);
+//                                getActivity().finish();
+//                                getActivity().startActivity(intent);
+//                                hideProgress();
+//
+//                            }
+//                        } else {
+//                            showDialog(routeInfos);
+//                        }
+//                    }
+//                } else {
+//                    showProgress();
+//                    Intent intent = new Intent(getActivity(), MainActivity.class);
+//                    getActivity().finish();
+//                    getActivity().startActivity(intent);
+//                    hideProgress();
+//                }
+//            }
+//            isVersion = true;
+//        } catch (Exception e) {
+//
+//        }
+//
+//
+//    }
+//
+//    @Override
+//    public void showThanhCong() {
+//        String values = mSharedPref.getString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "");
+//        if (TextUtils.isEmpty(values)) {
+//            mPresenter.gotoValidation();
+//        } else {
+//            String mobileNumber = values.split(";")[0];
+//            String signCode = values.split(";")[1];
+//            if (TextUtils.isEmpty(mobileNumber)) {
+//                showError("Không tìm thấy thông tin số điện thoại.");
+//                return;
+//            }
+//            if (!NumberUtils.checkMobileNumber(mobileNumber)) {
+//                showError("Số điện thoại không hợp lệ.");
+//                return;
+//            }
+//            mPresenter.login(mobileNumber, signCode);
 //        }
 //    }
 //
 //    @Override
-//    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor managedCursor) {
-//        mList = new ArrayList<>();
-//        SharedPref sharedPref = new SharedPref(getActivity());
-//        String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
-//        if (!userJson.isEmpty()) {
-//            userInfo1 = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
-//        }
-//        try {
-//            int number = managedCursor.getColumnIndex(CallLog.Calls.NUMBER);
-//            int numberFrm = managedCursor.getColumnIndex(CallLog.Calls.PHONE_ACCOUNT_ID);
-//            int type = managedCursor.getColumnIndex(CallLog.Calls.TYPE);
-//            int date = managedCursor.getColumnIndex(CallLog.Calls.DATE);
-//            int DEFAULT_SORT_ORDER = managedCursor.getColumnIndex(CallLog.Calls.DEFAULT_SORT_ORDER);
-//            int duration = managedCursor.getColumnIndex(CallLog.Calls.DURATION);
-//            while (managedCursor.moveToNext()) {
-//                String phNumber = managedCursor.getString(number);
-//                String callType = managedCursor.getString(type);
-//                String callDate = managedCursor.getString(date);
-//                String phNumber1 = managedCursor.getString(numberFrm);
-//                Date callDayTime = new Date(Long.valueOf(callDate));
-//                String callDuration = "0";
-//                callDuration = managedCursor.getString(duration);
-//                String dir = null;
-//                String datea = DateTimeUtils.convertDateToString(callDayTime, DateTimeUtils.DEFAULT_DATETIME_FORMAT);
-//                int callTypeCode = Integer.parseInt(callType);
-//                Log.d("MEMITOI123123", callDate + " ");
-//                CallLogMode mode = new CallLogMode();
-//                mode.setCallDate(datea);
-//                mode.setPhNumber(phNumber);
-//                mode.setCallDuration(callDuration);
-//                mode.setCallType(callTypeCode);
-//                mode.setDate(datea);
-//                mList.add(mode);
+//    public void showVersionV1(List<GetVersionResponse> list) {
+//        if (isVersion) {
+//            int isKtr = 0;
+//            int version = Integer.parseInt(BuildConfig.VERSION_NAME.replaceAll("\\.", ""));
+//            String v = BuildConfig.VERSION_NAME;
+//            for (int i = 0; i < list.size(); i++) {
+//                if (i == 0) {
+//                    if (Integer.parseInt(list.get(i).getVersion().replaceAll("\\.", "")) == version) {
+//                        break;
+//                    }
+//                }
+//                if (Integer.parseInt(list.get(i).getVersion().replaceAll("\\.", "")) != version) {
+//                    isKtr++;
+//                    v = list.get(i).getVersion();
+//                    break;
+//                }
 //            }
-//            Collections.sort(mList, new LoginFragment.NameComparator());
-//            Log.d("MEMITOI123123", new Gson().toJson(mList));
-//            sharedPref.putString(Constants.KEY_LIST_PHONE, NetWorkController.getGson().toJson(mList));
-//            managedCursor.close();
-//        } catch (Exception e) {
-//            e.getMessage();
-//            android.util.Log.d("AAAAAAAAException", e.getMessage());
+//            if (isKtr > 0) {
+//                new DialogVersion(getViewContext(), v, new DialogVersionCallback() {
+//                    @Override
+//                    public void onPhienBanCu() {
+//                        showThanhCong();
+//                        isVersion = false;
+//                    }
+//
+//                    @Override
+//                    public void onPhienBanMoi() {
+//                        Intent viewIntent = new Intent("android.intent.action.VIEW", Uri.parse(list.get(0).getUrlDownload()));
+//                        startActivity(viewIntent);
+//                    }
+//                }).show();
+//            } else showThanhCong();
+//        } else {
+//            showThanhCong();
 //        }
 //    }
-
-    class NameComparator implements Comparator<CallLogMode> {
-        public int compare(CallLogMode s1, CallLogMode s2) {
-            Date date1 = null;
-            Date date2 = null;
-            try {
-                date1 = new SimpleDateFormat(DateTimeUtils.DEFAULT_DATETIME_FORMAT).parse(s1.getDate());
-                date2 = new SimpleDateFormat(DateTimeUtils.DEFAULT_DATETIME_FORMAT).parse(s2.getDate());
-
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            return date1.compareTo(date2);
-        }
-    }
-
+//
+//    SharedPref sharedPref;
+//
+//
 //    @Override
-//    public void onLoaderReset(@NonNull Loader<Cursor> loader) {
+//    public void showMessage(String message) {
+//        new SweetAlertDialog(getActivity(), SweetAlertDialog.WARNING_TYPE).
+//                setConfirmText("OK").setTitleText("Thông báo").
+//                setContentText(message).
+//                setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+//                    @Override
+//                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+//                        sweetAlertDialog.dismiss();
+//                        // Di toi view Validation
+//                        mPresenter.gotoValidation();
+//                    }
+//                }).show();
 //    }
+
+
 }

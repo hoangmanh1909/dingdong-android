@@ -12,6 +12,7 @@ import com.ems.dingdong.model.ComfrimCreateMode;
 import com.ems.dingdong.model.DeliveryPostman;
 import com.ems.dingdong.model.SearchMode;
 import com.ems.dingdong.model.SimpleResult;
+import com.ems.dingdong.model.VM_POSTMAN_ROUTE;
 import com.ems.dingdong.model.request.DingDongCancelDeliveryRequest;
 import com.ems.dingdong.model.response.ChuaPhanHuongMode;
 
@@ -29,6 +30,8 @@ public interface ChuaPhanHuongContract {
 
         Single<SimpleResult> ddLapBD13Vmap(OrderCreateBD13Mode createBD13Mode);
 
+        Single<SimpleResult> ddXacNhanLoTrinhVmap(VM_POSTMAN_ROUTE vm_postman_route);
+
     }
 
     interface View extends PresentView<Presenter> {
@@ -36,18 +39,19 @@ public interface ChuaPhanHuongContract {
 
         void showKhongcodl(String mess);
 
-        void showComfrimThanCong(String mess, List<ChuaPhanHuongMode> list);
+        void showComfrimThanCong(String mess, List<ChuaPhanHuongMode> list, int type);
 
         void showVmap(List<VietMapOrderCreateBD13DataRequest> mList);
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
+        void ddXacNhanLoTrinh(VM_POSTMAN_ROUTE vm_postman_route);
 
         void ddLapBD13Vmap(OrderCreateBD13Mode createBD13Mode);
 
         void showBarcode(BarCodeCallback barCodeCallback);
 
-        void comfrimCreate(ComfrimCreateMode comfrimCreateMode);
+        void comfrimCreate(ComfrimCreateMode comfrimCreateMode, int type);
 
         void searchCreate(SearchMode searchMode);
 

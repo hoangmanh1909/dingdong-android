@@ -3,6 +3,8 @@ package com.ems.dingdong.functions.mainhome.gomhang.statistic;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -38,6 +40,10 @@ public class ListStatisticFragment extends ViewFragment<ListStatisticContract.Pr
 
     @BindView(R.id.recycler)
     RecyclerView recycler;
+    @BindView(R.id.ll_error)
+    LinearLayout ll_error;
+    @BindView(R.id.tv_error)
+    TextView tv_error;
     private ListStatisticCollectAdapter mAdapter;
     private UserInfo mUserInfo;
     private String fromDate;
@@ -88,7 +94,7 @@ public class ListStatisticFragment extends ViewFragment<ListStatisticContract.Pr
     }
 
     private void showDialog() {
-        new EditDayDialog(getActivity(), (calFrom, calTo,status) -> {
+        new EditDayDialog(getActivity(), (calFrom, calTo, status) -> {
             fromDate = DateTimeUtils.convertDateToString(calFrom.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT);
             toDate = DateTimeUtils.convertDateToString(calTo.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT);
             mPresenter.searchStatisticCollect(mUserInfo.getiD(), fromDate, toDate);
@@ -116,7 +122,11 @@ public class ListStatisticFragment extends ViewFragment<ListStatisticContract.Pr
     @Override
     public void showResponseSuccess(ArrayList<StatisticCollect> list) {
         if (list == null || list.isEmpty()) {
-           Toast.showToast(getActivity(),"Không có dữ liệu");
+            ll_error.setVisibility(View.VISIBLE);
+            tv_error.setText("Không có dữ liệu ");
+        } else {
+            recycler.setVisibility(View.VISIBLE);
+            ll_error.setVisibility(View.GONE);
         }
         mList.clear();
         mAdapter.clear();

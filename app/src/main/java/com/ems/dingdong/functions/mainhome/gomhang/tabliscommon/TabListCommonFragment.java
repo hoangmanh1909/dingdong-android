@@ -40,6 +40,7 @@ public class TabListCommonFragment extends ViewFragment<TabListCommonContract.Pr
     private TabListCommonAdapter mAdapter;
     @BindView(R.id.layout_swipe_refresh)
     SwipeRefreshLayout swipeRefresh;
+
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_tab_common;
@@ -142,8 +143,20 @@ public class TabListCommonFragment extends ViewFragment<TabListCommonContract.Pr
                 mPresenter.back();
                 break;
             case R.id.img_confirm:
-                ListCommonFragment commonFragment = (ListCommonFragment) tabList.get(0);
-                commonFragment.confirmAll();
+                switch (mPosition) {
+                    case 0:
+                        ListCommonFragment commonFragment = (ListCommonFragment) tabList.get(0);
+                        commonFragment.confirmAll();
+//                        mPresenter.showSort();
+                        break;
+                    case 1:
+
+                        break;
+
+                    default:
+                        throw new IllegalArgumentException("can not find any tab!");
+                }
+
                 break;
         }
     }
@@ -163,7 +176,7 @@ public class TabListCommonFragment extends ViewFragment<TabListCommonContract.Pr
             if (message.equals(Constants.EVENTBUS_HOAN_THANH_TIN_THANH_CONG)) {
                 pager.setCurrentItem(1);
             }
-            if (message.equals(Constants.EVENTBUS_HOAN_THANH_TIN_THANH_CONG_NOTIFY_DATA)){
+            if (message.equals(Constants.EVENTBUS_HOAN_THANH_TIN_THANH_CONG_NOTIFY_DATA)) {
                 ((ListCommonFragment) tabList.get(1)).onDisPlayFake();
             }
         }
