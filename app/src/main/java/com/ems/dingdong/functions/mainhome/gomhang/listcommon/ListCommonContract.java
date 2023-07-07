@@ -130,6 +130,8 @@ public interface ListCommonContract {
 
         int getCurrentTab();
 
+        String oderCode();
+
     }
 
     interface OnTabListener {

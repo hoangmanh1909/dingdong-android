@@ -82,9 +82,10 @@ public class DingDongFirebaseMessagingService extends FirebaseMessagingService {
         Log.d("thanhkhiem", new Gson().toJson(remoteMessage.getData()));
         if (remoteMessage.getData().size() > 0) {
             if (!TextUtils.isEmpty(remoteMessage.getData().get("send_from"))) {
-                sendNotification("0", "Bạn có một cuộc gọi từ số điện thoại: " + remoteMessage.getData().get("send_from").substring(4, 13), "");
+                sendNotification("0", "Bạn có một cuộc gọi từ số điện thoại: " + remoteMessage.getData().get("send_from").substring(4, 13), "","");
             } else if (!TextUtils.isEmpty(remoteMessage.getData().get("notifyNavigationType"))) {
-                sendNotification(remoteMessage.getData().get("notifyNavigationType"), remoteMessage.getData().get("message"), remoteMessage.getData().get("ticketCode"));
+                sendNotification(remoteMessage.getData().get("notifyNavigationType"), remoteMessage.getData().get("message"),
+                        remoteMessage.getData().get("ticketCode"),remoteMessage.getData().get("orderCode"));
             } else {
                 Log.d(TAG, "call id is null");
                 Log.d(TAG, remoteMessage.getData().toString());
@@ -107,7 +108,7 @@ public class DingDongFirebaseMessagingService extends FirebaseMessagingService {
         }*/
     }
 
-    private void sendNotification(String type, String messageBody, String ticketCode) {
+    private void sendNotification(String type, String messageBody, String ticketCode,String odercode) {
         if (type != null) {
             Intent intent = null;
             Bundle bundle = new Bundle();
@@ -126,7 +127,13 @@ public class DingDongFirebaseMessagingService extends FirebaseMessagingService {
                     intent = new Intent(this, NotiCtelActivity.class);
                     intent.putExtra(Constants.TYPE_GOM_HANG, 5);
                     intent.putExtra("ticketCode",ticketCode);
-                } else {
+                } else if (type.equals("6")){
+                    intent = new Intent(this, ListCommonActivity.class);
+                    intent.putExtra(Constants.TYPE_GOM_HANG, 1);
+                    intent.putExtra("orderCode", odercode);
+                    System.out.print("thahkhiem1123127361intent" +  odercode);
+                }
+                else {
                     System.out.print("thahkhiem1123127361intent" +  messageBody + ticketCode);
                     intent = new Intent(this, ListNotifyActivity.class);
                     bundle.putString("message", messageBody);

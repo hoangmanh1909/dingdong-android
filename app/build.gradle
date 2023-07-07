@@ -27,10 +27,10 @@ android {
         //minSdkVersion 16
         minSdkVersion project.minSdkVersion as int
         targetSdkVersion project.targetSdkVersion as int
-        versionCode 79
+        versionCode 87
         //69 he thong // 77 fix
         //1.4.6
-        versionName "1.4.8"
+        versionName "1.5.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         ndk {
@@ -134,7 +134,7 @@ android {
             def URL_Signature = '"http://172.16.132.102:1233/Assets/Signature/"'
             def APP_KEY = '"ZhOCO6eMYq9aWsJV1sbqwfP8fGpEMFvhPnIdd8Z7tjzTX%2BYZiw8Es8crJoEQ%2BVKPg0DTw8QPnioTwgDQvS50Gg%3D%3D"'
             def ACCESS_KEY = '"AlG9OImiInn%2Ft4dDruOhU8K2r81jk%2BxCdGep%2Ftdz6Cbet2AKK%2BYcOTdR%2BKxcGpNSNfvboI1uvQxZWH5cgNJ5CKolnY2W7LafGNSoSaZMXEQreYlB54OV%2B5egmYNXIatMJhNOgnbsqFNNKbBm6JHJKxu6Ih6Vfee3"'
-            def API_VMAP = '"https://search_dev.vnpost.vn/"'
+            def API_VMAP = '"https://maps.vnpost.vn/gps/"'
             buildConfigField("String", "URL_Signature", URL_Signature)
             buildConfigField("String", "API_VMAP", API_VMAP)
             buildConfigField("String", "APP_KEY", APP_KEY)
@@ -159,7 +159,7 @@ android {
             def API_DINGDONG_GATEWAY = '"http://14.232.208.220:5000/"'
             def APP_KEY = '"ZhOCO6eMYq9aWsJV1sbqwfP8fGpEMFvhPnIdd8Z7tjzTX%2BYZiw8Es8crJoEQ%2BVKPg0DTw8QPnioTwgDQvS50Gg%3D%3D"'
             def ACCESS_KEY = '"AlG9OImiInn%2Ft4dDruOhU8K2r81jk%2BxCdGep%2Ftdz6Cbet2AKK%2BYcOTdR%2BKxcGpNSNfvboI1uvQxZWH5cgNJ5CKolnY2W7LafGNSoSaZMXEQreYlB54OV%2B5egmYNXIatMJhNOgnbsqFNNKbBm6JHJKxu6Ih6Vfee3"'
-            def API_VMAP = '"https://search_dev.vnpost.vn/"'
+            def API_VMAP = '"https://maps.vnpost.vn/gps/"'
             buildConfigField("String", "URL_Signature", URL_Signature)
             buildConfigField("String", "API_VMAP", API_VMAP)
             buildConfigField("String", "APP_KEY", APP_KEY)
@@ -185,7 +185,7 @@ android {
             def API_DINGDONG_GATEWAY = '"https://pre-pns.vnpost.vn/ddgateway/"'
             def APP_KEY = '"ZhOCO6eMYq9aWsJV1sbqwfP8fGpEMFvhPnIdd8Z7tjzTX%2BYZiw8Es8crJoEQ%2BVKPg0DTw8QPnioTwgDQvS50Gg%3D%3D"'
             def ACCESS_KEY = '"AlG9OImiInn%2Ft4dDruOhU8K2r81jk%2BxCdGep%2Ftdz6Cbet2AKK%2BYcOTdR%2BKxcGpNSNfvboI1uvQxZWH5cgNJ5CKolnY2W7LafGNSoSaZMXEQreYlB54OV%2B5egmYNXIatMJhNOgnbsqFNNKbBm6JHJKxu6Ih6Vfee3"'
-            def API_VMAP = '"https://search_dev.vnpost.vn/"'
+            def API_VMAP = '"https://maps.vnpost.vn/gps/"'
             buildConfigField("String", "URL_Signature", URL_Signature)
             buildConfigField("String", "API_VMAP", API_VMAP)
             buildConfigField("String", "APP_KEY", APP_KEY)
@@ -221,7 +221,7 @@ android {
             def API_DINGDONG_GATEWAY = '"https://pns.vnpost.vn/ddgateway/"'
             def APP_KEY = '"ZhOCO6eMYq9aWsJV1sbqwfP8fGpEMFvhPnIdd8Z7tjzTX%2BYZiw8Es8crJoEQ%2BVKPg0DTw8QPnioTwgDQvS50Gg%3D%3D"'
             def ACCESS_KEY = '"AlG9OImiInn%2Ft4dDruOhU8K2r81jk%2BxCdGep%2Ftdz6Cbet2AKK%2BYcOTdR%2BKxcGpNSNfvboI1uvQxZWH5cgNJ5CKolnY2W7LafGNSoSaZMXEQreYlB54OV%2B5egmYNXIatMJhNOgnbsqFNNKbBm6JHJKxu6Ih6Vfee3"'
-            def API_VMAP = '"https://search_dev.vnpost.vn/"'
+            def API_VMAP = '"https://maps.vnpost.vn/gps/"'
             buildConfigField("String", "URL_Signature", URL_Signature)
             buildConfigField("String", "API_VMAP", API_VMAP)
             buildConfigField("String", "APP_KEY", APP_KEY)
@@ -238,27 +238,27 @@ android {
         }
 
     }
-    lintOptions {
-        checkReleaseBuilds false
-        abortOnError true
-    }
-    dexOptions {
-        preDexLibraries true
-        javaMaxHeapSize "4g"
-        incremental true
-    }
-    configurations.all {
-        // OkHttp 3.5.0+ includes the websockets API, so we need this to prevent a conflict
-        exclude module: 'okhttp-ws'
-        resolutionStrategy.force 'com.google.code.findbugs:jsr305:1.3.9'
-    }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-    androidExtensions {
-        experimental = true
-    }
+        lintOptions {
+            checkReleaseBuilds false
+            abortOnError true
+        }
+        dexOptions {
+            preDexLibraries true
+            javaMaxHeapSize "4g"
+            incremental true
+        }
+        configurations.all {
+            // OkHttp 3.5.0+ includes the websockets API, so we need this to prevent a conflict
+            exclude module: 'okhttp-ws'
+            resolutionStrategy.force 'com.google.code.findbugs:jsr305:1.3.9'
+        }
+        compileOptions {
+            sourceCompatibility JavaVersion.VERSION_1_8
+            targetCompatibility JavaVersion.VERSION_1_8
+        }
+        androidExtensions {
+            experimental = true
+        }
 
 }
 
@@ -428,7 +428,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:3.13.1'
     implementation 'org.greenrobot:eventbus:3.1.1'
     implementation 'com.saadahmedev.popup-dialog:popup-dialog:1.0.2'
-
+    implementation 'com.github.dhaval2404:imagepicker:2.1'
 
 }
 apply plugin: 'com.google.gms.google-services'

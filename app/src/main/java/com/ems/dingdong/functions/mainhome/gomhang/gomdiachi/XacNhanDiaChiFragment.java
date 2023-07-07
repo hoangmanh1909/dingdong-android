@@ -234,8 +234,8 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
                             }
                             mPhoneS = holder.getItem(position).getReceiverPhone();
                             VerifyAddress x = new VerifyAddress();
-                            x.setLatitude(new GetLocation().getLastKnownLocation(getViewContext()).getLatitude());
-                            x.setLongitude(new GetLocation().getLastKnownLocation(getViewContext()).getLongitude());
+                            x.setLatitude(new GetLocation().getLastKnownLocation(getViewContext()) == null ? 0.0 : new GetLocation().getLastKnownLocation(getViewContext()).getLatitude());
+                            x.setLongitude(new GetLocation().getLastKnownLocation(getViewContext()) == null ? 0.0 : new GetLocation().getLastKnownLocation(getViewContext()).getLongitude());
                             mPresenter.getDDVeryAddress(x, mListChua.get(position).getReceiverAddress());
                         }
                     });
@@ -456,8 +456,10 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
         edtSearch.setSelected(true);
 
         try {
-            mPresenter.getMapVitri(new GetLocation().getLastKnownLocation(getViewContext()).getLongitude(), new GetLocation().getLastKnownLocation(getViewContext()).getLatitude());
+            mPresenter.getMapVitri(new GetLocation().getLastKnownLocation(getViewContext()) == null ? 0.0 : new GetLocation().getLastKnownLocation(getViewContext()).getLongitude(),
+                    new GetLocation().getLastKnownLocation(getViewContext()) == null ? 0.0 : new GetLocation().getLastKnownLocation(getViewContext()).getLatitude());
         } catch (Exception e) {
+
         }
     }
 
@@ -471,7 +473,6 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
         if (mPresenter.getTab() == 0) {
             listDichVu = new ArrayList<CommonObject>();
             listDichVu.addAll(list);
-
             for (int i = 0; i < dichVuModeList.size(); i++) {
                 Mpit mpit = new Mpit();
                 List<CommonObject> list1 = new ArrayList<>();
@@ -523,11 +524,11 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
 
     @Override
     public void showDichVuMpit(List<DichVuMode> list) {
-//        try {
-        dichVuModeList = new ArrayList<>();
-        dichVuModeList.addAll(list);
-//        } catch (Exception e) {
-//        }
+        try {
+            dichVuModeList = new ArrayList<>();
+            dichVuModeList.addAll(list);
+        } catch (Exception e) {
+        }
 
     }
 
@@ -821,85 +822,90 @@ public class XacNhanDiaChiFragment extends ViewFragment<XacNhanDiaChiContract.Pr
     @Override
     public void showResponseSuccess(ArrayList<CommonObject> list) {
 //        mList.addAll(list);
-        type = 1;
-        codeMpit = "";
-        tvNodata.setVisibility(View.GONE);
-        ArrayList<CommonObject> mListChuatam = new ArrayList<>();
-        ArrayList<CommonObject> mListDatam = new ArrayList<>();
-        itemAtPosition = null;
-        if (mPresenter.getType() == 1) {
-            int countP0 = 0;
-            int countP1 = 0;
-            if (list.size() > 0) {
-                for (CommonObject commonObject : list) {
-                    if (commonObject.getStatusCode().equals("P0")) {
-                        countP0 += 1;
-                        mListChuatam.add(commonObject);
-                    } else if (commonObject.getStatusCode().equals("P1")) {
-                        countP1 += 1;
-                        mListDatam.add(commonObject);
+//        Log.d("NHUHANMEMIT13123123", new Gson().toJson(list));
+        try {
+            type = 1;
+            codeMpit = "";
+            tvNodata.setVisibility(View.GONE);
+            ArrayList<CommonObject> mListChuatam = new ArrayList<>();
+            ArrayList<CommonObject> mListDatam = new ArrayList<>();
+            itemAtPosition = null;
+            if (mPresenter.getType() == 1) {
+                int countP0 = 0;
+                int countP1 = 0;
+                if (list.size() > 0) {
+                    for (CommonObject commonObject : list) {
+                        if (commonObject.getStatusCode().equals("P0")) {
+                            countP0 += 1;
+                            mListChuatam.add(commonObject);
+                        } else if (commonObject.getStatusCode().equals("P1")) {
+                            countP1 += 1;
+                            mListDatam.add(commonObject);
+                        }
                     }
                 }
-            }
-            if (mPresenter.getTab() == 0) {
-                mListChua.clear();
-                mListChua.addAll(mListChuatam);
-                mPresenter.titleChanged(mListChua.size(), 0);
-                tvRejectCount.setText(String.format("Tin chưa xác nhận: %s", countP0));
-                tvAcceptCount.setVisibility(View.GONE);
-                tvRejectCount.setVisibility(View.VISIBLE);
-                tvNodata.setVisibility(View.GONE);
-                recycler.setVisibility(View.VISIBLE);
-                mAdapter.notifyDataSetChanged();
-            } else {
-                mListDa.clear();
-                mListDa.addAll(mListDatam);
-                tvAcceptCount.setText(String.format("Tin đã xác nhận: %s", countP1));
-                tvRejectCount.setVisibility(View.GONE);
-                tvAcceptCount.setVisibility(View.VISIBLE);
-                mPresenter.titleChanged(mListDa.size(), 1);
-                tvNodata.setVisibility(View.GONE);
-                recycler.setVisibility(View.VISIBLE);
-                mAdapter.notifyDataSetChanged();
-            }
+                if (mPresenter.getTab() == 0) {
+                    mListChua.clear();
+                    mListChua.addAll(mListChuatam);
+                    mPresenter.titleChanged(mListChua.size(), 0);
+                    tvRejectCount.setText(String.format("Tin chưa xác nhận: %s", countP0));
+                    tvAcceptCount.setVisibility(View.GONE);
+                    tvRejectCount.setVisibility(View.VISIBLE);
+                    tvNodata.setVisibility(View.GONE);
+                    recycler.setVisibility(View.VISIBLE);
+                    mAdapter.notifyDataSetChanged();
+                } else {
+                    mListDa.clear();
+                    mListDa.addAll(mListDatam);
+                    tvAcceptCount.setText(String.format("Tin đã xác nhận: %s", countP1));
+                    tvRejectCount.setVisibility(View.GONE);
+                    tvAcceptCount.setVisibility(View.VISIBLE);
+                    mPresenter.titleChanged(mListDa.size(), 1);
+                    tvNodata.setVisibility(View.GONE);
+                    recycler.setVisibility(View.VISIBLE);
+                    mAdapter.notifyDataSetChanged();
+                }
 
-        } else if (mPresenter.getType() == 4 || mPresenter.getType() == 2) {//2
-            int countP1 = 0;
-            int countP4P5 = 0;
-            if (list.size() > 0) {
-                for (CommonObject commonObject : list) {
-                    if (commonObject.getStatusCode().equals("P1") || commonObject.getStatusCode().equals("P5")) {
-                        countP1 += 1;
-                        mListChuatam.add(commonObject);
-                    } else if (commonObject.getStatusCode().equals("P4") || commonObject.getStatusCode().equals("P6")) {
-                        countP4P5 += 1;
-                        mListDatam.add(commonObject);
+            } else if (mPresenter.getType() == 4 || mPresenter.getType() == 2) {//2
+                int countP1 = 0;
+                int countP4P5 = 0;
+                if (list.size() > 0) {
+                    for (CommonObject commonObject : list) {
+                        if (commonObject.getStatusCode().equals("P1") || commonObject.getStatusCode().equals("P5")) {
+                            countP1 += 1;
+                            mListChuatam.add(commonObject);
+                        } else if (commonObject.getStatusCode().equals("P4") || commonObject.getStatusCode().equals("P6")) {
+                            countP4P5 += 1;
+                            mListDatam.add(commonObject);
+                        }
                     }
                 }
+                if (mPresenter.getTab() == 0) {
+                    mListChua.clear();
+                    mListChua.addAll(mListChuatam);
+                    tvRejectCount.setText(String.format("Tin chưa hoàn tất: %s", countP1));
+                    tvAcceptCount.setVisibility(View.GONE);
+                    tvRejectCount.setVisibility(View.VISIBLE);
+                    Log.d("THANHKHIEM123123", new Gson().toJson(mListChuatam));
+                    mPresenter.titleChanged(mListChua.size(), 0);
+                    mAdapter.notifyDataSetChanged();
+
+                } else {
+                    mListDa.clear();
+                    mListDa.addAll(mListDatam);
+                    tvAcceptCount.setText(String.format("Tin đã hoàn tất: %s", countP4P5));
+                    tvRejectCount.setVisibility(View.GONE);
+                    tvAcceptCount.setVisibility(View.VISIBLE);
+                    mPresenter.titleChanged(mListDa.size(), 1);
+                    mAdapter.notifyDataSetChanged();
+
+                }
             }
-            if (mPresenter.getTab() == 0) {
-                mListChua.clear();
-                mListChua.addAll(mListChuatam);
-                tvRejectCount.setText(String.format("Tin chưa hoàn tất: %s", countP1));
-                tvAcceptCount.setVisibility(View.GONE);
-                tvRejectCount.setVisibility(View.VISIBLE);
-                Log.d("THANHKHIEM123123",new Gson().toJson(mListChuatam));
-
-                mPresenter.titleChanged(mListChua.size(), 0);
-                mAdapter.notifyDataSetChanged();
-
-            } else {
-                mListDa.clear();
-                mListDa.addAll(mListDatam);
-                tvAcceptCount.setText(String.format("Tin đã hoàn tất: %s", countP4P5));
-                tvRejectCount.setVisibility(View.GONE);
-                tvAcceptCount.setVisibility(View.VISIBLE);
-                mPresenter.titleChanged(mListDa.size(), 1);
-                mAdapter.notifyDataSetChanged();
-
-            }
+            recycler.setVisibility(View.VISIBLE);
+        } catch (Exception e) {
+            Toast.showToast(getViewContext(), e.getMessage());
         }
-        recycler.setVisibility(View.VISIBLE);
+
     }
 
     SweetAlertDialog sweetAlertDialog;

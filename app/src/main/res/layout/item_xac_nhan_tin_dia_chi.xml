@@ -224,6 +224,20 @@
                     android:visibility="gone"
                     tools:visibility="visible" />
             </RelativeLayout>
+
+            <com.ems.dingdong.views.CustomTextView
+                android:id="@+id/tv_thoi_gian_conlai"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="@dimen/_10sdp"
+                android:drawablePadding="5dp"
+                android:gravity="center|left"
+                android:text="Thời gian còn lại:"
+                android:visibility="gone"
+                android:textColor="@color/blackgray"
+                android:textSize="14dp" />
         </LinearLayout>
 
     </LinearLayout>

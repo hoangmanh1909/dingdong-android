@@ -3122,12 +3122,21 @@ com.ems.dingdong.functions.mainhome.gomhang.gomnhieu.ListHoanTatNhieuTinFragment
     protected void checkSelfPermission()
 com.ems.dingdong.functions.mainhome.gomhang.listcommon.BuuguiAdapter$HolderView:
     public com.ems.dingdong.model.ParcelCodeInfo getItem(int)
+com.ems.dingdong.functions.mainhome.gomhang.listcommon.ListCommonFragment$1$2$1
+com.ems.dingdong.functions.mainhome.gomhang.listcommon.ListCommonFragment$2$2$1
+com.ems.dingdong.functions.mainhome.gomhang.listcommon.ListCommonFragment$2$2$2
 com.ems.dingdong.functions.mainhome.gomhang.listcommon.ListCommonFragment:
     java.util.ArrayList take_duplicate_element(java.util.ArrayList,int)
 com.ems.dingdong.functions.mainhome.gomhang.listcommon.chitietdichvu.ChiTietDichVuAdapter$HolderView:
     public com.ems.dingdong.model.CommonObject getItem(int)
 com.ems.dingdong.functions.mainhome.gomhang.listcommon.chitietdichvu.ChitietDichVuChaApdater$HolderView:
     public com.ems.dingdong.functions.mainhome.gomhang.listcommon.more.Mpit getItem(int)
+com.ems.dingdong.functions.mainhome.gomhang.new_xacnhantin.TabConFirmAdapter:
+    void setTittle(int,int)
+com.ems.dingdong.functions.mainhome.gomhang.new_xacnhantin.TabConFirmContract$Presenter:
+    public abstract int getType()
+com.ems.dingdong.functions.mainhome.gomhang.new_xacnhantin.list.ListConFirmContract$Presenter:
+    public abstract int getTab()
 com.ems.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanhtin.HoanThanhTinDetailContract
 com.ems.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanhtin.viewchild.PhoneContract
 com.ems.dingdong.functions.mainhome.gomhang.packagenews.detailxacnhantin.XacNhanTinDetailContract
@@ -3147,6 +3156,7 @@ com.ems.dingdong.functions.mainhome.location.LocationFragment:
     java.util.List historyResponeList
     com.ems.dingdong.functions.mainhome.phathang.baophatbangke.log.LogAdapter mAdapterLog
     java.lang.String mPhone
+com.ems.dingdong.functions.mainhome.location.LocationPresenter$3$1
 com.ems.dingdong.functions.mainhome.location.TienCuocApdapter$HolderView:
     public com.ems.dingdong.model.Item getItem(int)
 com.ems.dingdong.functions.mainhome.main.MainContract
@@ -3209,6 +3219,8 @@ com.ems.dingdong.functions.mainhome.phathang.logcuocgoi.tablogcall.TabLogCallFra
     android.widget.SimpleCursorAdapter mAdapter
     java.lang.String mCurFilter
     android.widget.SearchView mSearchView
+com.ems.dingdong.functions.mainhome.phathang.new_noptien.noptien2104_2105.NopTienContract$Presenter:
+    public abstract void showOtp(java.util.List,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,int,com.ems.dingdong.model.response.SmartBankLink)
 com.ems.dingdong.functions.mainhome.phathang.noptien.DiaLogOption:
     java.lang.String userJson
 com.ems.dingdong.functions.mainhome.phathang.noptien.DiaLogOptionNew:
@@ -3220,6 +3232,11 @@ com.ems.dingdong.functions.mainhome.phathang.routemanager.route.RoutePresenter:
 com.ems.dingdong.functions.mainhome.phathang.routemanager.route.detail.DetailRouteChangeConstract
 com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodeContract
 com.ems.dingdong.functions.mainhome.phathang.sign.SignDrawContract
+com.ems.dingdong.functions.mainhome.phathang.sreachTracking.SreachCodeContract$Presenter:
+    public abstract void getHistoryCall(com.ems.dingdong.notification.cuocgoictel.data.HistoryRequest)
+com.ems.dingdong.functions.mainhome.phathang.sreachTracking.SreachCodeFragment$NameComparator
+com.ems.dingdong.functions.mainhome.phathang.sreachTracking.adapter.FeeApdapter$HolderView:
+    public com.ems.dingdong.model.Item getItem(int)
 com.ems.dingdong.functions.mainhome.phathang.thongke.detailsuccess.HistoryDetailSuccessContract
 com.ems.dingdong.functions.mainhome.phathang.thongke.detailsuccess.detail.ListDeliverySuccessDetailContract
 com.ems.dingdong.functions.mainhome.phathang.thongke.history.HistoryContract
@@ -3233,6 +3250,7 @@ com.ems.dingdong.functions.mainhome.phathang.thongke.ticket.di.detailstatistic.d
     int todate
 com.ems.dingdong.functions.mainhome.phathang.thongkelogcuocgoi.StatisticalLogContract
 com.ems.dingdong.functions.mainhome.profile.ProfileContract
+com.ems.dingdong.functions.mainhome.profile.ProfileFragment$1
 com.ems.dingdong.functions.mainhome.profile.chat.ChatContract
 com.ems.dingdong.functions.mainhome.profile.chat.menuchat.MenuChatContract
 com.ems.dingdong.functions.mainhome.profile.chat.menuchat.dialogchat.DilogCSKH:
@@ -3254,6 +3272,9 @@ com.ems.dingdong.location.LocationChangeListeningActivityLocationCallback:
     void <init>(com.ems.dingdong.functions.mainhome.address.xacminhdiachi.XacMinhDiaChiFragment)
 com.ems.dingdong.notification.NotificationContract
 com.ems.dingdong.notification.cuocgoictel.NotiCtelContract
+com.ems.dingdong.services.HelloService$2$1
+com.ems.dingdong.services.HelloService:
+    com.ems.dingdong.services.FindLocation location
 com.ems.dingdong.services.PortSipService:
     com.ems.dingdong.calls.calling.CallingFragment callingFragment
 com.ems.dingdong.utiles.FileUtils:
@@ -6573,6 +6594,8 @@ com.tonyodev.fetch2okhttp.OkHttpDownloader:
     protected final java.util.Map getConnections()
 com.tsongkha.spinnerdatepicker.DatePicker:
     void updateDate(int,int,int)
+com.yalantis.ucrop.view.TransformImageView:
+    protected void printMatrix(java.lang.String,android.graphics.Matrix)
 com.zoho.livechat.android.messaging.wms.common.pex.PEXEvent:
     protected java.util.Hashtable getLog()
     protected abstract java.lang.String getName()

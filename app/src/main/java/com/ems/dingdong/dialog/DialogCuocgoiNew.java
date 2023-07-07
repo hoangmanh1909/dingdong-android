@@ -18,6 +18,7 @@ import android.widget.Toast;
 import androidx.core.content.ContextCompat;
 
 import com.ems.dingdong.R;
+import com.ems.dingdong.callback.DialogCallback;
 import com.ems.dingdong.callback.PhoneEdit;
 import com.ems.dingdong.callback.PhoneKhiem;
 
@@ -41,7 +42,7 @@ public class DialogCuocgoiNew extends Dialog {
     TextView tvGoimienphi;
     @BindView(R.id.tv_sdt)
     TextView tvSdt;
-    String mPhone="";
+    String mPhone = "";
     int i = 0;
 
     String title;
@@ -59,8 +60,8 @@ public class DialogCuocgoiNew extends Dialog {
         phoneKhiem = reasonCallback;
         mPhone = phone;
         tvSdt.setText(mPhone);
-        tvGoimienphi.setVisibility(View.GONE);
         if (type == 1) {
+//            tvGoimienphi.setVisibility(View.GONE);
             title = "Sửa số người nhận";
             tvGoiquatongdai.setText("Gọi người nhận qua tổng đài");
             tvGoitructiep.setText("Gọi người nhận trực tiếp");
@@ -105,8 +106,14 @@ public class DialogCuocgoiNew extends Dialog {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_goimienphi:
-                phoneKhiem.onCallToMe(mPhone,1);
-                dismiss();
+                new DiaLogCallMe(getContext(), new DialogCallback() {
+                    @Override
+                    public void onResponse(String loginRespone) {
+                        phoneKhiem.onCallToMe(mPhone, 1);
+                        dismiss();
+                    }
+                }).show();
+
                 break;
             case R.id.tv_goibuucuc:
                 phoneKhiem.onCall("1900545481");

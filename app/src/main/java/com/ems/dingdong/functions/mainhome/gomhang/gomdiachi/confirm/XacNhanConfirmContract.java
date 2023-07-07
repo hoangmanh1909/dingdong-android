@@ -54,7 +54,7 @@ interface XacNhanConfirmContract {
 
         String setTenKH();
 
-        void confirmAllOrderPostman();
+        void confirmAllOrderPostman(String code );
 
         void getRouteByPoCode(String poCode);
 

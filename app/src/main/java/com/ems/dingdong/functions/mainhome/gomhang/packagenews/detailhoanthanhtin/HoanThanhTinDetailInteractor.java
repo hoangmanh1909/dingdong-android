@@ -3,6 +3,7 @@ package com.ems.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanht
 import com.core.base.viper.Interactor;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.DecodeDiaChiResult;
+import com.ems.dingdong.model.GetPosstageMode;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.UploadSingleResult;
@@ -25,6 +26,11 @@ class HoanThanhTinDetailInteractor extends Interactor<HoanThanhTinDetailContract
     @Override
     public Single<DecodeDiaChiResult> vietmapSearchDecode(String Decode) {
         return NetWorkControllerGateWay.vietmapSearchDecode(Decode);
+    }
+
+    @Override
+    public Single<SimpleResult> ddGetPostage(String request) {
+        return NetWorkControllerGateWay.ddGetPostage(request);
     }
 
 

@@ -32,5 +32,7 @@ public interface ListNotifyContract {
         void showDetail(String ticket);
 
         void isSeen(List<String> list,String ticket, int type);
+
+        void showXacNhanTin (String code);
     }
 }

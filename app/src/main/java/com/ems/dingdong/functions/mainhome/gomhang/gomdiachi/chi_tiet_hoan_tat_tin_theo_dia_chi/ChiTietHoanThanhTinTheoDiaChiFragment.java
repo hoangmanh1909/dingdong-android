@@ -309,7 +309,6 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
         }
 
         commonObjects.addAll(mListCommonObject.getListParcelCode());
-
         Log.d("thasdas1231", new Gson().toJson(commonObjects));
 
         if (commonObjects.size() == 0) {
@@ -321,6 +320,8 @@ public class ChiTietHoanThanhTinTheoDiaChiFragment extends ViewFragment<ChiTietH
                 parcelCodeInfo.setOrderCode(mListCommonObject.getCodeS().get(i));
                 parcelCodeInfo.setOrderId(mListCommonObject.getCodeS1().get(i));
                 parcelCodeInfo.setOrderPostmanId(mListCommonObject.getOrderPostmanIDS().get(i));
+                parcelCodeInfo.setQuotasTimeFirst(mListCommonObject.getQuotasTimeFirst());
+                parcelCodeInfo.setQuotasTimeSuccess(mListCommonObject.getQuotasTimeSuccess());
                 commonObjects.add(parcelCodeInfo);
             }
         }

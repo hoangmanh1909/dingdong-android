@@ -260,9 +260,9 @@ public class SortFramgment extends ViewFragment<SortContract.Presenter> implemen
                             vietMapOrderCreateBD13DataRequest.setReceiverVpostCode(mList.get(k).getSenderVpostcode());
                             vietMapOrderCreateBD13DataRequest.setId(Long.parseLong(mList.get(k).getCodeS1().get(i)));
                             vietMapOrderCreateBD13DataRequest.setReceiverAddress(mList.get(k).getReceiverAddress());
-                            vietMapOrderCreateBD13DataRequest.setReceiverLat((mList.get(k).getSenderLat().equals("0") ||
+                            vietMapOrderCreateBD13DataRequest.setReceiverLat((mList.get(k).getSenderLat() == null || mList.get(k).getSenderLat().equals("0") ||
                                     mList.get(k).getSenderLat().isEmpty()) ? null : mList.get(k).getSenderLat());
-                            vietMapOrderCreateBD13DataRequest.setReceiverLon((mList.get(k).getSenderLon().equals("0") ||
+                            vietMapOrderCreateBD13DataRequest.setReceiverLon((mList.get(k).getSenderLon() == null || mList.get(k).getSenderLon().equals("0") ||
                                     mList.get(k).getSenderLon().isEmpty()) ? null : mList.get(k).getSenderLon());
                             mapOrderCreateBD13DataRequestList.add(vietMapOrderCreateBD13DataRequest);
                         }

@@ -2,6 +2,7 @@ package com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanp
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -20,6 +21,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.text.Editable;
 import android.text.Html;
 import android.text.Spanned;
@@ -42,6 +44,7 @@ import android.widget.TimePicker;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -139,6 +142,7 @@ import com.ems.dingdong.views.CustomBoldTextView;
 import com.ems.dingdong.views.CustomTextView;
 import com.ems.dingdong.views.form.FormItemTextView;
 import com.ems.dingdong.views.picker.ItemBottomSheetPickerUIFragment;
+import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.common.util.DataUtils;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -406,6 +410,13 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     EditText tv_Description_new;
     @BindView(R.id.tv_nhapthongtinchuyenhoan)
     TextView tvNhapthongtinchuyenhoan;
+
+    @BindView(R.id.check_tiencuoc)
+    CheckBox checkTiencuoc;
+    @BindView(R.id.ll_hinhthucthanhtoan)
+    LinearLayout llVinhthucthanhtoan;
+    @BindView(R.id.tv_cuoc)
+    AppCompatTextView tvCuoc;
     //    @BindView(R.id.tv_nhomhcc_chuyenhoan)
 //    FormItemTextView tvNhomhccChuyenhoan;
 //    @BindView(R.id.tv_thutuchcc_chuyenhoan)
@@ -627,7 +638,15 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         mListGroupServiceMode = new ArrayList<>();
         mListServiceMode = new ArrayList<>();
 //        tvNgayVanChuyen.setText(DateTimeUtils.convertDateToString(calendarNgayVanChuyen.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT));
-        if (ContextCompat.checkSelfPermission(getActivity(), READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(getActivity(), WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(getActivity(), READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(getActivity(),
+                WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.MANAGE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_PHONE_STATE, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION, READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_ASK_PERMISSIONS);
         }
         if (((AppCompatActivity) getActivity()).getSupportActionBar() != null) {
@@ -1291,7 +1310,30 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             tvNhapthongtinchuyenhoan.setText(spanned);
 
         }
+        if (!checkPermission()) {
+            requestPermission();
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            if (!Environment.isExternalStorageManager()) {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
+                startActivity(intent);
+                return;
+            }
+        }
+    }
 
+    private boolean checkPermission() {
+        // checking of permissions.
+        int permission1 = ContextCompat.checkSelfPermission(getViewContext(), WRITE_EXTERNAL_STORAGE);
+        int permission2 = ContextCompat.checkSelfPermission(getViewContext(), READ_EXTERNAL_STORAGE);
+        return permission1 == PackageManager.PERMISSION_GRANTED && permission2 == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private static final int PERMISSION_REQUEST_CODE = 200;
+
+    private void requestPermission() {
+        // requesting permissions if not provided.
+        ActivityCompat.requestPermissions(getViewContext(), new String[]{WRITE_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
     }
 
     private void showBuuCucden() {
@@ -1722,50 +1764,6 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                     tv_thoi_gian_du_kien.setText(DateTimeUtils.convertDateToString(calendarDuKien.getTime(), DateTimeUtils.SIMPLE_DATE_FORMAT));
                 }).spinnerTheme(R.style.DatePickerSpinner).showTitle(true).showDaySpinner(true).defaultDate(calendarDuKien.get(Calendar.YEAR), calendarDuKien.get(Calendar.MONTH), calendarDuKien.get(Calendar.DAY_OF_MONTH)).maxDate(6000, 12, 31).minDate(calendarDuKien.get(Calendar.YEAR), calendarDuKien.get(Calendar.MONTH), calendarDuKien.get(Calendar.DAY_OF_MONTH)).build().show();
                 break;
-//            case R.id.tv_date_hoantra:
-//                new SpinnerDatePickerDialogBuilder()
-//                        .context(getViewContext())
-//                        .callback((view1, year, monthOfYear, dayOfMonth) -> {
-//                            calendarHoanTra.set(year, monthOfYear, dayOfMonth);
-//                            tvDateHoantra.setText(DateTimeUtils
-//                                    .convertDateToString(calendarHoanTra.getTime(),
-//                                            DateTimeUtils.SIMPLE_DATE_FORMAT));
-//                        })
-//                        .spinnerTheme(R.style.DatePickerSpinner)
-//                        .showTitle(true)
-//                        .showDaySpinner(true)
-//                        .defaultDate(calendarHoanTra.get(Calendar.YEAR),
-//                                calendarHoanTra.get(Calendar.MONTH),
-//                                calendarHoanTra.get(Calendar.DAY_OF_MONTH))
-//                        .maxDate(6000, 12, 31)
-//                        .minDate(2000, 1, 1)
-//                        .build()
-//                        .show();
-//                break;
-//            case R.id.tv_tiem_hoantra:
-//                android.app.TimePickerDialog timePickerDialog = new android.app.TimePickerDialog(getViewContext(),
-//                        android.R.style.Theme_Holo_Light_Dialog, new android.app.TimePickerDialog.OnTimeSetListener() {
-//                    @Override
-//                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-//                        mHour = hourOfDay;
-//                        mMinute = minute;
-//                        String mHours = "";
-//                        String mMinutes = "";
-//                        if (mHour < 10)
-//                            mHours = "0" + mHour;
-//                        else mHours = mHour + "";
-//                        if (mMinute < 10)
-//                            mMinutes = "0" + mMinute;
-//                        else mMinutes = mMinute + "";
-////                        if (mHour > 12) {
-////                            tvTiemHoantra.setText(String.format("%s:%s PM", mHour - 12, mMinute));
-////                        } else {
-//                        tvTiemHoantra.setText(String.format("%s:%s:00", mHours, mMinutes));
-////                        }
-//                    }
-//                }, mHour, mMinute, true);
-//                timePickerDialog.show();
-//                break;
             case R.id.edt_GTTT_date_accepted:
                 new SpinnerDatePickerDialogBuilder().context(getViewContext()).callback((view1, year, monthOfYear, dayOfMonth) -> {
                     calDateAccepted.set(year, monthOfYear, dayOfMonth);
@@ -1825,47 +1823,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
     }
 
 
-    @SuppressLint("IntentReset")
-    private void chooseFromGallery() {
-        @SuppressLint("IntentReset") Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        intent.setType("image/*");
-        startActivityForResult(intent, OPEN_MEDIA_PICKER);
-//        }
-
-
-    }
-
     GroupServiceMode groupServiceMode;
     GroupServiceMode groupServiceModePA;
-
-//    void showNhomChuyenHoan() {
-//        if (codeGroupService.equals("00")) {
-//            new DialogGroupService(requireContext(), mListGroupServiceMode, 0, new GruopServiceCallback() {
-//                @Override
-//                public void onClickItem(GroupServiceMode item) {
-//                    groupServiceMode = item;
-//                    tvNhomhccChuyenhoan.setText(item.getName());
-//                    Log.d("KKK", new Gson().toJson(item));
-//                    if (item.isCheck()) {
-//                        mListServiceMode = new ArrayList<>();
-//                        mPresenter.getNhomDanhMucHCC(item.getCode());
-//                    }
-//                }
-//            }).show();
-//        } else {
-//            mPresenter.getDanhMucHCC();
-//        }
-//    }
-//
-//    void showNhomChuyenHoanPA() {
-//        new DialogGroupService(requireContext(), mListServiceMode, 1, new GruopServiceCallback() {
-//            @Override
-//            public void onClickItem(GroupServiceMode item) {
-//                groupServiceModePA = item;
-//                tvThutuchccChuyenhoan.setText(item.getName());
-//            }
-//        }).show();
-//    }
 
     public void pickImage(String type, int max) {
         switch (type) {
@@ -1957,9 +1916,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 isCaptureChuKy = true;
                 break;
         }
-
         chooseFromGallery();
-
     }
 
     private final static int CAMERA_RQ = 6969;
@@ -2037,7 +1994,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 isCaptureChuKy = false;
                 break;
             case "CHUKY":
-                isCaptureHoanTra = true;
+                isCaptureHoanTra = false;
                 isCaptureRefund = false;
                 isCaptureDelivery = false;
                 isCaptureAvatar = false;
@@ -2048,9 +2005,14 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 break;
         }
 //        TakePictureIntent();
-        MediaUltisV1.captureImage(this);
+//        MediaUltisV1.captureImage(this);
+        ImagePicker.with(this)
+                .cameraOnly()    //User can only capture image using Camera
+                .start(CAMERA_IMAGE_REQ_CODE);
 //        dispatchTakePictureIntent();
     }
+
+    private static final int CAMERA_IMAGE_REQ_CODE = 103;
 
     void productAdd(String type) {
         new CreateDeliveryParialDialog(getContext(), v -> {
@@ -2467,10 +2429,26 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                     hinhthucPhat = "";
                 }
             }
+            int isService4H = 0;
+//            for (int i = 0; i < mBaoPhatBangke.size(); i++) {
+            if (mBaoPhatBangke.size() > 1) {
+                Toast.showToast(getViewContext(), "Bưu gửi sử dụng dịch vụ Phát hàng nội tỉnh 4h không được báo phát số lượng lớn");
+                return;
+            }
+//            if (mSolutionInfo.getCode().equals("AD") && !checkTiencuoc.isChecked()&& mBaoPhatBangke.get(0).getPaymentType()==2) {
+//                Toast.showToast(getViewContext(), "Khách hàng phải thu cước ngay, đề nghị thu tiền và tích chọn Đã thu tiền cước");
+//                return;
+//            }
+//            if (mSolutionInfo.getCode().equals("AD") && checkTiencuoc.isChecked()) {
+//                isService4H = 1;
+//            } else isService4H = 0;
+//            }
             if (mCount == 0) {
                 if (cbSelected.isChecked()) {
                     String finalTimeDukien = timeDukien;
                     String finalTimeDukien1 = timeDukien;
+                    int finalIsService4H = isService4H;
+                    int finalIsService4H1 = isService4H;
                     new ConfirmPhiHuyDonHangDialog(getViewContext(), listSelected.size(), t).setOnCallBacklClickListener(confirmDialog -> {
                         confirmDialog.dismiss();
                     }).setOnCancelListener((ConfirmPhiHuyDonHangDialog.OnCancelClickListener) confirmDialog1 -> {
@@ -2481,7 +2459,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                                 mPresenter.submitToPNS(mReasonInfo.getCode(), mSolutionInfo.getCode(), tv_Description.getText().toString(), mFile,
                                         mFileAvatar + ";" + mFileVerify + ";" + mFileOther, mSign, time, false, id, idXaphuong,
                                         idQuanhuyen, diachiNew, hinhthucPhat, ghichunew, doiTuong,
-                                        Integer.parseInt(finalTimeDukien), dlvDeliveryUnSuccessRefundRequest);
+                                        Integer.parseInt(finalTimeDukien), dlvDeliveryUnSuccessRefundRequest, finalIsService4H);
                             }
                         }).show();
                     }).setOnOkListener(confirmDialog -> {
@@ -2489,87 +2467,12 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                         mPresenter.submitToPNS(mReasonInfo.getCode(), mSolutionInfo.getCode(), tv_Description.getText().toString(), mFile,
                                 mFileAvatar + ";" + mFileVerify + ";" + mFileOther, mSign, time, true, "", idXaphuong, idQuanhuyen,
                                 diachiNew, hinhthucPhat, ghichunew, doiTuong,
-                                Integer.parseInt(finalTimeDukien1), dlvDeliveryUnSuccessRefundRequest);
+                                Integer.parseInt(finalTimeDukien1), dlvDeliveryUnSuccessRefundRequest, finalIsService4H1);
                     }).setWarning(mess).show();
 
                 } else {
                     String finalTimeDukien2 = timeDukien;
-//                    if (checkLyDoPKTC) {
-//                        if (mBaoPhatBangke.size() > 1) {
-//                            new IOSDialog.Builder(getViewContext())
-//                                    .setTitle("Thông báo")
-//                                    .setMessage("Lý do báo phát này không được phép báo phát nhiều bưu gửi cùng lúc. Vui lòng thực hiện báo phát lần lượt theo từng bưu gửi.")
-//                                    .setNegativeButton("Đóng", null).show();
-//                        } else
-////                        CustomToast.makeText(getViewContext(), (int) CustomToast.LONG, "Dang code", Constants.ERROR).show();{}
-//                            new DiaLogLyDoPKTC(getViewContext(), new IdCallback() {
-//                                @Override
-//                                public void onResponse(String id) {
-//                                    new DiaLogCall(getViewContext(), new IdCallback() {
-//                                        @Override
-//                                        public void onResponse(String id) {
-//                                            if (id.equals("1")) {
-//                                                // gọi tổng đài
-//                                                mPresenter.callForward(getItemSelected().get(0).getReciverMobile().split(",")[0].replace(" ", "").replace(".", ""),
-//                                                        getItemSelected().get(0).getMaE());
-//                                            } else {
-////                                                Intent intent = new Intent(Intent.ACTION_CALL);
-////                                                intent.setData(Uri.parse("tel:" + getItemSelected().get(0).getReciverMobile().split(",")[0].replace(" ", "").replace(".", "")));
-////                                                startActivity(intent);
-////                                                if (checkLyDoPKTC == true) {
-////                                                    String timeDukien = TimeUtils.convertDateToString(calendarDuKien.getTime(), TimeUtils.DATE_FORMAT_18).replaceAll("/", "");
-////                                                    String time = TimeUtils.convertDateToString(calendarHoanTra.getTime(), TimeUtils.DATE_FORMAT_18).replaceAll("/", "");
-////                                                    Handler mHandler = new Handler();
-////                                                    mHandler.postDelayed(new Runnable() {
-////                                                        @Override
-////                                                        public void run() {
-////                                                            mPresenter.submitToPNS(mReasonInfo.getCode(), mSolutionInfo.getCode(), tv_Description.getText().toString(), mFile, mFileAvatar + ";" + mFileVerify + ";" + mFileOther, mSign, time, false, "", idXaphuong, idQuanhuyen, diachiNew, hinhthucPhat, ghichunew, doiTuong, Integer.parseInt(timeDukien));
-////                                                        }
-////                                                    }, 1500);
-////                                                }
-//                                                CallLiveMode callLiveMode = new CallLiveMode();
-//                                                SharedPref sharedPref = new SharedPref(getViewContext());
-//                                                String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
-//                                                callLiveMode.setFromNumber(NetWorkController.getGson().fromJson(userJson, UserInfo.class).getMobileNumber());
-//                                                callLiveMode.setToNumber(getItemSelected().get(0).getReciverMobile().split(",")[0]
-//                                                        .replace(" ", "").replace(".", ""));
-//                                                callLiveMode.setLadingCode(getItemSelected().get(0).getMaE());
-//                                                mPresenter.ddCall(callLiveMode);
-//                                            }
-//
-//                                        }
-//                                    }).show();
-////                                    new DialogCuocgoiNew(getViewContext(), getItemSelected().get(0).getReciverMobile().split(",")[0].replace(" ", "").replace(".", ""), 2, new PhoneKhiem() {
-////                                        @Override
-////                                        public void onCallTongDai(String phone) {
-////                                            // gọi tổng đài
-////                                            mPresenter.callForward(getItemSelected().get(0).getReciverMobile().split(",")[0].replace(" ", "").replace(".", ""),
-////                                                    getItemSelected().get(0).getMaE());
-////                                        }
-////
-////                                        @Override
-////                                        public void onCall(String phone) {
-////                                            if (checkLyDoPKTC == true) {
-////                                                String timeDukien = TimeUtils.convertDateToString(calendarDuKien.getTime(), TimeUtils.DATE_FORMAT_18).replaceAll("/", "");
-////                                                String time = TimeUtils.convertDateToString(calendarHoanTra.getTime(), TimeUtils.DATE_FORMAT_18).replaceAll("/", "");
-////                                                mPresenter.submitToPNS(mReasonInfo.getCode(), mSolutionInfo.getCode(), tv_Description.getText().toString(), mFile, mFileAvatar + ";" + mFileVerify + ";" + mFileOther, mSign, time, false, "", idXaphuong, idQuanhuyen, diachiNew, hinhthucPhat, ghichunew, doiTuong, Integer.parseInt(timeDukien));
-////                                            }
-////                                            Intent intent = new Intent(Intent.ACTION_CALL);
-////                                            intent.setData(Uri.parse("tel:" + getItemSelected().get(0).getReciverMobile().split(",")[0].replace(" ", "").replace(".", "")));
-////                                            if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-////                                                ActivityCompat.requestPermissions(getActivity(), new String[]{CALL_PHONE}, REQUEST_CODE_ASK_PERMISSIONS);
-////                                            } else {
-////                                                startActivity(intent);
-////                                            }
-////                                        }
-////
-////                                        @Override
-////                                        public void onCallEdit(String phone, int type) {
-////                                        }
-////                                    }).show();
-//                                }
-//                            }).show();
-//                    } else
+                    int finalIsService4H2 = isService4H;
                     new ConfirmPKTCDialog(getViewContext(), listSelected.size(), listSelected.get(0).getReciverAddress(), mLocation.getLatitude(),
                             mLocation.getLongitude(),
                             (listSelected.get(0).getReceiverLat() != null && !listSelected.get(0).getReceiverLat().isEmpty()) ? Double.parseDouble(listSelected.get(0).getReceiverLat()) : 0.0,
@@ -2577,13 +2480,15 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                         confirmDialog.dismiss();
                         mPresenter.submitToPNS(mReasonInfo.getCode(), mSolutionInfo.getCode(), tv_Description.getText().toString(), mFile,
                                 mFileAvatar + ";" + mFileVerify + ";" + mFileOther, mSign, time, false, "", idXaphuong,
-                                idQuanhuyen, diachiNew, hinhthucPhat, ghichunew, doiTuong, Integer.parseInt(finalTimeDukien2), dlvDeliveryUnSuccessRefundRequest);
+                                idQuanhuyen, diachiNew, hinhthucPhat, ghichunew, doiTuong, Integer.parseInt(finalTimeDukien2), dlvDeliveryUnSuccessRefundRequest, finalIsService4H2);
                     }).setWarning(getViewContext().getString(R.string.are_you_sure_deliver_un_successfully)).show();
                 }
             } else {
                 if (cbSelected.isChecked()) {
                     String finalTimeDukien = timeDukien;
                     String finalTimeDukien1 = timeDukien;
+                    int finalIsService4H3 = isService4H;
+                    int finalIsService4H4 = isService4H;
                     new ConfirmPhiHuyDonHangDialog(getViewContext(), listSelected.size(), t).setOnCallBacklClickListener(confirmDialog -> {
                         confirmDialog.dismiss();
                     }).setOnCancelListener((ConfirmPhiHuyDonHangDialog.OnCancelClickListener) confirmDialog1 -> {
@@ -2594,7 +2499,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                                 mPresenter.submitToPNS(mReasonInfo.getCode(), mSolutionInfo.getCode(), tv_Description.getText().toString(), mFile,
                                         mFileAvatar + ";" + mFileVerify + ";" + mFileOther, mSign, time, false, id, idXaphuong,
                                         idQuanhuyen, diachiNew, hinhthucPhat, ghichunew, doiTuong,
-                                        Integer.parseInt(finalTimeDukien), dlvDeliveryUnSuccessRefundRequest);
+                                        Integer.parseInt(finalTimeDukien), dlvDeliveryUnSuccessRefundRequest, finalIsService4H3);
                             }
                         }).show();
                     }).setOnOkListener(confirmDialog -> {
@@ -2602,11 +2507,12 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                         mPresenter.submitToPNS(mReasonInfo.getCode(), mSolutionInfo.getCode(), tv_Description.getText().toString(),
                                 mFile, mFileAvatar + ";" + mFileVerify + ";" + mFileOther, mSign, time, true, "",
                                 idXaphuong, idQuanhuyen, diachiNew, hinhthucPhat, ghichunew, doiTuong,
-                                Integer.parseInt(finalTimeDukien1), dlvDeliveryUnSuccessRefundRequest);
+                                Integer.parseInt(finalTimeDukien1), dlvDeliveryUnSuccessRefundRequest, finalIsService4H4);
                     }).setWarning(thongbaoBaoPhat()).show();
 
                 } else {
                     String finalTimeDukien2 = timeDukien;
+                    int finalIsService4H5 = isService4H;
                     new DiaLogThongbao(getViewContext(), thongbaoBaoPhat()
                             , new DialogCallback() {
                         @Override
@@ -2614,7 +2520,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                             mPresenter.submitToPNS(mReasonInfo.getCode(), mSolutionInfo.getCode(), tv_Description.getText().toString(), mFile,
                                     mFileAvatar + ";" + mFileVerify + ";" + mFileOther, mSign, time, false, "", idXaphuong,
                                     idQuanhuyen, diachiNew, hinhthucPhat, ghichunew, doiTuong,
-                                    Integer.parseInt(finalTimeDukien2), dlvDeliveryUnSuccessRefundRequest);
+                                    Integer.parseInt(finalTimeDukien2), dlvDeliveryUnSuccessRefundRequest, finalIsService4H5);
                         }
                     }).show();
 //                    new ConfirmPKTCDialog(getViewContext(), listSelected.size()).setOnCancelListener(Dialog::dismiss).setOnOkListener(confirmDialog -> {
@@ -2841,32 +2747,66 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
     }
 
+    @SuppressLint("IntentReset")
+    private void chooseFromGallery() {
+        @SuppressLint("IntentReset") Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        intent.setType("image/*");
+        startActivityForResult(intent, OPEN_MEDIA_PICKER);
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         try {
-            if (requestCode == Constants.CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
-                if (resultCode == getActivity().RESULT_OK) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                        attemptSendMedia(data.getData().getPath().replace("///", "//"), 0);
-                    } else {
-                        attemptSendMedia(data.getData().getPath(), 0);
+            if (resultCode == Activity.RESULT_OK) {
+                // Uri object will not be null for RESULT_OK
+                switch (requestCode) {
+                    case CAMERA_IMAGE_REQ_CODE:
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                            attemptSendMedia(data.getData().getPath().replace("///", "//"), 0);
+                        } else {
+                            attemptSendMedia(data.getData().getPath(), 0);
+                        }
+                        break;
+                    case OPEN_MEDIA_PICKER:
+                        if (data != null) {
+                            Uri selectedImageUri = data.getData();
+                            File file = new File(getPath(selectedImageUri));
+//                    long length = file.length();
+//                    length = length / 1024;
+                            attemptSendMediaFolder(JavaImageResizer.resizeAndCompressImageBeforeSend(getViewContext(), file.getPath(), "DingDong.jpg"), 1);
+                            System.out.println("File Path : " + file.getPath());
+                        } else
+                            Toast.showToast(getViewContext(), "Có lỗi trong quá trình xử lý ảnh");
 
-                    }
+                        break;
                 }
-
-            } else if (requestCode == 1) {
-                if (data != null) {
-                    Uri selectedImageUri = data.getData();
-                    File file = new File(getPath(selectedImageUri));
-                    long length = file.length();
-                    length = length / 1024;
-                    attemptSendMediaFolder(JavaImageResizer.resizeAndCompressImageBeforeSend(getViewContext(), getPath(selectedImageUri), "DINGDONG.jpg"), 1);
-                    System.out.println("File Path : " + file.getPath() + ", File size : " + length + " KB");
-                }
+            } else if (resultCode == ImagePicker.RESULT_ERROR) {
+                android.widget.Toast.makeText(getViewContext(), ImagePicker.getError(data), android.widget.Toast.LENGTH_SHORT).show();
+            } else {
+                android.widget.Toast.makeText(getActivity(), "Task Cancelled", android.widget.Toast.LENGTH_SHORT).show();
             }
+//            if (requestCode == Constants.CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
+//                if (resultCode == getActivity().RESULT_OK) {
+//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+//                        attemptSendMedia(data.getData().getPath().replace("///", "//"), 0);
+//                    } else {
+//                        attemptSendMedia(data.getData().getPath(), 0);
+//                    }
+//                }
+//            } else if (requestCode == OPEN_MEDIA_PICKER) {
+//                if (data != null) {
+//                    Uri selectedImageUri = data.getData();
+//                    File file = new File(getPath(selectedImageUri));
+////                    long length = file.length();
+////                    length = length / 1024;
+//                    attemptSendMediaFolder(JavaImageResizer.resizeAndCompressImageBeforeSend(getViewContext(), file.getPath(), "DingDong.jpg"), 1);
+//                    System.out.println("File Path : " + file.getPath());
+//                } else Toast.showToast(getViewContext(), "Có lỗi trong quá trình xử lý ảnh");
+//            }
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("File Path : " + e.getMessage());
+
+            Toast.showToast(getViewContext(), "Lỗi : " + e.getMessage());
         }
 
     }
@@ -2887,7 +2827,9 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
+    @SuppressLint("CheckResult")
     private void attemptSendMediaFolder(String path_media, int type) {
+//        Toast.showToast(getViewContext(), path_media);
         File file = new File(path_media);
         Observable.fromCallable(() -> {
             Uri uri = Uri.fromFile(new File(path_media));
@@ -2907,10 +2849,9 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 if (type == 0) if (file.exists()) file.delete();
             } else {
                 String path = file.getParent() + File.separator + "Process_" + file.getName();
-                Log.d("ASDASDSADasd", path);
                 mPresenter.postImage(path_media);
             }
-        }, onError -> Logger.e("error save image"));
+        }, onError -> Toast.showToast(getViewContext(), onError.getMessage()));
     }
 
     public static File bitmapToFile(Context context, Bitmap bitmap, String fileNameToSave) { // File name like "image.png"
@@ -2958,7 +2899,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
             } else {
                 mPresenter.postImage(path_media);
             }
-        }, onError -> Logger.e("error save image"));
+        }, onError -> Toast.showToast(getViewContext(), onError.getMessage()));
     }
 
     private void showUIReason() {
@@ -3149,7 +3090,7 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
 
     private void showUIPostman() {
         if (null == mListPostman || mListPostman.isEmpty()) {
-            showErrorToast(getViewContext().getString(R.string.please_pick_route));
+            showErrorToast("Tuyến bạn chọn không có bưu tá");
         } else {
             ArrayList<Item> items = new ArrayList<>();
             if (mListPostman != null) {
@@ -3179,48 +3120,36 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                 mSignHinhChuKy = file;
                 Glide.with(this).load(BuildConfig.URL_Signature + file).into(imgSign);
                 llSigned.setVisibility(View.VISIBLE);
-            }
-            if (isCaptureAvatar) {
+            } else if (isCaptureAvatar) {
                 Item item = new Item(BuildConfig.URL_IMAGE + file, file);
                 listImagesAvatar.add(item);
                 imageAvatarAdapter.notifyDataSetChanged();
-            }
-
-            if (isCaptureVerify) {
+            } else if (isCaptureVerify) {
                 Item item = new Item(BuildConfig.URL_IMAGE + file, file);
                 listImageVerify.add(item);
                 imageVerifyAdapter.notifyDataSetChanged();
-            }
-
-            if (isCapture) {
+            } else if (isCapture) {
                 Item item = new Item(BuildConfig.URL_IMAGE + file, file);
                 listImages.add(item);
                 imageAdapter.notifyDataSetChanged();
-            }
-
-            if (isCaptureOther) {
+            } else if (isCaptureOther) {
                 Item item = new Item(BuildConfig.URL_IMAGE + file, file);
                 listImageOther.add(item);
                 imageOtherAdapter.notifyDataSetChanged();
-            }
-
-            if (isCaptureDelivery) {
+            } else if (isCaptureDelivery) {
                 Item item = new Item(BuildConfig.URL_IMAGE + file, file);
                 listImageDelivery.add(item);
                 imageDeliveryAdapter.notifyDataSetChanged();
-            }
-
-            if (isCaptureRefund) {
+            } else if (isCaptureRefund) {
                 Item item = new Item(BuildConfig.URL_IMAGE + file, file);
                 listImageRefund.add(item);
                 imageRefundAdapter.notifyDataSetChanged();
-            }
-
-            if (isCaptureHoanTra) {
+            } else if (isCaptureHoanTra) {
                 Item item = new Item(BuildConfig.URL_IMAGE + file, file);
                 listImageHangDoiTra.add(item);
                 imageHangDoiTraAdapter.notifyDataSetChanged();
             }
+            hideProgress();
         }
     }
 
@@ -3525,7 +3454,9 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         totalFee = 0;
 
         for (DeliveryPostman item : getItemSelected()) {
-            totalFee += item.getFeeCollectLater() + item.getFeePPA() + item.getFeeCOD() + item.getFeePA();
+            if (item.getIsItemReturn().equals("N"))
+                totalFee += item.getFeeCollectLater() + item.getFeePPA() + item.getFeeCOD() + item.getFeePA();
+            else totalFee += Long.parseLong(item.getCuocCH());
         }
         for (DeliveryPostman item : getItemSelected()) {
             DeliveryPostman itemExists = Iterables.tryFind(listG, input -> (item.getBatchCode().equals(input.getBatchCode())
@@ -3546,7 +3477,8 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
         for (DeliveryPostman item : listG) {
             if (!item.getBatchCode().isEmpty())
                 mCount++;
-            totalAmount += item.getAmount();
+            if (item.getIsItemReturn().equals("N"))
+                totalAmount += item.getAmount();
         }
         for (DeliveryPostman item : listGFeeShip) {
             totalFee += item.getFeeShip();
@@ -3623,9 +3555,27 @@ public class XacNhanBaoPhatFragment extends ViewFragment<XacNhanBaoPhatContract.
                             || mSolutionInfo.getCode().equals("J")) {
                         ll_thoi_gian_du_kien.setVisibility(View.VISIBLE);
                     } else ll_thoi_gian_du_kien.setVisibility(View.GONE);
-
-
                 }
+                for (int i = 0; i < mBaoPhatBangke.size(); i++)
+                    if (mBaoPhatBangke.get(i).getIsService4H() > 0)
+                        if (mSolutionInfo.getCode().contains("AD")) {
+                            checkTiencuoc.setVisibility(View.GONE);
+                            llVinhthucthanhtoan.setVisibility(View.VISIBLE);
+                            if (mBaoPhatBangke.size() == 1) {
+                                if (mBaoPhatBangke.get(i).getPaymentType() == 2)
+                                    checkTiencuoc.setChecked(true);
+                                else checkTiencuoc.setChecked(false);
+                                if (mBaoPhatBangke.get(0).getFee() > 0)
+                                    tvCuoc.setText(String.format("%s đ", NumberUtils.formatPriceNumber(mBaoPhatBangke.get(0).getFee())));
+                                else tvCuoc.setText("0 đ");
+                            } else {
+                                Toast.showToast(getViewContext(), "Bưu gửi sử dụng dịch vụ Phát hàng nội tỉnh 4h không được báo phát số lượng lớn");
+                            }
+                        } else {
+                            checkTiencuoc.setVisibility(View.GONE);
+                            llVinhthucthanhtoan.setVisibility(View.GONE);
+                        }
+
             }).show();
         }
     }

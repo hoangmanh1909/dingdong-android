@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:weightSum="3"
     android:paddingTop="5dp"
     android:paddingBottom="5dp"
     tools:ignore="MissingDefaultResource">
@@ -18,7 +17,6 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_gravity="center"
-        android:layout_marginLeft="@dimen/_10sdp"
         android:layout_toRightOf="@+id/iv_pick_status"
         android:layout_weight="1.2"
         android:text="lading code"

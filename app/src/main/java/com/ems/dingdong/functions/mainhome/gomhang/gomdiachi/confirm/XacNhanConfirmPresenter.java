@@ -79,9 +79,11 @@ public class XacNhanConfirmPresenter extends Presenter<XacNhanConfirmContract.Vi
     }
 
     @Override
-    public void confirmAllOrderPostman() {
+    public void confirmAllOrderPostman(String code) {
         mView.showProgress();
         // check log
+        for (ConfirmOrderPostman item : mListRequest)
+            item.setConfirmReason(code);
         mInteractor.confirmAllOrderPostman(mListRequest, new CommonCallback<SimpleResult>((Activity) mContainerView) {
             @Override
             protected void onSuccess(Call<SimpleResult> call, Response<SimpleResult> response) {

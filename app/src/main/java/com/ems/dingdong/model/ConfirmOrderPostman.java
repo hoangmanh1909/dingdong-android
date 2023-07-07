@@ -1,5 +1,6 @@
 package com.ems.dingdong.model;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class ConfirmOrderPostman {
@@ -21,8 +22,30 @@ public class ConfirmOrderPostman {
     String ServiceNameMPITS;
     @SerializedName("ServiceCodeMPITS")
     String ServiceCodeMPITS;
+    @SerializedName("QuotasTimeFirst")
+    @Expose
+    private String QuotasTimeFirst;
+    @SerializedName("QuotasTimeSuccess")
+    @Expose
+    private String QuotasTimeSuccess;
     @SerializedName("SourceChanel")
     String SourceChanel = "DD_ANDROID";
+
+    public String getQuotasTimeFirst() {
+        return QuotasTimeFirst;
+    }
+
+    public void setQuotasTimeFirst(String quotasTimeFirst) {
+        QuotasTimeFirst = quotasTimeFirst;
+    }
+
+    public String getQuotasTimeSuccess() {
+        return QuotasTimeSuccess;
+    }
+
+    public void setQuotasTimeSuccess(String quotasTimeSuccess) {
+        QuotasTimeSuccess = quotasTimeSuccess;
+    }
 
     public String getServiceNameMPITS() {
         return ServiceNameMPITS;

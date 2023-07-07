@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ems.dingdong.utiles.Log;
 import com.mapbox.mapboxsdk.maps.MapView;
 
-public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
+    public class SimpleItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     private final TimDuongDiAdapter mAdapter;
 

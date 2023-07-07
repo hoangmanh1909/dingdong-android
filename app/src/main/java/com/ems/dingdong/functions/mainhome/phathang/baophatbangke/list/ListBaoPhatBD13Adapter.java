@@ -196,6 +196,8 @@ public class ListBaoPhatBD13Adapter extends RecyclerView.Adapter<ListBaoPhatBD13
         public CustomTextView tvBatchCode;
         @BindView(R.id.tv_sml_status)
         CustomTextView tv_sml_status;
+        @BindView(R.id.tv_thoi_gian_conlai)
+        CustomTextView tv_thoi_gian_conlai;
         @BindView(R.id.tv_refund_postage)
         public TextView tvRefundPostage;
         @BindView(R.id.img_sml)
@@ -440,6 +442,19 @@ public class ListBaoPhatBD13Adapter extends RecyclerView.Adapter<ListBaoPhatBD13
             } else tv_sml_status.setVisibility(View.GONE);
 
             img_map.setVisibility(View.GONE);
+            String time = "";
+            try {
+                if (item.getQuotasTimeSuccess() != null && !item.getQuotasTimeSuccess().isEmpty())
+                    time += item.getQuotasTimeSuccess();
+                if (item.getQuotasTimeSuccess() != null && !item.getQuotasTimeSuccess().isEmpty())
+                    tv_thoi_gian_conlai.setVisibility(View.VISIBLE);
+                else
+                    tv_thoi_gian_conlai.setVisibility(View.GONE);
+                tv_thoi_gian_conlai.setText(time);
+
+            } catch (Exception e) {
+                tv_thoi_gian_conlai.setVisibility(View.GONE);
+            }
         }
     }
 

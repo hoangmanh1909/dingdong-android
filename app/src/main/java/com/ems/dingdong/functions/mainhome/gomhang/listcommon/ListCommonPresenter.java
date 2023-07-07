@@ -60,6 +60,8 @@ public class ListCommonPresenter extends Presenter<ListCommonContract.View, List
 
     int mType;
     int mTab;
+
+    String code;
     private ListCommonContract.OnTabListener tabListener;
 
     @Override
@@ -118,8 +120,8 @@ public class ListCommonPresenter extends Presenter<ListCommonContract.View, List
                     mView.showResponseSuccess(list);
                     mView.showDichVuMPit(list);
                 } else {
-                    if (type == 0)
-                        mView.showError(response.body().getMessage());
+//                    if (type == 0)
+                    mView.showError(response.body().getMessage());
                 }
             }
 
@@ -212,8 +214,9 @@ public class ListCommonPresenter extends Presenter<ListCommonContract.View, List
                     super.onSuccess(call, response);
                     mView.hideProgress();
                     if (response.body().getErrorCode().equals("00")) {
-                        ConfirmAllOrderPostman confirmAllOrderPostman = NetWorkController.getGson().fromJson(response.body().getData(), new TypeToken<ConfirmAllOrderPostman>() {}.getType());
-                        mView.showResult(confirmAllOrderPostman,list);
+                        ConfirmAllOrderPostman confirmAllOrderPostman = NetWorkController.getGson().fromJson(response.body().getData(), new TypeToken<ConfirmAllOrderPostman>() {
+                        }.getType());
+                        mView.showResult(confirmAllOrderPostman, list);
                     } else {
                         mView.showError(response.body().getMessage());
                     }
@@ -264,6 +267,17 @@ public class ListCommonPresenter extends Presenter<ListCommonContract.View, List
     public int getCurrentTab() {
         return tabListener.getCurrentTab();
     }
+
+    @Override
+    public String oderCode() {
+        return code;
+    }
+
+    public ListCommonPresenter setOderCode(String code) {
+        this.code = code;
+        return this;
+    }
+
 
     public ListCommonPresenter setTypeTab(int mTab) {
         this.mTab = mTab;

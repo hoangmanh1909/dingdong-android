@@ -158,6 +158,10 @@ public class DeliveryPostman implements Comparable {
 
     @SerializedName("IsDOP")
     private int IsDOP;
+    @SerializedName("IsService4H")
+    private int IsService4H;
+    @SerializedName("PaymentTypeReturn")
+    private int PaymentType;
 
     @SerializedName("IDHub")
     private String iDHub;
@@ -166,9 +170,39 @@ public class DeliveryPostman implements Comparable {
 
     @SerializedName("HubAddress")
     private String hubAddress;
+    @SerializedName("QuotasTimeSuccess")
+    private String QuotasTimeSuccess;
+
+    public int getPaymentType() {
+        return PaymentType;
+    }
+
+    public void setPaymentType(int paymentType) {
+        PaymentType = paymentType;
+    }
+
+    public String getQuotasTimeSuccess() {
+        return QuotasTimeSuccess;
+    }
+
+    public void setQuotasTimeSuccess(String quotasTimeSuccess) {
+        QuotasTimeSuccess = quotasTimeSuccess;
+    }
+
+    public int getIsService4H() {
+        return IsService4H;
+    }
+
+    public void setIsService4H(int isService4H) {
+        IsService4H = isService4H;
+    }
 
     @SerializedName("FeeCOD")
     private long feeCOD;
+
+    // fee 4h
+    @SerializedName("FeeReturn")
+    private long Fee;
     @SerializedName("FeePA")
     private long FeePA;
     @SerializedName("FeeC")
@@ -219,9 +253,19 @@ public class DeliveryPostman implements Comparable {
     @SerializedName("DeliveryDistrictName")
     private String DeliveryDistrictName;
     @SerializedName("POAcceptedCode")
-    private String POAcceptedCode; @SerializedName("VATCodeMPITS")
-    private String VATCodeMPITS ;@SerializedName("ProductCodeMPITS")
-    private String ProductCodeMPITS ;
+    private String POAcceptedCode;
+    @SerializedName("VATCodeMPITS")
+    private String VATCodeMPITS;
+    @SerializedName("ProductCodeMPITS")
+    private String ProductCodeMPITS;
+
+    public long getFee() {
+        return Fee;
+    }
+
+    public void setFee(long fee) {
+        Fee = fee;
+    }
 
     public String getVATCodeMPITS() {
         return VATCodeMPITS;

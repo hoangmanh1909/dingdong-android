@@ -76,23 +76,17 @@
                         android:orientation="vertical"
                         tools:ignore="MissingConstraints">
 
-                        <RelativeLayout
+
+                        <com.ems.dingdong.views.CustomBoldTextView
+                            android:id="@+id/tv_code"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content">
-
-                            <com.ems.dingdong.views.CustomBoldTextView
-                                android:id="@+id/tv_code"
-                                android:layout_width="match_parent"
-                                android:layout_height="40dp"
-                                android:layout_centerVertical="true"
-                                android:layout_gravity="center|left"
-                                android:gravity="center|left"
-                                android:text="COD2018041"
-                                android:textColor="@color/md_blue_700"
-                                android:textSize="14sp" />
-
-
-                        </RelativeLayout>
+                            android:layout_height="56dp"
+                            android:layout_centerVertical="true"
+                            android:layout_gravity="center|left"
+                            android:gravity="center|left"
+                            android:text="COD2018041\nhkkk"
+                            android:textColor="@color/md_blue_700"
+                            android:textSize="14sp" />
 
 
                         <TextView
@@ -404,6 +398,19 @@
                     android:text=""
                     android:textColor="@color/black"
                     android:textSize="14sp" />
+
+                <com.ems.dingdong.views.CustomTextView
+                    android:id="@+id/tv_thoi_gian_conlai"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:drawablePadding="5dp"
+                    android:gravity="center|left"
+
+                    android:text="Thời gian còn lại:"
+                    android:textColor="@color/red_light"
+                    android:textSize="14dp" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

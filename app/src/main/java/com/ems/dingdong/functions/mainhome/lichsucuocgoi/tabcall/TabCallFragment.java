@@ -2,7 +2,6 @@ package com.ems.dingdong.functions.mainhome.lichsucuocgoi.tabcall;
 
 
 import android.view.View;
-import android.widget.FrameLayout;
 
 import androidx.viewpager.widget.ViewPager;
 
@@ -12,13 +11,6 @@ import com.ems.dingdong.R;
 import com.ems.dingdong.functions.mainhome.lichsucuocgoi.HistoryCallContract;
 import com.ems.dingdong.functions.mainhome.lichsucuocgoi.HistoryCallFragment;
 import com.ems.dingdong.functions.mainhome.lichsucuocgoi.HistoryCallPresenter;
-import com.ems.dingdong.functions.mainhome.phathang.noptien.PaymentFragment;
-import com.ems.dingdong.functions.mainhome.phathang.noptien.PaymentPresenter;
-import com.ems.dingdong.functions.mainhome.phathang.noptien.historyPayment.HistoryPaymentFragment;
-import com.ems.dingdong.functions.mainhome.phathang.noptien.historyPayment.HistoryPaymentPresenter;
-import com.ems.dingdong.functions.mainhome.phathang.noptien.huynop.CancelPaymentFragment;
-import com.ems.dingdong.functions.mainhome.phathang.noptien.huynop.CancelPaymentPresenter;
-import com.ems.dingdong.functions.mainhome.phathang.noptien.tabs.TabPaymentAdapter;
 import com.ems.dingdong.views.OnCustomPageChangeListener;
 
 import java.util.ArrayList;

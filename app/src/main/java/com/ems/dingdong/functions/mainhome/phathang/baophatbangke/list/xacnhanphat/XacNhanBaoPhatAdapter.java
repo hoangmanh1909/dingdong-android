@@ -91,6 +91,13 @@ public class XacNhanBaoPhatAdapter extends RecyclerView.Adapter<XacNhanBaoPhatAd
 
         public void bindView(Object model) {
             DeliveryPostman item = (DeliveryPostman) model;
+            long amount = 0;
+            long fee = 0;
+            if (item.getAmount() != null) {
+                amount = item.getAmount();
+            }
+
+            fee = item.getFeeShip() + item.getFeeCollectLater() + item.getFeePPA() + item.getFeeCOD() + item.getFeePA();
             if (item.isSelected()) {
                 ivPickStatus.setImageResource(R.drawable.ic_check);
                 relativeLayout.setBackgroundColor(mContext.getResources().getColor(R.color.background_progressbar));
@@ -103,6 +110,7 @@ public class XacNhanBaoPhatAdapter extends RecyclerView.Adapter<XacNhanBaoPhatAd
 
             try {
                 if (item.getIsItemReturn().equals("Y")) {
+                    amount = 0;
                     tvTienphathoan.setVisibility(View.VISIBLE);
                     tvTitletienphathoan.setVisibility(View.VISIBLE);
 
@@ -123,13 +131,7 @@ public class XacNhanBaoPhatAdapter extends RecyclerView.Adapter<XacNhanBaoPhatAd
                 tvLading.setText("");
             }
 
-            long amount = 0;
-            long fee = 0;
-            if (item.getAmount() != null) {
-                amount = item.getAmount();
-            }
 
-            fee = item.getFeeShip() + item.getFeeCollectLater() + item.getFeePPA() + item.getFeeCOD() + item.getFeePA() ;
             tvMonney.setText(NumberUtils.formatPriceNumber(amount + fee));
         }
     }

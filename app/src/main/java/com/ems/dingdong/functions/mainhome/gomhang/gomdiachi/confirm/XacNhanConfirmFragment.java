@@ -181,14 +181,14 @@ public class XacNhanConfirmFragment extends ViewFragment<XacNhanConfirmContract.
                 for (ConfirmOrderPostman item : mListRequest) {
                     item.setStatusCode("P1");
                 }
-                mPresenter.confirmAllOrderPostman();
+                mPresenter.confirmAllOrderPostman("");
                 break;
             case tuChoi:
                 new ReasonDialog(getActivity(), "", reason -> {
                     for (ConfirmOrderPostman item : mListRequest) {
                         item.setStatusCode("P2");
                     }
-                    mPresenter.confirmAllOrderPostman();
+                    mPresenter.confirmAllOrderPostman(reason);
                 }).show();
                 break;
             case chuyenTuyen:

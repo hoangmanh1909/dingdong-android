@@ -67,9 +67,9 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HolderVi
         @BindView(R.id.tv_TypeMessage)
         CustomTextView tvTypeMessage;
         @BindView(R.id.tv_call)
-        CustomTextView tvCall;
+        public   CustomTextView tvCall;
         @BindView(R.id.tv_ghichu)
-        CustomTextView tvGhichu;
+        public CustomTextView tvGhichu;
         @BindView(R.id.view_line)
         View viewLine;
         @BindView(R.id.ll_call)

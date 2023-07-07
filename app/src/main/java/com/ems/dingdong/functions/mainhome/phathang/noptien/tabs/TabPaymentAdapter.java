@@ -11,8 +11,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.core.base.viper.ViewFragment;
-import com.ems.dingdong.utiles.Constants;
-import com.ems.dingdong.utiles.StringUtils;
 
 import java.util.List;
 

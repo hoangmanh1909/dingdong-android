@@ -39,7 +39,47 @@
     <item
         android:id="@+id/menu_bodyguard"
         android:title="@string/bodyguard" />
+  <item
+        android:id="@+id/menu_r001"
+        android:title="@string/R001" />
+    <item
+        android:id="@+id/menu_r002"
+        android:title="@string/R002" />
+    <item
+        android:id="@+id/menu_r003"
+        android:title="@string/R003" />
+    <item
+        android:id="@+id/menu_r004"
+        android:title="@string/R004" />
+    <item
+        android:id="@+id/menu_r005"
+        android:title="@string/R006" />
+    <item
+        android:id="@+id/menu_r006"
+        android:title="@string/R006" />
+    <item
+        android:id="@+id/menu_r007"
+        android:title="@string/R007" />
+    <item
+        android:id="@+id/menu_r008"
+        android:title="@string/R008" />
+    <item
+        android:id="@+id/menu_r009"
+        android:title="@string/R009" />
+    <item
+        android:id="@+id/menu_r011"
+        android:title="@string/R011" />
+    <item
+        android:id="@+id/menu_r012"
+        android:title="@string/R012" />
+    <item
+        android:id="@+id/menu_r013"
+        android:title="@string/R013" />
+    <item
+        android:id="@+id/menu_r017"
+        android:title="@string/R017" />
     <item
         android:id="@+id/menu_other"
         android:title="@string/other" />
+
 </menu>

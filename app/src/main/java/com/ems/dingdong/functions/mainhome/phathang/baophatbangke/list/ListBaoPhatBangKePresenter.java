@@ -24,6 +24,7 @@ import com.ems.dingdong.functions.mainhome.phathang.addticket.AddTicketPresenter
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.list.xacnhanphat.XacNhanBaoPhatPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.log.LogPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
+import com.ems.dingdong.functions.mainhome.phathang.sreachTracking.SreachCodePresenter;
 import com.ems.dingdong.functions.mainhome.profile.chat.menuchat.model.AccountChatInAppGetQueueResponse;
 import com.ems.dingdong.functions.mainhome.profile.chat.menuchat.model.RequestQueuChat;
 import com.ems.dingdong.model.AddressListModel;
@@ -504,7 +505,7 @@ public class ListBaoPhatBangKePresenter extends Presenter<ListBaoPhatBangKeContr
 
     @Override
     public void showLoci(String mess) {
-        new LocationPresenter(mContainerView).setCodeTicket(mess).pushView();
+        new SreachCodePresenter(mContainerView).setCodeTicket(mess).pushView();
     }
 
     @Override

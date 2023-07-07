@@ -67,6 +67,16 @@ public class UserInfo {
     private String UnitName;
     @SerializedName("VMapId")
     private String VMapId;
+    @SerializedName("ShiftInOut")
+    private int ShiftInOut;
+
+    public int getShiftInOut() {
+        return ShiftInOut;
+    }
+
+    public void setShiftInOut(int shiftInOut) {
+        ShiftInOut = shiftInOut;
+    }
 
     public String getVMapId() {
         return VMapId;

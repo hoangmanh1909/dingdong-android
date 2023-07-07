@@ -32,7 +32,7 @@
     <color name="md_amber_a700">#ffab00</color>
     <color name="white">#ffffff</color>
     <color name="colorNen">#F2F3F5</color>
-    <color name="primary">#PickerUI</color>
+    <color name="primary">#F2F3F5</color>
     <color name="sub_title_white">#d6efff</color>
     <color name="white_tranparent_75">#BFffffff</color>
     <color name="white_tranparent_70">#B3ffffff</color>

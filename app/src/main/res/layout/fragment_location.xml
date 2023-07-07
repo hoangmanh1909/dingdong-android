@@ -91,8 +91,7 @@
                 android:id="@+id/ll_detail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="gone">
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -136,6 +135,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:paddingTop="@dimen/dimen_10dp"
+                                android:text="ádasdasd"
                                 android:paddingBottom="@dimen/dimen_10dp"
                                 android:textColor="@color/black"
                                 android:textSize="@dimen/text_size_14sp" />
@@ -309,9 +309,9 @@
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1.2"
+                                android:gravity="center|right"
                                 android:paddingTop="@dimen/dimen_10dp"
                                 android:paddingBottom="@dimen/dimen_10dp"
-                                android:gravity="center|right"
                                 android:textColor="@color/red_light"
                                 android:textSize="@dimen/text_size_14sp" />
 

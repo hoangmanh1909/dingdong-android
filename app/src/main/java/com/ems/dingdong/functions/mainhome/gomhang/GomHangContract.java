@@ -25,6 +25,8 @@ interface GomHangContract {
         void showXacNhanDiaChiPresenter();
 
         void showTaoTinmoi();
+
+        void showXacNhanTin();
     }
 }
 

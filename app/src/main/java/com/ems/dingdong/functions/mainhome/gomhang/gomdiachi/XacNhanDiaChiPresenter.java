@@ -133,9 +133,16 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
                                 parcelCodeInfo.setOrderId(item.getiD());
                                 parcelCodeInfo.setOrderPostmanId(item.getOrderPostmanID());
                                 parcelCodeInfo.setTrackingCode("");
+                                parcelCodeInfo.setQuotasTimeSuccess(item.getQuotasTimeSuccess());
+                                parcelCodeInfo.setQuotasTimeFirst(item.getQuotasTimeFirst());
                                 item.getListParcelCode().add(parcelCodeInfo);
-                            } else for (ParcelCodeInfo parcelCodeInfo : item.getListParcelCode()) {
-                                Log.d("NHUHANMEMIT1", new Gson().toJson(item.getListParcelCode()));
+                            } else for (int i = 0; i < item.getListParcelCode().size(); i++) {
+                                ParcelCodeInfo parcelCodeInfo = new ParcelCodeInfo();
+                                parcelCodeInfo = item.getListParcelCode().get(i);
+                                parcelCodeInfo.setQuotasTimeFirst(item.getQuotasTimeFirst());
+                                parcelCodeInfo.setQuotasTimeSuccess(item.getQuotasTimeSuccess());
+                                item.getListParcelCode().set(i, parcelCodeInfo);
+                                Log.d("THANHKHIEMaskdjaksdj", new Gson().toJson(parcelCodeInfo));
                             }
 
                             try {
@@ -150,11 +157,13 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
                                 parcelCodeInfo.setOrderId(item.getiD());
                                 parcelCodeInfo.setOrderPostmanId(item.getOrderPostmanID());
                                 parcelCodeInfo.setTrackingCode("");
-                                Log.d("NHUHANMEMIT", new Gson().toJson(parcelCodeInfo));
+                                parcelCodeInfo.setQuotasTimeSuccess(item.getQuotasTimeSuccess());
+                                parcelCodeInfo.setQuotasTimeFirst(item.getQuotasTimeFirst());
                                 itemExists.getListParcelCode().add(parcelCodeInfo);
                             } else for (ParcelCodeInfo parcelCodeInfo : item.getListParcelCode()) {
+                                parcelCodeInfo.setQuotasTimeSuccess(item.getQuotasTimeSuccess());
+                                parcelCodeInfo.setQuotasTimeFirst(item.getQuotasTimeFirst());
                                 itemExists.getListParcelCode().add(parcelCodeInfo);
-                                Log.d("NHUHANMEMIT1", new Gson().toJson(item.getListParcelCode()));
                             }
                             itemExists.addOrderPostmanID(item.getOrderPostmanID());
                             itemExists.addCode(item.getCode());
@@ -162,8 +171,8 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
                             itemExists.addKhoiluong(item.getWeigh());
                             itemExists.addCodelistMpit(item.getServiceNameMPITS());
                             itemExists.addCodemPit(item.getServiceCodeMPITS());
-                            itemExists.weightS += Integer.parseInt(item.getWeigh());
-                            tam += Integer.parseInt(item.getWeigh());
+                            itemExists.weightS += Long.parseLong(item.getWeigh());
+                            tam += Long.parseLong(item.getWeigh());
                         }
                     }
                     mView.showResponseSuccess(listG);
@@ -240,6 +249,8 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
                     confirmOrderPostman.setEmployeeID(userInfo.getiD());
                     confirmOrderPostman.setOrderPostmanID(orderPostmanID);
                     confirmOrderPostman.setStatusCode("P1");
+                    confirmOrderPostman.setQuotasTimeFirst(item.getQuotasTimeFirst());
+                    confirmOrderPostman.setQuotasTimeSuccess(item.getQuotasTimeSuccess());
 //                    confirmOrderPostman.setServiceCodeMPITS("P1");
 //                    confirmOrderPostman.setStatusCode("P1");
                     confirmOrderPostman.parcel = item.getCodeS().get(index);
@@ -314,6 +325,8 @@ public class XacNhanDiaChiPresenter extends Presenter<XacNhanDiaChiContract.View
                 confirmOrderPostman.setEmployeeID(userInfo.getiD());
                 confirmOrderPostman.setOrderPostmanID(code.toString());
                 confirmOrderPostman.setStatusCode("P1");
+                confirmOrderPostman.setQuotasTimeSuccess(commonObject.getQuotasTimeSuccess());
+                confirmOrderPostman.setQuotasTimeFirst(commonObject.getQuotasTimeFirst());
                 confirmOrderPostman.parcel = code.getTrackingCode();
                 listRequest.add(confirmOrderPostman);
                 index++;

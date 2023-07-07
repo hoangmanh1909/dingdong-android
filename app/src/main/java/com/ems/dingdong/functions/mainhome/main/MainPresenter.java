@@ -176,23 +176,23 @@ public class MainPresenter extends Presenter<MainContract.View, MainContract.Int
     public void getRaCa(String request) {
         try {
             mView.showProgress();
-            mInteractor.getRaCa(request)
-                    .subscribeOn(Schedulers.io())
-                    .delay(1000, TimeUnit.MILLISECONDS)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(simpleResult -> {
-//                        if (simpleResult.getErrorCode().equals("00")) {
-//                            mView.showRaCa(simpleResult.getData());
-//                            mView.hideProgress();
-//                        } else {
-//                            mView.showError();
-//                            Toast.showToast(getViewContext(), simpleResult.getMessage());
-//                            mView.hideProgress();
-//                        }
-                    }, throwable -> {
-                        mView.hideProgress();
-                        new ApiDisposable(throwable, getViewContext());
-                    });
+//            mInteractor.getRaCa(request)
+//                    .subscribeOn(Schedulers.io())
+//                    .delay(1000, TimeUnit.MILLISECONDS)
+//                    .observeOn(AndroidSchedulers.mainThread())
+//                    .subscribe(simpleResult -> {
+////                        if (simpleResult.getErrorCode().equals("00")) {
+////                            mView.showRaCa(simpleResult.getData());
+////                            mView.hideProgress();
+////                        } else {
+////                            mView.showError();
+////                            Toast.showToast(getViewContext(), simpleResult.getMessage());
+////                            mView.hideProgress();
+////                        }
+//                    }, throwable -> {
+//                        mView.hideProgress();
+//                        new ApiDisposable(throwable, getViewContext());
+//                    });
         } catch (Exception e) {
             e.getMessage();
         }

@@ -179,7 +179,13 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
 //                    if (mPresenter.getType() == 2) {
 //                        holder.imgChat.setVisibility(View.VISIBLE);
 //                    } else holder.imgChat.setVisibility(View.GONE);
-
+                    holder.tvParcelCode.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            holder.recycler.setVisibility(View.VISIBLE);
+                            holder.tvParcelCode.setVisibility(View.GONE);
+                        }
+                    });
                     holder.imgChat.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -202,9 +208,7 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
                     });
                 }
 
-            }
-
-            ;
+            };
             RecyclerUtils.setupVerticalRecyclerView(
 
                     getViewContext(), recycler);
@@ -224,6 +228,13 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
                             actualPosition = mList.indexOf(itemAtPosition);
                             edtSearch.setText("");
                             mPresenter.showDetailView(itemAtPosition);
+                        }
+                    });
+                    holder.tvParcelCode.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            holder.recycler.setVisibility(View.VISIBLE);
+                            holder.tvParcelCode.setVisibility(View.GONE);
                         }
                     });
                     holder.imgChat.setOnClickListener(new View.OnClickListener() {
@@ -279,6 +290,8 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
             imgConfirm.setVisibility(View.VISIBLE);
             fr_thongbao.setVisibility(View.VISIBLE);
             img_tim_kiem_dich_vu.setVisibility(View.VISIBLE);
+            if (!mPresenter.oderCode().isEmpty())
+                edtSearch.setText(mPresenter.oderCode());
         } else if (mPresenter.getType() == 2) {
             tvTitle.setText("Hoàn tất tin");
             llGomHang.setVisibility(View.VISIBLE);
@@ -589,10 +602,10 @@ public class ListCommonFragment extends ViewFragment<ListCommonContract.Presente
     @Override
     public void showDichVuMpit(List<DichVuMode> list) {
         dichVuModeList = new ArrayList<>();
-        DichVuMode a = new DichVuMode();
-        a.setName("GTGT038 1");
-        a.setCode("GTGT038");
-        list.add(a);
+//        DichVuMode a = new DichVuMode();
+//        a.setName("GTGT038 1");
+//        a.setCode("GTGT038");
+//        list.add(a);
         dichVuModeList.addAll(list);
     }
 

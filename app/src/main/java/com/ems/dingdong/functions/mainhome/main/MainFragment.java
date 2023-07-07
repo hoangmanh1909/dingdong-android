@@ -253,8 +253,8 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
                         }
                     });
 
-            mPresenter.getTienHome();
             try {
+                mPresenter.getTienHome();
                 UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
                 TicketNotifyRequest ticketNotifyRequest = new TicketNotifyRequest();
                 ticketNotifyRequest.setMobileNumber(userInfo.getMobileNumber());
@@ -270,8 +270,8 @@ public class MainFragment extends ViewFragment<MainContract.Presenter> implement
                 mPresenter.getShift();
                 Intent intent = new Intent(getActivity(), CheckLocationService.class);
                 getViewContext().startService(intent);
-                Intent intent1 = new Intent(getActivity(), HelloService.class);
-                getViewContext().startService(intent1);
+//                Intent intent1 = new Intent(getActivity(), HelloService.class);
+//                getViewContext().startService(intent1);
             } catch (Exception e) {
                 Toast.showToast(getViewContext(), "Error start LocationService");
             }

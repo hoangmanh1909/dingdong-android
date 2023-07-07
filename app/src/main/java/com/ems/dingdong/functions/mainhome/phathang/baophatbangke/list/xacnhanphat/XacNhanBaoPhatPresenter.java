@@ -60,7 +60,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -196,36 +198,82 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
         });
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public void postImage(String path) {
         mView.showProgress();
         mInteractor.postImage(path).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(simpleResult -> {
-                    if (simpleResult.getErrorCode() != null) {
-                        if (simpleResult.getErrorCode().equals("00"))
-                            mView.showImage(simpleResult.getFile(), path);
-                        else Toast.showToast(getViewContext(), simpleResult.getMessage());
-                        mView.hideProgress();
-                    } else {
-                        if (simpleResult.getMessage() == null)
-                            new IOSDialog.Builder(getViewContext())
+                .subscribe(new Observer<UploadSingleResult>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(UploadSingleResult simpleResult) {
+                        if (simpleResult.getErrorCode() != null) {
+                            if (simpleResult.getErrorCode().equals("00"))
+                                mView.showImage(simpleResult.getFile(), path);
+                            else new IOSDialog.Builder(getViewContext())
                                     .setCancelable(false).setTitle("Thông báo")
-                                    .setMessage("Không kết nối được với hệ thống!")
+                                    .setMessage(simpleResult.getMessage())
                                     .setNegativeButton("Đóng", null).show();
-                        else new IOSDialog.Builder(getViewContext())
+                            mView.hideProgress();
+                        } else {
+                            if (simpleResult.getMessage() == null)
+                                new IOSDialog.Builder(getViewContext())
+                                        .setCancelable(false).setTitle("Thông báo")
+                                        .setMessage("Không kết nối được với hệ thống!")
+                                        .setNegativeButton("Đóng", null).show();
+                            else new IOSDialog.Builder(getViewContext())
+                                    .setCancelable(false).setTitle("Thông báo")
+                                    .setMessage(simpleResult.getMessage())
+                                    .setNegativeButton("Đóng", null).show();
+                            mView.hideProgress();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        new IOSDialog.Builder(getViewContext())
                                 .setCancelable(false).setTitle("Thông báo")
-                                .setMessage(simpleResult.getMessage())
+                                .setMessage(e.getMessage())
                                 .setNegativeButton("Đóng", null).show();
                         mView.hideProgress();
-                    }
-                }, throwable -> {
-                    try {
                         mView.hideProgress();
-                        mView.deleteFile();
-                    } catch (Exception exception) {
+                    }
+
+                    @Override
+                    public void onComplete() {
+
                     }
                 });
+//                .subscribe(simpleResult -> {
+//                    if (simpleResult.getErrorCode() != null) {
+//                        if (simpleResult.getErrorCode().equals("00"))
+//                            mView.showImage(simpleResult.getFile(), path);
+//                        else Toast.showToast(getViewContext(), simpleResult.getMessage());
+//                        mView.hideProgress();
+//                    } else {
+//                        if (simpleResult.getMessage() == null)
+//                            new IOSDialog.Builder(getViewContext())
+//                                    .setCancelable(false).setTitle("Thông báo")
+//                                    .setMessage("Không kết nối được với hệ thống!")
+//                                    .setNegativeButton("Đóng", null).show();
+//                        else new IOSDialog.Builder(getViewContext())
+//                                .setCancelable(false).setTitle("Thông báo")
+//                                .setMessage(simpleResult.getMessage())
+//                                .setNegativeButton("Đóng", null).show();
+//                        mView.hideProgress();
+//                    }
+//                }, throwable -> {
+//                    try {
+//                        mView.hideProgress();
+//                        mView.deleteFile();
+//                    } catch (Exception exception) {
+//                    }
+//                });
 //        mInteractor.postImage(path, new CommonCallback<UploadSingleResult>((Context) mContainerView) {
 //            @Override
 //            protected void onSuccess(Call<UploadSingleResult> call, Response<UploadSingleResult> response) {
@@ -262,36 +310,82 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
 //        });
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public void postImageImageSignature(String path) {
         mView.showProgress();
         mInteractor.postImageImageSignature(path).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(simpleResult -> {
-                    if (simpleResult.getErrorCode() != null) {
-                        if (simpleResult.getErrorCode().equals("00"))
-                            mView.showImage(simpleResult.getFile(), path);
-                        else Toast.showToast(getViewContext(), simpleResult.getMessage());
-                        mView.hideProgress();
-                    } else {
-                        if (simpleResult.getMessage() == null)
-                            new IOSDialog.Builder(getViewContext())
+                .subscribe(new Observer<UploadSingleResult>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(UploadSingleResult simpleResult) {
+                        if (simpleResult.getErrorCode() != null) {
+                            if (simpleResult.getErrorCode().equals("00")) {
+                                mView.showImage(simpleResult.getFile(), path);
+                                mView.hideProgress();
+                            } else new IOSDialog.Builder(getViewContext())
                                     .setCancelable(false).setTitle("Thông báo")
-                                    .setMessage("Không kết nối được với hệ thống!")
+                                    .setMessage(simpleResult.getMessage())
                                     .setNegativeButton("Đóng", null).show();
-                        else new IOSDialog.Builder(getViewContext())
+                        } else {
+                            if (simpleResult.getMessage() == null)
+                                new IOSDialog.Builder(getViewContext())
+                                        .setCancelable(false).setTitle("Thông báo")
+                                        .setMessage("Không kết nối được với hệ thống!")
+                                        .setNegativeButton("Đóng", null).show();
+                            else new IOSDialog.Builder(getViewContext())
+                                    .setCancelable(false).setTitle("Thông báo")
+                                    .setMessage(simpleResult.getMessage())
+                                    .setNegativeButton("Đóng", null).show();
+                            mView.hideProgress();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        new IOSDialog.Builder(getViewContext())
                                 .setCancelable(false).setTitle("Thông báo")
-                                .setMessage(simpleResult.getMessage())
+                                .setMessage(e.getMessage())
                                 .setNegativeButton("Đóng", null).show();
                         mView.hideProgress();
-                    }
-                }, throwable -> {
-                    try {
-                        mView.hideProgress();
                         mView.deleteFile();
-                    } catch (Exception exception) {
+                    }
+
+                    @Override
+                    public void onComplete() {
+
                     }
                 });
+//                .subscribe(simpleResult -> {
+//                    if (simpleResult.getErrorCode() != null) {
+//                        if (simpleResult.getErrorCode().equals("00"))
+//                            mView.showImage(simpleResult.getFile(), path);
+//                        else Toast.showToast(getViewContext(), simpleResult.getMessage());
+//                        mView.hideProgress();
+//                    } else {
+//                        if (simpleResult.getMessage() == null)
+//                            new IOSDialog.Builder(getViewContext())
+//                                    .setCancelable(false).setTitle("Thông báo")
+//                                    .setMessage("Không kết nối được với hệ thống!")
+//                                    .setNegativeButton("Đóng", null).show();
+//                        else new IOSDialog.Builder(getViewContext())
+//                                .setCancelable(false).setTitle("Thông báo")
+//                                .setMessage(simpleResult.getMessage())
+//                                .setNegativeButton("Đóng", null).show();
+//                        mView.hideProgress();
+//                    }
+//                }, throwable -> {
+//                    try {
+//                        mView.hideProgress();
+//                        mView.deleteFile();
+//                    } catch (Exception exception) {
+//                    }
+//                });
     }
 
     @Override
@@ -318,17 +412,51 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
 //        });
         mInteractor.postImageAvatar(pathAvatar).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(simpleResult -> {
-                    if (simpleResult.getFile() != null) {
-                        mView.showImage(simpleResult.getFile(), pathAvatar);
+                .subscribe(new Observer<UploadSingleResult>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
                     }
-                }, throwable -> {
-                    try {
+
+                    @Override
+                    public void onNext(UploadSingleResult simpleResult) {
+                        if (simpleResult.getErrorCode() != null && simpleResult.getErrorCode().equals("00")) {
+                            if (simpleResult.getFile() != null) {
+                                mView.showImage(simpleResult.getFile(), pathAvatar);
+                            }
+                        } else {
+                            new IOSDialog.Builder(getViewContext())
+                                    .setCancelable(false).setTitle("Thông báo")
+                                    .setMessage(simpleResult.getMessage())
+                                    .setNegativeButton("Đóng", null).show();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        new IOSDialog.Builder(getViewContext())
+                                .setCancelable(false).setTitle("Thông báo")
+                                .setMessage(e.getMessage())
+                                .setNegativeButton("Đóng", null).show();
                         mView.hideProgress();
-                        mView.deleteFile();
-                    } catch (Exception exception) {
+                    }
+
+                    @Override
+                    public void onComplete() {
+
                     }
                 });
+//                .subscribe(simpleResult -> {
+//                    if (simpleResult.getFile() != null) {
+//                        mView.showImage(simpleResult.getFile(), pathAvatar);
+//                    }
+//                }, throwable -> {
+//                    try {
+//                        mView.hideProgress();
+//                        mView.deleteFile();
+//                    } catch (Exception exception) {
+//                    }
+//                });
     }
 
 
@@ -336,7 +464,8 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
     public void submitToPNS(String reason, String solution, String note, String deliveryImage,
                             String authenImage, String signCapture,
                             String EstimateProcessTime, boolean ischeck, String lydo, int idXaPhuong, int idQuanhuyen, String diachinew,
-                            String hinhthucphat, String ghichu, String doituong, int ngaydukien, DLVDeliveryUnSuccessRefundRequest dlvDeliveryUnSuccessRefundRequest) {
+                            String hinhthucphat, String ghichu, String doituong, int ngaydukien,
+                            DLVDeliveryUnSuccessRefundRequest dlvDeliveryUnSuccessRefundRequest, int isCollectFeeReturn) {
         mView.showProgress();
         Log.d("thanhkhieee", note);
         String postmanID = userInfo.getiD();
@@ -408,6 +537,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
             request.setOtherDeliveryForm(hinhthucphat);
             request.setOtherRequestObject(doituong);
             request.setOtherEstimateBackTime(ngaydukien);
+//            request.setIsCollectFeeReturn(isCollectFeeReturn);
 
             DeliveryUnSuccessRequest deliveryUnSuccessRequest = new DeliveryUnSuccessRequest();
             deliveryUnSuccessRequest.setData(request);
@@ -469,7 +599,7 @@ public class XacNhanBaoPhatPresenter extends Presenter<XacNhanBaoPhatContract.Vi
                                 String relationship, InfoVerify infoVerify, boolean isCod, long codeEdit, String note,
                                 boolean IsExchange, String ExchangePODeliveryCode, String ExchangeRouteCode, String ExchangeLadingCode,
                                 long ExchangeDeliveryDate, int ExchangeDeliveryTime, List<LadingProduct> ExchangeDetails,
-                                String imgAnhHoangTra, int idXaphuong, int idQuanHUyen, String idCOD,String imgSignCapture) {
+                                String imgAnhHoangTra, int idXaphuong, int idQuanHUyen, String idCOD, String imgSignCapture) {
         mView.showProgress();
         paymentRequests = new ArrayList<>();
         String postmanID = userInfo.getiD();

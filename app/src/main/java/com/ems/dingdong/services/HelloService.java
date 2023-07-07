@@ -1,5 +1,6 @@
 package com.ems.dingdong.services;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -8,8 +9,10 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -20,6 +23,7 @@ import android.os.IBinder;
 import android.os.Message;
 
 import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 
 import com.ems.dingdong.BuildConfig;
@@ -91,8 +95,7 @@ public class HelloService extends Service {
         NetWorkVmapController.ddLoginVmap(vmap).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(simpleResult -> {
             loginResult = new LoginResult();
             loginResult = simpleResult;
-            if (type == 1 && (VMapId == null || VMapId.isEmpty()))
-                ddCreateUserVmap();
+            if (type == 1 && (VMapId == null || VMapId.isEmpty())) ddCreateUserVmap();
         }, throwable -> {
             if (throwable.getMessage().contains("401")) {
             } else new ApiDisposable(throwable, getApplicationContext());
@@ -108,44 +111,53 @@ public class HelloService extends Service {
         // lấy giá trị biến milliSeconds chia cho 1000L (tương ứng với số long)
         gpsVmap.setTs(milliSeconds / 1000L);
         ValuesVmap vmap = new ValuesVmap();
-        vmap.setX(lat);
-        vmap.setY(lon);
+        vmap.setX(lon);
+        vmap.setY(lat);
         vmap.setSpeed(speed);
-        vmap.setHeading(hedding);
+        vmap.setHeading(0);
         gpsVmap.setValues(vmap);
-//        if (loginResult != null)
-//            NetWorkVmapController.ddPushGPSVmap(gpsVmap, id, loginResult.getToken()).
-//                    subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new SingleObserver<T>() {
-//                        @Override
-//                        public void onSubscribe(Disposable d) {
-//                            Log.e(TAG, "Disposable: ");
-//                        }
-//
-//                        @Override
-//                        public void onSuccess(T t) {
-//                            Log.e(TAG, "onSuccess: ");
-//                            Toast.showToast(getApplicationContext(),"Thanh COng");
-//                        }
-//
-//                        @Override
-//                        public void onError(Throwable throwable) {
-//                            Log.e(TAG, "Throwable: ");
-//                            Toast.showToast(getApplicationContext(),throwable.getMessage());
-//                            if (throwable.getMessage().contains("401")) {
-//                                ddCallLogin(2);
-//                            }
-//                        }
-//                    });
+        if (loginResult != null)
+            NetWorkVmapController.ddPushGPSVmap(gpsVmap, id, loginResult.getToken()).
+                    subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new SingleObserver<T>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
+                            Log.e(TAG, "Disposable: ");
+                        }
 
-        NetWorkController.emsLoginCountV1(new Gson().toJson(gpsVmap)
-                +"Thời gian thực thi : "+ DateTimeUtils.convertDateToString(Calendar.getInstance().getTime(), DateTimeUtils.DEFAULT_DATETIME_FORMAT))
-                .delay(500, TimeUnit.MILLISECONDS)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(dataResult -> {
-                    Toast.showToast(getApplicationContext(), "Thanh COng");
-                }, throwable -> {
-                });
+                        @Override
+                        public void onSuccess(T t) {
+                            Log.e(TAG, "onSuccess: ");
+//                            Toast.showToast(getApplicationContext(), "Thanh COng");
+                        }
+
+                        @Override
+                        public void onError(Throwable throwable) {
+                            Log.e(TAG, "Throwable: ");
+//                            Toast.showToast(getApplicationContext(),"Khiem : "+ throwable.getMessage());
+                            if (throwable.getMessage().contains("401")) {
+                                ddCallLogin(2);
+                            }
+                        }
+                    });
+
+        Log.d("THANHKHIE123123190", new Gson().toJson(gpsVmap) +
+                "Thời gian thực thi : " + DateTimeUtils.convertDateToString(Calendar.getInstance().getTime(), DateTimeUtils.DEFAULT_DATETIME_FORMAT));
+
+//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            // TODO: Consider calling
+//            //    ActivityCompat#requestPermissions
+//            // here to request the missing permissions, and then overriding
+//            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+//            //                                          int[] grantResults)
+//            // to handle the case where the user grants the permission. See the documentation
+//            // for ActivityCompat#requestPermissions for more details.
+//            return;
+//        }
+        mLastLocation = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        NetWorkController.emsLoginCountV1(new Gson().toJson(gpsVmap) + "Thời gian thực thi : " + DateTimeUtils.convertDateToString(Calendar.getInstance().getTime(), DateTimeUtils.DEFAULT_DATETIME_FORMAT)).delay(500, TimeUnit.MILLISECONDS).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(dataResult -> {
+//            Toast.showToast(getApplicationContext(), "Thanh COng");
+        }, throwable -> {
+        });
     }
 
     // tạo user vmap
@@ -160,19 +172,17 @@ public class HelloService extends Service {
             createUserVmap.setName(postmanID);
             createUserVmap.setLabel(userInfo.getUserName());
             createUserVmap.setType("type");
-            NetWorkVmapController.ddCreateUserVmap(createUserVmap, loginResult.getToken()).
-                    subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(simpleResult -> {
-                        CreateUserVmapRespone createUserVmapRespone = simpleResult;
-                        VMapId = simpleResult.getId().getId();
-                        ddSaveVmapID(VMapId);
-                    }, throwable -> {
-                        if (throwable.getMessage().contains("400")) {
+            NetWorkVmapController.ddCreateUserVmap(createUserVmap, loginResult.getToken()).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(simpleResult -> {
+                CreateUserVmapRespone createUserVmapRespone = simpleResult;
+                VMapId = simpleResult.getId().getId();
+                ddSaveVmapID(VMapId);
+            }, throwable -> {
+                if (throwable.getMessage().contains("400")) {
 //                        new IOSDialog.Builder(getApplicationContext())
 //                                .setMessage("401! Kết nối hệ thống Vmap lỗi")
 //                                .setNegativeButton("Đóng", null).show();
-                        } else new ApiDisposable(throwable, getApplicationContext());
-                    });
+                } else new ApiDisposable(throwable, getApplicationContext());
+            });
         }
     }
 
@@ -186,21 +196,20 @@ public class HelloService extends Service {
             SaveIDVmapModel createUserVmap = new SaveIDVmapModel();
             createUserVmap.setPostmanCode(postmanID);
             createUserVmap.setVMapId(id);
-            NetWorkControllerGateWay.ddSaveIDVmap(createUserVmap).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(simpleResult -> {
+            NetWorkControllerGateWay.ddSaveIDVmap(createUserVmap).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(simpleResult -> {
 
-                    }, throwable -> {
-                        new ApiDisposable(throwable, getApplicationContext());
-                    });
+            }, throwable -> {
+                new ApiDisposable(throwable, getApplicationContext());
+            });
         }
     }
 
     boolean isRunning = false;
+    Location mLastLocation;
 
-    private class LocationListener implements android.location.LocationListener {
-        Location mLastLocation;
-
-        public LocationListener(String provider) {
+    private class LocationListenerV1 implements LocationListener {
+//        Location mLastLocation;
+        public LocationListenerV1(String provider) {
             Log.e(TAG, "LocationListener " + provider);
             mLastLocation = new Location(provider);
         }
@@ -208,25 +217,9 @@ public class HelloService extends Service {
         @Override
         public void onLocationChanged(Location location) {
             Log.e(TAG, "onLocationChanged: " + location);
-            mLastLocation.set(location);
-            Thread background = new Thread(new Runnable() {
-                public void run() {
-                    try {
-                        mHandler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                Log.d("LogService", "run: " + new Date().toString());
-                                ddPushGPSVmap(location.getLatitude() + "", location.getLongitude() + "", VMapId, 104, location.getProvider());
-                                mHandler.postDelayed(this, 30000);
-                            }
-                        }, 1000);
-                    } catch (Throwable t) {
-                        //just end the background thread
-                    }
-                }//run
-            });//background
-            isRunning = true;
-            background.start();
+            if (mLastLocation != null)
+                mLastLocation.set(location);
+
         }
 
         @Override
@@ -253,7 +246,9 @@ public class HelloService extends Service {
             Log.d("getViewContext()", "Tran Khie,");
         }
     };
-    HelloService.LocationListener[] mLocationListeners = new HelloService.LocationListener[]{new HelloService.LocationListener(LocationManager.GPS_PROVIDER), new HelloService.LocationListener(LocationManager.NETWORK_PROVIDER)};
+    HelloService.LocationListenerV1[] mLocationListeners = new HelloService.LocationListenerV1[]
+            {new HelloService.LocationListenerV1(LocationManager.GPS_PROVIDER),
+                    new HelloService.LocationListenerV1(LocationManager.NETWORK_PROVIDER)};
 
     @Override
     public IBinder onBind(Intent arg0) {
@@ -276,16 +271,12 @@ public class HelloService extends Service {
         System.out.println("KKKASDASDASDASD : " + milliSeconds / 1000L);
         Log.d("KKKASDASDASDASD", " onStartCommand");
 
-        final NotificationCompat.Builder notification = new NotificationCompat.Builder(this, getString(R.string.notification_channel_id)).
-                setContentTitle("Running Vmap").setSmallIcon(R.mipmap.ic_launcher).
-                setOnlyAlertOnce(true).setOngoing(true).setProgress(countMax, 0, false);
+        final NotificationCompat.Builder notification = new NotificationCompat.Builder(this, getString(R.string.notification_channel_id)).setContentTitle("Running Vmap").setSmallIcon(R.mipmap.ic_launcher).setOnlyAlertOnce(true).setOngoing(true).setProgress(countMax, 0, false);
 
         final NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(1, notification.build());
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-            startMyOwnForeground();
-        else
-            startForeground(1, notification.build());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) startMyOwnForeground();
+        else startForeground(1, notification.build());
 
 
         return START_NOT_STICKY;
@@ -304,12 +295,7 @@ public class HelloService extends Service {
         assert manager != null;
         manager.createNotificationChannel(chan);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
-        Notification notification = notificationBuilder.setOngoing(true)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("App is running in background")
-                .setPriority(NotificationManager.IMPORTANCE_MIN)
-                .setCategory(Notification.CATEGORY_SERVICE)
-                .build();
+        Notification notification = notificationBuilder.setOngoing(true).setSmallIcon(R.mipmap.ic_launcher).setContentTitle("App is running in background").setPriority(NotificationManager.IMPORTANCE_MIN).setCategory(Notification.CATEGORY_SERVICE).build();
         startForeground(2, notification);
     }
 
@@ -332,7 +318,9 @@ public class HelloService extends Service {
 //        registerToServer();
     }
 
+    Thread background;
 
+    @SuppressLint("MissingPermission")
     @Override
     public void onCreate() {
         Log.e(TAG, "onCreate");
@@ -361,7 +349,43 @@ public class HelloService extends Service {
         } catch (IllegalArgumentException ex) {
             Log.d(TAG, "gps provider does not exist " + ex.getMessage());
         }
+        background = new Thread(new Runnable() {
+            public void run() {
+                try {
+                    mHandler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (mLastLocation != null) {
+                                try {
+                                    mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, LOCATION_INTERVAL, LOCATION_DISTANCE, mLocationListeners[1]);
+                                } catch (java.lang.SecurityException ex) {
+                                    Log.i(TAG, "fail to request location update, ignore", ex);
+                                } catch (IllegalArgumentException ex) {
+                                    Log.d(TAG, "network provider does not exist, " + ex.getMessage());
+                                }
+                                try {
+                                    mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, LOCATION_INTERVAL, LOCATION_DISTANCE, mLocationListeners[0]);
+                                } catch (java.lang.SecurityException ex) {
+                                    Log.i(TAG, "fail to request location update, ignore", ex);
+                                } catch (IllegalArgumentException ex) {
+                                    Log.d(TAG, "gps provider does not exist " + ex.getMessage());
+                                }
+                                Log.d("LogService", "run: " + new Date().toString());
+                                ddPushGPSVmap(mLastLocation.getLatitude() + "", mLastLocation.getLongitude() + "", VMapId, 30, mLastLocation.getProvider());
+                            }
+//                            if ()
+                            mHandler.postDelayed(this, 3000);
+                        }
+                    }, 1000);
+                } catch (Throwable t) {
+                    //just end the background thread
+                }
+            }//run
+        });//background
+        isRunning = true;
+        background.start();
     }
+
 
     @Override
     public void onDestroy() {
@@ -384,5 +408,6 @@ public class HelloService extends Service {
             mLocationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
         }
     }
+
 
 }

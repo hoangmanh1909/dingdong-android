@@ -299,7 +299,7 @@ public class HoanTatTinDialog extends Dialog implements com.tsongkha.spinnerdate
                                     if (simpleResult.getErrorCode().equals("00")) {
                                         tvKhoancach.setText("Cách vị trí lấy hàng: " + simpleResult.getData() + " km");
                                         soKM = simpleResult.getData();
-                                    }  else {
+                                    } else {
                                         tvKhoancach.setVisibility(View.GONE);
                                         imgVitri.setVisibility(View.GONE);
                                     }
@@ -316,6 +316,7 @@ public class HoanTatTinDialog extends Dialog implements com.tsongkha.spinnerdate
                                 public void onSubscribe(Disposable d) {
 
                                 }
+
                                 @SuppressLint("CheckResult")
                                 @Override
                                 public void onSuccess(XacMinhDiaChiResult xacMinhDiaChiResult) {
@@ -364,7 +365,7 @@ public class HoanTatTinDialog extends Dialog implements com.tsongkha.spinnerdate
 
                                                     }
                                                 });
-                                            }else {
+                                            } else {
                                                 tvKhoancach.setVisibility(View.GONE);
                                                 imgVitri.setVisibility(View.GONE);
                                             }
@@ -601,6 +602,7 @@ public class HoanTatTinDialog extends Dialog implements com.tsongkha.spinnerdate
     public void show() {
         super.show();
     }
+
     List<RouteRequest> routeRequestList = new ArrayList<>();
 
     @OnClick({R.id.tv_reason, R.id.tv_update, R.id.tv_close, R.id.tv_date, R.id.tv_time, R.id.img_vitri})

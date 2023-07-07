@@ -2,6 +2,7 @@ package com.ems.dingdong.functions.mainhome.profile;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -36,11 +37,13 @@ import com.ems.dingdong.functions.login.LoginActivity;
 import com.ems.dingdong.functions.login.LoginFragment;
 import com.ems.dingdong.functions.mainhome.home.HomeV1Fragment;
 import com.ems.dingdong.functions.mainhome.main.data.CallLogMode;
+import com.ems.dingdong.functions.mainhome.main.data.MainMode;
 import com.ems.dingdong.functions.mainhome.main.data.ModeCA;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.RouteInfo;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.network.api.ApiService;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.DateTimeUtils;
 import com.ems.dingdong.utiles.Log;
@@ -98,6 +101,8 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
     TextView tvCtel;
     @BindView(R.id.sw_switch)
     Switch swSwitch;
+    @BindView(R.id.sw_switch_call)
+    Switch swSwitchCall;
     @BindView(R.id.ll_log_cuoc_goi)
     LinearLayout ll_log_cuoc_goi;
 
@@ -143,6 +148,11 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
             } else {
                 tvIsLearning.setText("Trạng thái học: Chưa hoàn thành");
             }
+            if (userInfo.getShiftInOut() > 0) swSwitch.setChecked(true);
+            else swSwitch.setChecked(false);
+            int keycall = sharedPref.getInt(Constants.KEY_CALL, 0);
+            if (keycall == 0) swSwitchCall.setChecked(false);
+            else swSwitchCall.setChecked(true);
         }
         String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
 
@@ -174,7 +184,9 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
             sharedPref.putBoolean(Constants.KEY_GACH_NO_PAYPOS, isChecked);
         });
 
-
+        if (!userJson.isEmpty()) {
+            userInfo1 = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
+        }
     }
 
     @Override
@@ -188,15 +200,35 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
         sharedPref.putBoolean(Constants.KEY_TRANG_THAI_LOG_CALL, false);
         sharedPref.putString(Constants.KEY_RA_VAOV1, DateTimeUtils.convertDateToString(mCalendarVaoCa.getTime(), DateTimeUtils.DEFAULT_DATETIME_FORMAT));
 //        Toast.showToast(getViewContext(), );
-        new IOSDialog.Builder(getViewContext())
-                .setCancelable(false).setMessage("Ghi nhận thành công " + size + " cuộc gọi lên hệ thống")
-                .setNegativeButton("Đóng", null).show();
+        new IOSDialog.Builder(getViewContext()).setCancelable(false).setMessage("Ghi nhận thành công " + size + " cuộc gọi lên hệ thống").setNegativeButton("Đóng", null).show();
 //        if (sharedPref.getBoolean(Constants.KEY_TRANG_THAI_LOG_CALL, false)) {
 //            ll_log_cuoc_goi.setVisibility(View.VISIBLE);
 //        } else ll_log_cuoc_goi.setVisibility(View.GONE);
     }
 
-    @OnClick({R.id.img_back, R.id.rl_logout, R.id.rl_e_wallet, R.id.rl_route, R.id.rl_cuocgoi, R.id.rl_e_luong, R.id.sw_switch, R.id.rl_chat, R.id.rl_capnhat, R.id.ll_log_cuoc_goi})
+    @Override
+    public void showVaoCa(String data) {
+        swSwitch.setChecked(true);
+        SharedPref sharedPref = new SharedPref(getViewContext());
+        userInfo1.setShiftInOut(1);
+        sharedPref.putString(Constants.KEY_USER_INFO, ApiService.getGson().toJson(userInfo1));
+    }
+
+    @Override
+    public void showRaCa(String data) {
+        swSwitch.setChecked(false);
+        SharedPref sharedPref = new SharedPref(getViewContext());
+        userInfo1.setShiftInOut(0);
+        sharedPref.putString(Constants.KEY_USER_INFO, ApiService.getGson().toJson(userInfo1));
+    }
+
+    @Override
+    public void showError(int tyoe) {
+        if (tyoe == 1) swSwitch.setChecked(true);
+        else swSwitch.setChecked(false);
+    }
+
+    @OnClick({R.id.sw_switch, R.id.sw_switch_call, R.id.img_back, R.id.rl_logout, R.id.rl_e_wallet, R.id.rl_route, R.id.rl_cuocgoi, R.id.rl_e_luong, R.id.rl_chat, R.id.rl_capnhat, R.id.ll_log_cuoc_goi})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.ll_log_cuoc_goi:
@@ -248,10 +280,7 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
                         }
                         mPresenter.getCallLog(request);
                     } else {
-                        new IOSDialog.Builder(getViewContext())
-                                .setCancelable(false).setTitle("Thông báo")
-                                .setMessage("Bạn không thực hiện cuộc gọi nào (từ " + tu + " đến " + den + ")")
-                                .setNegativeButton("Đóng", null).show();
+                        new IOSDialog.Builder(getViewContext()).setCancelable(false).setTitle("Thông báo").setMessage("Bạn không thực hiện cuộc gọi nào (từ " + tu + " đến " + den + ")").setNegativeButton("Đóng", null).show();
 //                        Toast.showToast(getViewContext(), );
                         mCalendarVaoCa = Calendar.getInstance();
                         sharedPref.putString(Constants.KEY_RA_VAOV1, DateTimeUtils.convertDateToString(mCalendarVaoCa.getTime(), DateTimeUtils.DEFAULT_DATETIME_FORMAT));
@@ -267,42 +296,47 @@ public class ProfileFragment extends ViewFragment<ProfileContract.Presenter> imp
 //                }).show();
                 break;
             case R.id.rl_chat:
-//                Intent c = new Intent(getActivity(), ChatDingDongActivity.class);
-//                startActivity(c);
-                mPresenter.showChat();
-//                Toast.showToast(getViewContext(), "Bạn đã chọn chức năng chat với chung tôi ngay");
-//                ZohoLiveChat.Chat.show();
-//                RingmeOttSdk.openChatList(getViewContext());
-//                RingmeOttSdk.openChat(
-//                        getViewContext(),
-//                        "o42pkzheai@localhost",
-//                        "", // Chuỗi JSON truyền vào thông tin đơn hàng theo định dạng ở mục 4.4
-//                        false
-//                );
-//                RingmeOttSdk.openChat(
-//                        getActivity(),
-//                to = usernameOfReceiver,
-//                        typeQuestion = 1)
 
-//                LiveChatUtil.openChat(getViewContext());
+                mPresenter.showChat();
+
+                break;
+            case R.id.sw_switch_call:
+                if (!swSwitchCall.isChecked()) {
+                    sharedPref.putInt(Constants.KEY_CALL, 0);
+                } else {
+                    sharedPref.putInt(Constants.KEY_CALL, 1);
+                }
                 break;
             case R.id.rl_capnhat:
                 Intent viewIntent = new Intent("android.intent.action.VIEW", Uri.parse("https://pns.vnpost.vn/app"));
                 startActivity(viewIntent);
                 break;
             case R.id.sw_switch:
-                new DialoggoiLai(getViewContext(), "Bạn có muốn đẩy log gọi lên hệ thống", new IdCallback() {
-                    @Override
-                    public void onResponse(String id) {
-                        if (id.equals("1")) {
-                            swSwitch.setChecked(true);
-                            sharedPref.putString(Constants.KEY_LOG_CALL, "1");
-                        } else {
-                            swSwitch.setChecked(false);
-                            sharedPref.putString(Constants.KEY_LOG_CALL, "0");
-                        }
-                    }
-                }).show();
+                if (!swSwitch.isChecked()) {
+                    MainMode mode = new MainMode();
+                    mode.setPostmanCode(userInfo1.getUserName());
+                    mode.setPostmanTel(userInfo1.getMobileNumber());
+                    mPresenter.getRaCa(mode);
+                } else {
+                    MainMode mode = new MainMode();
+                    mode.setPostmanCode(userInfo1.getUserName());
+                    mode.setPostmanTel(userInfo1.getMobileNumber());
+                    mPresenter.getVaoCa(mode);
+                }
+//                new DialoggoiLai(getViewContext(), "Bạn có muốn đẩy log gọi lên hệ thống", new IdCallback() {
+//                    @Override
+//                    public void onResponse(String id) {
+//                        if (id.equals("1")) {
+//                            swSwitch.setChecked(true);
+//                            sharedPref.putString(Constants.KEY_LOG_CALL, "1");
+//                        } else {
+//                            swSwitch.setChecked(false);
+//                            sharedPref.putString(Constants.KEY_LOG_CALL, "0");
+//                        }
+//                    }
+//                }).show();
+
+
                 break;
             case R.id.rl_cuocgoi:
                 mPresenter.showLichsuCuocgoi();

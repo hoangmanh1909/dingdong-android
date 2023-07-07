@@ -4,7 +4,6 @@ import com.core.base.viper.interfaces.ContainerView;
 import com.core.base.viper.interfaces.IInteractor;
 import com.core.base.viper.interfaces.IPresenter;
 import com.core.base.viper.interfaces.PresentView;
-import com.ems.dingdong.functions.mainhome.phathang.noptien.tabs.TabPaymentContract;
 
 public class TabCallContract {
 

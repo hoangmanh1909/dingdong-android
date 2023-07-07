@@ -334,13 +334,6 @@ public class CancelPaymentFragment extends ViewFragment<CancelPaymentContract.Pr
                     }
                 }
             }
-
-//            new DiaLogOption(getViewContext(), new IdCallback() {
-//                @Override
-//                public void onResponse(String id) {
-//                    if (id.equals("3")) {
-//                        mPresenter.showLienket();
-//                    } else {
             String con = "";
             long cod = 0;
             long fee = 0;
@@ -350,80 +343,15 @@ public class CancelPaymentFragment extends ViewFragment<CancelPaymentContract.Pr
             }
             String codAmount = NumberUtils.formatPriceNumber(cod);
             String feeAmount = NumberUtils.formatPriceNumber(fee);
-
-//                        if (id.equals("1"))
-//                            con = "Tài khoản thấu chi NHTM SeABank?";
-//                        else con = "Ví điện tử PostPay?";
-
             String content = "Bạn chắc chắn hủy " + "<font color=\"red\", size=\"20dp\">" +
                     mAdapter.getItemsSelected().size() + "</font>" + " bưu gửi với tổng số tiền COD: " +
                     "<font color=\"red\", size=\"20dp\">" + codAmount + "</font>" + " đ, cước: " +
                     "<font color=\"red\", size=\"20dp\">" + feeAmount + "</font>" + " đ " + con + "?";
 
             new CreatedBd13Dialog(getActivity(), 99, mAdapter.getItemsSelected().size(), cod + fee, (type, description) -> {
-//                            new NotificationDialog(getViewContext())
-//                                    .setConfirmText(getString(R.string.payment_confirn))
-//                                    .setCancelText(getString(R.string.payment_cancel))
-//                                    .setHtmlContent(content)
-//                                    .setCancelClickListener(Dialog::dismiss)
-//                                    .setImage(NotificationDialog.DialogType.NOTIFICATION_WARNING)
-//                                    .setConfirmClickListener(sweetAlertDialog -> {
                 mPresenter.cancelPayment(mAdapter.getItemsSelected(), Integer.parseInt(type), description);
-//                                        sweetAlertDi?al?og.dismiss();
-//                                    })
-//                                    .show();
             }).show();
-
-//                    new NotificationDialog(getViewContext())
-//                            .setConfirmText(getString(R.string.payment_confirn))
-//                            .setCancelText(getString(R.string.payment_cancel))
-//                            .setHtmlContent(content)
-//                            .setCancelClickListener(Dialog::dismiss)
-//                            .setImage(NotificationDialog.DialogType.NOTIFICATION_WARNING)
-//                            .setConfirmClickListener(sweetAlertDialog -> {
-//                                String bankcode = "";
-//                                String posmanTel = "";
-//                                if (id.equals("1"))
-//                                    bankcode = "SeABank";
-//                                else bankcode = "EW";
-//                                for (int i = 0; i < userInfo.getSmartBankLink().size(); i++) {
-//                                    if (id.equals("1") && userInfo.getSmartBankLink().get(i).getBankCode().equals("SeABank"))
-//                                        posmanTel = userInfo.getMobileNumber();
-//                                    else if (id.equals("2") && userInfo.getSmartBankLink().get(i).getBankCode().equals("EW"))
-//                                        posmanTel = userInfo.getMobileNumber();
-//
-//                                }
-//
-//                                mPresenter.requestPayment(list, poCode, routeCode, postmanCode, Integer.parseInt(id), bankcode, posmanTel);
-//                                sweetAlertDialog.dismiss();
-//
-//                                if (id.equals("2")) {
-//                                    OtpDialog otpDialog = new OtpDialog(getViewContext(), new OtpDialog.OnPaymentCallback() {
-//                                        @Override
-//                                        public void onPaymentClick(String otp) {
-//                                            if (ketquaINT == 1)
-//                                                mPresenter.confirmPayment(list, otp,
-//                                                        requestIdKq, retRefNumberKq, poCode, routeCode, postmanCode);
-//                                            else {
-//                                                Toast.showToast(getViewContext(), "Vui lòng kiểm tra OTP được gửi trong SMS của bạn.");
-//                                            }
-//                                        }
-//                                    }, messageKq);
-//
-//                                    otpDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-//                                    otpDialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
-//                                    otpDialog.show();
-//                                }
-//                                showProgress();
-//
-//                            })
-//                            .show();
-//                    }
-//                }
-//            }).show();
-
         }
-
     }
 
     @Override

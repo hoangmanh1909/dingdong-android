@@ -1,10 +1,13 @@
 package com.ems.dingdong.functions.mainhome.profile;
 
+import android.annotation.SuppressLint;
+
 import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.dialog.IOSDialog;
 import com.ems.dingdong.functions.mainhome.lichsucuocgoi.tabcall.TabCallPresenter;
 import com.ems.dingdong.functions.mainhome.main.data.CallLogMode;
+import com.ems.dingdong.functions.mainhome.main.data.MainMode;
 import com.ems.dingdong.functions.mainhome.profile.chat.ChatPresenter;
 import com.ems.dingdong.functions.mainhome.profile.ewallet.EWalletPresenter;
 import com.ems.dingdong.functions.mainhome.profile.ewallet.listnganhang.ListBankPresenter;
@@ -93,4 +96,60 @@ public class ProfilePresenter extends Presenter<ProfileContract.View, ProfileCon
                     new ApiDisposable(throwable, getViewContext());
                 });
     }
+
+    @SuppressLint("CheckResult")
+    @Override
+    public void getVaoCa(MainMode request) {
+        try {
+            mView.showProgress();
+            mInteractor.getVaoCa(request)
+                    .subscribeOn(Schedulers.io())
+                    .delay(1000, TimeUnit.MILLISECONDS)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(simpleResult -> {
+                        if (simpleResult.getErrorCode().equals("00")) {
+                            mView.showVaoCa(simpleResult.getData());
+                            mView.hideProgress();
+                        } else {
+                            mView.showError(1);
+                            Toast.showToast(getViewContext(), simpleResult.getMessage());
+                            mView.hideProgress();
+                        }
+                    }, throwable -> {
+                        mView.hideProgress();
+                        new ApiDisposable(throwable, getViewContext());
+                    });
+        } catch (Exception e) {
+            e.getMessage();
+        }
+
+    }
+
+    @Override
+    public void getRaCa(MainMode request) {
+        try {
+            mView.showProgress();
+            mInteractor.getRaCa(request)
+                    .subscribeOn(Schedulers.io())
+                    .delay(1000, TimeUnit.MILLISECONDS)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(simpleResult -> {
+                        if (simpleResult.getErrorCode().equals("00")) {
+                            mView.showRaCa(simpleResult.getData());
+                            mView.hideProgress();
+                        } else {
+                            mView.showError(2);
+                            Toast.showToast(getViewContext(), simpleResult.getMessage());
+                            mView.hideProgress();
+                        }
+                    }, throwable -> {
+                        mView.hideProgress();
+                        new ApiDisposable(throwable, getViewContext());
+                    });
+        } catch (Exception e) {
+            e.getMessage();
+        }
+
+    }
+
 }

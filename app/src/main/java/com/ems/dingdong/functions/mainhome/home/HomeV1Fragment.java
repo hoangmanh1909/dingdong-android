@@ -334,7 +334,7 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
             } else {
                 homeCollectInfo.setLabelCollect(getResources().getString(R.string.fee));
                 homeCollectInfo.setTotalFeeToday(response.getTotalFeeTodayNormal());
-                homeCollectInfo.setTotalFeePast(response.getTotalFeePastNormal());
+                homeCollectInfo.setTotalFeePast(Math.toIntExact(response.getTotalFeePastNormal()));
             }
             mListDelivery.add(homeCollectInfo);
         }
@@ -381,12 +381,12 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
                 homeCollectInfo.setTotalQuantityPast(getResources().getString(R.string.not_deliver_yet));
             } else if (i == 1) {
                 homeCollectInfo.setLabelCollect(getResources().getString(R.string.amount));
-                homeCollectInfo.setTotalQuantityTodayPA((response.getTotalQuantityTodayPA()));
-                homeCollectInfo.setTotalQuantityPastPA(response.getTotalQuantityPastPA());
+                homeCollectInfo.setTotalQuantityTodayPA(Math.toIntExact((response.getTotalQuantityTodayPA())));
+                homeCollectInfo.setTotalQuantityPastPA(Math.toIntExact(response.getTotalQuantityPastPA()));
             } else {
                 homeCollectInfo.setLabelCollect(getResources().getString(R.string.fee));
-                homeCollectInfo.setTotalFeeTodayPA(response.getTotalFeeTodayPA());
-                homeCollectInfo.setTotalFeePastPA(response.getTotalFeePast());
+                homeCollectInfo.setTotalFeeTodayPA(Math.toIntExact(response.getTotalFeeTodayPA()));
+                homeCollectInfo.setTotalFeePastPA(Math.toIntExact(response.getTotalFeePast()));
             }
             mListDeliveryPA.add(homeCollectInfo);
         }
@@ -415,12 +415,12 @@ public class HomeV1Fragment extends ViewFragment<HomeContract.Presenter> impleme
                 homeCollectInfo.setTotalAddressNotCollect(String.format("%s", NumberUtils.formatPriceNumber(response.getTotalAddressNotCollect())));
             } else if (i == 2) {
                 homeCollectInfo.setLabelCollect(getResources().getString(R.string.sl_tin));
-                homeCollectInfo.setTotalLadingCollect(response.getTotalLadingCollect());
-                homeCollectInfo.setTotalLadingNotCollect(response.getTotalLadingNotCollect());
+                homeCollectInfo.setTotalLadingCollect(Math.toIntExact(response.getTotalLadingCollect()));
+                homeCollectInfo.setTotalLadingNotCollect(Math.toIntExact(response.getTotalLadingNotCollect()));
             } else {
                 homeCollectInfo.setLabelCollect(getResources().getString(R.string.weigh));
-                homeCollectInfo.setTotalWeightCollect(response.getTotalWeightCollect());
-                homeCollectInfo.setTotalWeightNotCollect(response.getTotalWeightNotCollect());
+                homeCollectInfo.setTotalWeightCollect(Math.toIntExact(response.getTotalWeightCollect()));
+                homeCollectInfo.setTotalWeightNotCollect(Math.toIntExact(response.getTotalWeightNotCollect()));
             }
             mListCollect.add(homeCollectInfo);
         }

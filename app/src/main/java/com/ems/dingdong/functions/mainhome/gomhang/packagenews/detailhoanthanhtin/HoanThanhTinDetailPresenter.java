@@ -8,17 +8,24 @@ import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.functions.mainhome.phathang.scanner.ScannerCodePresenter;
 import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.CommonCallback;
+import com.ems.dingdong.functions.mainhome.profile.chat.menuchat.model.AccountChatInAppGetQueueResponse;
 import com.ems.dingdong.model.CommonObject;
+import com.ems.dingdong.model.GetPosstageMode;
+import com.ems.dingdong.model.GetPostageRespone;
 import com.ems.dingdong.model.ParcelCodeInfo;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.CommonObjectListResult;
 import com.ems.dingdong.model.UploadSingleResult;
 import com.ems.dingdong.model.request.HoanTatTinRequest;
 import com.ems.dingdong.network.ApiDisposable;
+import com.ems.dingdong.network.NetWorkController;
+import com.ems.dingdong.utiles.Toast;
 
 import java.util.List;
 
+import io.reactivex.SingleObserver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -131,8 +138,8 @@ public class HoanThanhTinDetailPresenter extends Presenter<HoanThanhTinDetailCon
                 if (response.body().getErrorCode().equals("00")) {
                     mView.hideProgress();
                     mView.controlViews();
-                }
-                mView.showMessage(response.body().getMessage());
+                    mView.showMessage(response.body().getMessage());
+                } else mView.showError(response.body().getMessage());
             }
 
             @Override
@@ -169,6 +176,43 @@ public class HoanThanhTinDetailPresenter extends Presenter<HoanThanhTinDetailCon
                 }, throwable -> {
                     mView.hideProgress();
                     new ApiDisposable(throwable, getViewContext());
+                });
+    }
+
+    @Override
+    public void ddGetPostage(String request) {
+        mView.showProgress();
+        mInteractor.ddGetPostage(request)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<SimpleResult>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(SimpleResult simpleResult) {
+                        if (simpleResult != null) {
+                            if (simpleResult.getErrorCode().equals("00")) {
+                                GetPostageRespone response = NetWorkController.getGson().fromJson(simpleResult.getData(), GetPostageRespone.class);
+                                mView.showTinhCuoc(response);
+                                mView.hideProgress();
+                            } else {
+                                Toast.showToast(getViewContext(), simpleResult.getMessage());
+                                mView.hideProgress();
+                            }
+                        } else {
+                            Toast.showToast(getViewContext(), "Lỗi hệ thống, vui lòng liên hệ quản trị viên");
+                            mView.hideProgress();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Toast.showToast(getViewContext(), e.getMessage());
+                        mView.hideProgress();
+                    }
                 });
     }
 

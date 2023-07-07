@@ -169,7 +169,10 @@
     <string name="phone_number_which_registered_to_e_wallet">Số điện thoại đăng kí ví:</string>
     <string name="link_to_e_post_wallet">Liên Kết Ví Bưu Điện</string>
     <string name="wrong_otp_pattern">OTP chưa đúng định dạng</string>
+    <string name="otp_pattern">OTP NỘP TIỀN</string>
+    <string name="otp_hint_pattern">Nhập OTP</string>
     <string name="batch_code">Mã lô</string>
+
     <string name="grand_father">Ông</string>
     <string name="grand_mother">Bà</string>
     <string name="father">Bố</string>
@@ -183,6 +186,19 @@
     <string name="archival">Văn Thư</string>
     <string name="labor">Lao Công</string>
     <string name="bodyguard">Bảo Vệ</string>
+    <string name="R001">Người mua</string>
+    <string name="R002">Hàng xóm</string>
+    <string name="R003">Trợ lý</string>
+    <string name="R004">Bảo vệ của căn hộ</string>
+    <string name="R005">Người nhà/anh em</string>
+    <string name="R006">Sếp/quản lý/nhân viên</string>
+    <string name="R007">Lái xe</string>
+    <string name="R008">NV hành chính văn phòng</string>
+    <string name="R009">Giúp việc</string>
+    <string name="R011">Nhân viên an ninh</string>
+    <string name="R012">Lễ tân</string>
+    <string name="R013">Phòng chuyển phát</string>
+    <string name="R017">Hòm thư</string>
     <string name="other">Khác</string>
     <string name="you_have_not_pick_any_package">Bạn chưa chọn bưu gửi nào</string>
     <string name="you_have_not_pick_route">Bạn chưa chọn tuyến</string>

@@ -46,7 +46,7 @@ interface MainContract {
 
         Single<SimpleResult> getVaoCa(MainMode request);
 
-        Single<SimpleResult> getRaCa(String request);
+        Single<SimpleResult> getRaCa(MainMode request);
 
         Single<SimpleResult> getCallLog(List<CallLogMode> request);
 

@@ -301,7 +301,8 @@ public interface XacNhanBaoPhatContract {
          */
         void submitToPNS(String reason, String solution, String note, String deliveryImage, String authenImage,
                          String signCapture, String EstimateProcessTime, boolean ischeck, String lydo, int idXaPhuong, int idQuanhuyen, String diachinew,
-                         String hinhthucphat, String ghichu, String doituong, int ngaydukien, DLVDeliveryUnSuccessRefundRequest dlvDeliveryUnSuccessRefundRequest);
+                         String hinhthucphat, String ghichu, String doituong, int ngaydukien, DLVDeliveryUnSuccessRefundRequest dlvDeliveryUnSuccessRefundRequest,
+                         int isCollectFeeReturn);
 
         /**
          * delivery success.

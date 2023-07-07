@@ -20,10 +20,13 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,13 +37,18 @@ import com.core.widget.BaseViewHolder;
 import com.ems.dingdong.BuildConfig;
 import com.ems.dingdong.R;
 import com.ems.dingdong.callback.BarCodeCallback;
+import com.ems.dingdong.callback.DialogHoanTTCallback;
 import com.ems.dingdong.callback.HoanThanhTinCallback;
 import com.ems.dingdong.callback.SignCallback;
+import com.ems.dingdong.dialog.DiaLogHoanTatTin4h;
+import com.ems.dingdong.dialog.DiaLogHoanTatTin4hXacNhanGhiNo;
 import com.ems.dingdong.dialog.DialogText;
 import com.ems.dingdong.dialog.HoanTatTinDialog;
 import com.ems.dingdong.dialog.SignDialog;
 import com.ems.dingdong.functions.mainhome.gomhang.packagenews.detailhoanthanhtin.viewchild.PhonePresenter;
 import com.ems.dingdong.model.CommonObject;
+import com.ems.dingdong.model.GetPosstageMode;
+import com.ems.dingdong.model.GetPostageRespone;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.ReasonInfo;
 import com.ems.dingdong.model.ScanItem;
@@ -49,6 +57,7 @@ import com.ems.dingdong.model.request.HoanTatTinRequest;
 import com.ems.dingdong.network.NetWorkController;
 import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.utiles.MediaUltisV1;
+import com.ems.dingdong.utiles.NumberUtils;
 import com.ems.dingdong.utiles.SharedPref;
 import com.ems.dingdong.utiles.Toast;
 import com.ems.dingdong.views.CustomBoldTextView;
@@ -103,7 +112,7 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
     @BindView(R.id.tv_ContactAddress)
     CustomTextView tvContactAddress;
     @BindView(R.id.btn_confirm)
-    CustomTextView btnConfirm;
+    AppCompatButton btnConfirm;
     @BindView(R.id.tv_TrackingCode)
     CustomTextView tvTrackingCode;
     @BindView(R.id.tv_OrderNumber)
@@ -134,6 +143,18 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
     LinearLayout chupanh;
     @BindView(R.id.btn_sign)
     CustomTextView btn_sign;
+    @BindView(R.id.tv_cuoc)
+    AppCompatTextView tvCuoc;
+    @BindView(R.id.ll_hinhthucthanhtoan)
+    LinearLayout llHinhthucthanhtoan;
+    @BindView(R.id.ll_thongtincuoc)
+    LinearLayout llThongtincuoc;
+    @BindView(R.id.tv_tinhcuoc)
+    AppCompatButton tvTinhcuoc;
+    @BindView(R.id.check_tiencuoc)
+    CheckBox checkTiencuoc;
+    @BindView(R.id.tv_hinhthucthanhtoan)
+    AppCompatTextView tvHinhthucthanhtoan;
     private String mUser;
     private CommonObject mHoanThanhTin;
     private String mFile = "";
@@ -146,6 +167,9 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
 
     double senderLat = 0.0;
     double senderLon = 0.0;
+
+    int mTinhCuoc = 0;
+    GetPostageRespone mPostRespone;
 
     public static HoanThanhTinDetailFragment getInstance() {
         return new HoanThanhTinDetailFragment();
@@ -220,6 +244,28 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
                 return false;
             }
         });
+        if (mPresenter.getCommonObject().getIsService4H() == 0) {
+            tvTinhcuoc.setVisibility(View.GONE);
+            btnConfirm.setVisibility(View.VISIBLE);
+        } else {
+            tvTinhcuoc.setVisibility(View.VISIBLE);
+            btnConfirm.setVisibility(View.GONE);
+        }
+//        if (mPresenter.getCommonObject().getIsService4H() > 0) {
+//            checkTiencuoc.setVisibility(View.VISIBLE);
+//            llHinhthucthanhtoan.setVisibility(View.VISIBLE);
+//            if (mPresenter.getCommonObject().getFee() != null)
+//                tvCuoc.setText(String.format("%s đ", NumberUtils.formatPriceNumber(mPresenter.getCommonObject().getFee())));
+//            else tvCuoc.setText("0 đ");
+//
+//            if (mPresenter.getCommonObject().getPaymentType() == 2)
+//                checkTiencuoc.setChecked(true);
+//            else checkTiencuoc.setChecked(false);
+//        } else {
+//            checkTiencuoc.setVisibility(View.GONE);
+//            llHinhthucthanhtoan.setVisibility(View.GONE);
+//        }
+
 
     }
 
@@ -382,33 +428,71 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
         senderLon = lon;
     }
 
-    @OnClick({R.id.img_back, R.id.btn_confirm, R.id.iv_package, R.id.img_search, R.id.img_capture, R.id.btn_sign})
+    @Override
+    public void showTinhCuoc(GetPostageRespone getPostageRespone) {
+        mTinhCuoc = 1;
+        mPostRespone = getPostageRespone;
+        tvTinhcuoc.setVisibility(View.GONE);
+        btnConfirm.setVisibility(View.VISIBLE);
+        llThongtincuoc.setVisibility(View.VISIBLE);
+        llThongtincuoc.requestFocus();
+        tvCuoc.setText(String.format("%s đ", NumberUtils.formatPriceNumber(getPostageRespone.getPostageAmount())));
+        if (mPresenter.getCommonObject().getPaymentType() != null) {
+            String hinhthuc = "";
+            switch (mPresenter.getCommonObject().getPaymentType()) {
+                case 1:
+                    hinhthuc = "Ghi nợ";
+                    break;
+                case 2:
+                    hinhthuc = "Tiền mặt";
+                    break;
+                default:
+                    hinhthuc = "";
+            }
+            tvHinhthucthanhtoan.setText(hinhthuc);
+        } else tvHinhthucthanhtoan.setText("");
+    }
+
+    @OnClick({R.id.img_back, R.id.btn_confirm, R.id.iv_package, R.id.img_search, R.id.img_capture, R.id.btn_sign, R.id.tv_tinhcuoc})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_back:
                 mPresenter.back();
                 break;
+            case R.id.tv_tinhcuoc:
+//                GetPosstageMode getPosstageMode = new GetPosstageMode();
+//                getPosstageMode.setPartnerSourceId(mPresenter.getCommonObject().getPartnerSourceId());
+                mPresenter.ddGetPostage(mPresenter.getCommonObject().getPartnerSourceId());
+                break;
             case R.id.btn_confirm:
+                if (mPresenter.getCommonObject().getIsService4H() > 0) {
+                    if (mTinhCuoc == 0) {
+                        Toast.showToast(getViewContext(), "Vui lòng tính cước bưu gửi");
+                        return;
+                    }
+                }
                 final StringBuilder scans = new StringBuilder();
                 List<ScanItem> scanItems = mAdapter.getItems();
                 for (ScanItem item : scanItems) {
                     scans.append(item.getCode()).append(";");
                 }
+
+
                 if (mHoanThanhTin != null) {
-                    new HoanTatTinDialog(getActivity(), mHoanThanhTin.getCode(), mPresenter.getList(),
-                            mHoanThanhTin.getReciverAddress(),
-                            mLocation.getLatitude(), mLocation.getLongitude(),
-                            (mHoanThanhTin.getSenderLat() != null && !mHoanThanhTin.getSenderLat().isEmpty()) ? Double.parseDouble(mHoanThanhTin.getSenderLat()) : 0.0,
-                            (mHoanThanhTin.getSenderLon() != null && !mHoanThanhTin.getSenderLon().isEmpty()) ? Double.parseDouble(mHoanThanhTin.getSenderLon()) : 0.0, mHoanThanhTin.getSenderVpostcode(), mPresenter.getContainerView(), new HoanThanhTinCallback() {
+                    new HoanTatTinDialog(getActivity(), mHoanThanhTin.getCode(), mPresenter.getList(), mHoanThanhTin.getReciverAddress(), mLocation.getLatitude(), mLocation.getLongitude(), (mHoanThanhTin.getSenderLat() != null && !mHoanThanhTin.getSenderLat().isEmpty()) ? Double.parseDouble(mHoanThanhTin.getSenderLat()) : 0.0, (mHoanThanhTin.getSenderLon() != null && !mHoanThanhTin.getSenderLon().isEmpty()) ? Double.parseDouble(mHoanThanhTin.getSenderLon()) : 0.0, mHoanThanhTin.getSenderVpostcode(), mPresenter.getContainerView(), new HoanThanhTinCallback() {
                         @Override
                         public void onResponse(String statusCode, ReasonInfo reasonInfo, String pickUpDate, String pickUpTime, ArrayList<Integer> ShipmentID, String noidung) {
                             if (getActivity() != null) {
+//                                if (mPresenter.getCommonObject().getIsService4H() > 0 && mPresenter.getCommonObject().getPaymentType() == 2 && !checkTiencuoc.isChecked()) {
+//                                    Toast.showToast(getViewContext(), "Khách hàng phải thu cước ngay, đề nghị thu tiền và tích chọn Đã thu tiền cước");
+//                                    return;
+//                                }
                                 SharedPref sharedPref = new SharedPref(getActivity());
                                 String userJson = sharedPref.getString(Constants.KEY_USER_INFO, "");
                                 String postOfficeJson = sharedPref.getString(Constants.KEY_POST_OFFICE, "");
+                                HoanTatTinRequest hoanTatTinRequest = new HoanTatTinRequest();
                                 if (!userJson.isEmpty()) {
                                     UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
-                                    HoanTatTinRequest hoanTatTinRequest = new HoanTatTinRequest();
                                     hoanTatTinRequest.setEmployeeID(userInfo.getiD());
                                     hoanTatTinRequest.setOrderID(mHoanThanhTin.getiD().isEmpty() ? 0 : Long.parseLong(mHoanThanhTin.getiD()));
                                     hoanTatTinRequest.setOrderPostmanID(mHoanThanhTin.getOrderPostmanID().isEmpty() ? 0 : Long.parseLong(mHoanThanhTin.getOrderPostmanID()));
@@ -424,6 +508,16 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
                                     hoanTatTinRequest.setReasonCode(reasonInfo != null ? reasonInfo.getCode() : "");
                                     hoanTatTinRequest.setShipmentIds(ShipmentID);
                                     hoanTatTinRequest.setNoteReason(noidung);
+                                    if (mPresenter.getCommonObject().getIsService4H() > 0) {
+                                        if (mTinhCuoc == 1) {
+                                            hoanTatTinRequest.setPostageAmount(mPostRespone.getPostageAmount());
+                                            hoanTatTinRequest.setPostageCODAmount(mPostRespone.getPostageCODAmount());
+                                        }
+                                    }
+//                                    int checkTien = 0;
+//                                    if (checkTiencuoc.isChecked()) checkTien = 1;
+//                                    else checkTien = 0;
+//                                    hoanTatTinRequest.setIsCollectFee(checkTien);
                                     //vi tri hien tai
                                     String setCollectLat = "";
                                     String setCollectLon = "";
@@ -440,10 +534,54 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
 
                                     hoanTatTinRequest.setPOCollectLat(NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLat());
                                     hoanTatTinRequest.setPOCollectLon(NetWorkController.getGson().fromJson(postOfficeJson, PostOffice.class).getPOLon());
+                                }
+//                                mPresenter.getCommonObject().setPaymentType(1 );
+                                if (mPresenter.getCommonObject().getIsService4H() > 0 && mPresenter.getCommonObject().getPaymentType() == 2) {
+                                    if (statusCode.equals("P4")) {
 
+                                        String textHtml = "Số tiền phải thu của đơn hàng này là " + "<font color=\"red\">" + String.format("%s", NumberUtils.formatPriceNumber(mPostRespone.getPostageAmount())) + "</font>" + " đồng.\nBạn xác nhận đã thu được tiền và cập nhật trạng thái thu gom thành công?";
+                                        new DiaLogHoanTatTin4h(getViewContext(), textHtml, Constants.TIEN_MAT, new DialogHoanTTCallback() {
+                                            @Override
+                                            public void onResponse(int type) {
+                                                hoanTatTinRequest.setIsCollectFee(1);
+                                                hoanTatTinRequest.setPaymentType(Constants.TIEN_MAT);
+                                                mPresenter.collectOrderPostmanCollect(hoanTatTinRequest);
+                                            }
+                                        }).show();
+                                    } else {
 
+                                    }
+                                } else if (mPresenter.getCommonObject().getIsService4H() > 0 && mPresenter.getCommonObject().getPaymentType() == 1) {
+                                    if (statusCode.equals("P4")) {
+                                        String textHtml = "Số tiền phải thu của đơn hàng này là " + "<font color=\"red\">" + String.format("%s", NumberUtils.formatPriceNumber(mPostRespone.getPostageAmount())) + "</font>" + " đồng.\nBạn có muốn thu tiền mặt không?";
+                                        new DiaLogHoanTatTin4h(getViewContext(), textHtml, Constants.GHI_NO, new DialogHoanTTCallback() {
+                                            @Override
+                                            public void onResponse(int type) {
+//                                                if (type == Constants.TIEN_MAT)
+//                                                    hoanTatTinRequest.setIsCollectFee(1);
+//                                                else hoanTatTinRequest.setIsCollectFee(0);
+//                                                hoanTatTinRequest.setPaymentType(type);
+//                                                mPresenter.collectOrderPostmanCollect(hoanTatTinRequest);
+                                                new DiaLogHoanTatTin4hXacNhanGhiNo(getViewContext(), "Bạn có muốn tiếp tục xác nhận hoàn tất tin?", type, new DialogHoanTTCallback() {
+                                                    @Override
+                                                    public void onResponse(int type) {
+                                                        if (type == Constants.TIEN_MAT)
+                                                            hoanTatTinRequest.setIsCollectFee(1);
+                                                        else hoanTatTinRequest.setIsCollectFee(0);
+                                                        hoanTatTinRequest.setPaymentType(type);
+                                                        mPresenter.collectOrderPostmanCollect(hoanTatTinRequest);
+
+                                                        Log.d("KHIEM123123", new Gson().toJson(hoanTatTinRequest));
+                                                    }
+                                                }).show();
+                                            }
+                                        }).show();
+                                    }
+                                } else {
                                     mPresenter.collectOrderPostmanCollect(hoanTatTinRequest);
                                 }
+
+
                             }
 
                         }
@@ -549,9 +687,12 @@ public class HoanThanhTinDetailFragment extends ViewFragment<HoanThanhTinDetailC
         } else {
             btnConfirm.setEnabled(false);
             btnConfirm.setVisibility(View.GONE);
+            tvTinhcuoc.setVisibility(View.GONE);
             list_ds.setVisibility(View.GONE);
             chupanh.setVisibility(View.GONE);
             btn_sign.setVisibility(View.GONE);
+//            if (!mPresenter.getCommonObject().getPartnerSourceId().isEmpty())
+//                mPresenter.ddGetPostage(mPresenter.getCommonObject().getPartnerSourceId());
         }
         mHoanThanhTin = commonObject;
         tvAssignDateTime.setText(commonObject.getAssignDateTime());

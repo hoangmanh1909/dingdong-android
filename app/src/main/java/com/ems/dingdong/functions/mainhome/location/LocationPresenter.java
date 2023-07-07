@@ -133,14 +133,19 @@ public class LocationPresenter extends Presenter<LocationContract.View, Location
 
                     @Override
                     public void onSuccess(SimpleResult simpleResult) {
-                        if (simpleResult.getErrorCode().equals("00")) {
-                            HistoryRespone[] j = NetWorkController.getGson().fromJson(simpleResult.getData(), HistoryRespone[].class);
-                            List<HistoryRespone> l = Arrays.asList(j);
-                            mView.showLog(l);
-                        } else {
-                            mView.showError();
+                        try {
+                            if (simpleResult.getErrorCode().equals("00")) {
+                                HistoryRespone[] j = NetWorkController.getGson().fromJson(simpleResult.getData(), HistoryRespone[].class);
+                                List<HistoryRespone> l = Arrays.asList(j);
+                                mView.showLog(l);
+                            } else {
+                                mView.showError();
+                            }
+                            mView.hideProgress();
+                        } catch (Exception e) {
+                            mView.hideProgress();
                         }
-                        mView.hideProgress();
+
                     }
 
                     @Override
@@ -159,7 +164,7 @@ public class LocationPresenter extends Presenter<LocationContract.View, Location
         }
         mView.showProgress();
         mInteractor.findLocation(code, poCode)
-                .delay(1500,TimeUnit.MICROSECONDS)
+                .delay(1500, TimeUnit.MICROSECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new SingleObserver<SimpleResult>() {
@@ -170,10 +175,8 @@ public class LocationPresenter extends Presenter<LocationContract.View, Location
 
                     @Override
                     public void onSuccess(SimpleResult commonObjectResult) {
-                        CommonObject commonObject = NetWorkControllerGateWay.getGson().fromJson(commonObjectResult.getData(), new TypeToken<CommonObject>() {
-                        }.getType());
-                        mView.showSuccessToast(commonObjectResult.getMessage());
                         if (commonObjectResult.getErrorCode().equals("00")) {
+                            CommonObject commonObject = NetWorkController.getGson().fromJson(commonObjectResult.getData(), CommonObject.class);
                             mView.showFindLocationSuccess(commonObject);
                             HistoryRequest request = new HistoryRequest();
                             request.setLadingCode(code);

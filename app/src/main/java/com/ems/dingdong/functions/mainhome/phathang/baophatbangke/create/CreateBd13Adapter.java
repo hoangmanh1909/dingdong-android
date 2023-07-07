@@ -169,7 +169,7 @@ public class CreateBd13Adapter extends RecyclerView.Adapter<CreateBd13Adapter.Ho
                 if (mFilterDone != null && mListFilter != null) {
                     long amount = 0;
                     for (DeliveryPostman item : mListFilter) {
-                        if (!TextUtils.isEmpty(Integer.toString(item.getAmount())))
+                        if (!TextUtils.isEmpty(Long.toString(item.getAmount())))
                             amount += item.getAmount();
                     }
                     mFilterDone.getCount(mListFilter.size(), amount);

@@ -2811,8 +2811,8 @@ object NetWorkControllerGateWay {
     }
 
     @JvmStatic
-    fun getRaCa(request: String): Single<SimpleResult> {
-        val data = request
+    fun getRaCa(request: MainMode): Single<SimpleResult> {
+        val data = getGson().toJson(request)
         val signature = signature(data)
         val requestObject = RequestObject(
             "ANDROID",
@@ -2930,7 +2930,7 @@ object NetWorkControllerGateWay {
         val requestObject = RequestObject(
             "ANDROID",
             "",
-            Constants.PARTNER_CHAT_GET_QUEUE_CHAT,
+                Constants.PARTNER_CHAT_GET_QUEUE_CHAT,
             data,
             Utils.getLocalTime(Constants.DATE_FORMAT),
             "",
@@ -3037,4 +3037,20 @@ object NetWorkControllerGateWay {
         return getApiRxBuilderVer().commonServiceRx(requestObject)
     }
 
+    /// tinh cuoc hoan tat tin
+    @JvmStatic
+    fun ddGetPostage(request: String): Single<SimpleResult> {
+        val data = getGson().toJson(request)
+        val signature = signature(request)
+        val requestObject = RequestObject(
+            "ANDROID",
+            "",
+            Constants.PARTNER_MYVNP_GET_POSTAGE,
+            request,
+            Utils.getLocalTime(Constants.DATE_FORMAT),
+            "",
+            signature
+        )
+        return getApiRxBuilderVer().commonServiceRx(requestObject)
+    }
 }

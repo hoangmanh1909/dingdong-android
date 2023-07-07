@@ -309,7 +309,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             if (mAdapter.getItemsFilterSelected().size() < mAdapter.getListFilter().size() || mAdapter.getListFilter().size() == 0)
                 cbPickAll.setChecked(false);
             else cbPickAll.setChecked(true);
-            tvAmount.setText(String.format(getResources().getString(R.string.total_amount) + " %s đ", NumberUtils.formatPriceNumber(amount)));
+//            tvAmount.setText(String.format(getResources().getString(R.string.total_amount) + " %s đ", NumberUtils.formatPriceNumber(amount)));
             mPresenter.setTitleTab(count);
         }, 1000)) {
             @Override
@@ -332,11 +332,11 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                         } else {
                             new SweetAlertDialog(getActivity(), SweetAlertDialog.ERROR_TYPE).setConfirmText("OK").setTitleText("Thông báo")
                                     .setContentText("Kết nối hệ thống chat thất bại").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                                @Override
-                                public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                    sweetAlertDialog.dismiss();
-                                }
-                            }).show();
+                                        @Override
+                                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                            sweetAlertDialog.dismiss();
+                                        }
+                                    }).show();
                         }
 
                     }
@@ -348,15 +348,18 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                         mPresenter.showAddTicket(holder.getItem(position).getMaE());
                     }
                 });
+
                 holder.itemView.setOnClickListener(v -> {
-                    vijtri = position;
                     holder.cb_selected.setChecked(!holder.getItem(position).isSelected());
                     holder.getItem(position).setSelected(!holder.getItem(position).isSelected());
+                    vijtri = position;
+
                     if (cbPickAll.isChecked() && !holder.getItem(position).isSelected()) {
                         cbPickAll.setChecked(false);
                     } else if (isAllSelected()) {
                         cbPickAll.setChecked(true);
                     }
+
                     int size = getItemSelected().size();
                     if (size == 0) {
                         relativeLayout.setVisibility(View.GONE);
@@ -386,7 +389,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                 });
 
                 holder.imgSml.setOnClickListener(v -> {
-                    vijtri = position;
+//                    vijtri = position;
                     PopupMenu popupMenu = new PopupMenu(requireContext(), holder.imgSml);
                     popupMenu.getMenu().add(0, 1, 1, "Danh bạ địa chỉ ");
                     String code = "";
@@ -506,6 +509,9 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                                                     return;
                                                 }
                                                 Intent intent = new Intent(Intent.ACTION_CALL);
+                                                SharedPref sharedPref = new SharedPref(getContext());
+                                                int keycall = sharedPref.getInt(Constants.KEY_CALL, 0);
+                                                if (keycall == 1) intent = new Intent(Intent.ACTION_DIAL);
                                                 intent.setData(Uri.parse("tel:" + mAdapter.getListFilter().get(position).getSenderBookingPhone()));
                                                 if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                                                     ActivityCompat.requestPermissions(getActivity(), new String[]{CALL_PHONE}, REQUEST_CODE_ASK_PERMISSIONS);
@@ -556,9 +562,9 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                                             } else
                                                 Toast.showToast(getViewContext(), "Thiết bị chưa kết nối internet");
 
-                                        } else  if (type ==2){
+                                        } else if (type == 2) {
                                             mPresenter.callForward(phone, mAdapter.getListFilter().get(position).getMaE());
-                                        }else {
+                                        } else {
                                             CallTomeRequest callTomeRequest = new CallTomeRequest();
                                             callTomeRequest.setCallType(Constants.CALL_NGUOI_GUI);
                                             callTomeRequest.setLadingCode(mAdapter.getListFilter().get(position).getMaE());
@@ -580,7 +586,6 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
                                     @Override
                                     public void onCallToMe(String phone, int type) {
-
                                         CallTomeRequest callTomeRequest = new CallTomeRequest();
                                         callTomeRequest.setCallType(Constants.CALL_NGUOI_GUI);
                                         callTomeRequest.setLadingCode(mAdapter.getListFilter().get(position).getMaE());
@@ -618,6 +623,9 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                                                     return;
                                                 }
                                                 Intent intent = new Intent(Intent.ACTION_CALL);
+                                                SharedPref sharedPref = new SharedPref(getContext());
+                                                int keycall = sharedPref.getInt(Constants.KEY_CALL, 0);
+                                                if (keycall == 1) intent = new Intent(Intent.ACTION_DIAL);
                                                 intent.setData(Uri.parse("tel:" + mAdapter.getListFilter().get(position).getReceiverBookingPhone()));
                                                 if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                                                     ActivityCompat.requestPermissions(getActivity(), new String[]{CALL_PHONE}, REQUEST_CODE_ASK_PERMISSIONS);
@@ -708,7 +716,6 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                     }).show();
 
                 });
-
                 holder.imgAddress.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -759,6 +766,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             swipeRefreshLayout.setRefreshing(true);
             cbPickAll.setChecked(false);
             relativeLayout.setVisibility(View.GONE);
+
             initSearch();
         });
 
@@ -978,6 +986,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
     @SuppressLint("NotifyDataSetChanged")
     public void initSearch() {
+//        vijtri = 0;
         cbPickAll.setChecked(false);
         swipeRefreshLayout.setRefreshing(true);
         if (!TextUtils.isEmpty(mDate) && mUserInfo != null) {
@@ -1181,6 +1190,8 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             for (int i = 0; i < mList.size(); i++) {
                 if (mList.get(i).getMaE().equals(mAdapter.getItemsSelected().get(mAdapter.getItemsSelected().size() - 1).getMaE())) {
                     vijtri = i;
+                    if (i == mList.size() - 1)
+                        vijtri = vijtri - 1;
                     break;
                 }
             }
@@ -1209,6 +1220,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                 pickAll.setVisibility(View.VISIBLE);
                 long totalAmount = 0;
                 if (mPresenter.getType() == Constants.NOT_YET_DELIVERY_TAB) {
+                    totalAmount = 0;
                     for (DeliveryPostman i : list) {
                         if (i.getStatus().equals("N")) {
                             mList.add(i);
@@ -1216,6 +1228,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                         }
                     }
                 } else {
+                    totalAmount = 0;
                     for (DeliveryPostman i : list) {
                         if (i.getStatus().equals("Y")) {
                             mList.add(i);
@@ -1260,6 +1273,7 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                 pickAll.setVisibility(View.VISIBLE);
                 long totalAmount = 0;
                 if (mPresenter.getType() == Constants.NOT_YET_DELIVERY_TAB) {
+                    totalAmount = 0;
                     for (DeliveryPostman i : list) {
                         if (i.getStatus().equals("N")) {
                             mList.add(i);
@@ -1273,10 +1287,11 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
                         List<DeliveryPostman> k = Arrays.asList(l);
                         mList.addAll(k);
                     }
+                    totalAmount = 0;
                     for (DeliveryPostman i : list) {
                         if (i.getStatus().equals("Y")) {
                             mList.add(i);
-                            totalAmount = totalAmount + i.getAmount();
+//                            totalAmount = totalAmount + i.getAmount();
                         }
                     }
                     List<DeliveryPostman> postmen = new ArrayList<>();
@@ -1297,15 +1312,6 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
             mAdapter.setListFilter(mList);
             mAdapter.notifyDataSetChanged();
             new Handler().post(() -> {
-//                if (isFromNotification) {
-//                    isFromNotification = false;
-//                    int position = getFocusPosition();
-//                    if (position != 0) recycler.scrollToPosition(position);
-//                }
-//                if (mTotalScrolled != 0) {
-//                    recycler.scrollToPosition(mTotalScrolled);
-//                    recycler.addOnScrollListener(scrollListener);
-//                }
                 int position = vijtri;
                 recycler.scrollToPosition(position);
             });
@@ -1498,9 +1504,12 @@ public class ListBaoPhatBangKeFragment extends ViewFragment<ListBaoPhatBangKeCon
 
     private void callProvidertoCSKH(String phone) {
         Intent intent = new Intent(Intent.ACTION_CALL);
+
+        SharedPref sharedPref = new SharedPref(getContext());
+        int keycall = sharedPref.getInt(Constants.KEY_CALL, 0);
+        if (keycall == 1) intent = new Intent(Intent.ACTION_DIAL);
         intent.setData(Uri.parse("tel:" + phone));
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-
             ActivityCompat.requestPermissions(getActivity(), new String[]{CALL_PHONE}, REQUEST_CODE_ASK_PERMISSIONS);
         } else {
             startActivity(intent);

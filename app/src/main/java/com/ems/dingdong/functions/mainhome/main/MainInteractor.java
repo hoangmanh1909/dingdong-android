@@ -72,7 +72,7 @@ class MainInteractor extends Interactor<MainContract.Presenter>
     }
 
     @Override
-    public Single<SimpleResult> getRaCa(String request) {
+    public Single<SimpleResult> getRaCa(MainMode request) {
         return NetWorkControllerGateWay.getRaCa(request);
     }
 

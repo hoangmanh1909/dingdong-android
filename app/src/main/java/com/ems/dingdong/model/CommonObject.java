@@ -43,6 +43,28 @@ public class CommonObject {
     @SerializedName("ServiceNameMPITS")
     @Expose
     private String ServiceNameMPITS;
+    @SerializedName("QuotasTimeFirst")
+    @Expose
+    private String QuotasTimeFirst;
+    @SerializedName("QuotasTimeSuccess")
+    @Expose
+    private String QuotasTimeSuccess;
+
+    public String getQuotasTimeFirst() {
+        return QuotasTimeFirst;
+    }
+
+    public void setQuotasTimeFirst(String quotasTimeFirst) {
+        QuotasTimeFirst = quotasTimeFirst;
+    }
+
+    public String getQuotasTimeSuccess() {
+        return QuotasTimeSuccess;
+    }
+
+    public void setQuotasTimeSuccess(String quotasTimeSuccess) {
+        QuotasTimeSuccess = quotasTimeSuccess;
+    }
 
     public String getPOProvinceCode() {
         return POProvinceCode;
@@ -138,8 +160,10 @@ public class CommonObject {
 
     String DivideByName;
     @SerializedName("TypeWarehouse")
-    String TypeWarehouse; @SerializedName("SenderLat")
-    String SenderLat;@SerializedName("SenderLon")
+    String TypeWarehouse;
+    @SerializedName("SenderLat")
+    String SenderLat;
+    @SerializedName("SenderLon")
     String SenderLon;
 
     public String getSenderLat() {
@@ -246,10 +270,24 @@ public class CommonObject {
     String batchCode;
     @SerializedName("Fee")
     Integer fee;
+
+    ///Hình thức thanh toán 1 - Ghi nợ, 2 - Tiền mặt
+    @SerializedName("PaymentType")
+    Integer PaymentType;
     @SerializedName("Value")
     Integer cod;
     @SerializedName("OrderId")
     private String orderId;
+    @SerializedName("PartnerSourceId")
+    private String PartnerSourceId;
+
+    public String getPartnerSourceId() {
+        return PartnerSourceId;
+    }
+
+    public void setPartnerSourceId(String partnerSourceId) {
+        PartnerSourceId = partnerSourceId;
+    }
 
     public String getListLading() {
         return ListLading;
@@ -267,6 +305,13 @@ public class CommonObject {
         ListOrderNumber = listOrderNumber;
     }
 
+    public Integer getPaymentType() {
+        return PaymentType;
+    }
+
+    public void setPaymentType(Integer paymentType) {
+        PaymentType = paymentType;
+    }
 
     @SerializedName("FeePPA")
     private long feePPA;
@@ -286,6 +331,16 @@ public class CommonObject {
     private boolean isCancelOrder;
     @SerializedName("FeeCancelOrder")
     private long feeCancelOrder;
+    @SerializedName("IsService4H")
+    private int IsService4H;
+
+    public int getIsService4H() {
+        return IsService4H;
+    }
+
+    public void setIsService4H(int isService4H) {
+        IsService4H = isService4H;
+    }
 
     public long getFeePA() {
         return FeePA;
@@ -465,7 +520,7 @@ public class CommonObject {
     }
 
     @Ignore
-    public int weightS;
+    public long weightS;
 
     public void addKhoiluong(String id) {
         if (khoiluong == null) {

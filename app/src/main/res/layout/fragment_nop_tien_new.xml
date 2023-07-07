@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backround">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_56dp"
+        android:background="@drawable/bg_gradient_top"
+        tools:ignore="MissingConstraints">
+
+        <ImageView
+            android:id="@+id/img_back"
+            android:layout_width="@dimen/dimen_56dp"
+            android:layout_height="@dimen/dimen_56dp"
+            android:padding="@dimen/_10sdp"
+            android:src="@drawable/ic_back_shadown"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/appCompatTextView"
+            style="@style/textStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/inter_semibold"
+            android:text="@string/pay_money"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/img_delete"
+            android:layout_width="@dimen/dimen_56dp"
+            android:layout_height="@dimen/dimen_56dp"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/img_send"
+            android:background="?android:attr/selectableItemBackground"
+            android:padding="12dp"
+            android:src="@drawable/ic_remove"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/img_send"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/img_send"
+            android:layout_width="@dimen/dimen_56dp"
+            android:layout_height="@dimen/dimen_56dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="?android:attr/selectableItemBackground"
+            android:padding="12dp"
+            android:src="@drawable/telegram"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--    <com.astuetz.PagerSlidingTabStrip-->
+    <!--        android:id="@+id/tabs"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="48dp"-->
+    <!--        android:background="@color/white"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"-->
+    <!--        app:pstsDividerColor="@color/green"-->
+    <!--        app:pstsDividerPadding="@dimen/dimen_10dp"-->
+    <!--        app:pstsDividerWidth="1dp"-->
+    <!--        app:pstsIndicatorColor="@color/colorPrimary"-->
+    <!--        app:pstsScrollOffset="10dp"-->
+    <!--        app:pstsShouldExpand="true"-->
+    <!--        app:pstsTabBackground="@drawable/bg_tabs"-->
+    <!--        app:pstsTabTextAllCaps="false"-->
+    <!--        app:pstsTabTextAlpha="@integer/google_play_services_version"-->
+    <!--        app:pstsTabTextColor="@color/black"-->
+    <!--        app:pstsTabTextSize="11dp"-->
+    <!--        app:pstsTabTextStyle="bold"-->
+    <!--        app:pstsUnderlineColor="@color/colorWhite"-->
+    <!--        tools:ignore="MissingConstraints" />-->
+    <com.astuetz.PagerSlidingTabStrip
+        android:id="@+id/tabs"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/bg_tabs"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout2"
+        app:pstsIndicatorColor="@color/colorPrimary"
+        tools:ignore="MissingConstraints"
+        app:pstsTabTextSize="@dimen/dimen12dp"/>
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tabs"
+        tools:ignore="MissingConstraints,SpeakableTextPresentCheck" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

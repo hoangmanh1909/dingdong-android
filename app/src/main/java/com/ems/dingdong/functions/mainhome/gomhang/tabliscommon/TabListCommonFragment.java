@@ -63,8 +63,10 @@ public class TabListCommonFragment extends ViewFragment<TabListCommonContract.Pr
                 android.R.color.holo_orange_dark,
                 android.R.color.holo_blue_dark);
         tabList = new ArrayList<>();
-        tabList.add((ListCommonFragment) new ListCommonPresenter(mPresenter.getContainerView()).setTypeTab(0).setType(mPresenter.getType()).setOnTabListener(this).getFragment());
-        tabList.add((ListCommonFragment) new ListCommonPresenter(mPresenter.getContainerView()).setTypeTab(1).setType(mPresenter.getType()).setOnTabListener(this).getFragment());
+        tabList.add((ListCommonFragment) new ListCommonPresenter(mPresenter.getContainerView()).
+                setTypeTab(0).setType(mPresenter.getType()).setOderCode(mPresenter.getOrderCode()).setOnTabListener(this).getFragment());
+        tabList.add((ListCommonFragment) new ListCommonPresenter(mPresenter.getContainerView())
+                .setTypeTab(1).setType(mPresenter.getType()).setOderCode("").setOnTabListener(this).getFragment());
         mAdapter = new TabListCommonAdapter(getChildFragmentManager(), mPresenter.getType(), getContext(), tabList);
         pager.setAdapter(mAdapter);
         pager.addOnPageChangeListener(new OnCustomPageChangeListener() {
@@ -164,7 +166,8 @@ public class TabListCommonFragment extends ViewFragment<TabListCommonContract.Pr
     @Override
     public void onStart() {
         super.onStart();
-        if (!EventBus.getDefault().isRegistered(this)) EventBus.getDefault().register(this);
+        if (!EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().register(this);
 
 
     }

@@ -16,6 +16,7 @@ public class TabListCommonPresenter extends Presenter<TabListCommonContract.View
 
 
     int mType;
+    String ordercode;
 
     @Override
     public ContainerView getContainerView() {
@@ -26,6 +27,10 @@ public class TabListCommonPresenter extends Presenter<TabListCommonContract.View
     public int getType() {
         return mType;
     }
+    @Override
+    public String getOrderCode() {
+        return ordercode;
+    }
 
     @Override
     public void showSort() {
@@ -34,6 +39,11 @@ public class TabListCommonPresenter extends Presenter<TabListCommonContract.View
 
     public TabListCommonPresenter setType(int type) {
         mType = type;
+        return this;
+    }
+
+    public TabListCommonPresenter setOrderCode(String code) {
+        ordercode = code;
         return this;
     }
 

@@ -8,6 +8,9 @@ public class TicketNotifyRespone {
     @SerializedName("TicketCode")
     @Expose
     private String ticketCode;
+    @SerializedName("orderCode")
+    @Expose
+    private String orderCode ;
     @SerializedName("Content")
     @Expose
     private String content;
@@ -26,6 +29,14 @@ public class TicketNotifyRespone {
     @SerializedName("AnswerDuration")
     @Expose
     private int AnswerDuration;
+
+    public String getOrderCode() {
+        return orderCode;
+    }
+
+    public void setOrderCode(String orderCode) {
+        this.orderCode = orderCode;
+    }
 
     public String getCallStatus() {
         return CallStatus;

@@ -13,6 +13,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.core.base.adapter.RecyclerBaseAdapter;
@@ -116,11 +118,13 @@ public class BuuguiAdapter extends RecyclerView.Adapter<BuuguiAdapter.HolderView
         TextView tvMatin;
         @BindView(R.id.tv_sodonhang)
         TextView tvSodonhang;
+        @BindView(R.id.tv_time)
+        AppCompatTextView tvTime;
         @BindView(R.id.radio_btn)
         public CheckBox radioBtn;
 
         @BindView(R.id.ll_background)
-        LinearLayout ll_backgroundl;
+        ConstraintLayout ll_backgroundl;
 
         public HolderView(View itemView) {
             super(itemView);
@@ -148,6 +152,24 @@ public class BuuguiAdapter extends RecyclerView.Adapter<BuuguiAdapter.HolderView
                 }
             });
             radioBtn.setChecked(item.isSelected());
+
+            String time = "";
+            try {
+                if (item.getQuotasTimeFirst() != null && !item.getQuotasTimeFirst().isEmpty()) {
+                    time += item.getQuotasTimeFirst();
+                }
+                if (item.getQuotasTimeFirst() != null && item.getQuotasTimeSuccess() != null && !item.getQuotasTimeFirst().isEmpty() && !item.getQuotasTimeSuccess().isEmpty())
+                    time += "\n" + item.getQuotasTimeSuccess();
+                else if (item.getQuotasTimeSuccess() != null && !item.getQuotasTimeSuccess().isEmpty())
+                    time += item.getQuotasTimeSuccess();
+                if (!time.isEmpty())
+                    tvTime.setVisibility(View.VISIBLE);
+                else
+                    tvTime.setVisibility(View.GONE);
+                tvTime.setText(time);
+            } catch (Exception e) {
+                tvTime.setVisibility(View.GONE);
+            }
         }
 
     }

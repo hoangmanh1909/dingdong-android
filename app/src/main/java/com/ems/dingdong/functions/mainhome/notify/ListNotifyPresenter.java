@@ -4,6 +4,7 @@ import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.DialogCallback;
 import com.ems.dingdong.dialog.DialogTextThanhConhg;
+import com.ems.dingdong.functions.mainhome.gomhang.listcommon.ListCommonPresenter;
 import com.ems.dingdong.functions.mainhome.notify.detailticket.DetailNotifyPresenter;
 import com.ems.dingdong.model.GachNo;
 import com.ems.dingdong.model.TicketMode;
@@ -127,6 +128,11 @@ public class ListNotifyPresenter extends Presenter<ListNotifyContract.View, List
                     mView.hideProgress();
                     new ApiDisposable(throwable, getViewContext());
                 });
+    }
+
+    @Override
+    public void showXacNhanTin(String code) {
+        new ListCommonPresenter(mContainerView).setOderCode(code).pushView();
     }
 
     public ListNotifyPresenter setMess(String mess) {

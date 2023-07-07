@@ -1,5 +1,6 @@
 package com.ems.dingdong.functions.mainhome.notify;
 
+import android.content.Intent;
 import android.view.View;
 import android.widget.TextView;
 
@@ -14,6 +15,7 @@ import com.ems.dingdong.R;
 import com.ems.dingdong.callback.DialogCallback;
 import com.ems.dingdong.dialog.DialogTextThanhConhg;
 import com.ems.dingdong.dialog.EditDayDialog;
+import com.ems.dingdong.functions.mainhome.gomhang.listcommon.ListCommonActivity;
 import com.ems.dingdong.model.TicketMode;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.model.request.TicketNotifyRequest;
@@ -88,7 +90,13 @@ public class ListNotifyFragment extends ViewFragment<ListNotifyContract.Presente
                             mPresenter.isSeen(ticketModes, mList.get(position).getTicketCode(), mList.get(position).getType());
                         } else if (mList.get(position).getType() != 1) {
                             mPresenter.isSeen(ticketModes, mList.get(position).getTicketCode(), mList.get(position).getType());
-                        } else {
+                        }else if (mList.get(position).getType() == 6){
+                          Intent  intent = new Intent(getActivity(), ListCommonActivity.class);
+                            intent.putExtra(Constants.TYPE_GOM_HANG, 1);
+                            intent.putExtra("orderCode", mList.get(position).getOrderCode());
+                            startActivity(intent);
+                        }
+                        else {
                             if (mList.get(position).getIsSeen().equals("N"))
                                 mPresenter.isSeen(ticketModes, mList.get(position).getTicketCode(), mList.get(position).getType());
                             new DialogTextThanhConhg(getViewContext(), mList.get(position).getContent(), new DialogCallback() {

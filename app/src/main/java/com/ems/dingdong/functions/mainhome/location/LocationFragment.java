@@ -16,6 +16,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -105,8 +106,8 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
     View llStatus;
     @BindView(R.id.edt_ladingCode)
     FormItemEditText edtLadingCode;
-    @BindView(R.id.img_search)
-    View imgSearch;
+    //    @BindView(R.id.img_search)
+//    ImageView imgSearch;
     @BindView(R.id.img_sign)
     SimpleDraweeView imgSign;
     @BindView(R.id.ll_sign)
@@ -269,48 +270,53 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
 
     @Override
     public void showLog(List<HistoryRespone> l) {
-        for (int i = 0; i < l.size(); i++) {
-            StatusInfo statusInfo = new StatusInfo();
-            statusInfo.setStatusDate(l.get(i).getStartTime().toString().split(" ")[0]);
-            statusInfo.setStatusTime(l.get(i).getStartTime().toString().split(" ")[1]);
-            statusInfo.setLadingCode(l.get(i).getLadingCode());
-            statusInfo.setActionTypeName(l.get(i).getCallTypeName());
-            statusInfo.setRecordFile(l.get(i).getRecordFile());
-            statusInfo.setApplicationName(l.get(i).getApplicationName());
-            if (statusInfo.getApplicationName() == null)
-                statusInfo.setAnswerDuration(l.get(i).getAnswerDuration());
+        try {
+            for (int i = 0; i < l.size(); i++) {
+                StatusInfo statusInfo = new StatusInfo();
+                statusInfo.setStatusDate(l.get(i).getStartTime().split(" ")[0]);
+                statusInfo.setStatusTime(l.get(i).getStartTime().split(" ")[1]);
+                statusInfo.setLadingCode(l.get(i).getLadingCode());
+                statusInfo.setActionTypeName(l.get(i).getCallTypeName());
+                statusInfo.setRecordFile(l.get(i).getRecordFile());
+                statusInfo.setApplicationName(l.get(i).getApplicationName());
+                if (statusInfo.getApplicationName() == null)
+                    statusInfo.setAnswerDuration(l.get(i).getAnswerDuration());
+                if (l.get(i).getCallTypeName().contains("đến"))
+                    statusInfo.setToNumber(l.get(i).getFromNumber());
+                else
+                    statusInfo.setToNumber(l.get(i).getToNumber());
 
-            if (l.get(i).getCallTypeName().contains("đến"))
-                statusInfo.setToNumber(l.get(i).getFromNumber());
-            else
-                statusInfo.setToNumber(l.get(i).getToNumber());
+                statusInfo.setRecordFile(l.get(i).getRecordFile());
+                statusInfo.setTypeCall(1);
+                statusInfo.setStatus(l.get(i).getStatus());
 
-            statusInfo.setRecordFile(l.get(i).getRecordFile());
-            statusInfo.setTypeCall(1);
-            statusInfo.setStatus(l.get(i).getStatus());
-            if (l.get(i).getStatus().contains("nhỡ")) {
-                statusInfo.setDescription("");
-            } else if (!TextUtils.isEmpty(l.get(i).getRecordFile()))
-                if (l.get(i).getAnswerDuration() > 0)
-                    statusInfo.setDescription("Nghe ghi âm (" + l.get(i).getAnswerDuration() + "s)");
-            mList.add(statusInfo);
-        }
+                if (l.get(i).getStatus().contains("nhỡ")) {
+                    statusInfo.setDescription("");
+                } else if (!TextUtils.isEmpty(l.get(i).getRecordFile()))
+                    if (l.get(i).getAnswerDuration() > 0)
+                        statusInfo.setDescription("Nghe ghi âm (" + l.get(i).getAnswerDuration() + "s)");
 
-        Collections.sort(mList, new Comparator<StatusInfo>() {
-            private SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-
-            public int compare(StatusInfo o1, StatusInfo o2) {
-                int result = -1;
-                try {
-                    result = sdf.parse(o2.getStatusDate() + " " + o2.getStatusTime()).compareTo(sdf.parse(o1.getStatusDate() + " " + o1.getStatusTime()));
-                } catch (ParseException ex) {
-                    ex.printStackTrace();
-                }
-                return result;
+                mList.add(statusInfo);
             }
-        });
 
-        mAdapter.notifyDataSetChanged();
+            Collections.sort(mList, new Comparator<StatusInfo>() {
+                private SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
+                public int compare(StatusInfo o1, StatusInfo o2) {
+                    int result = -1;
+                    try {
+                        result = sdf.parse(o2.getStatusDate() + " " + o2.getStatusTime()).compareTo(sdf.parse(o1.getStatusDate() + " " + o1.getStatusTime()));
+                    } catch (ParseException ex) {
+                        ex.printStackTrace();
+                    }
+                    return result;
+                }
+            });
+            mAdapter.notifyDataSetChanged();
+        } catch (Exception e) {
+            e.getMessage();
+//            Toast.showToast(getViewContext(), "Lỗi : " + e.getMessage());
+        }
 
         llStatus.setVisibility(View.VISIBLE);
     }
@@ -344,11 +350,11 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
     @Override
     public void onDisplay() {
         super.onDisplay();
-        if (getViewContext() != null) {
-            if (((DingDongActivity) getViewContext()).getSupportActionBar() != null) {
-                ((DingDongActivity) getViewContext()).getSupportActionBar().show();
-            }
-        }
+//        if (getViewContext() != null) {
+//            if (((DingDongActivity) getViewContext()).getSupportActionBar() != null) {
+//                ((DingDongActivity) getViewContext()).getSupportActionBar().show();
+//            }
+//        }
     }
 
     public void getQuery() {
@@ -415,7 +421,6 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
             e.getMessage();
         }
 
-//        tvRealReceiverName.setText(commonObject.getRealReceiverName());
     }
 
     @OnClick({R.id.img_capture, R.id.img_back, R.id.tv_SenderPhone, R.id.tv_ReceiverPhone, R.id.img_search})
@@ -587,19 +592,20 @@ public class LocationFragment extends ViewFragment<LocationContract.Presenter> i
         llDetail.setVisibility(View.GONE);
     }
 
-    @Override
-    public Observable<String> fromView() {
-        subject = PublishSubject.create();
-        imgSearch.setOnClickListener(
-                v -> {
-                    if (TextUtils.isEmpty(edtLadingCode.getText())) {
-                        showErrorToast("Vui lòng nhập mã");
-                        return;
-                    }
-                    subject.onNext(edtLadingCode.getText());
-                });
-        return subject;
-    }
+
+//    @Override
+//    public Observable<String> fromView() {
+//        subject = PublishSubject.create();
+//        imgSearch.setOnClickListener(
+//                v -> {
+//                    if (TextUtils.isEmpty(edtLadingCode.getText())) {
+//                        showErrorToast("Vui lòng nhập mã");
+//                        return;
+//                    }
+//                    subject.onNext(edtLadingCode.getText());
+//                });
+//        return subject;
+//    }
 
     @Override
     public void showCallError(String message) {

@@ -19,5 +19,7 @@ public class TabListCommonContract {
         int getType();
 
         void  showSort();
+
+        String getOrderCode();
     }
 }

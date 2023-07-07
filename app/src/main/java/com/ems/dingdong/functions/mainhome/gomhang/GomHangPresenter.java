@@ -4,6 +4,7 @@ import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.functions.mainhome.gomhang.gomdiachi.XacNhanDiaChiPresenter;
 import com.ems.dingdong.functions.mainhome.gomhang.gomnhieu.ListHoanTatNhieuTinPresenter;
+import com.ems.dingdong.functions.mainhome.gomhang.new_xacnhantin.TabConFirmPresenter;
 import com.ems.dingdong.functions.mainhome.gomhang.statistic.ListStatisticPresenter;
 import com.ems.dingdong.functions.mainhome.gomhang.taotimmoi.TaoTinPresenter;
 
@@ -52,6 +53,11 @@ public class GomHangPresenter extends Presenter<GomHangContract.View, GomHangCon
     @Override
     public void showTaoTinmoi() {
         new TaoTinPresenter(mContainerView).pushView();
+    }
+
+    @Override
+    public void showXacNhanTin() {
+        new TabConFirmPresenter(mContainerView).pushView();
     }
 
 }

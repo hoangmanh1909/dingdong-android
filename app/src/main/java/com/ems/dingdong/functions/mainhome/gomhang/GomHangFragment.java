@@ -72,6 +72,7 @@ public class GomHangFragment extends ViewFragment<GomHangContract.Presenter> imp
             if (!userJson.isEmpty()) {
                 UserInfo userInfo = NetWorkController.getGson().fromJson(userJson, UserInfo.class);
                 if (!"6".equals(userInfo.getEmpGroupID())) {
+//                    homeInfos.add(new HomeInfo(9, R.drawable.document, "Xác nhận tin V1"));
                     homeInfos.add(new HomeInfo(1, R.drawable.document, "Xác nhận tin"));
                     homeInfos.add(new HomeInfo(2, R.drawable.ic_xac_nhan_tin, "Xác nhận tin theo địa chỉ"));
                     homeInfos.add(new HomeInfo(3, R.drawable.ic_hoan_tat_tin, "Hoàn tất tin"));
@@ -91,6 +92,9 @@ public class GomHangFragment extends ViewFragment<GomHangContract.Presenter> imp
                         @Override
                         public void onClick(View v) {
                             HomeInfo homeInfo = mList.get(position);
+//                            if (homeInfo.getId() == 9) {
+//                                mPresenter.showXacNhanTin();
+//                            } else
                             if (homeInfo.getId() == 1) {
                                 Intent intent = new Intent(getActivity(), ListCommonActivity.class);
                                 intent.putExtra(Constants.TYPE_GOM_HANG, 1);
@@ -136,10 +140,9 @@ public class GomHangFragment extends ViewFragment<GomHangContract.Presenter> imp
             recycler.setHasFixedSize(true);
             recycler.setLayoutManager(new GridLayoutManager(getActivity(), 3, GridLayout.VERTICAL, false));
             recycler.setAdapter(adapter);
-        }catch (Exception e){
-            Toast.showToast(getViewContext(),"Gom Hang");
+        } catch (Exception e) {
+            Toast.showToast(getViewContext(), "Gom Hang");
         }
-
 
 
     }

@@ -8,6 +8,7 @@ public class Constants {
     public static final String KEY_SHARE_PREFERENCES = "KEY_SHARE_PREFERENCES";
     public static final String KEY_LOG_CALL = "KEY_LOG_CALL";
     public static final String KEY_RA_VAOV1 = "KEY_RA_VAOV1";
+    public static final String KEY_CALL = "KEY_CALL";
     public static final String KEY_TRANG_THAI_LOG_CALL = "KEY_TRANG_THAI_LOG_CALL";
     public static final String KEY_LIST_PHONE = "KEY_LIST_PHONE";
     public static final String KEY_MOBILE_NUMBER_SIGN_CODE = "MOBILE_NUMBER_SIGN_CODE";
@@ -151,7 +152,7 @@ public class Constants {
     public static final String STOP_ACTION = "STOP_ACTION";
 
     public static final String EVENTBUS_HOAN_THANH_TIN_THANH_CONG = "HOAN_THANH_TIN_THANH_CONG";
-    public static final String EVENTBUS_HOAN_THANH_TIN_THANH_CONG_NOTIFY_DATA = "HOAN_THANH_TIN_THANH_CONG";
+    public static final String EVENTBUS_HOAN_THANH_TIN_THANH_CONG_NOTIFY_DATA = "EVENTBUS_HOAN_THANH_TIN_THANH_CONG_NOTIFY_DATA";
 
     public static final String DATE_FORMAT = "dd/mm/yyyy HH:mm:ss";
     public static final String STT_TICKET_MANAGEMENT_TOTAL_V2 = "STT_TICKET_MANAGEMENT_TOTAL_V2";
@@ -334,6 +335,12 @@ public class Constants {
     public static final String DLV_TICKET_CREATE_TICKET = "DLV_TICKET_CREATE_TICKET";
     public static final String STT_TICKET_MANAGEMENT_TOTAL = "STT_TICKET_MANAGEMENT_TOTAL";
     public static final String STT_TICKET_MANAGEMENT_DETAIL = "STT_TICKET_MANAGEMENT_DETAIL";
+    public static final String NOPTIEN_2104 = "2104";
+    public static final String NOPTIEN_2105 = "2105";
+
+    // tinh cuoc hoan tat tin
+
+    public static final String PARTNER_MYVNP_GET_POSTAGE = "PARTNER_MYVNP_GET_POSTAGE";
 
     /*
      * key_share_pref
@@ -352,5 +359,8 @@ public class Constants {
     public static int ERROR = 0;
 
     public static final int SO_LUONG_TIN = 100;
+    public static final int TIEN_MAT = 2;
+    public static final int GHI_NO = 1;
+    public static final int KHONG_CO = 0;
 
 }

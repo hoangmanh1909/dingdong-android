@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import io.realm.RealmObject;
 
-public class ParcelCodeInfo  {
+public class ParcelCodeInfo {
     @SerializedName("TrackingCode")
     private String trackingCode;
     @SerializedName("OrderNumber")
@@ -25,6 +25,28 @@ public class ParcelCodeInfo  {
     @SerializedName("ReferenceCode")
     @Expose
     private String ReferenceCode;
+    @SerializedName("QuotasTimeFirst")
+    @Expose
+    private String QuotasTimeFirst;
+    @SerializedName("QuotasTimeSuccess")
+    @Expose
+    private String QuotasTimeSuccess;
+
+    public String getQuotasTimeFirst() {
+        return QuotasTimeFirst;
+    }
+
+    public void setQuotasTimeFirst(String quotasTimeFirst) {
+        QuotasTimeFirst = quotasTimeFirst;
+    }
+
+    public String getQuotasTimeSuccess() {
+        return QuotasTimeSuccess;
+    }
+
+    public void setQuotasTimeSuccess(String quotasTimeSuccess) {
+        QuotasTimeSuccess = quotasTimeSuccess;
+    }
 
     public String getReferenceCode() {
         return ReferenceCode;

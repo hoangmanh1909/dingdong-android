@@ -4,9 +4,9 @@ import com.google.gson.annotations.SerializedName;
 
 public class ValuesVmap {
     @SerializedName("speed")
-    int  speed;
+    int speed;
     @SerializedName("heading")
-    String heading;
+    int heading;
     @SerializedName("x")
     String x;
     @SerializedName("y")
@@ -20,11 +20,11 @@ public class ValuesVmap {
         this.speed = speed;
     }
 
-    public String getHeading() {
+    public int getHeading() {
         return heading;
     }
 
-    public void setHeading(String heading) {
+    public void setHeading(int heading) {
         this.heading = heading;
     }
 

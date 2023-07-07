@@ -1,10 +1,9 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     android:clickable="true"
     android:focusable="true"
     android:orientation="vertical">
@@ -13,7 +12,8 @@
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true">
+        android:layout_alignParentTop="true"
+        tools:ignore="MissingConstraints">
 
         <include layout="@layout/item_head_bg_common" />
 
@@ -43,7 +43,14 @@
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="0dp"
+        android:background="@color/backround"
+        android:paddingBottom="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+        app:layout_constraintTop_toBottomOf="@+id/header"
+
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -282,11 +289,11 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1.2"
-                            android:paddingTop="@dimen/dimen_10dp"
-                            android:maxLines="3"
-                            android:scrollbars = "vertical"
                             android:fadeScrollbars="false"
+                            android:maxLines="3"
+                            android:paddingTop="@dimen/dimen_10dp"
                             android:paddingBottom="@dimen/dimen_10dp"
+                            android:scrollbars="vertical"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp" />
 
@@ -405,7 +412,7 @@
                 <com.ems.dingdong.views.CustomBoldTextView
                     style="@style/HeaderNews"
                     android:layout_width="match_parent"
-                    android:background="@drawable/bg_header_common"
+                    android:background="@drawable/bg_header_common_copy"
                     android:padding="@dimen/dimen_10dp"
                     android:text="ĐỊA CHỈ THU GOM"
                     android:textColor="@color/white" />
@@ -515,6 +522,114 @@
 
                     </LinearLayout>
 
+                    <View
+                        style="@style/Devider"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp" />
+
+                    <!--                    <androidx.appcompat.widget.AppCompatTextView-->
+                    <!--                        android:id="@+id/tv_tinhcuoc"-->
+                    <!--                        android:layout_width="match_parent"-->
+                    <!--                        android:layout_height="wrap_content"-->
+                    <!--                        android:layout_marginRight="@dimen/_10sdp"-->
+                    <!--                        android:drawablePadding="5dp"-->
+                    <!--                        android:gravity="center|left"-->
+                    <!--                        android:paddingLeft="5dp"-->
+                    <!--                        android:paddingTop="10dp"-->
+                    <!--                        android:paddingBottom="10dp"-->
+                    <!--                        android:text="Tính cước"-->
+                    <!--                        android:textColor="@color/colorOpen"-->
+                    <!--                        android:textSize="14dp"-->
+                    <!--                        android:textStyle="bold" />-->
+
+                    <LinearLayout
+                        android:id="@+id/ll_thongtincuoc"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <CheckBox
+                            android:id="@+id/check_tiencuoc"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:visibility="gone"
+                            android:text="Đã thu tiền cước" />
+
+                        <View
+                            style="@style/Devider"
+                            android:layout_width="match_parent"
+                            android:layout_height="0.5dp" />
+
+                        <LinearLayout
+                            android:id="@+id/ll_hinhthucthanhtoan"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingBottom="@dimen/dimen_10dp">
+
+                            <TextView
+                                style="@style/textStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:drawablePadding="5dp"
+                                android:focusable="true"
+                                android:gravity="center|left"
+                                android:longClickable="true"
+                                android:paddingLeft="5dp"
+                                android:text="Cước phải thu (Bao gồm VAT): "
+                                android:textColor="@color/black"
+                                android:textIsSelectable="true"
+                                android:textSize="13dp" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/tv_cuoc"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="@dimen/_10sdp"
+                                android:drawablePadding="5dp"
+                                android:gravity="center|left"
+                                android:paddingLeft="5dp"
+                                android:text="Phát hàng nội tỉnh 4h"
+                                android:textColor="@color/red_light"
+                                android:textSize="14dp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                style="@style/textStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:drawablePadding="5dp"
+                                android:focusable="true"
+                                android:gravity="center|left"
+                                android:longClickable="true"
+                                android:paddingLeft="5dp"
+                                android:text="Hình thức thanh toán: "
+                                android:textColor="@color/black"
+                                android:textIsSelectable="true"
+                                android:textSize="13dp" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/tv_hinhthucthanhtoan"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginRight="@dimen/_10sdp"
+                                android:drawablePadding="5dp"
+                                android:gravity="center|left"
+                                android:paddingLeft="5dp"
+                                android:text="Phát hàng nội tỉnh 4h"
+                                android:textColor="@color/black"
+                                android:textSize="14dp"
+                                android:textStyle="bold" />
+                        </LinearLayout>
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -565,15 +680,15 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1.2"
                             android:background="@color/transparent"
+                            android:fadeScrollbars="false"
                             android:gravity="right"
                             android:paddingTop="@dimen/dimen_10dp"
+                            android:paddingRight="10dp"
                             android:paddingBottom="@dimen/dimen_10dp"
+
+                            android:scrollbars="vertical"
                             android:textColor="@color/black"
                             android:textSize="@dimen/text_size_14sp"
-
-                            android:paddingRight="10dp"
-                            android:fadeScrollbars="false"
-                            android:scrollbars="vertical"
                             tools:text="1\n1\n1\n1" />
 
                     </LinearLayout>
@@ -705,6 +820,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_5dp"
                 android:orientation="vertical"
+                android:paddingBottom="20dp"
                 tools:visibility="visible">
 
                 <com.ems.dingdong.views.CustomBoldTextView
@@ -759,7 +875,7 @@
                             app:met_textColorHint="@color/colorBlackTrans20"
                             app:met_underlineColor="@color/transparent">
 
-                            <requestFocus />
+                            <!--                            <requestFocus />-->
                         </com.rengwuxian.materialedittext.MaterialEditText>
 
                         <ImageView
@@ -782,33 +898,58 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dimen_10dp"
-                android:gravity="right"
-                android:orientation="horizontal"
-                android:padding="@dimen/dimen_10dp">
 
-                <com.ems.dingdong.views.CustomTextView
-                    android:id="@+id/btn_confirm"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_confirm_continue"
-                    android:drawableLeft="@drawable/ic_done"
-                    android:gravity="center"
-                    android:paddingLeft="@dimen/dimen_20dp"
-                    android:paddingTop="@dimen/dimen_5dp"
-                    android:paddingRight="@dimen/dimen_20dp"
-                    android:paddingBottom="@dimen/dimen_5dp"
-                    android:text="hoàn tất tin"
-                    android:textAllCaps="true"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_size_18sp" />
-
-
-            </LinearLayout>
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-</LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="10dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_confirm"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_42sdp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_confirm_continue"
+            android:gravity="center"
+            android:paddingLeft="@dimen/dimen_20dp"
+            android:paddingTop="@dimen/dimen_5dp"
+            android:paddingRight="@dimen/dimen_20dp"
+            android:paddingBottom="@dimen/dimen_5dp"
+            android:text="hoàn tất tin"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteX="10dp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/tv_tinhcuoc"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_42sdp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_border_botton_cam"
+            android:gravity="center"
+            android:paddingLeft="@dimen/dimen_20dp"
+            android:paddingTop="@dimen/dimen_5dp"
+            android:paddingRight="@dimen/dimen_20dp"
+            android:paddingBottom="@dimen/dimen_5dp"
+            android:text="Tính cước"
+            android:textAllCaps="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_18sp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteX="10dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

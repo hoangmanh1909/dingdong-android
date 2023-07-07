@@ -5,21 +5,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.core.base.viper.ViewFragment;
-import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.R;
-import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.huybaophat.CancelBD13Fragment;
-import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.huybaophat.CancelBD13Presenter;
-import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.huybaophat.CancelBD13TabAdapter;
-import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.huybaophat.statistic.CancelBD13StatisticFragment;
-import com.ems.dingdong.functions.mainhome.phathang.baophatbangke.huybaophat.statistic.CancelBD13StatisticPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.noptien.PaymentContract;
 import com.ems.dingdong.functions.mainhome.phathang.noptien.PaymentFragment;
 import com.ems.dingdong.functions.mainhome.phathang.noptien.PaymentPresenter;
@@ -29,7 +19,6 @@ import com.ems.dingdong.functions.mainhome.phathang.noptien.historyPayment.Histo
 import com.ems.dingdong.functions.mainhome.phathang.noptien.huynop.CancelPaymentContract;
 import com.ems.dingdong.functions.mainhome.phathang.noptien.huynop.CancelPaymentFragment;
 import com.ems.dingdong.functions.mainhome.phathang.noptien.huynop.CancelPaymentPresenter;
-import com.ems.dingdong.utiles.Constants;
 import com.ems.dingdong.views.OnCustomPageChangeListener;
 
 import java.util.ArrayList;
@@ -125,7 +114,7 @@ public class TabPaymentFragment extends ViewFragment<TabPaymentContract.Presente
 
     @Override
     public void onCanceledDelivery() {
-        Log.e("TAG", "onCanceledDelivery: "+mPosition );
+        Log.e("TAG", "onCanceledDelivery: " + mPosition);
         if (mPosition == 0) {
             PaymentFragment paymentFragment1 = (PaymentFragment) tabList.get(0);
             paymentFragment1.onDisplayFake();

@@ -7,6 +7,7 @@ import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.functions.mainhome.location.LocationPresenter;
 import com.ems.dingdong.functions.mainhome.phathang.logcuocgoi.tablogcall.data.TabLogCallRespone;
 import com.ems.dingdong.functions.mainhome.phathang.receverpersion.ReceverPersonPresenter;
+import com.ems.dingdong.functions.mainhome.phathang.sreachTracking.SreachCodePresenter;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.UserInfo;
 import com.ems.dingdong.network.NetWorkController;
@@ -96,7 +97,7 @@ public class LogCallPresenter extends Presenter<LogCallContract.View, LogCallCon
 
     @Override
     public void showTrCuubg(String bg) {
-        new LocationPresenter(mContainerView).setCodeTicket(bg).pushView();
+        new SreachCodePresenter(mContainerView).setCodeTicket(bg).pushView();
     }
 
 

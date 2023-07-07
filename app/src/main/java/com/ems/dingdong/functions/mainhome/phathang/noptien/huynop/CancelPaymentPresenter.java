@@ -1,5 +1,6 @@
 package com.ems.dingdong.functions.mainhome.phathang.noptien.huynop;
 
+import android.annotation.SuppressLint;
 import android.text.TextUtils;
 
 import com.core.base.viper.Presenter;
@@ -70,6 +71,7 @@ public class CancelPaymentPresenter extends Presenter<CancelPaymentContract.View
         new EWalletPresenter(mContainerView).pushView();
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public void cancelPayment(List<EWalletDataResponse> list, int type, String lydo) {
         DataRequestPayment dataRequestPayment = new DataRequestPayment();
@@ -114,7 +116,8 @@ public class CancelPaymentPresenter extends Presenter<CancelPaymentContract.View
         paymentCancelRequestModel.setRouteId(routeInfo);
         paymentCancelRequestModel.setRetRefNumber(list.get(0).getRetRefNumber());
         paymentCancelRequestModel.setEWalletTransId(list.get(0).getEWalletTransId());
-        paymentCancelRequestModel.setServiceCode(list.get(0).getServiceCode());
+        if (list.get(0).getServiceCode() != null)
+            paymentCancelRequestModel.setServiceCode(list.get(0).getServiceCode());
         String dataJson = NetWorkController.getGson().toJson(paymentCancelRequestModel);
         dataRequestPayment.setData(dataJson);
         dataRequestPayment.setCode("EWL003");
@@ -140,6 +143,7 @@ public class CancelPaymentPresenter extends Presenter<CancelPaymentContract.View
     public void showLienket() {
         new ListBankPresenter(mContainerView).pushView();
     }
+
     @Override
     public int getPositionTab() {
         return mPos;

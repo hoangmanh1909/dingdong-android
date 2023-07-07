@@ -95,9 +95,16 @@ public class PushToPnsRequest {
     private String OtherRequestObject;
     @SerializedName("OtherEstimateBackTime")
     private int OtherEstimateBackTime;
+    @SerializedName("IsCollectFeeReturn")
+    private int IsCollectFeeReturn;
 
+    public int getIsCollectFeeReturn() {
+        return IsCollectFeeReturn;
+    }
 
-
+    public void setIsCollectFeeReturn(int isCollectFeeReturn) {
+        IsCollectFeeReturn = isCollectFeeReturn;
+    }
 
     public String getOtherRequestObject() {
         return OtherRequestObject;

@@ -7,6 +7,8 @@ import com.core.base.viper.interfaces.PresentView;
 import com.ems.dingdong.callback.BarCodeCallback;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.model.DecodeDiaChiResult;
+import com.ems.dingdong.model.GetPosstageMode;
+import com.ems.dingdong.model.GetPostageRespone;
 import com.ems.dingdong.model.ParcelCodeInfo;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.CommonObject;
@@ -31,6 +33,8 @@ interface HoanThanhTinDetailContract {
         void collectOrderPostmanCollect(HoanTatTinRequest hoanTatTinRequest, CommonCallback<SimpleResult> callback);
 
         Single<DecodeDiaChiResult> vietmapSearchDecode(String Decode);
+
+        Single<SimpleResult> ddGetPostage(String request);
     }
 
     interface View extends PresentView<Presenter> {
@@ -47,6 +51,8 @@ interface HoanThanhTinDetailContract {
         void deleteFile();
 
         void showVitringuoinhan(double lat, double lon);
+
+        void showTinhCuoc(GetPostageRespone getPostageRespone);
     }
 
     interface Presenter extends IPresenter<View, Interactor> {
@@ -68,6 +74,8 @@ interface HoanThanhTinDetailContract {
         void collectOrderPostmanCollect(HoanTatTinRequest hoanTatTinRequest);
 
         void vietmapDecode(String decode);
+
+        void ddGetPostage(String request);
     }
 }
 

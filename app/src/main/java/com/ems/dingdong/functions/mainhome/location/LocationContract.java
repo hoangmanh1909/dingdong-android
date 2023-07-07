@@ -40,8 +40,6 @@ interface LocationContract {
 
         void showEmpty();
 
-        Observable<String> fromView();
-
         void showCallError(String message);
 
         void showCallSuccess(String phone);

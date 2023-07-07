@@ -1,5 +1,6 @@
 package com.ems.dingdong.functions.mainhome.phathang.noptien;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
@@ -87,6 +88,7 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
         new EWalletPresenter(mContainerView).pushView();
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public void getDataPayment(String serviceCode, String poCode, String routeCode, String postmanCode, String fromDate, String toDate) {
         mView.showProgress();
@@ -187,7 +189,7 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
 
 
     @Override
-    public void deletePayment(List<EWalletDataResponse> list,String mobileNumber) {
+    public void deletePayment(List<EWalletDataResponse> list, String mobileNumber) {
         DataRequestPayment dataRequestPayment = new DataRequestPayment();
         removeRequests = new ArrayList<>();
         removeRequests.clear();
@@ -275,9 +277,11 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
                             x.getMessage();
                         }
                     } else if (simpleResult.getErrorCode().equals("101")) {
+                        mView.showThanhCong();
                         mView.showConfirmError(simpleResult.getMessage());
                     } else {
                         mView.showConfirmError(simpleResult.getMessage());
+                        mView.showThanhCong();
                         try {
                             otpDialog.dismiss();
                         } catch (Exception x) {
@@ -291,6 +295,7 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
                     } catch (Exception x) {
                         x.getMessage();
                     }
+                    mView.showThanhCong();
                     mView.showConfirmError(throwable.getMessage());
                     mView.hideProgress();
                 });
@@ -344,14 +349,15 @@ public class PaymentPresenter extends Presenter<PaymentContract.View, PaymentCon
                             if (simpleResult.getErrorCode().equals("00")) {
                                 SharedPref sharedPref = new SharedPref((Context) mContainerView);
                                 sharedPref.putString(Constants.KEY_LIST_BANK, simpleResult.getData());
-                                ArrayList<DanhSachNganHangRepsone> list = NetWorkController.getGson().fromJson(simpleResult.getData(),new TypeToken<ArrayList<DanhSachNganHangRepsone>>(){}.getType());
+                                ArrayList<DanhSachNganHangRepsone> list = NetWorkController.getGson().fromJson(simpleResult.getData(), new TypeToken<ArrayList<DanhSachNganHangRepsone>>() {
+                                }.getType());
                                 mView.showDanhSach(list);
                                 mView.hideProgress();
                             } else Toast.showToast(getViewContext(), simpleResult.getMessage());
                             mView.hideProgress();
                         }
                     });
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

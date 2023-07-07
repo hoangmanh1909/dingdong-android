@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ems.dingdong.R;
@@ -50,6 +51,8 @@ public class XacNhanConfirmAdapter extends RecyclerView.Adapter<XacNhanConfirmAd
         TextView tv_code;
         @BindView(R.id.tv_date)
         TextView tv_date;
+        @BindView(R.id.tv_time)
+        AppCompatTextView tvTime;
 
         public HolderView(@NonNull View itemView) {
             super(itemView);
@@ -61,6 +64,23 @@ public class XacNhanConfirmAdapter extends RecyclerView.Adapter<XacNhanConfirmAd
             tv_stt.setText("#" + (position + 1));
             tv_code.setText(item.getCode());
             tv_date.setText(item.getAssignDateTime());
+            String time = "";
+            try {
+                if (item.getQuotasTimeFirst() != null && !item.getQuotasTimeFirst().isEmpty()) {
+                    time += item.getQuotasTimeFirst();
+                }
+                if (item.getQuotasTimeFirst() != null && item.getQuotasTimeSuccess() != null && !item.getQuotasTimeFirst().isEmpty() && !item.getQuotasTimeSuccess().isEmpty())
+                    time += "\n" + item.getQuotasTimeSuccess();
+                else if (item.getQuotasTimeSuccess() != null && !item.getQuotasTimeSuccess().isEmpty())
+                    time += item.getQuotasTimeSuccess();
+                if (!time.isEmpty())
+                    tvTime.setVisibility(View.VISIBLE);
+                else
+                    tvTime.setVisibility(View.GONE);
+                tvTime.setText(time);
+            } catch (Exception e) {
+                tvTime.setVisibility(View.GONE);
+            }
         }
     }
 }

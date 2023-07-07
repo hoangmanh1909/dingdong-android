@@ -4,70 +4,70 @@ import com.google.gson.annotations.SerializedName
 
 data class GetMainViewResponse(
     @SerializedName("TotalQuantity")
-    val totalQuantity:Int?,
+    val totalQuantity:Long?,
     @SerializedName("TotalWeight")
-    val totalWeight:Int?,
+    val totalWeight:Long?,
     @SerializedName("TotalCODAmount")
-    val totalCODAmount:Int?,
+    val totalCODAmount:Long?,
     @SerializedName("TotalFee")
-    val totalFee:Int?,
+    val totalFee:Long?,
     @SerializedName("TotalQuantityToday")
-    val totalQuantityToday:Int?,
+    val totalQuantityToday:Long?,
     @SerializedName("TotalQuantityTodayNormal")
-    val totalQuantityTodayNormal:Int?,
+    val totalQuantityTodayNormal:Long?,
     @SerializedName("TotalQuantityTodayCOD")
-    val totalQuantityTodayCOD:Int?,
+    val totalQuantityTodayCOD:Long?,
     @SerializedName("TotalQuantityTodayPA")
-    val totalQuantityTodayPA:Int?,
+    val totalQuantityTodayPA:Long?,
     @SerializedName("TotalWeightToday")
-    val totalWeightToday:Int?,
+    val totalWeightToday:Long?,
     @SerializedName("TotalCODAmountToday")
-    val totalCODAmountToday:Int?,
+    val totalCODAmountToday:Long?,
     @SerializedName("TotalCODAmountTodayNormal")
-    val totalCODAmountTodayNormal:Int?,
+    val totalCODAmountTodayNormal:Long?,
     @SerializedName("TotalCODAmountTodayCOD")
-    val totalCODAmountTodayCOD:Int?,
+    val totalCODAmountTodayCOD:Long?,
     @SerializedName("TotalFeeToday")
-    val totalFeeToday:Int?,
+    val totalFeeToday:Long?,
     @SerializedName("TotalFeeTodayNormal")
-    val totalFeeTodayNormal:Int?,
+    val totalFeeTodayNormal:Long?,
     @SerializedName("TotalFeeTodayCOD")
-    val totalFeeTodayCOD:Int?,
+    val totalFeeTodayCOD:Long?,
     @SerializedName("TotalFeeTodayPA")
-    val totalFeeTodayPA:Int?,
+    val totalFeeTodayPA:Long?,
     @SerializedName("TotalQuantityPast")
-    val totalQuantityPast:Int?,
+    val totalQuantityPast:Long?,
     @SerializedName("TotalQuantityPastNormal")
-    val totalQuantityPastNormal:Int?,
+    val totalQuantityPastNormal:Long?,
     @SerializedName("TotalQuantityPastCOD")
-    val totalQuantityPastCOD:Int?,
+    val totalQuantityPastCOD:Long?,
     @SerializedName("TotalQuantityPastPA")
-    val totalQuantityPastPA:Int?,
+    val totalQuantityPastPA:Long?,
     @SerializedName("TotalWeightPast")
-    val totalWeightPast:Int?,
+    val totalWeightPast:Long?,
     @SerializedName("TotalCODAmountPast")
-    val totalCODAmountPast:Int?,
+    val totalCODAmountPast:Long?,
     @SerializedName("TotalCODAmountPastNormal")
-    val totalCODAmountPastNormal:Int?,
+    val totalCODAmountPastNormal:Long?,
     @SerializedName("TotalCODAmountPastCOD")
-    val totalCODAmountPastCOD:Int?,
+    val totalCODAmountPastCOD:Long?,
     @SerializedName("TotalFeePast")
-    val totalFeePast:Int?,
+    val totalFeePast:Long?,
     @SerializedName("TotalFeePastNormal")
-    val totalFeePastNormal:Int?,
+    val totalFeePastNormal:Long?,
     @SerializedName("TotalFeePastCOD")
-    val totalFeePastCOD:Int?,
+    val totalFeePastCOD:Long?,
     @SerializedName("TotalAddressNotCollect")
-    val totalAddressNotCollect:Int?,
+    val totalAddressNotCollect:Long?,
     @SerializedName("TotalLadingNotCollect")
-    val totalLadingNotCollect:Int?,
+    val totalLadingNotCollect:Long?,
     @SerializedName("TotalWeightNotCollect")
-    val totalWeightNotCollect:Int?,
+    val totalWeightNotCollect:Long?,
     @SerializedName("TotalAddressCollect")
-    val totalAddressCollect:Int?,
+    val totalAddressCollect:Long?,
     @SerializedName("TotalLadingCollect")
-    val totalLadingCollect:Int?,
+    val totalLadingCollect:Long?,
     @SerializedName("TotalWeightCollect")
-    val totalWeightCollect:Int?
+    val totalWeightCollect:Long?
 
 )

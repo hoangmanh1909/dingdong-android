@@ -43,6 +43,46 @@ public class HoanTatTinRequest {
     String NoteReason;
     @SerializedName("ShipmentCode")
     String shipmentCodev1;
+    @SerializedName("IsCollectFee")
+    int IsCollectFee;
+    @SerializedName("PaymentType")
+    int PaymentType;
+    @SerializedName("PostageAmount")
+    long PostageAmount;
+    @SerializedName("PostageCODAmount")
+    long PostageCODAmount;
+
+    public int getPaymentType() {
+        return PaymentType;
+    }
+
+    public void setPaymentType(int paymentType) {
+        PaymentType = paymentType;
+    }
+
+    public long getPostageAmount() {
+        return PostageAmount;
+    }
+
+    public void setPostageAmount(long postageAmount) {
+        PostageAmount = postageAmount;
+    }
+
+    public long getPostageCODAmount() {
+        return PostageCODAmount;
+    }
+
+    public void setPostageCODAmount(long postageCODAmount) {
+        PostageCODAmount = postageCODAmount;
+    }
+
+    public int getIsCollectFee() {
+        return IsCollectFee;
+    }
+
+    public void setIsCollectFee(int isCollectFee) {
+        IsCollectFee = isCollectFee;
+    }
 
     public String getShipmentCodev1() {
         return shipmentCodev1;

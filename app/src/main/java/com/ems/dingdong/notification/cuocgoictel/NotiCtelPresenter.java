@@ -7,6 +7,7 @@ import com.core.base.viper.Presenter;
 import com.core.base.viper.interfaces.ContainerView;
 import com.ems.dingdong.callback.CommonCallback;
 import com.ems.dingdong.functions.mainhome.location.LocationPresenter;
+import com.ems.dingdong.functions.mainhome.phathang.sreachTracking.SreachCodePresenter;
 import com.ems.dingdong.model.PostOffice;
 import com.ems.dingdong.model.SimpleResult;
 import com.ems.dingdong.model.UserInfo;
@@ -156,6 +157,6 @@ public class NotiCtelPresenter extends Presenter<NotiCtelContract.View, NotiCtel
 
     @Override
     public void showTraCuu(String parcelCode) {
-        new LocationPresenter(mContainerView).setCodeTicket(parcelCode).pushView();
+        new SreachCodePresenter(mContainerView).setCodeTicket(parcelCode).pushView();
     }
 }

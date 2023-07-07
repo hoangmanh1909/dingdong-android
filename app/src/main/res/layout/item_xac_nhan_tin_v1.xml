@@ -192,7 +192,6 @@
                         android:id="@+id/tv_recycler"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_ParcelCode"
                         android:layout_marginLeft="5dp"
                         android:gravity="center|left"
                         android:paddingTop="5dp"
@@ -221,13 +220,13 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
-                            android:maxLines="3"
-                            android:scrollbars = "vertical"
-                            android:fadeScrollbars="false"
                             android:drawableLeft="@drawable/document_text_ioicon"
                             android:drawablePadding="5dp"
+                            android:fadeScrollbars="false"
                             android:gravity="left|center"
+                            android:maxLines="3"
                             android:paddingLeft="5dp"
+                            android:scrollbars="vertical"
                             android:textColor="@color/blackgray"
                             android:textSize="14dp"
                             tools:text="Mô tả" />
@@ -281,6 +280,106 @@
             android:textColor="@color/blackgray"
             android:textSize="14dp" />
 
+        <com.ems.dingdong.views.CustomTextView
+            android:id="@+id/tv_thoi_gian_conlai"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:drawableLeft="@drawable/hourglass"
+            android:drawablePadding="5dp"
+            android:gravity="center|left"
+            android:paddingLeft="5dp"
+            android:text="Thời gian còn lại:"
+            android:textColor="@color/red_light"
+            android:textSize="14dp" />
+
+        <com.ems.dingdong.views.CustomTextView
+            android:id="@+id/tv_dich_vu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:drawableLeft="@drawable/wallet_ic"
+            android:drawablePadding="5dp"
+            android:gravity="center|left"
+            android:paddingLeft="5dp"
+            android:text="Phát hàng nội tỉnh 4h"
+            android:textColor="@color/red_light"
+            android:textSize="14dp"
+            android:visibility="gone" />
+
+<!--        <LinearLayout-->
+<!--            android:id="@+id/ll_cuoc"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content">-->
+
+<!--            <TextView-->
+<!--                style="@style/textStyle"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="5dp"-->
+<!--                android:drawableLeft="@drawable/wallet_ic"-->
+<!--                android:drawablePadding="5dp"-->
+<!--                android:focusable="true"-->
+<!--                android:gravity="center|left"-->
+<!--                android:longClickable="true"-->
+<!--                android:paddingLeft="5dp"-->
+<!--                android:text="Cước phải thu: "-->
+<!--                android:textColor="#86909C"-->
+<!--                android:textIsSelectable="true"-->
+<!--                android:textSize="13dp" />-->
+
+<!--            <androidx.appcompat.widget.AppCompatTextView-->
+<!--                android:id="@+id/tv_fee"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="5dp"-->
+<!--                android:layout_marginRight="@dimen/_10sdp"-->
+<!--                android:drawablePadding="5dp"-->
+<!--                android:gravity="center|left"-->
+<!--                android:paddingLeft="5dp"-->
+<!--                android:text="Phát hàng nội tỉnh 4h"-->
+<!--                android:textColor="@color/red_light"-->
+<!--                android:textSize="14dp"-->
+<!--                android:textStyle="bold" />-->
+<!--        </LinearLayout>-->
+
+<!--        <LinearLayout-->
+<!--            android:id="@+id/ll_hinhthucthanhtoan"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content">-->
+
+<!--            <TextView-->
+<!--                style="@style/textStyle"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="5dp"-->
+<!--                android:drawableLeft="@drawable/wallet_ic"-->
+<!--                android:drawablePadding="5dp"-->
+<!--                android:focusable="true"-->
+<!--                android:gravity="center|left"-->
+<!--                android:longClickable="true"-->
+<!--                android:paddingLeft="5dp"-->
+<!--                android:text="Hình thức thanh toán: "-->
+<!--                android:textColor="#86909C"-->
+<!--                android:textIsSelectable="true"-->
+<!--                android:textSize="13dp" />-->
+
+<!--            <androidx.appcompat.widget.AppCompatTextView-->
+<!--                android:id="@+id/tv_hinhthucthanhtoan"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="5dp"-->
+<!--                android:layout_marginRight="@dimen/_10sdp"-->
+<!--                android:drawablePadding="5dp"-->
+<!--                android:gravity="center|left"-->
+<!--                android:paddingLeft="5dp"-->
+<!--                android:text="Phát hàng nội tỉnh 4h"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:textSize="14dp"-->
+<!--                android:textStyle="bold" />-->
+<!--        </LinearLayout>-->
 
     </LinearLayout>
 </LinearLayout>

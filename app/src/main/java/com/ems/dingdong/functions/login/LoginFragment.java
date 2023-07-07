@@ -174,19 +174,19 @@ public class LoginFragment extends ViewFragment<LoginContract.Presenter> impleme
                 tvTitle.setText("Truy cập để tiếp tục sử dụng");
                 showLogin();
             }
-            tvVersion.setText("Phiên bản: " + BuildConfig.VERSION_NAME);
+            tvVersion.setText("Phiên bản: " + BuildConfig.VERSION_NAME + "(" + BuildConfig.VERSION_CODE + ")");
 //        CheckCall.checkPermissionCall(getViewContext());
 
             if (BuildConfig.DEBUG) {
 //        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0941178861;7B5D73A88B118F0362969B3F58419A23C09F40238240F8B2941F9C2974D218F0");//dev EMS
-//        mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0973222902;A0F0033A62B4FB523F85F25C0469F41F35AABCCE42165823EB9E11D42C91D427");// pro vinatti
-//         mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0947278893;73AA9207BC84142291421BC028955CBC6637BF01CE20948531B259787B5C74CE");// dev vinatti
+//                mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0902726195;A592848FBC49DE0A291922C1973F8F0AE360F3FE7E3327D4E92F5C4574C5B9C0");// pro vinatti
+//         mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0818157888;4BCFFB54197CEA87C2A05FB19ACB816A4B2E8AE000301114307C64CDBDBCA810");// dev vinatti
 //         product
 //            mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0846043045;8BA5730A24D18630D3B442451CBCE4950BE906606BAA9796D49D238C03A2EF9F");// dev UAT
 //            mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0386429889;DA64BB2CC38718125DF731ED355695D88207E78544332F9F9E4B4153A0FED175");// pre UAT
 //            mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0935271867;7790BAABB8FFC68592EE7F53045706EC326AC735B52B78339CE1D2D1791013F9");// pre UAT
                 // dev vinatti
-//                mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0919440179;86C1162DC057618E721048A6711DB73EE9FDADE0470851262DA591E3D9EA90AA"); // dev
+//                mSharedPref.putString(Constants.KEY_MOBILE_NUMBER_SIGN_CODE, "0946806508;A216EEFB51BC3F458892C343033F5AC4A7BF8D6FDA8B0A6D51CF0FB5E9F5F28F"); // dev
 //
             }
 //        loginSipCmc();
